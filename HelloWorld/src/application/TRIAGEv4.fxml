@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <TabPane prefHeight="371.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Untitled Tab 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0" />
+            </content>
+          </Tab>
+          <Tab text="Untitled Tab 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </bottom>
+   <left>
+      <ToolBar orientation="VERTICAL" prefHeight="175.0" prefWidth="69.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="RunLists" mnemonicParsing="false" text="Tick" />
+        </items>
+      </ToolBar>
+   </left>
+   <center>
+      <SplitPane dividerPositions="0.5" nodeOrientation="RIGHT_TO_LEFT" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+         <items>
+            <ListView fx:id="queue" fixedCellSize="75.0" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="trooms" prefHeight="200.0" prefWidth="200.0" />
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane>

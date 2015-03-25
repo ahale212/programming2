@@ -27,14 +27,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try {
-            BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGE.fxml"));
-            Scene scene = new Scene(page);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("FXML is Simple");
-            primaryStage.show();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    	 try {
+             BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGEv4.fxml"));
+             Scene scene = new Scene(page);
+             primaryStage.setScene(scene);
+             primaryStage.show();
+         } catch (Exception ex) {
+             ex.printStackTrace();
+         }
     }
 }
