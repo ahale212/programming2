@@ -3,6 +3,9 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.robot.FXRobot;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,6 +30,10 @@ public class RevController implements Initializable {
 	
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
+		
+		Client client = new Client(this);
+		client.start();
+		
 		array[0] = "Jim";
 		array[1] = "Mary";
 		array[2] = "Illy";
@@ -74,6 +81,17 @@ public class RevController implements Initializable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void addPatient(String name) {
+		
+		Platform.runLater(new Runnable() {
+			   @Override
+			   public void run() {
+					QList.add(name);
+			   }
+			});
+
 	}
 
 }
