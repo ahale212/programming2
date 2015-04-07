@@ -1,10 +1,11 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 
-public class Patient implements Comparable<Patient> {
+public class Patient implements Comparable<Patient>, Serializable {
 	/**Urgency assigned by triage*/
 	Urgency urgency;
 	

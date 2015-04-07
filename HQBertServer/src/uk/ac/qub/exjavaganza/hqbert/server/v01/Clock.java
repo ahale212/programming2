@@ -19,8 +19,7 @@ public class Clock {
 	
 	long difference;
 	
-	public Clock(){
-		
+	public Clock() {
 	}
 	
 	public void initClock(){
@@ -30,7 +29,7 @@ public class Clock {
 	
 	public void update(){
 		
-		currentTime = cal.getTime();
+		currentTime = Calendar.getInstance().getTime();
 		difference = currentTime.getTime() - lastTriggerTime.getTime();
 		
 		if(difference  >= interval){
