@@ -1,5 +1,6 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ import javax.print.attribute.standard.Severity;
  * their waiting-time and urgency
  *
  */
-public class HQueue {
+public class HQueue implements Serializable {
 
 	public static final int MAX_QUEUE_SIZE = 10;
 	
