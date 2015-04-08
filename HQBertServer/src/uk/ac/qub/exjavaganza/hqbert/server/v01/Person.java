@@ -6,8 +6,9 @@ import java.util.LinkedList;
 
 
 public class Person implements Serializable {
-	public enum Title { Mr, Mrs, Miss, Ms, Dr, Fr, Rev, Prof, Sir, Lady; }
+	public enum Title { Mr, Mrs, Miss, Ms, Dr, Fr, Rev, Prof, Sir, Lady, General; }
 	public enum BloodGroup { A, B, Bn, O, On };
+	String  nhsNum;
 	Title title;
 	String firstName;
 	String lastName;
@@ -17,7 +18,6 @@ public class Person implements Serializable {
 	String country;
 	String telephoneNum;
 	LinkedList<String> allergies;
-	String  nhsNum;
 	BloodGroup bloodGroup;
 	
 	public String getFirstName() {
