@@ -15,11 +15,16 @@ public class Clock {
 	Date currentTime;
 	Date lastTriggerTime;
 	
-	int interval = Supervisor.INSTANCE.UPDATE_INTERVAL;
+	int interval; 
 	
 	long difference;
 	
-	public Clock() {
+	public Clock(int baseInterval) {
+		try{
+			interval = baseInterval * 1000;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void initClock(){
@@ -36,6 +41,10 @@ public class Clock {
 			lastTriggerTime = currentTime;
 			Supervisor.INSTANCE.update(interval);
 		}
+	}
+	
+	public Date getCurrentTime(){
+		return currentTime;
 	}
 }
 	

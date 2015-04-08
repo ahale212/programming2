@@ -1,6 +1,12 @@
-package application;
+package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
-import java.sql*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
 
 public class JDBC {
 	/**
@@ -8,7 +14,7 @@ public class JDBC {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void runDB() {
 
 		// establish connection to mySQl
 		String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
@@ -37,7 +43,7 @@ public class JDBC {
 					.executeQuery("SELECT * FROM  WHERE  AND  AND  ");
 			// display results method - this can be changed/removed as needed -
 			// only used this for the purpose of testing it worked
-			displayResults(rs1);
+			//displayResults(rs1);
 
 			// start of catch block
 		} catch (SQLException ex) {

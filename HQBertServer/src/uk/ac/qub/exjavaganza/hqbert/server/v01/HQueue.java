@@ -44,24 +44,49 @@ public class HQueue implements Serializable {
 	public void update(int deltaTime) {
 		Patient p = null;
 		int maxWait = Supervisor.INSTANCE.MAX_WAIT_TIME;
+		
+		//Update all patients in any queue
+		for(int i = 0; i < pq.size(); i++){
+			p = pq.get(i);
+			p.incrementWaitTime(deltaTime);
+		}
+		
+		//Check each non-priority queue for newly prioritized patients and reassign them
 		for(int i = urgent.size()-1; i>=0 ; i--){
 			p = urgent.get(i);
-			p.incrementWaitTime(deltaTime);
 			if(p.getWaitTime() > maxWait){
 				urgent.remove(i);
 				hiPriQueue.add(p);
 			}
 		}
-		
+		for(int i = semiUrgent.size()-1; i>=0 ; i--){
+			p = semiUrgent.get(i);
+			if(p.getWaitTime() > maxWait){
+				semiUrgent.remove(i);
+				hiPriQueue.add(p);
+			}
+		}
+		for(int i = nonUrgent.size()-1; i>=0 ; i--){
+			p = nonUrgent.get(i);
+			if(p.getWaitTime() > maxWait){
+				nonUrgent.remove(i);
+				hiPriQueue.add(p);
+			}
+		}
+
+		sortHiPriQueue();
+		buildPQ();
+		showQueueInConsole();
 	}
 	
 	public boolean insert(Patient patient){
-		if(pq.size() >= MAX_QUEUE_SIZE){
+		if(pq.size() >= MAX_QUEUE_SIZE
+			|| patient.urgency == null){
+			//Log failure
 			return false;
 		}
 		
 		Urgency urgency = patient.urgency;
-		
 		boolean priority = patient.getPriority();
 		
 		if(priority == false){
@@ -76,23 +101,19 @@ public class HQueue implements Serializable {
 			hiPriQueue.add(patient);
 			sortHiPriQueue();
 		}
-		
 		buildPQ();
-		
 		return true;
 	}
 	
-	public boolean reQueue(Patient patient){
+	public void reQueue(Patient patient){
 		if(pq.size() >= MAX_QUEUE_SIZE){
-			return false;
+			pq.removeLast();
 		}
 		
 		patient.SetPriority(true);
 		hiPriQueue.add(patient);
 		sortHiPriQueue();
 		buildPQ();
-		
-		return true;
 	}
 	
 	private void buildPQ(){
@@ -124,4 +145,14 @@ public class HQueue implements Serializable {
 		return pq;
 	}
 	
+	
+	public void showQueueInConsole(){
+		System.out.println("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
+		for(int patientNum = 0; patientNum < pq.size(); patientNum++){
+			Patient p = pq.get(patientNum);
+			String patientQueueDetails = p.getPerson().firstName + " : "+p.getUrgency()+" : "+p.getPriority()+ " : " +p.getWaitTime();
+			System.out.println(patientQueueDetails);
+		}
+		System.out.println("\n");
+	}
 }
