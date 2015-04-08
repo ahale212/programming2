@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class Person implements Serializable {
 	public enum Title { Mr, Mrs, Miss, Ms, Dr, Fr, Rev, Prof, Sir, Lady, General; }
-	public enum BloodGroup { A, B, Bn, O, On };
+	public enum BloodGroup { APositive, ANegative , BPositive, BNegative, ABPositive, ABNegative, OPositive, ONegative };
 	String  nhsNum;
 	Title title;
 	String firstName;
