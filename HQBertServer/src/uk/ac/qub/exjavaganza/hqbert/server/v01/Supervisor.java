@@ -1,18 +1,18 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 
 
 public enum Supervisor {
 
 	INSTANCE;
 	
-	public static final int MAX_WAIT_TIME = 1800;
-	public static final int UPDATE_INTERVAL = 10000;
-	public static final int BASE_ROOM_OCCUPANCY_TIME = 600;
-	public static final int ROOM_OCCUPANCY_EXTENSION_TIME = 300;
-	public static final int MAX_TREATMENT_ROOMS = 5;
+	public final int MAX_WAIT_TIME = 12;
+	public final int BASE_UPDATE_INTERVAL = 1;
+	public final int BASE_ROOM_OCCUPANCY_TIME = 600;
+	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 300;
+	public final int MAX_TREATMENT_ROOMS = 5;
 	
 	HQueue hQueue;
 	Clock clock;
@@ -20,20 +20,36 @@ public enum Supervisor {
 	ArrayList<TreatmentRoom> rooms;
 	Server server;
 	
+	private int testPatientNo;
+	private Urgency[] testUrgencies;
+	
 	private Supervisor(){
 		hQueue = new HQueue();
-		clock = new Clock();
 		
-		server = new Server();
-		server.start();
+		clock = new Clock(BASE_UPDATE_INTERVAL);
+		
+		//server = new Server();
+		//server.start();
 		
 		rooms = new ArrayList<TreatmentRoom>(MAX_TREATMENT_ROOMS);
 		for(int i = 0; i < rooms.size(); i++){
 			rooms.add(i, new TreatmentRoom());
 		}
-		exit = false;
 		
-
+		testPatientNo = 0;
+		
+		testUrgencies = new Urgency[]{
+				Urgency.NON_URGENT,
+				Urgency.NON_URGENT,
+				Urgency.SEMI_URGENT,
+				Urgency.SEMI_URGENT,
+				Urgency.NON_URGENT,
+				Urgency.URGENT,
+				Urgency.SEMI_URGENT,
+				Urgency.EMERGENCY
+		};
+		
+		exit = false;
 	}
 	
 	public void startLoop() {
@@ -51,13 +67,33 @@ public enum Supervisor {
 			TreatmentRoom room = rooms.get(i);
 			room.update(deltaTime);
 		}
+
+		if(testPatientNo < testUrgencies.length){
+			insertTestPatient();
+		}
+		//server.sendObject(hQueue);
+	}
+	
+	private void insertTestPatient(){
+		Person testPerson = new Person();
+		testPerson.firstName = "Bobby"+testPatientNo;
+		testPerson.lastName = "Branson"+testPatientNo;
 		
-		server.sendObject(hQueue);
+		Patient test = new Patient();
+		test.person = testPerson;
+		test.SetUrgency(testUrgencies[testPatientNo]);
 		
-		
+		hQueue.insert(test);
+		testPatientNo++;
 	}
 	
 	public HQueue getHQueue(){
 		return hQueue;
 	}
+	
+	public Date getCurrentTime(){
+		return clock.getCurrentTime();
+	}
+	
+	
 }
