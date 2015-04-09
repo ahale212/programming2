@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -27,14 +28,76 @@
       </MenuBar>
    </top>
    <bottom>
-      <TabPane prefHeight="371.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane prefHeight="410.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab fx:id="patient_jdbc" text="Patient DBMS">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0">
+                     <children>
+                        <Label layoutX="25.0" layoutY="14.0" text="Search By:" />
+                        <TextField layoutX="264.0" layoutY="10.0" prefHeight="25.0" prefWidth="622.0" />
+                        <Label fx:id="NHS_No" layoutX="27.0" layoutY="56.0" text="NHS Number" />
+                        <Label fx:id="Title" layoutX="27.0" layoutY="88.0" text="Title" />
+                        <Label fx:id="first_name" layoutX="27.0" layoutY="120.0" text="First Name" />
+                        <Label fx:id="surname" layoutX="27.0" layoutY="152.0" text="Surname" />
+                        <Label fx:id="address" layoutX="27.0" layoutY="184.0" text="Address" />
+                        <Label fx:id="postcode" layoutX="27.0" layoutY="216.0" text="Postcode" />
+                        <Label fx:id="telephone" layoutX="27.0" layoutY="248.0" text="Telephone " />
+                        <Label fx:id="allergy" layoutX="27.0" layoutY="344.0" text="Allergies" />
+                        <Label fx:id="blood_group" layoutX="27.0" layoutY="312.0" text="Blood Group" />
+                        <Label fx:id="dob" layoutX="27.0" layoutY="280.0" text="Date of Birth" />
+                        <Line fx:id="line1" endX="155.0" layoutX="115.0" layoutY="46.0" startX="-100.0" />
+                        <TextField layoutX="110.0" layoutY="52.0" />
+                        <TextField layoutX="110.0" layoutY="84.0" />
+                        <TextField layoutX="110.0" layoutY="116.0" />
+                        <TextField layoutX="110.0" layoutY="148.0" />
+                        <TextField layoutX="110.0" layoutY="180.0" />
+                        <TextField layoutX="110.0" layoutY="212.0" />
+                        <TextField layoutX="110.0" layoutY="276.0" />
+                        <ChoiceBox layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
+                        <ChoiceBox layoutX="110.0" layoutY="10.0" prefWidth="150.0" />
+                        <ChoiceBox layoutX="110.0" layoutY="307.0" prefWidth="150.0" />
+                        <Line fx:id="divider" endY="200.0" layoutX="280.0" layoutY="160.0" startY="-100.0" />
+                        <Line endX="480.0" layoutX="391.0" layoutY="47.0" startX="-100.0" />
+                        <TextField layoutX="110.0" layoutY="244.0" />
+                        <Label fx:id="triage" layoutX="315.0" layoutY="56.0" text="TRIAGE: Primary" />
+                        <Label fx:id="airway" layoutX="315.0" layoutY="96.0" text="Airway" />
+                        <Label fx:id="breathing" layoutX="315.0" layoutY="128.0" text="Breathing" />
+                        <Label fx:id="circulation" layoutX="315.0" layoutY="192.0" text="Circulation" />
+                        <Label fx:id="disability" layoutX="315.0" layoutY="224.0" text="Disabilty" />
+                        <Label fx:id="exposure" layoutX="315.0" layoutY="256.0" text="Exposure" />
+                        <Label fx:id="spine" layoutX="315.0" layoutY="160.0" text="Cervical Spine" />
+                        <ToggleButton layoutX="400.0" layoutY="92.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
+                        <ToggleButton layoutX="400.0" layoutY="124.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
+                        <ToggleButton layoutX="400.0" layoutY="156.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
+                        <ToggleButton layoutX="400.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
+                        <ToggleButton layoutX="400.0" layoutY="220.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
+                        <ToggleButton layoutX="400.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
+                        <Button fx:id="emergency" layoutX="314.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Add as Emergency!" />
+                        <Label layoutX="482.0" layoutY="56.0" text="TRIAGE: Secondary" />
+                        <Label layoutX="482.0" layoutY="96.0" text="Can the Patient Walk?" />
+                        <Label layoutX="482.0" layoutY="128.0" text="Is the Patient Breathing?" />
+                        <Label layoutX="482.0" layoutY="160.0" text="What is the Respiratory Rate?" />
+                        <Label layoutX="482.0" layoutY="193.0" text="What is the Pulse Rate?" />
+                        <Label layoutX="482.0" layoutY="224.0" text="Any Underlying Medical Conditions?" />
+                        <Label layoutX="482.0" layoutY="257.0" text="Any Prescribed Medication?" />
+                        <Button layoutX="482.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Urgent" />
+                        <Button layoutX="614.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Semi-Urgent" />
+                        <Button layoutX="746.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Non-Urgent" />
+                        <CheckBox layoutX="691.0" layoutY="96.0" mnemonicParsing="false" text="Aye Boy!" />
+                        <CheckBox layoutX="775.0" layoutY="96.0" mnemonicParsing="false" text="Hell no" />
+                        <CheckBox layoutX="691.0" layoutY="128.0" mnemonicParsing="false" text="CheckBox" />
+                        <CheckBox layoutX="775.0" layoutY="128.0" mnemonicParsing="false" text="CheckBox" />
+                        <CheckBox layoutX="691.0" layoutY="160.0" mnemonicParsing="false" text="CheckBox" />
+                        <CheckBox layoutX="775.0" layoutY="161.0" mnemonicParsing="false" text="CheckBox" />
+                        <CheckBox layoutX="691.0" layoutY="192.0" mnemonicParsing="false" text="CheckBox" />
+                        <CheckBox layoutX="775.0" layoutY="192.0" mnemonicParsing="false" text="CheckBox" />
+                        <ComboBox layoutX="689.0" layoutY="221.0" prefHeight="25.0" prefWidth="160.0" />
+                        <ComboBox layoutX="689.0" layoutY="252.0" prefHeight="25.0" prefWidth="160.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="Un-registered Patient">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
@@ -43,18 +106,59 @@
       </TabPane>
    </bottom>
    <left>
-      <ToolBar orientation="VERTICAL" prefHeight="175.0" prefWidth="69.0" BorderPane.alignment="CENTER">
+      <ToolBar orientation="VERTICAL" prefHeight="175.0" prefWidth="100.0" BorderPane.alignment="CENTER">
         <items>
-          <Button fx:id="RunLists" mnemonicParsing="false" text="Tick" />
+          <Button fx:id="UPGRADE" mnemonicParsing="false" prefWidth="98.0" text="UPGRADE!" />
+          <Button fx:id="Q_view" mnemonicParsing="false" prefWidth="98.0" text="View Queue" />
+          <Button fx:id="TRooms_view" mnemonicParsing="false" prefWidth="98.0" text="View Treatment Rooms" />
         </items>
       </ToolBar>
    </left>
    <center>
-      <SplitPane dividerPositions="0.5" nodeOrientation="RIGHT_TO_LEFT" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.38613861386138615" nodeOrientation="RIGHT_TO_LEFT" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
          <items>
-            <ListView fx:id="queue" fixedCellSize="75.0" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
-            <ListView fx:id="trooms" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="queue" fixedCellSize="61.0" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+            <SplitPane dividerPositions="0.22627737226277372" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <SplitPane dividerPositions="0.5869837296620776" prefHeight="160.0" prefWidth="801.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <ListView fx:id="on_call" prefHeight="41.0" prefWidth="632.0" />
+                                 </children></AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <ListView fx:id="on_call_list" prefHeight="40.0" prefWidth="164.0" />
+                                 </children></AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <SplitPane dividerPositions="0.5869837296620776" prefHeight="160.0" prefWidth="801.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="200.0">
+                                 <children>
+                                    <ListView fx:id="trooms" prefHeight="159.0" prefWidth="800.0" />
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="226.0">
+                                 <children>
+                                    <ListView fx:id="treatment_room_list" prefHeight="159.0" prefWidth="164.0" />
+                                 </children></AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
          </items>
       </SplitPane>
    </center>
+   <right>
+      <TextArea prefHeight="200.0" prefWidth="180.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>
