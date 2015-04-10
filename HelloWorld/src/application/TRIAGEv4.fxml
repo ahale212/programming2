@@ -95,7 +95,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Un-registered Patient">
+          <Tab text="Treatment Room">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>

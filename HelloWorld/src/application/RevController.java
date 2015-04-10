@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 public class RevController implements Initializable {
 	
@@ -18,6 +20,9 @@ public class RevController implements Initializable {
 	
 	@FXML
 	private Button UPGRADE;
+	
+	@FXML
+	private Slider respiratory_rate;
 	
 	private final ObservableList QList = FXCollections.observableArrayList();
 	private final ObservableList trList = FXCollections.observableArrayList();
@@ -59,6 +64,8 @@ public class RevController implements Initializable {
 		queue.setItems(QList);
 		treatment_room_list.setItems(trno);
 		on_call_list.setItems(ocu);
+		
+		
 	
 		// DEMO Purposes only
 		// Select a name
