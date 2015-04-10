@@ -84,16 +84,14 @@
                         <Button layoutX="482.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Urgent" />
                         <Button layoutX="614.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Semi-Urgent" />
                         <Button layoutX="746.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Non-Urgent" />
-                        <CheckBox layoutX="691.0" layoutY="96.0" mnemonicParsing="false" text="Aye Boy!" />
-                        <CheckBox layoutX="775.0" layoutY="96.0" mnemonicParsing="false" text="Hell no" />
-                        <CheckBox layoutX="691.0" layoutY="128.0" mnemonicParsing="false" text="CheckBox" />
-                        <CheckBox layoutX="775.0" layoutY="128.0" mnemonicParsing="false" text="CheckBox" />
-                        <CheckBox layoutX="691.0" layoutY="160.0" mnemonicParsing="false" text="CheckBox" />
-                        <CheckBox layoutX="775.0" layoutY="161.0" mnemonicParsing="false" text="CheckBox" />
+                        <CheckBox layoutX="691.0" layoutY="96.0" mnemonicParsing="false" text="Yes" />
+                        <CheckBox layoutX="775.0" layoutY="96.0" mnemonicParsing="false" text="No" />
                         <CheckBox layoutX="691.0" layoutY="192.0" mnemonicParsing="false" text="CheckBox" />
                         <CheckBox layoutX="775.0" layoutY="192.0" mnemonicParsing="false" text="CheckBox" />
                         <ComboBox layoutX="689.0" layoutY="221.0" prefHeight="25.0" prefWidth="160.0" />
                         <ComboBox layoutX="689.0" layoutY="252.0" prefHeight="25.0" prefWidth="160.0" />
+                        <ChoiceBox layoutX="689.0" layoutY="124.0" prefWidth="150.0" />
+                        <Slider fx:id="respiratory_rate" blockIncrement="50.0" layoutX="689.0" layoutY="162.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
                      </children></AnchorPane>
             </content>
           </Tab>
