@@ -19,7 +19,7 @@ public class JDBC {
 		// establish connection to mySQl
 		String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
 		Connection con;
-		PreparedStatement findStaff;
+		PreparedStatement findPatients;
 		// declare var
 		String findPatientsString = "";
 
@@ -37,22 +37,29 @@ public class JDBC {
 			// connection to database using login name and password
 			con = DriverManager.getConnection(url, "40058483", "VPK7789");
 			// initialise prepared statement
-			findStaff = con.prepareStatement(findPatientsString);
+			findPatients = con.prepareStatement(findPatientsString);
 			// execute query
-			ResultSet rs1 = findStaff
-					.executeQuery("SELECT * FROM  WHERE  AND  AND  ");
+			ResultSet rs = findPatients.executeQuery("SELECT * FROM 'patients'  ");
 			// display results method - this can be changed/removed as needed -
 			// only used this for the purpose of testing it worked
 			//displayResults(rs1);
+			
+			System.out.println(rs);
 
 			// start of catch block
 		} catch (SQLException ex) {
 			// print out the error
 			System.err.println("SQLException: " + ex.getMessage());
 
+			
 		}// end of catch
-	}// end of main method
-
+		
+		
+	}// end of method
+	//public static void main(String[] args) {
+		//runDB();
+		
+	//}
 	
 
 }// end of class
