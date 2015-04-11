@@ -1,6 +1,7 @@
 package application;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -34,6 +35,7 @@ public class RevController implements Initializable {
 	private String[] onCall = new String[1];
 	private String[] treatmentRoomNum = new String[4];
 
+	private RMIClient client;
 	
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
@@ -80,6 +82,19 @@ public class RevController implements Initializable {
 	        trList.add(3, potential);}});
 		
 		trooms.setItems(trList);
+		
+		
+		
+
+		
+		try {
+			client = new RMIClient();
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		client.close();
 		
 	}
 	

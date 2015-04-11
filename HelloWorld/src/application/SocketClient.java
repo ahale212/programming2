@@ -15,7 +15,7 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
  * between the client and server.
  * @author Tom Couchman
  */
-public class Client extends Thread {
+public class SocketClient extends Thread {
 	/**
 	 * The host name/ip address of the server
 	 */
@@ -41,7 +41,7 @@ public class Client extends Thread {
 	/**
 	 * Default constructor
 	 */
-	public Client() {
+	public SocketClient() {
 	}
 	
 	public void run() {
