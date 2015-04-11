@@ -22,6 +22,8 @@ public class Clock {
 	public Clock(int baseInterval) {
 		try{
 			interval = baseInterval * 1000;
+			startTime = cal.getTime();
+			lastTriggerTime = startTime;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

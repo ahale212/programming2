@@ -26,25 +26,28 @@ public class HQueue implements Serializable {
 	LinkedList<Patient> nonUrgent;
 	LinkedList<Patient> hiPriQueue;
 	LinkedList<Patient> pq;
+	LinkedList<Patient>[] allSubqueues;
 	
-	int totalPatients;
 	
+	/**
+	 * Parameterless constructor
+	 * initialise all the lists forming the queue and sub-queues
+	 */
 	public HQueue(){
-
+		emergency = new LinkedList<Patient>();
 		urgent = new LinkedList<Patient>();
 		semiUrgent = new LinkedList<Patient>();
 		nonUrgent = new LinkedList<Patient>();
 		
+		//Add the subqueues in order to match the urgency enumeration values
+		allSubqueues = new LinkedList[]{emergency, urgent, semiUrgent, nonUrgent};
 		hiPriQueue = new LinkedList<Patient>();
 		pq = new LinkedList<Patient>();
-		
-		totalPatients = 0;
 	}
 	
 	public void update(int deltaTime) {
 		Patient p = null;
 		int maxWait = Supervisor.INSTANCE.MAX_WAIT_TIME;
-		
 		//Update all patients in any queue
 		for(int i = 0; i < pq.size(); i++){
 			p = pq.get(i);
@@ -52,70 +55,109 @@ public class HQueue implements Serializable {
 		}
 		
 		//Check each non-priority queue for newly prioritized patients and reassign them
-		for(int i = urgent.size()-1; i>=0 ; i--){
-			p = urgent.get(i);
-			if(p.getWaitTime() > maxWait){
-				urgent.remove(i);
-				hiPriQueue.add(p);
+		//Start at 1 to ignore the emergency sub queue as its a special case
+		for(int npqNum = 1; npqNum < allSubqueues.length; npqNum++){
+			LinkedList<Patient> queue = allSubqueues[npqNum];
+			for(int patientIndex = 0; patientIndex < queue.size(); patientIndex++){
+				p = queue.get(patientIndex);
+				if(p.getWaitTime() > maxWait){
+					queue.remove(p);
+					hiPriQueue.add(p);
+					break;
+				}
 			}
 		}
-		for(int i = semiUrgent.size()-1; i>=0 ; i--){
-			p = semiUrgent.get(i);
-			if(p.getWaitTime() > maxWait){
-				semiUrgent.remove(i);
-				hiPriQueue.add(p);
-			}
-		}
-		for(int i = nonUrgent.size()-1; i>=0 ; i--){
-			p = nonUrgent.get(i);
-			if(p.getWaitTime() > maxWait){
-				nonUrgent.remove(i);
-				hiPriQueue.add(p);
-			}
-		}
-
-		sortHiPriQueue();
+		sortQueue(hiPriQueue);
 		buildPQ();
 		showQueueInConsole();
 	}
 	
+	
+	/**
+	 * Change the triage urgency of a patient already in the queue
+	 * @param p : the patient who's urgency you wish to change
+	 * @param newUrgency : the required new level of urgency for the patient
+	 */
+	public void reAssignUrgency(Patient p, Urgency newUrgency){
+		allSubqueues[p.urgency.getValue()].remove(p);
+		p.urgency = newUrgency;
+		allSubqueues[p.urgency.getValue()].add(p);
+		sortQueue(allSubqueues[p.urgency.getValue()]);
+	}
+	
+	/**Insert a patient in the appropriate sub-queue place and so, correct position in overall queue
+	 * Attempt to fast track emergencies
+	 * @param patient
+	 * @return
+	 */
 	public boolean insert(Patient patient){
+		Urgency urgency = patient.urgency;
+		//If they are an emergency, skip the queue and attempt to send for treatment
+		if(urgency == urgency.EMERGENCY){
+			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
+				return true;
+			}else{ //Full of emergencies, send away
+				return false;
+			}
+		}
+		
 		if(pq.size() >= MAX_QUEUE_SIZE
 			|| patient.urgency == null){
 			//Log failure
 			return false;
 		}
 		
-		Urgency urgency = patient.urgency;
 		boolean priority = patient.getPriority();
-		
 		if(priority == false){
-			if(urgency == Urgency.URGENT){
-				urgent.add(patient);
-			}else if(urgency == Urgency.SEMI_URGENT){
-				semiUrgent.add(patient);
-			}else if (urgency == Urgency.NON_URGENT){
-				nonUrgent.add(patient);
-			}
+			allSubqueues[urgency.getValue()].add(patient);
 		}else{
 			hiPriQueue.add(patient);
-			sortHiPriQueue();
+			sortQueue(hiPriQueue);
 		}
 		buildPQ();
 		return true;
 	}
 	
+	
+	/**
+	 * Take all references to the patient out of all queues/subqueues
+	 * @param patient
+	 */
+	public void removePatient(Patient patient){
+		for(int i = 0; i < allSubqueues.length; i++){
+			if(allSubqueues[i].contains(patient)){
+				allSubqueues[i].remove(patient);
+			}
+		}
+		if(hiPriQueue.contains(patient)){
+			hiPriQueue.remove(patient);
+		}
+		if(pq.contains(patient)){
+			pq.remove(patient);
+		}
+	}
+	
+	
+	/**
+	 * Put a patient displaced by a new emergency patient, back in the queue, 
+	 * at the front, with high priority
+	 * @param patient
+	 */
 	public void reQueue(Patient patient){
 		if(pq.size() >= MAX_QUEUE_SIZE){
+			//Someone has to be sent home
 			pq.removeLast();
 		}
-		
 		patient.SetPriority(true);
 		hiPriQueue.add(patient);
-		sortHiPriQueue();
+		sortQueue(hiPriQueue);
 		buildPQ();
 	}
 	
+	
+	/**
+	 * Construct the outward facing queue from the subqueues
+	 */
 	private void buildPQ(){
 		pq.clear();
 		pq.addAll(hiPriQueue);
@@ -124,9 +166,14 @@ public class HQueue implements Serializable {
 		pq.addAll(nonUrgent);
 	}
 	
-	private void sortHiPriQueue() {
-		if (hiPriQueue.size() > 0) {
-			Collections.sort(hiPriQueue, new Comparator<Patient>() {
+	
+	/**
+	 * Arrange the patients in the passed in queue into order of waiting time
+	 * @param queue
+	 */
+	private void sortQueue(LinkedList<Patient> queue) {
+		if (queue.size() > 0) {
+			Collections.sort(queue, new Comparator<Patient>() {
 				@Override
 				public int compare(Patient p1, Patient p2) {
 					// TODO Auto-generated method stub
@@ -137,15 +184,35 @@ public class HQueue implements Serializable {
 	}
 	
 	
+	/**
+	 * Get the next patient to be treated - an emergency if there is one, 
+	 * otherwise whoever is at the front of the queue
+	 * @return
+	 */
 	public Patient getNextPatient(){
-		return pq.removeFirst();
+		if(emergency.size() > 0){
+			return emergency.removeFirst();
+		}
+		if(pq.size() > 0){
+			return pq.removeFirst();
+		}else{
+			return null;
+		}
 	}
 	
+	
+	/**
+	 * Get a reference to the main queue
+	 * @return
+	 */
 	public LinkedList<Patient> getHQueue(){
 		return pq;
 	}
 	
 	
+	/**
+	 * Show the details of the queue in the console 
+	 */
 	public void showQueueInConsole(){
 		System.out.println("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
 		for(int patientNum = 0; patientNum < pq.size(); patientNum++){
