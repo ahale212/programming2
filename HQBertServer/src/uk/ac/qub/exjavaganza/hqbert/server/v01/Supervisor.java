@@ -1,5 +1,9 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,11 +18,13 @@ public enum Supervisor {
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int MAX_TREATMENT_ROOMS = 3;
 	
+	private final int serverPort = 1099;
+	
 	HQueue hQueue;
 	Clock clock;
 	boolean exit;
 	ArrayList<TreatmentFacility> treatmentFacilities;
-	Server server;
+	RMIServer server;
 	
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
@@ -30,8 +36,7 @@ public enum Supervisor {
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 		
-		//server = new Server();
-		//server.start();
+		startServer();
 		
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
 		for(int i = 0; i < MAX_TREATMENT_ROOMS; i++){
@@ -67,6 +72,28 @@ public enum Supervisor {
 		}
 	}
 	
+	/**
+	 * Starts the RMI server so that clients can connect and communicate
+	 * with the back end.
+	 */
+	public void startServer() {
+		try {
+			
+			// Creates a registry that accepts requests on the port specified in 'serverPort'
+			LocateRegistry.createRegistry(serverPort);
+			
+			// Instantiate the RMI server
+			server = new RMIServer();
+			// Bind the server object to the name it will be accessible by on the client side.
+			Naming.rebind("HQBertServer", server);
+			
+		} catch (RemoteException | MalformedURLException e) {
+			
+			// Inform users that an issue occurred
+			System.err.println("Error ocurred while setting up RMI server.");
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Update the queue, its subQueues, all the patients in the system, and all the treatment rooms.
@@ -98,8 +125,8 @@ public enum Supervisor {
 			treatmentFacilities.get(0).DischargePatient();
 		}
 		
-		
-		//server.sendObject(hQueue);
+		// Send the updated queue to clients via the server
+		server.updateClients();
 	}
 	
 	private void insertTestPatient(){
