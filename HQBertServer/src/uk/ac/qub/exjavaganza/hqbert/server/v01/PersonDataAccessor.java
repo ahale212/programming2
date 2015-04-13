@@ -18,15 +18,17 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
  *
  */
 public class PersonDataAccessor {
+	
+	Person person = new Person();
 	/**
-	 * constant linking to the front end to serach db for first name
+	 * constant linking to the front end to serach db for first name - still needs linked
 	 */
-	public final String FIRSTNAME = "a";
+	public final String FIRSTNAME = person.getFirstName();
 	
 	/**
-	 * constant linking to the front end to search db for last name
+	 * constant linking to the front end to search db for last name - still needs linked
 	 */
-	public final String LASTNAME = "";
+	public final String LASTNAME = person.getLastName();
 
  // establish connection to mySQl
  		String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
