@@ -23,7 +23,7 @@ public class ManagerAlert {
 		String to = "hospitalmanager10@gmail.com";
 
 		// Sender's email ID needs to be mentioned
-		String from = "pashospital@gmail.com";
+		String from = "pashospital2@gmail.com";
 
 		// Get system properties
 		Properties properties = System.getProperties();
@@ -35,14 +35,14 @@ public class ManagerAlert {
 		properties.put("mail.smtp.auth", "true");
 		Authenticator authenticator = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("pashospital@gmail.com",
+				return new PasswordAuthentication("pashospital2@gmail.com",
 						"hospitalsystem");// userid and password for "from"
 											// email
 											// address
 			}
 		};
 
-		Session session = Session.getDefaultInstance(properties, authenticator);
+		Session session = Session.getInstance(properties, authenticator);
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
@@ -78,7 +78,7 @@ public class ManagerAlert {
 		String to = "hospitalmanager10@gmail.com";
 
 		// Sender's email ID.
-		String from = "pashospital@gmail.com";
+		String from = "pashospital2@gmail.com";
 
 		// Get system properties
 		Properties properties = System.getProperties();
@@ -91,14 +91,14 @@ public class ManagerAlert {
 
 		Authenticator authenticator = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("pashospital@gmail.com",
+				return new PasswordAuthentication("pashospital2@gmail.com",
 						"hospitalsystem");// user id and password for "from"
 											// email
 											// address
 			}
 		};
 
-		Session session = Session.getDefaultInstance(properties, authenticator);
+		Session session = Session.getInstance(properties, authenticator);
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
@@ -121,7 +121,7 @@ public class ManagerAlert {
 			System.out.println("Sent message successfully....");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
-		}
+		} 
 	}
 
 	/**
@@ -142,9 +142,10 @@ public class ManagerAlert {
 		try {
 			Properties props = System.getProperties();
 			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", "25");
 			
 			// Get a Session object
-			Session mailSession = Session.getDefaultInstance(props, null);
+			Session mailSession = Session.getInstance(props, null);
 
 			// construct the message
 			Message msg = new MimeMessage(mailSession);
@@ -185,9 +186,10 @@ public class ManagerAlert {
 		try {
 			Properties props = System.getProperties();
 			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", "25");
 
 			// Get a Session object
-			Session mailSession = Session.getDefaultInstance(props, null);
+			Session mailSession = Session.getInstance(props, null);
 
 			// construct the message
 			Message msg = new MimeMessage(mailSession);
