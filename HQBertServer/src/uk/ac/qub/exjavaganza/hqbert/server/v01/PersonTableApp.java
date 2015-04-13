@@ -1,9 +1,8 @@
-/**package uk.ac.qub.exjavaganza.hqbert.server.v01;
+package uk.ac.qub.exjavaganza.hqbert.server.v01;
  
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 import javafx.application.Application ;
 import javafx.scene.control.TableView ;
@@ -37,6 +36,7 @@ public class PersonTableApp extends Application {
     			
     			con = DriverManager.getConnection(url, "40058483", "VPK7789");
         
+    			// all demo test to make sure it ran, makes its own fx
 
         TableView<Person> patientsTable = new TableView<>();
         TableColumn<Person, String> Title = new TableColumn<>("Title");
@@ -62,12 +62,12 @@ public class PersonTableApp extends Application {
         TableColumn<Person, String> BloodGroup = new TableColumn<>("BloodGroup");
         BloodGroup.setCellValueFactory(new PropertyValueFactory<>("bloodGroup"));
         
-
+        // adds all info to the table, wont work now changed the query
         patientsTable.getColumns().addAll(NHSNum,Title,firstName, lastName, DOB, Address, City, Country, Allergies, BloodGroup);
 
-      
+      //used to get the items for demo purposes
        patientsTable.getItems().addAll(dataAccessor.personList());
-
+       //fx set up
         BorderPane root = new BorderPane();
         root.setCenter(patientsTable);
         Scene scene = new Scene(root, 1000, 800);
@@ -75,7 +75,7 @@ public class PersonTableApp extends Application {
         primaryStage.show();
 
     }
-
+    
     @Override
     public void stop() throws Exception {
         if (dataAccessor != null) {
@@ -88,4 +88,4 @@ public class PersonTableApp extends Application {
     }
 }
 
-**/
+

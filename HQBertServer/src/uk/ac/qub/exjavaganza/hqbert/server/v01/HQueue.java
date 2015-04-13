@@ -217,7 +217,7 @@ public class HQueue implements Serializable {
 		System.out.println("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
 		for(int patientNum = 0; patientNum < pq.size(); patientNum++){
 			Patient p = pq.get(patientNum);
-			String patientQueueDetails = p.getPerson().firstName + " : "+p.getUrgency()+" : "+p.getPriority()+ " : " +p.getWaitTime();
+			String patientQueueDetails = p.getPerson().getFirstName() + " : "+p.getUrgency()+" : "+p.getPriority()+ " : " +p.getWaitTime();
 			System.out.println(patientQueueDetails);
 		}
 		System.out.println("\n");
