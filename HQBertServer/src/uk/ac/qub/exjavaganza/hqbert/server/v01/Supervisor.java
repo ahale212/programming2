@@ -14,6 +14,7 @@ public enum Supervisor {
 	
 	public final int MAX_WAIT_TIME = 12;
 	public final int BASE_UPDATE_INTERVAL = 1;
+	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int MAX_TREATMENT_ROOMS = 3;
@@ -127,6 +128,9 @@ public enum Supervisor {
 		
 		// Send the updated queue to clients via the server
 		server.updateClients();
+		
+		//checkCapacity();
+		//checkWaitingTime();
 	}
 	
 	private void insertTestPatient(){
@@ -140,6 +144,15 @@ public enum Supervisor {
 		
 		admitPatient(test);
 		testPatientNo++;
+	}
+	
+	
+	
+	public void createPatient(Person person, Urgency urgency){
+		Patient patient = new Patient();
+		patient.setPerson(person);
+		patient.SetUrgency(urgency);
+		admitPatient(patient);
 	}
 	
 	public boolean admitPatient(Patient patient){
@@ -174,7 +187,8 @@ public enum Supervisor {
 				if(tf.getPatient() == null){	//The room is empty, just not "unlocked" yet
 					tf.receivePatient(patient);
 					return true;	
-				}else if(tf.getPatient().getUrgency() != Urgency.EMERGENCY){	//Another patient is in the room, check if they are an emergency
+				}else if(tf.getPatient().getUrgency() != Urgency.EMERGENCY){	
+					//Another patient is in the room, check if they are an emergency
 					tf.emergencyInterruption(patient);
 					return true;
 				}
@@ -188,6 +202,42 @@ public enum Supervisor {
 		hQueue.removePatient(patient);
 	}
 	
+	
+
+	private void checkCapacity() {
+
+		boolean roomsFull = true;
+
+		for (TreatmentFacility facility : treatmentFacilities) {
+			if (facility.getPatient() == null) {
+				roomsFull = false;
+			}
+		}
+		
+		if (roomsFull){
+			System.out.println("Sending capacity messages");
+			ManagerAlert.emailCapacityAlert();
+			ManagerAlert.smsCapacityAlert();
+		}
+	}
+	
+	private void checkWaitingTime(){
+		
+		int delayedCount = 0;
+		
+		for (Patient p : hQueue.pq){
+			if (p.getWaitTime() >= 30){
+				delayedCount++;
+			}
+		}
+		
+		if (delayedCount>=2){
+			System.out.println("Sending wait time messages");
+			ManagerAlert.emailWaitingTimeAlert();
+			ManagerAlert.smsWaitingTimeAlert();
+		}
+	}
+
 	
 	
 	/*Getters and setters*/
