@@ -31,9 +31,10 @@ public class OnCallTeamAlert {
 		try {
 			Properties props = System.getProperties();
 			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", "25");
 
 			// Get a Session object
-			Session mailSession = Session.getDefaultInstance(props, null);
+			Session mailSession = Session.getInstance(props, null);
 
 			// construct the message
 			Message msg = new MimeMessage(mailSession);
@@ -74,9 +75,10 @@ public class OnCallTeamAlert {
 		try {
 			Properties props = System.getProperties();
 			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", "25");
 
 			// Get a Session object
-			Session mailSession = Session.getDefaultInstance(props, null);
+			Session mailSession = Session.getInstance(props, null);
 
 			// construct the message
 			Message msg = new MimeMessage(mailSession);

@@ -12,7 +12,7 @@ public enum Supervisor {
 	INSTANCE;
 
 	public final int MAX_WAIT_TIME = 12;
-	public final int BASE_UPDATE_INTERVAL = 20;
+	public final int BASE_UPDATE_INTERVAL = 5;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int MAX_TREATMENT_ROOMS = 3;
@@ -121,8 +121,8 @@ public enum Supervisor {
 		// Send the updated queue to clients via the server
 		server.updateClients();
 		
-		//checkCapacity();
-		//checkWaitingTime();
+		checkCapacity();
+		checkWaitingTime();
 	}
 
 	private void insertTestPatient() {
@@ -208,7 +208,7 @@ public enum Supervisor {
 		}
 		
 		if (roomsFull){
-			System.out.println("Sending capacity messages");
+			System.out.println("Sending capacity messages");			
 			ManagerAlert.emailCapacityAlert();
 			ManagerAlert.smsCapacityAlert();
 		}
