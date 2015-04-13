@@ -10,6 +10,7 @@ public class TreatmentRoom extends TreatmentFacility {
 		super();
 		this.roomNumber = roomNumber;
 		this.baseOccupancyTime = Supervisor.INSTANCE.BASE_ROOM_OCCUPANCY_TIME;
+		this.extensionTime = Supervisor.INSTANCE.ROOM_OCCUPANCY_EXTENSION_TIME;
 	}	
 	
 	
