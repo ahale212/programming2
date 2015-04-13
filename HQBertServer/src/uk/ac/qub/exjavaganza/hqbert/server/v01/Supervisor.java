@@ -17,7 +17,6 @@ public enum Supervisor {
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int MAX_TREATMENT_ROOMS = 3;
-	public final int ONCALL_ENGAGEMENT_TIME = 15;
 
 	private final int serverPort = 1099;
 
