@@ -31,7 +31,10 @@ VALUES (1010101010,"Mr","Tom","Jones","123 Hollywood Avenue",'02844376211',"null
 (1010101039, "Master", "Adam", "Wallace", "The Newford Lane", '02844863994', "penicillin", "O+"),
 (1010101040, "Mrs", "Jay", "Simpson", "9 Bankview Place", '07762838144', "null", "A-"),
 (1010101041, "Admiral", "Simpson", "Ford", "46 Docking Street", '02890388243', "null", "A+"); 
-select * from patients;
+
+
+
+select * from patients where title = "Mr" and first_name ="Gareth" and last_name = "Chambers";
 
 
 

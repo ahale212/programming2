@@ -6,7 +6,7 @@ public class HQBertServer {
 		
 		System.out.println("Starting");
 	
-		Supervisor.INSTANCE.clock.initClock();
+		Supervisor.INSTANCE.init();
 		Supervisor.INSTANCE.startLoop();
 
 	}

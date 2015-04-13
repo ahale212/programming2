@@ -1,39 +1,44 @@
 package application;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.robot.FXRobot;
-
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 public class RevController implements Initializable {
 	
 	@FXML
-	private ListView queue, trooms;
+	private ListView queue, trooms, treatment_room_list, on_call_list;
 	
 	@FXML
-	private Button RunLists;
+	private Button UPGRADE;
+	
+	@FXML
+	private Slider respiratory_rate;
 	
 	private final ObservableList QList = FXCollections.observableArrayList();
 	private final ObservableList trList = FXCollections.observableArrayList();
+	private final ObservableList trno = FXCollections.observableArrayList();
+	private final ObservableList ocu = FXCollections.observableArrayList();
 	
 	private String[] array = new String[10];
 	private String[] array1 = new String[4];
+	private String[] onCall = new String[1];
+	private String[] treatmentRoomNum = new String[4];
+
+	private RMIClient client;
 	
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
-		
-		Client client = new Client(this);
-		client.start();
-		
 		array[0] = "Jim";
 		array[1] = "Mary";
 		array[2] = "Illy";
@@ -48,23 +53,48 @@ public class RevController implements Initializable {
 		array1[1] = "JonJoe";
 		array1[2] = "Joe";
 		array1[3] = "JJJoe";
+		onCall[0] = "On Call Unit";
+		treatmentRoomNum[0] = "Treatment Room 1";
+		treatmentRoomNum[1] = "Treatment Room 2";
+		treatmentRoomNum[2] = "Treatment Room 3";
+		treatmentRoomNum[3] = "Treatment Room 4";
 		
+		trno.addAll(treatmentRoomNum);
+		ocu.addAll(onCall);
 		QList.addAll(array);
 		trList.addAll(array1);
 		queue.setItems(QList);
+		treatment_room_list.setItems(trno);
+		on_call_list.setItems(ocu);
 		
+		
+	
 		// DEMO Purposes only
 		// Select a name
 		// Click 'Tick' Button
 		// See the selected name replace another in the trList
-		RunLists.setOnAction(e -> {String potential = (String) queue.getSelectionModel().getSelectedItem();
+		UPGRADE.setOnAction(e -> {String potential = (String) queue.getSelectionModel().getSelectedItem();
 	      if (potential != null) {
 	        queue.getSelectionModel().clearSelection();
 	        QList.remove(potential);
 	        trList.remove(0);
-	        trList.add(trList.size()-1, potential);}});
+	        trList.add(3, "");
+	        trList.add(3, potential);}});
 		
 		trooms.setItems(trList);
+		
+		
+		
+
+		
+		try {
+			client = new RMIClient();
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		client.close();
 		
 	}
 	
@@ -81,17 +111,6 @@ public class RevController implements Initializable {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public void addPatient(String name) {
-		
-		Platform.runLater(new Runnable() {
-			   @Override
-			   public void run() {
-					QList.add(name);
-			   }
-			});
-
 	}
 
 }

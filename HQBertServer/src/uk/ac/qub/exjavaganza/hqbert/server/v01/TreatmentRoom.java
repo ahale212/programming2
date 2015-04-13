@@ -4,43 +4,17 @@ import java.util.ArrayList;
 
 public class TreatmentRoom extends TreatmentFacility {
 
-	public TreatmentRoom(){
+	private int roomNumber;
+	
+	public TreatmentRoom(int roomNumber){
 		super();
+		this.roomNumber = roomNumber;
+		this.baseOccupancyTime = Supervisor.INSTANCE.BASE_ROOM_OCCUPANCY_TIME;
 	}	
 	
-	public void setInitialTimeToAvailable(){
-		super.setTimeToAvailable(Supervisor.INSTANCE.BASE_ROOM_OCCUPANCY_TIME);
-	}
-	
-	public void receivePatient(){
-		//Log the patient's arrival in the room and the staff present at the time
-		this.patient = Supervisor.INSTANCE.getHQueue().getNextPatient();
-	}
-	
-	public void emergencyInterruption(Patient emergencyPatient){
-		returnPatientToQueue();
-		this.patient = emergencyPatient;
-	}
-	
-	public void DischargePatient(){
-		//Make appropriate calls to whatever admin class
-		//and log patient leaving the system
-		patient = null;
-	}
-	
-	/**Patient displaced for an emergency
-	 * attempt to re-admit them to the queue,
-	 * or redirect them elsewhere
-	 */
-	public void returnPatientToQueue(){
-		//Log that patient leaves treatment room
-		
-		//log where they went
-	}
 	
 	public void update(int deltaTime){
-		
-		timeToAvailable = Math.max(0, timeToAvailable - deltaTime);
+		timeToAvailable = Math.max(0, timeToAvailable - deltaTime/1000);
 		
 		if(patient != null){
 			patient.incrementWaitTime(deltaTime);
@@ -48,5 +22,12 @@ public class TreatmentRoom extends TreatmentFacility {
 				super.setTimeToAvailable(Supervisor.INSTANCE.ROOM_OCCUPANCY_EXTENSION_TIME);
 			}
 		}
+	}
+	
+	public void showFacilityInConsole(){
+		int patientWaitTime = (patient != null)? patient.getWaitTime() : 0;
+		String patientUrgency = (patient != null)? patient.getUrgency().toString() : "na";
+		String patientName = (patient!=null)? patient.getPerson().getFirstName() : "None";
+		System.out.println("Room no. : "+roomNumber+"\tPatient : "+patientName+"\tUrgency : "+patientUrgency+"\tTime to available : "+timeToAvailable+"\tPatientWaitTime : "+patientWaitTime);
 	}
 }

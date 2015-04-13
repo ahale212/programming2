@@ -19,6 +19,8 @@ public class ClientHandler extends Thread {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
+	private boolean communicating;
+	
 	/**
 	 * Constructor with args for the ClientHandler. 
 	 * @param clientSocket	The socket that allows for communication with the client
@@ -27,6 +29,9 @@ public class ClientHandler extends Thread {
 		System.out.println("ClientHandler: Setting up client handler for connection " + clientSocket.getInetAddress().getHostName());
 		// The client connection is passed in via the constructor and stored
 		this.clientSocket = clientSocket;
+		
+		// This enables communication between the server and client, and vice versa.
+		communicating = true;
 	}
 	
 	@Override
@@ -36,7 +41,7 @@ public class ClientHandler extends Thread {
 			setUpStreams();
 			
 			// Listen for objects sent from the client
-			while (true) {
+			while (communicating) {
 				try {
 					System.out.println("ClientHandler: Listening for input from client " + clientSocket.getInetAddress().getHostName());
 					System.out.println((String)input.readObject());
@@ -44,9 +49,9 @@ public class ClientHandler extends Thread {
 					System.err.println("ClientHandler: Unknown object recieved from client.");
 					e.printStackTrace();
 				}
-				// If the thread is interrupted, exit the loop
+				// If the thread is interrupted, set the loop continuation condition to false
 				if (Thread.interrupted()) {
-					break;
+					communicating = false;
 				}
 			}
 			

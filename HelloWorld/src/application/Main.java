@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -27,13 +28,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-    	 try {
-             BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGEv4.fxml"));
-             Scene scene = new Scene(page);
-             primaryStage.setScene(scene);
-             primaryStage.show();
-         } catch (Exception ex) {
-             ex.printStackTrace();
-         }
+        try {
+            BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGEv4.fxml"));
+            Scene scene = new Scene(page);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

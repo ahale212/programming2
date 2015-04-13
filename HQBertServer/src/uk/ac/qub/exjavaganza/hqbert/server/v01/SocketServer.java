@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Server that listens for client connections and runs a new ClientServer thread to handle
+ * Socket based server that listens for client connections and runs a new ClientServer thread to handle
  * communication with each.
  * @author Tom Couchman
  */
-public class Server extends Thread {
+public class SocketServer extends Thread {
 	/** The port that the server uses to communicate with clients */
 	public final int CONNECTION_PORT = 6792;
 	/** The ServerSocket that listens for client connection requests */
@@ -21,7 +21,7 @@ public class Server extends Thread {
 	/** 
 	 * Default constructor for the server 
 	 */
-	public Server() {
+	public SocketServer() {
 		// Initialise the array list of clients
 		clients = new ArrayList<ClientHandler>();
 	}
@@ -38,11 +38,13 @@ public class Server extends Thread {
 		}
 
 		try {
-			// Loop indefinitely
+			// Loop indefinitely, waitin for clients to connect
 			while (true) {
 				System.out.println("Server: Waiting for clients...");
 				// Accept any clients that try to connect
-				ClientHandler clientHandler = new ClientHandler(serverSocket.accept());
+				Socket client = serverSocket.accept();
+				// Pass the client socket to a new ClientHandler thread to handle the communication
+				ClientHandler clientHandler = new ClientHandler(client);
 				// And the clientHandler array to the clients list so they can be accessed later
 				clients.add(clientHandler);
 				// Start the client handler on a new thread
@@ -83,7 +85,7 @@ public class Server extends Thread {
 		// Loop through each of the client
 		for (ClientHandler client : clients) {
 			if (client.isConnectionClosed()) {
-				endConnection(client);
+				endClientConnection(client);
 			} else {
 				// Send the object to the client
 				client.sendObject(object);
@@ -95,7 +97,7 @@ public class Server extends Thread {
 	 * Interrupt the clientHandler thread and remove it from the clients list.
 	 * @param client
 	 */
-	public void endConnection(ClientHandler client) {
+	public void endClientConnection(ClientHandler client) {
 		client.interrupt();
 		clients.remove(client);
 	}

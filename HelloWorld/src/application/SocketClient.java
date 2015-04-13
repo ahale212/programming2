@@ -15,7 +15,7 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
  * between the client and server.
  * @author Tom Couchman
  */
-public class Client extends Thread {
+public class SocketClient extends Thread {
 	/**
 	 * The host name/ip address of the server
 	 */
@@ -38,13 +38,10 @@ public class Client extends Thread {
 	 */
 	private ObjectInputStream input;
 	
-	/** 
-	 * Temporary to allow for the changing of values via RevController
+	/**
+	 * Default constructor
 	 */
-	private RevController context;
-	
-	public Client(RevController context) {
-		this.context = context;
+	public SocketClient() {
 	}
 	
 	public void run() {
@@ -93,8 +90,7 @@ public class Client extends Thread {
 					for (Patient patient : queue.getHQueue()) {
 						System.out.println(patient.getPerson().getFirstName());
 						
-						// Temp: adds the patient name to the queue on the main screen
-						context.addPatient(patient.getPerson().getFirstName());
+						// do something with the data
 					}
 				}
 				
