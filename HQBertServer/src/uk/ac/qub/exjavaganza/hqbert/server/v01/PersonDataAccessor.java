@@ -11,6 +11,11 @@ import java.util.ArrayList ;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 
+/**
+ *JDBC class for getting people from the database
+ * @author adamhale
+ *
+ */
 public class PersonDataAccessor {
 
  // establish connection to mySQl
@@ -21,19 +26,26 @@ public class PersonDataAccessor {
 		String findPatientsString = "";
 
     public PersonDataAccessor(String dbURL, String user, String password) throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
+        //driver name
+    	Class.forName("com.mysql.jdbc.Driver");
      // connection to database using login name and password
 		con = DriverManager.getConnection(url, "40058483", "VPK7789");
         
     }
-
+    /**
+     * method to shut down connection
+     * @throws SQLException
+     */
     public void shutdown() throws SQLException {
         if (con != null) {
             con.close();
         }
     }
 
-    public List<Person> personList() throws SQLException {
+    
+    
+ List<Person> personList() throws SQLException {
+ 
     	
     		
 			try(

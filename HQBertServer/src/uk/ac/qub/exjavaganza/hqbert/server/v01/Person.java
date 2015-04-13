@@ -7,8 +7,26 @@ import javafx.beans.property.StringProperty ;
 import javafx.beans.property.SimpleStringProperty ;
 
 public class Person implements Serializable {
+	
+	/**
+	 * default constructor
+	 */
 	public Person() {}
-
+/**
+ * constructor with args
+ * @param NHSNum
+ * @param title
+ * @param firstName
+ * @param lastName
+ * @param DOB
+ * @param address
+ * @param city
+ * @param country
+ * @param postcode
+ * @param telephone
+ * @param allergies
+ * @param bloodGroup
+ */
     public Person(String NHSNum,String title, String firstName, String lastName, String DOB, String address, String city, String country, String postcode, String telephone, String allergies, String bloodGroup) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -23,6 +41,7 @@ public class Person implements Serializable {
         setAllergies(allergies);
         setBloodGroup(bloodGroup);
     }
+    
     private final StringProperty NHSNum = new SimpleStringProperty(this, "NHSNum");
     public StringProperty NHSNumProperty() {
         return NHSNum ;
