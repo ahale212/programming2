@@ -122,8 +122,8 @@ public enum Supervisor {
 		// Send the updated queue to clients via the server
 		server.updateClients();
 		
-		checkCapacity();
-		checkWaitingTime();
+		//checkCapacity();
+		//checkWaitingTime();
 	}
 
 	private void insertTestPatient() {
