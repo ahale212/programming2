@@ -1,4 +1,5 @@
-package uk.ac.qub.exjavaganza.hqbert.server.v01;
+/**package uk.ac.qub.exjavaganza.hqbert.server.v01;
+ 
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +37,7 @@ public class PersonTableApp extends Application {
     			
     			con = DriverManager.getConnection(url, "40058483", "VPK7789");
         
-/**
+
         TableView<Person> patientsTable = new TableView<>();
         TableColumn<Person, String> Title = new TableColumn<>("Title");
         Title.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -72,7 +73,7 @@ public class PersonTableApp extends Application {
         Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
-**/
+
     }
 
     @Override
@@ -87,3 +88,4 @@ public class PersonTableApp extends Application {
     }
 }
 
+**/
