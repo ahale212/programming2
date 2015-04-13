@@ -127,8 +127,8 @@ public enum Supervisor {
 
 	private void insertTestPatient() {
 		Person testPerson = new Person();
-		testPerson.firstName = "Bobby" + testPatientNo;
-		testPerson.lastName = "Branson" + testPatientNo;
+		testPerson.setFirstName ("Bobby" + testPatientNo);
+		testPerson.setLastName ("Branson" + testPatientNo);
 
 		Patient test = new Patient();
 		test.person = testPerson;
