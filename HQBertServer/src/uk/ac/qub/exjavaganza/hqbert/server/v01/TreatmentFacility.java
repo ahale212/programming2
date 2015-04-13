@@ -9,9 +9,9 @@ public abstract class TreatmentFacility implements ITreatmentFacility {
 	protected int timeToAvailable;
 	protected int baseOccupancyTime;
 	protected int extensionTime;
-	
+
 	public TreatmentFacility(){
-		timeToAvailable = 0;
+		setTimeToAvailable(0);
 	}
 	
 	public void assignStaff(StaffMember sm){
@@ -22,7 +22,7 @@ public abstract class TreatmentFacility implements ITreatmentFacility {
 		timeToAvailable = tta;
 	}
 	
-	public void update(int deltaTime, int extensionTime){
+	public void update(int deltaTime){
 		timeToAvailable = Math.max(0, timeToAvailable - deltaTime);
 		
 		if(patient != null){
@@ -44,6 +44,12 @@ public abstract class TreatmentFacility implements ITreatmentFacility {
 	public void emergencyInterruption(Patient emergencyPatient){
 		returnPatientToQueue();
 		receivePatient(emergencyPatient);
+	}
+	
+	public void patientFailedToArrive(){
+		//log that assigned patient not here
+		//return that patient to queue / possibly a special holding list / discharge them
+		//set time to available to ???
 	}
 	
 	public void DischargePatient(){
