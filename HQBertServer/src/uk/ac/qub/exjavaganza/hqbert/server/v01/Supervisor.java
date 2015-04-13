@@ -15,6 +15,7 @@ public enum Supervisor {
 	public final int BASE_UPDATE_INTERVAL = 20;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
+	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int MAX_TREATMENT_ROOMS = 3;
 
 	private final int serverPort = 1099;
@@ -158,6 +159,7 @@ public enum Supervisor {
 	 *         treatment room available
 	 */
 	public boolean sendToTreatment(Patient patient) {
+		
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
 
@@ -171,26 +173,28 @@ public enum Supervisor {
 		// Patient didn't make it to a treatment room - check if they are an
 		// emergency
 		if (patient.urgency == Urgency.EMERGENCY) {
+			
 			for (int i = 0; i < treatmentFacilities.size(); i++) {
 				TreatmentFacility tf = treatmentFacilities.get(i);
-				if (tf.getPatient() == null) { // The room is empty, just not
-												// "unlocked" yet
+				if (tf.getPatient() == null) { 
+					/* The room is empty, just not "unlocked" yet*/
 					tf.receivePatient(patient);
 					return true;
-				} else if (tf.getPatient().getUrgency() != Urgency.EMERGENCY) { // Another
-																				// patient
-																				// is
-																				// in
-																				// the
-																				// room,
-																				// check
-																				// if
-																				// they
-																				// are
-																				// an
-																				// emergency
-					tf.emergencyInterruption(patient);
-					return true;
+				/* Another patient is in the room, check if they are an emergency*/
+				} else if (tf.getPatient().getUrgency() != Urgency.EMERGENCY) { 
+					/*They aren't - add them to a list of possible to replace patients*/
+					hQueue.addToDisplacable(tf.getPatient());
+				}
+			}
+			
+			hQueue.sortDisplacable();
+			Patient displacablePateint = null;
+			displacablePateint = hQueue.getMostDisplacable();
+			if(displacablePateint != null){
+				for(int i = 0; i < treatmentFacilities.size(); i++){
+					if(treatmentFacilities.get(i).getPatient().equals(displacablePateint));{
+						treatmentFacilities.get(i).emergencyInterruption(patient);
+					}
 				}
 			}
 		}
@@ -218,7 +222,7 @@ public enum Supervisor {
 		
 		int delayedCount = 0;
 		
-		for (Patient p : hQueue.pq){
+		for (Patient p : hQueue.getPQ()){
 			if (p.getWaitTime() >= 30){
 				delayedCount++;
 			}

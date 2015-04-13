@@ -10,6 +10,8 @@ import java.util.Queue;
 
 import javax.print.attribute.standard.Severity;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.LocatorEx.Snapshot;
+
 /**
  * Core class dealing with patients moving into,
  * out of, and through the queue according to
@@ -20,14 +22,20 @@ public class HQueue implements Serializable {
 
 	public static final int MAX_QUEUE_SIZE = 10;
 	
-	LinkedList<Patient> emergency;
-	LinkedList<Patient> urgent;
-	LinkedList<Patient> semiUrgent;
-	LinkedList<Patient> nonUrgent;
-	LinkedList<Patient> hiPriQueue;
-	LinkedList<Patient> pq;
-	LinkedList<Patient>[] allSubqueues;
-	
+	private LinkedList<Patient> emergency;
+	private LinkedList<Patient> urgent;
+	private LinkedList<Patient> semiUrgent;
+	private LinkedList<Patient> nonUrgent;
+	private LinkedList<Patient> hiPriQueue;
+	private LinkedList<Patient> pq;
+	private LinkedList<Patient>[] allSubqueues;
+
+	/*Similar set of lists for dealing with who gets replaced when all rooms are full and an emergency arrives*/
+	private LinkedList<Patient> displacable;
+	private LinkedList<Patient> dNonUrgent; 
+	private LinkedList<Patient> dSemiUrgent;
+	private LinkedList<Patient> dUrgent; 
+	private LinkedList<Patient> dPrority; 
 	
 	/**
 	 * Parameterless constructor
@@ -43,6 +51,12 @@ public class HQueue implements Serializable {
 		allSubqueues = new LinkedList[]{emergency, urgent, semiUrgent, nonUrgent};
 		hiPriQueue = new LinkedList<Patient>();
 		pq = new LinkedList<Patient>();
+		
+		displacable = new LinkedList<Patient>();
+		dNonUrgent = new LinkedList<Patient>(); 
+		dSemiUrgent = new LinkedList<Patient>();
+		dUrgent = new LinkedList<Patient>();    
+		dPrority = new LinkedList<Patient>();   
 	}
 	
 	public void update(int deltaTime) {
@@ -205,7 +219,7 @@ public class HQueue implements Serializable {
 	 * Get a reference to the main queue
 	 * @return
 	 */
-	public LinkedList<Patient> getHQueue(){
+	public LinkedList<Patient> getPQ(){
 		return pq;
 	}
 	
@@ -221,5 +235,46 @@ public class HQueue implements Serializable {
 			System.out.println(patientQueueDetails);
 		}
 		System.out.println("\n");
+	}
+	
+	public void initDisplacable(){
+		displacable.clear();
+		dNonUrgent.clear();
+		dSemiUrgent.clear();
+		dUrgent.clear();
+		dPrority.clear(); 
+	}
+	
+	public void addToDisplacable(Patient patient){
+		boolean priority = patient.getPriority();
+		Urgency u = patient.getUrgency();
+		
+		if(priority == true){
+			dPrority.add(patient);
+		}else{
+			if(u == Urgency.NON_URGENT){
+				dNonUrgent.add(patient);
+			}else if (u == Urgency.SEMI_URGENT){
+				dSemiUrgent.add(patient);
+			}else if (u == Urgency.URGENT){
+				dUrgent.add(patient);
+			}
+		}
+		
+	}
+	
+	public void sortDisplacable(){
+		sortQueue(dNonUrgent);
+		sortQueue(dSemiUrgent);
+		sortQueue(dUrgent);
+		sortQueue(dPrority);
+		displacable.addAll(dPrority);
+		displacable.addAll(dUrgent);
+		displacable.addAll(dSemiUrgent);
+		displacable.addAll(dNonUrgent);
+	}
+	
+	public Patient getMostDisplacable(){
+		return displacable.removeFirst();
 	}
 }
