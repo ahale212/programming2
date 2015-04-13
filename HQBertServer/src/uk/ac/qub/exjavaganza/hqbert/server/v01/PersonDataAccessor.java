@@ -11,12 +11,22 @@ import java.util.ArrayList ;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 
+
 /**
  *JDBC class for getting people from the database
  * @author adamhale
  *
  */
 public class PersonDataAccessor {
+	/**
+	 * constant linking to the front end to serach db for first name
+	 */
+	public final String FIRSTNAME = "a";
+	
+	/**
+	 * constant linking to the front end to search db for last name
+	 */
+	public final String LASTNAME = "";
 
  // establish connection to mySQl
  		String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
@@ -51,7 +61,7 @@ public class PersonDataAccessor {
 			try(
         		 Statement findPatients = con.prepareStatement(findPatientsString);
     			// execute query
-    			ResultSet rs = findPatients.executeQuery("SELECT * FROM patients");
+    			ResultSet rs = findPatients.executeQuery("SELECT * FROM patients WHERE first_name = 'FIRSTNAME' AND last_name = 'LASTNAME'");
         ){
         		List<Person> personList = new ArrayList<>();
             
