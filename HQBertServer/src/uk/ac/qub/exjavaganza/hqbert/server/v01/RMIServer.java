@@ -2,8 +2,13 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import javafx.stage.Stage;
 
 /**
  * Server that implements the methods defined in the RemoteServer interface,
@@ -38,7 +43,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			
 			try {
 				// calls the update method with the current state of the patients queue
-				client.udpate(Supervisor.INSTANCE.hQueue);
+				client.udpate(Supervisor.INSTANCE.getHQueue().getPQ());
 			} catch (RemoteException e) {
 				System.err.println("RemoteException occurred while calling 'update' callback method. "
 						+ "Removing client from clients list.");
@@ -71,22 +76,47 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 
 	@Override
-	public Person searchPersonByName(String firstName, String lastName)
+	public Person searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber)
 			throws RemoteException {
+		
 
+
+
+
+		try {
+			List<Person> people;
+
+			people = Supervisor.INSTANCE.getDataAccessor().personList("", firstName, lastName, dateOfBirth, postCode, telephoneNumber);
+			return people.get(0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 		return null;
 	}
 
+	/**
+	 * Gets the current state of the queue.
+	 * @return The list of treatment rooms
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
 	@Override
-	public Person searchPersonByNhsNumber(int nhsNumber) throws RemoteException {
+	public LinkedList<Patient> getQeue() throws RemoteException {
 
 		return null;
 	}
-
-	@Override
-	public HQueue getQeue() throws RemoteException {
-
-		return null;
+	
+	/**
+	 * Gets the current state of the treatments rooms.
+	 * @return The list of treatment rooms
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	public ArrayList<TreatmentFacility> getTreatmentRooms() throws RemoteException {
+		 return Supervisor.INSTANCE.getTreatmentFacilities();
 	}
+	
+	
+	
 	
 }

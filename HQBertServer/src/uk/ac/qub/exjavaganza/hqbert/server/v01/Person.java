@@ -42,135 +42,111 @@ public class Person implements Serializable {
         setBloodGroup(bloodGroup);
     }
     
-    private final StringProperty NHSNum = new SimpleStringProperty(this, "NHSNum");
-    public StringProperty NHSNumProperty() {
-        return NHSNum ;
+    private String NHSNum;
+
+    public String getNHSNum() {
+        return NHSNum;
     }
-    public final String getNHSNum() {
-        return NHSNumProperty().get();
-    }
-    public final void setNHSNum(String NHSNum) {
-        NHSNumProperty().set(NHSNum);
+    public void setNHSNum(String NHSNum) {
+        this.NHSNum = NHSNum;
     }
     
-    private final StringProperty title = new SimpleStringProperty(this, "title");
-    public StringProperty titleProperty() {
-        return title ;
+    private String title;
+
+    public String getTitle() {
+        return title;
     }
-    public final String getTitle() {
-        return titleProperty().get();
+    public void setTitle(String title) {
+    	this.title = title;
     }
-    public final void setTitle(String title) {
-        titleProperty().set(title);
+    private String firstName;
+
+    public String getFirstName() {
+        return firstName;
     }
-    private final StringProperty firstName = new SimpleStringProperty(this, "firstName");
-    public StringProperty firstNameProperty() {
-        return firstName ;
-    }
-    public final String getFirstName() {
-        return firstNameProperty().get();
-    }
-    public final void setFirstName(String firstName) {
-        firstNameProperty().set(firstName);
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    private final StringProperty lastName = new SimpleStringProperty(this, "lastName");
-    public StringProperty lastNameProperty() {
-        return lastName ;
+    private String lastName;
+
+    public String getLastName() {
+        return lastName;
     }
-    public final String getLastName() {
-        return lastNameProperty().get();
-    }
-    public final void setLastName(String lastName) {
-        lastNameProperty().set(lastName);
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    private final StringProperty DOB = new SimpleStringProperty(this, "dob");
-    public StringProperty DOBProperty() {
-        return DOB ;
+    private String DOB;
+
+    public String getDOB() {
+        return DOB;
     }
-    public final String getDOB() {
-        return DOBProperty().get();
-    }
-    public final void setDOB(String DOB) {
-        DOBProperty().set(DOB);
+    public void setDOB(String DOB) {
+       this.DOB = DOB;
     }
     
-    private final StringProperty address = new SimpleStringProperty(this, "address");
-    public StringProperty addressProperty() {
-        return address ;
+    private String address;
+
+    public String getAddress() {
+        return address;
     }
-    public final String getAddress() {
-        return addressProperty().get();
-    }
-    public final void setAddress(String address) {
-        addressProperty().set(address);
+    public void setAddress(String address) {
+        this.address = address;
     }
     
-    private final StringProperty city = new SimpleStringProperty(this, "city");
-    public StringProperty cityProperty() {
-        return city ;
+    private String city;
+
+    public String getCity() {
+        return city;
     }
-    public final String getCity() {
-        return cityProperty().get();
-    }
-    public final void setCity(String city) {
-        cityProperty().set(city); 
+    public void setCity(String city) {
+    	this.city = city; 
     }
     
-    private final StringProperty country = new SimpleStringProperty(this, "country");
-    public StringProperty countryProperty() {
-        return country ;
+    private String country;
+
+    public String getCountry() {
+        return country;
     }
-    public final String getCountry() {
-        return countryProperty().get();
-    }
-    public final void setCountry(String country) {
-        countryProperty().set(country); 
-        
-    
+    public void setCountry(String country) {
+        this.country = country;; 
     }
     
-    private final StringProperty postcode = new SimpleStringProperty(this, "postcode");
-    public StringProperty postcodeProperty() {
-        return postcode ;
+    private String postcode;
+
+    public String getPostcode() {
+        return postcode;
     }
-    public final String getPostcode() {
-        return postcodeProperty().get();
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
-    public final void setPostcode(String postcode) {
-        postcodeProperty().set(postcode); 
-    }
-    private final StringProperty telephone = new SimpleStringProperty(this, "telephone");
-    public StringProperty telephoneProperty() {
+    private String telephone;
+
+    public String getTelephone() {
         return telephone;
     }
-    public final String getTelephone() {
-        return telephoneProperty().get();
-    }
-    public final void setTelephone(String telephone) {
-        telephoneProperty().set(telephone); 
-    }
-    private final StringProperty  allergies= new SimpleStringProperty(this, "alergies");
-    public StringProperty allergiesProperty() {
-        return allergies ;
-    }
-    public final String getAllergies() {
-        return allergiesProperty().get();
-    }
-    public final void setAllergies(String allergies) {
-        allergiesProperty().set(allergies); 
+    public void setTelephone(String telephone) {
+        this.telephone = telephone; 
     }
     
-    private final StringProperty bloodGroup = new SimpleStringProperty(this, "blood group");
-    public StringProperty bloodGroupProperty() {
-        return bloodGroup ;
+    
+    private String allergies;
+
+    public String getAllergies() {
+        return allergies;
     }
-    public final String getBloodGroup() {
-        return bloodGroupProperty().get();
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
     }
-    public final void setBloodGroup(String bloodGroup) {
-        bloodGroupProperty().set(bloodGroup); 
+    
+    private String bloodGroup;
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
    
     

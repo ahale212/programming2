@@ -66,7 +66,7 @@ public class PersonTableApp extends Application {
         patientsTable.getColumns().addAll(NHSNum,Title,firstName, lastName, DOB, Address, City, Country, Allergies, BloodGroup);
 
       //used to get the items for demo purposes
-       patientsTable.getItems().addAll(dataAccessor.personList());
+       //patientsTable.getItems().addAll(dataAccessor.personList());
        //fx set up
         BorderPane root = new BorderPane();
         root.setCenter(patientsTable);

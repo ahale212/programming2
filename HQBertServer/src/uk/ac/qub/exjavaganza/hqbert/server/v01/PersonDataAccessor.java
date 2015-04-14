@@ -56,22 +56,22 @@ public class PersonDataAccessor {
 
     
     
- List<Person> personList() throws SQLException {
+ List<Person> personList(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber) throws SQLException {
  
     	
     		
 			try(
         		 Statement findPatients = con.prepareStatement(findPatientsString);
     			// execute query
-    			ResultSet rs = findPatients.executeQuery("SELECT * FROM patients WHERE first_name = 'FIRSTNAME' AND last_name = 'LASTNAME'");
+    			ResultSet rs = findPatients.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "' AND last_name = '" + lastName +  "'");
         ){
         		List<Person> personList = new ArrayList<>();
             
             while (rs.next()) {
             	String NHSNum = rs.getString("NHS_number");
             	String title = rs.getString("title");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
+                String lfirstName = rs.getString("first_name");
+                String llastName = rs.getString("last_name");
                 String DOB = rs.getString("date_of_birth");
                 String address = rs.getString("address_line_1");
                 String city = rs.getString("city");
@@ -81,7 +81,7 @@ public class PersonDataAccessor {
                 String allergies = rs.getString("known_allergies");
                 String bloodGroup = rs.getString("blood_group");
                 
-                Person person = new Person(NHSNum,title, firstName, lastName, DOB, address, city, country, postcode, telephone, allergies, bloodGroup);
+                Person person = new Person(NHSNum,title, lfirstName, llastName, DOB, address, city, country, postcode, telephone, allergies, bloodGroup);
                 personList.add(person);
             }
             return personList;

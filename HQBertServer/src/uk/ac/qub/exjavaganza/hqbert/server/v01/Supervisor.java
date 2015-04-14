@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,14 +22,22 @@ public enum Supervisor {
 
 	private final int serverPort = 1099;
 
-	HQueue hQueue;
-	Clock clock;
-	boolean exit;
-	ArrayList<TreatmentFacility> treatmentFacilities;
-	RMIServer server;
+	private HQueue hQueue;
+	private Clock clock;
+	private boolean exit;
+	private ArrayList<TreatmentFacility> treatmentFacilities;
+	private RMIServer server;
 
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
+	
+	// URL for the database connection
+	private String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	// Connection that holds the session with the database
+	private Connection con;
+	// The data accessor for the person table. Allows for searching of the 
+	// Person table in the database.
+	private PersonDataAccessor dataAccessor;
 
 	private Supervisor() {
 	}
@@ -53,6 +63,16 @@ public enum Supervisor {
 				Urgency.SEMI_URGENT };
 
 		exit = false;
+		
+		try {
+			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void startLoop() {
@@ -250,4 +270,17 @@ public enum Supervisor {
 		return clock.getCurrentTime();
 	}
 
+	public ArrayList<TreatmentFacility> getTreatmentFacilities() {
+		return treatmentFacilities;
+	}
+
+	public PersonDataAccessor getDataAccessor() {
+		return dataAccessor;
+	}
+
+	public void setDataAccessor(PersonDataAccessor dataAccessor) {
+		this.dataAccessor = dataAccessor;
+	}
+	
+	
 }

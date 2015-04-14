@@ -2,6 +2,8 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Interface that defines the methods that can be called from the 
@@ -34,21 +36,21 @@ public interface RemoteServer extends Remote {
 	 * @return	The Person that matches the passed in search terms.
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	public Person searchPersonByName(String firstName, String lastName) throws RemoteException;
+	public Person searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber) throws RemoteException;
 	
-	/**
-	 * Search for a person by their NHS number 
-	 * @param nhsNumber		The NHS number of the person being searched for
-	 * @return	The Person that matches the passed in search terms.
-	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
-	 */
-	public Person searchPersonByNhsNumber(int nhsNumber) throws RemoteException;
-	
+
 	/**
 	 * Retrieves the current state of the queue
 	 * @return	The patient queue
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	public HQueue getQeue() throws RemoteException;
+	public LinkedList<Patient> getQeue() throws RemoteException;
+	
+	/**
+	 * Gets the current state of the treatment rooms.
+	 * @return The list of treatment rooms
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	public ArrayList<TreatmentFacility> getTreatmentRooms() throws RemoteException;
 	
 }
