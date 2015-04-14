@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
@@ -11,16 +12,22 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
+            <MenuItem mnemonicParsing="false" text="Open" />
+            <SeparatorMenuItem />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
+             <MenuItem mnemonicParsing="false" text="Undo" />
+              <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem />
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
+            <MenuItem mnemonicParsing="false" text="Wizard" />
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
@@ -32,10 +39,15 @@
         <tabs>
           <Tab fx:id="patient_jdbc" text="Patient DBMS">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0" >
                      <children>
                         <Label layoutX="25.0" layoutY="14.0" text="Search By:" />
-                        <TextField layoutX="264.0" layoutY="10.0" prefHeight="25.0" prefWidth="622.0" />
+                        <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="10.0" maxWidth="100" promptText="NHS Number" />
+                        <TextField fx:id="search_First_Name" layoutX="194.0" layoutY="10.0" promptText="First Name" />
+                        <TextField fx:id="search_Surname" layoutX="347.0" layoutY="10.0" promptText="Surname" />
+                        <TextField fx:id="search_DOB" layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
+                        <TextField fx:id="search_Postcode" layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
+                        <TextField fx:id="search_Telephone_No" layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
                         <Label fx:id="NHS_No" layoutX="27.0" layoutY="56.0" text="NHS Number" />
                         <Label fx:id="Title" layoutX="27.0" layoutY="88.0" text="Title" />
                         <Label fx:id="first_name" layoutX="27.0" layoutY="120.0" text="First Name" />
@@ -43,23 +55,22 @@
                         <Label fx:id="address" layoutX="27.0" layoutY="216.0" text="Address" />
                         <Label fx:id="postcode" layoutX="27.0" layoutY="248.0" text="Postcode" />
                         <Label fx:id="telephone" layoutX="27.0" layoutY="280.0" text="Telephone " />
-                        <Label fx:id="allergy" layoutX="27.0" layoutY="344.0" text="Allergies" />
+                        <Label layoutX="27.0" layoutY="344.0" text="Allergies" />
                         <Label fx:id="blood_group" layoutX="27.0" layoutY="312.0" text="Blood Group" />
                         <Label fx:id="dob" layoutX="27.0" layoutY="184.0" text="Date of Birth" />
                         <Line fx:id="line1" endX="155.0" layoutX="115.0" layoutY="46.0" startX="-100.0" />
-                        <TextField layoutX="110.0" layoutY="52.0" />
-                        <TextField layoutX="110.0" layoutY="84.0" />
-                        <TextField layoutX="110.0" layoutY="116.0" />
-                        <TextField layoutX="110.0" layoutY="148.0" />
-                        <TextField layoutX="110.0" layoutY="180.0" />
-                        <TextField layoutX="110.0" layoutY="212.0" />
-                        <TextField layoutX="110.0" layoutY="276.0" />
-                        <ChoiceBox layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
-                        <ChoiceBox layoutX="110.0" layoutY="10.0" prefWidth="150.0" />
-                        <TextField layoutX="110.0" layoutY="307.0" />
+                        <TextField fx:id="textfield_NHS_Num" layoutX="110.0" layoutY="52.0" editable="false" />
+                        <TextField fx:id="textfield_Title" layoutX="110.0" layoutY="84.0" editable="false" />
+                        <TextField fx:id="textfield_First_Name" layoutX="110.0" layoutY="116.0" editable="false" />
+                        <TextField fx:id="textfield_Surname" layoutX="110.0" layoutY="148.0" editable="false" />
+                        <TextField fx:id="textfield_DOB" layoutX="110.0" layoutY="180.0" editable="false" />
+                        <TextField fx:id="textfield_Address" layoutX="110.0" layoutY="212.0" editable="false" />
+                        <TextField fx:id="textfield_Telephone" layoutX="110.0" layoutY="276.0" editable="false" />
+                        <ChoiceBox fx:id="allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
+                        <TextField fx:id="textfield_Blood_Group" layoutX="110.0" layoutY="307.0" editable="false" />
                         <Line fx:id="divider" endY="200.0" layoutX="280.0" layoutY="160.0" startY="-100.0" />
                         <Line endX="480.0" layoutX="391.0" layoutY="47.0" startX="-100.0" />
-                        <TextField layoutX="110.0" layoutY="244.0" />
+                        <TextField fx:id="textfield_Postcode" layoutX="110.0" layoutY="244.0" editable="false" />
                         <Label fx:id="triage" layoutX="315.0" layoutY="56.0" text="TRIAGE: Primary" />
                         <Label fx:id="airway" layoutX="315.0" layoutY="96.0" text="Airway" />
                         <Label fx:id="breathing" layoutX="315.0" layoutY="128.0" text="Breathing" />
@@ -67,31 +78,31 @@
                         <Label fx:id="disability" layoutX="315.0" layoutY="224.0" text="Disabilty" />
                         <Label fx:id="exposure" layoutX="315.0" layoutY="256.0" text="Exposure" />
                         <Label fx:id="spine" layoutX="315.0" layoutY="160.0" text="Cervical Spine" />
-                        <ToggleButton layoutX="400.0" layoutY="92.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
-                        <ToggleButton layoutX="400.0" layoutY="124.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
-                        <ToggleButton layoutX="400.0" layoutY="156.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
-                        <ToggleButton layoutX="400.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
-                        <ToggleButton layoutX="400.0" layoutY="220.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
-                        <ToggleButton layoutX="400.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="ToggleButton" />
-                        <Button fx:id="emergency" layoutX="314.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Add as Emergency!" />
+                        <ToggleButton fx:id="tb1" layoutX="400.0" layoutY="92.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" disable="true" />
+                        <ToggleButton fx:id="tb2" layoutX="400.0" layoutY="124.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" disable="true" />
+                        <ToggleButton fx:id="tb3" layoutX="400.0" layoutY="156.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" disable="true" />
+                        <ToggleButton fx:id="tb4" layoutX="400.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" disable="true" />
+                        <ToggleButton fx:id="tb5" layoutX="400.0" layoutY="220.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" disable="true" />
+                        <ToggleButton fx:id="tb6" layoutX="400.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" disable="true" />
+                        <Button fx:id="emergency" layoutX="314.0" layoutY="312.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Add as Emergency!" disable="true" />
                         <Label layoutX="482.0" layoutY="56.0" text="TRIAGE: Secondary" />
-                        <Label layoutX="482.0" layoutY="96.0" text="Can the Patient Walk?" />
-                        <Label layoutX="482.0" layoutY="128.0" text="Is the Patient Breathing?" />
-                        <Label layoutX="482.0" layoutY="160.0" text="What is the Respiratory Rate?" />
-                        <Label layoutX="482.0" layoutY="193.0" text="What is the Pulse Rate?" />
-                        <Label layoutX="482.0" layoutY="224.0" text="Any Underlying Medical Conditions?" />
-                        <Label layoutX="482.0" layoutY="257.0" text="Any Prescribed Medication?" />
-                        <Button layoutX="482.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Urgent" />
-                        <Button layoutX="614.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Semi-Urgent" />
-                        <Button layoutX="746.0" layoutY="292.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Non-Urgent" />
-                        <CheckBox layoutX="691.0" layoutY="96.0" mnemonicParsing="false" text="Yes" />
-                        <CheckBox layoutX="775.0" layoutY="96.0" mnemonicParsing="false" text="No" />
-                        <CheckBox layoutX="691.0" layoutY="192.0" mnemonicParsing="false" text="CheckBox" />
-                        <CheckBox layoutX="775.0" layoutY="192.0" mnemonicParsing="false" text="CheckBox" />
-                        <ComboBox layoutX="689.0" layoutY="221.0" prefHeight="25.0" prefWidth="160.0" />
-                        <ComboBox layoutX="689.0" layoutY="252.0" prefHeight="25.0" prefWidth="160.0" />
-                        <ChoiceBox layoutX="689.0" layoutY="124.0" prefWidth="150.0" />
+                        <Label layoutX="482.0" layoutY="128.0" text="Can the Patient Walk?" />
+                        <Label layoutX="482.0" layoutY="96.0" text="Is the Patient Breathing?" />
+                        <Label layoutX="482.0" layoutY="164.0" text="What is the Respiratory Rate?" />
+                        <Label layoutX="482.0" layoutY="204.0" text="What is the Pulse Rate?" />
+                        <Label layoutX="482.0" layoutY="248.0" text="Any Underlying Medical Conditions?" />
+                        <Label layoutX="482.0" layoutY="280.0" text="Any Prescribed Medication?" />
+                        <Button fx:id="urg" layoutX="482.0" layoutY="312.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Urgent" disable="true" />
+                        <Button fx:id="semi_urg" layoutX="614.0" layoutY="312.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Semi-Urgent" disable="true" />
+                        <Button fx:id="non_urg" layoutX="746.0" layoutY="312.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Non-Urgent" disable="true" />
+                        <CheckBox fx:id="walk" layoutX="691.0" layoutY="128.0" mnemonicParsing="false" text="Yes" />
+                        <CheckBox fx:id="walk_no" layoutX="775.0" layoutY="128.0" mnemonicParsing="false" text="No" />
+                        <ComboBox fx:id="conditions" layoutX="689.0" layoutY="244.0" prefHeight="25.0" prefWidth="160.0" disable="true" />
+                        <ComboBox fx:id="medication" layoutX="689.0" layoutY="274.0" prefHeight="25.0" prefWidth="160.0" disable="true" />
+                        <ChoiceBox fx:id="breathing_yes" layoutX="689.0" layoutY="92.0" prefWidth="150.0" />
                         <Slider fx:id="respiratory_rate" blockIncrement="50.0" layoutX="689.0" layoutY="162.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+                        <Slider fx:id="pulse_rate" blockIncrement="50.0" layoutX="689.0" layoutY="206.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+                        <Button fx:id="search_database" layoutX="813.0" layoutY="10.0" mnemonicParsing="false" text="Search" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -106,6 +117,7 @@
    <left>
       <ToolBar orientation="VERTICAL" prefHeight="175.0" prefWidth="100.0" BorderPane.alignment="CENTER">
         <items>
+        <Button fx:id="login" mnemonicParsing="false" prefWidth="98.0" text="Login" />
           <Button fx:id="UPGRADE" mnemonicParsing="false" prefWidth="98.0" text="UPGRADE!" />
           <Button fx:id="Q_view" mnemonicParsing="false" prefWidth="98.0" text="View Queue" />
           <Button fx:id="TRooms_view" mnemonicParsing="false" prefWidth="98.0" text="View Treatment Rooms" />

@@ -1,44 +1,158 @@
 package application;
 
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+
+import org.controlsfx.control.PopOver;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.util.StringConverter;
 
 public class RevController implements Initializable {
-	
+
+	@FXML
+	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6;
+
 	@FXML
 	private ListView queue, trooms, treatment_room_list, on_call_list;
-	
+
 	@FXML
-	private Button UPGRADE;
-	
+	private Button login, UPGRADE, search_database, emergency, Q_view,
+			TRooms_view, urg, semi_urg, non_urg;
+
 	@FXML
-	private Slider respiratory_rate;
-	
+	private Slider respiratory_rate, pulse_rate;
+
+	@FXML
+	private ChoiceBox breathing_yes, allergy;
+
+	@FXML
+	private ComboBox conditions, medication;
+
+	@FXML
+	private CheckBox walk, walk_no;
+
+	@FXML
+	private TextField search_NHS_No, search_First_Name, search_Surname,
+			search_DOB, search_Postcode, search_Telephone_No,
+			textfield_NHS_Num, textfield_Postcode, textfield_Title,
+			textfield_First_Name, textfield_Surname, textfield_DOB,
+			textfield_Address, textfield_Telephone, textfield_Blood_Group;
+
+	PopOver popover = new PopOver();
+
 	private final ObservableList QList = FXCollections.observableArrayList();
 	private final ObservableList trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
 	private final ObservableList ocu = FXCollections.observableArrayList();
-	
+	private final ObservableList breathingList = FXCollections.observableArrayList();
+	private final ObservableList medi_condition = FXCollections.observableArrayList();
+	private final ObservableList meds = FXCollections.observableArrayList();
+	private final ObservableList allergy_list = FXCollections.observableArrayList();
+
 	private String[] array = new String[10];
 	private String[] array1 = new String[4];
 	private String[] onCall = new String[1];
 	private String[] treatmentRoomNum = new String[4];
-
-	private RMIClient client;
+	private String[] breaths = new String[2];
 	
+	private String[] condition = { "Neurological", "Respiratory",
+			"Dermatological", "Endrocrinal", "Circulatory", "Auto-Immune", "Viral" };
+	
+	private String[] medicine = { "Pain Killers", "Antibiotics", "Steroids",
+			"Beta-Blockers", "Anti-Depressants", "Anticoagulants" };
+	
+	private String[] allergic = { "None", "Nuts", "Penicillen", "Stings",
+			"Seafood", "Hayfever", "Animals", "Latex" };
+
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
+
+		labelSliders();
+		loadArrayLists();
+		buttonFunction();
+
+	}
+
+	private void labelSliders() {
+
+		respiratory_rate.setLabelFormatter(new StringConverter<Double>() {
+			@Override
+			public String toString(Double n) {
+				if (n < 0.5)
+					return "<10pm";
+				if (n < 50.5)
+					return "10-30pm";
+
+				return ">30pm";
+			}
+
+			@Override
+			public Double fromString(String s) {
+				switch (s) {
+				case "<10pm":
+					return 0d;
+				case "10-30pm":
+					return 1d;
+				case ">30pm":
+					return 2d;
+				default:
+					return 1d;
+				}
+			}
+		});
+
+		respiratory_rate.setOnMouseClicked(e -> {
+			urg.setDisable(false);
+			urg.setStyle("-fx-base: orange;");
+		});
+
+		pulse_rate.setLabelFormatter(new StringConverter<Double>() {
+			@Override
+			public String toString(Double n) {
+				if (n < 0.5)
+					return "<40bpm";
+				if (n < 50.5)
+					return "40-120bpm";
+				return ">120bpm";
+			}
+
+			@Override
+			public Double fromString(String s) {
+				switch (s) {
+				case "<40bpm":
+					return 0d;
+				case "40-120bpm":
+					return 1d;
+				case ">120bpm":
+					return 2d;
+				default:
+					return 1d;
+				}
+			}
+		});
+
+		pulse_rate.setOnMouseClicked(e -> {
+			urg.setDisable(false);
+			urg.setStyle("-fx-base: orange;");
+		});
+
+	}
+
+	private void loadArrayLists() {
+
 		array[0] = "Jim";
 		array[1] = "Mary";
 		array[2] = "Illy";
@@ -49,68 +163,240 @@ public class RevController implements Initializable {
 		array[7] = "0987";
 		array[8] = "bn67BNhgg";
 		array[9] = "Kim";
+		
 		array1[0] = "JimJonJoe";
 		array1[1] = "JonJoe";
 		array1[2] = "Joe";
 		array1[3] = "JJJoe";
+		
 		onCall[0] = "On Call Unit";
+
 		treatmentRoomNum[0] = "Treatment Room 1";
 		treatmentRoomNum[1] = "Treatment Room 2";
 		treatmentRoomNum[2] = "Treatment Room 3";
 		treatmentRoomNum[3] = "Treatment Room 4";
-		
+
 		trno.addAll(treatmentRoomNum);
+
 		ocu.addAll(onCall);
 		QList.addAll(array);
 		trList.addAll(array1);
 		queue.setItems(QList);
 		treatment_room_list.setItems(trno);
 		on_call_list.setItems(ocu);
-		
-		
-	
-		// DEMO Purposes only
-		// Select a name
-		// Click 'Tick' Button
-		// See the selected name replace another in the trList
-		UPGRADE.setOnAction(e -> {String potential = (String) queue.getSelectionModel().getSelectedItem();
-	      if (potential != null) {
-	        queue.getSelectionModel().clearSelection();
-	        QList.remove(potential);
-	        trList.remove(0);
-	        trList.add(3, "");
-	        trList.add(3, potential);}});
-		
-		trooms.setItems(trList);
-		
-		
-		
 
-		
-		try {
-			client = new RMIClient();
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		client.close();
-		
+		breaths[0] = "Yes, without resuscitation";
+		breaths[1] = "Yes, after opening airway";
+		breathingList.addAll(breaths);
+		breathing_yes.setItems(breathingList);
+
+		medi_condition.addAll(condition);
+		conditions.setItems(medi_condition);
+
+		meds.addAll(medicine);
+		medication.setItems(meds);
+
+		allergy_list.addAll(allergic);
+		allergy.setItems(allergy_list);
+
 	}
-	
-	public void tickDown(){
-		
-		for (int i = 0; i < 1; i++) {
-			queue.setItems(QList);
-			QList.remove(0);
-			Thread t = new Thread();
-			try {
-				t.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+	private void buttonFunction() {
+
+		UPGRADE.setOnAction(e -> {
+			String potential = (String) queue.getSelectionModel()
+					.getSelectedItem();
+			if (potential != null) {
+				queue.getSelectionModel().clearSelection();
+				QList.remove(potential);
+
+				trList.remove(0);
+				trList.add(3, "");
+				trList.add(3, potential);
 			}
-		}
+		});
+		trooms.setItems(trList);
+		Q_view.setOnAction(e -> {
+			popover.show(Q_view);
+		});
+		TRooms_view.setOnAction(e -> {
+			popover.show(TRooms_view);
+		});
+
+		search_database.setOnAction(e -> {
+
+			textfield_First_Name.setText(search_First_Name.getText());
+			textfield_Surname.setText(search_Surname.getText());
+			textfield_NHS_Num.setText(search_NHS_No.getText());
+			textfield_Title.setText("Dr.");
+			textfield_DOB.setText(search_DOB.getText());
+			textfield_Address.setText("Breenagh, Letterkenny, Co. Donegal");
+			textfield_Blood_Group.setText("Oneg");
+			textfield_Postcode.setText(search_Postcode.getText());
+			textfield_Telephone.setText(search_Telephone_No.getText());
+			allergy.setValue(allergic[0]);
+			walk.setDisable(false);
+			walk_no.setDisable(false);
+
+			enableTBs();
+			clearSearchFields();
+		});
+
+		tb1.setOnAction(e -> {
+			tb1.setText("!");
+			tb1.setStyle("-fx-base: salmon;");
+			emergency.setDisable(false);
+			emergency.setStyle("-fx-base: red;");
+		});
+
+		tb2.setOnAction(e -> {
+			tb2.setText("!");
+			tb2.setStyle("-fx-base: salmon;");
+			emergency.setDisable(false);
+			emergency.setStyle("-fx-base: red;");
+		});
+
+		tb3.setOnAction(e -> {
+			tb3.setText("!");
+			tb3.setStyle("-fx-base: salmon;");
+			emergency.setDisable(false);
+			emergency.setStyle("-fx-base: red;");
+		});
+
+		tb4.setOnAction(e -> {
+			tb4.setText("!");
+			tb4.setStyle("-fx-base: salmon;");
+			emergency.setDisable(false);
+			emergency.setStyle("-fx-base: red;");
+		});
+
+		tb5.setOnAction(e -> {
+			tb5.setText("!");
+			tb5.setStyle("-fx-base: salmon;");
+			emergency.setDisable(false);
+			emergency.setStyle("-fx-base: red;");
+		});
+
+		tb6.setOnAction(e -> {
+			tb6.setText("!");
+			tb6.setStyle("-fx-base: salmon;");
+			emergency.setDisable(false);
+			emergency.setStyle("-fx-base: red;");
+		});
+
+		walk.setOnAction(e -> {
+			non_urg.setDisable(false);
+			non_urg.setStyle("-fx-base: green;");
+		});
+
+		emergency.setOnAction(e -> {
+			trList.remove(0);
+			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
+			clearTextFields();
+			resetButtons();
+		});
+
+		urg.setOnAction(e -> {
+			QList.remove(0);
+			QList.add(0, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
+			clearTextFields();
+			resetButtons();
+		});
+
+		semi_urg.setOnAction(e -> {
+			QList.remove(0);
+			QList.add(4, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
+			clearTextFields();
+			resetButtons();
+		});
+
+		non_urg.setOnAction(e -> {
+			QList.remove(0);
+			QList.add(9, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
+			clearTextFields();
+			resetButtons();
+		});
+
+		walk_no.setOnAction(e -> {
+			if (breathing_yes.getSelectionModel().getSelectedIndex() == 0) {
+				semi_urg.setDisable(false);
+				semi_urg.setStyle("-fx-base: yellow;");
+				clearTextFields();
+			}
+		});
 	}
 
+	private void clearSearchFields() {
+
+		search_NHS_No.clear();
+		search_First_Name.clear();
+		search_Surname.clear();
+		search_DOB.clear();
+		search_Postcode.clear();
+		search_Telephone_No.clear();
+	}
+
+	private void clearTextFields() {
+
+		textfield_First_Name.clear();
+		textfield_Surname.clear();
+		textfield_NHS_Num.clear();
+		textfield_Title.clear();
+		textfield_DOB.clear();
+		textfield_Address.clear();
+		textfield_Blood_Group.clear();
+		textfield_Postcode.clear();
+		textfield_Telephone.clear();
+		allergy.setValue(null);
+
+	}
+
+	private void resetButtons() {
+
+		tb1.setDisable(true);
+		tb1.setSelected(false);
+		tb1.setStyle(null);
+		tb1.setText("✓");
+		tb2.setDisable(true);
+		tb2.setSelected(false);
+		tb2.setStyle(null);
+		tb2.setText("✓");
+		tb3.setDisable(true);
+		tb3.setSelected(false);
+		tb3.setStyle(null);
+		tb3.setText("✓");
+		tb4.setDisable(true);
+		tb4.setSelected(false);
+		tb4.setStyle(null);
+		tb4.setText("✓");
+		tb5.setDisable(true);
+		tb5.setSelected(false);
+		tb5.setStyle(null);
+		tb5.setText("✓");
+		tb6.setDisable(true);
+		tb6.setSelected(false);
+		tb6.setStyle(null);
+		tb6.setText("✓");
+		emergency.setDisable(true);
+		emergency.setStyle(null);
+		urg.setDisable(true);
+		urg.setStyle(null);
+		semi_urg.setDisable(true);
+		semi_urg.setStyle(null);
+		non_urg.setDisable(true);
+		non_urg.setStyle(null);
+		walk.setDisable(true);
+		walk_no.setDisable(true);
+
+	}
+
+	private void enableTBs() {
+
+		tb1.setDisable(false);
+		tb2.setDisable(false);
+		tb3.setDisable(false);
+		tb4.setDisable(false);
+		tb5.setDisable(false);
+		tb6.setDisable(false);
+	}
 }
