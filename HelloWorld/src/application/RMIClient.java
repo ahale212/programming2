@@ -48,7 +48,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			
 			// Register for the update callbacks. This passes a reference
 			// of the client to the server so the 'update' method can be called remotely.
-			server.registerForUpdates(this);
+			//server.registerForUpdates(this);
 			
 			System.out.println("Connected to server and registered for updates.");
 			

@@ -1,10 +1,16 @@
 package application;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+
+
+
+
 
 import org.controlsfx.control.PopOver;
 
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +28,8 @@ import javafx.util.StringConverter;
 
 public class RevController implements Initializable {
 
+	private RMIClient client;
+	
 	@FXML
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6;
 
@@ -83,6 +91,13 @@ public class RevController implements Initializable {
 		labelSliders();
 		loadArrayLists();
 		buttonFunction();
+		
+		try {
+			client = new RMIClient();
+		} catch (RemoteException e) {
+			System.err.println("Failed to set up client.");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -225,7 +240,30 @@ public class RevController implements Initializable {
 
 		search_database.setOnAction(e -> {
 
-			textfield_First_Name.setText(search_First_Name.getText());
+			Person foundPerson = null;
+			
+
+				try {
+					foundPerson = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+				} catch (RemoteException ex) {
+					System.err.println("Server communication error.");
+					ex.printStackTrace();
+				}
+			
+			
+			if (foundPerson != null) {
+				textfield_First_Name.setText(foundPerson.getFirstName());
+				textfield_Surname.setText(foundPerson.getLastName());
+				textfield_NHS_Num.setText(foundPerson.getNHSNum());
+				textfield_Title.setText(foundPerson.getTitle());
+				textfield_DOB.setText(foundPerson.getDOB());
+				textfield_Address.setText(foundPerson.getAddress());
+				textfield_Blood_Group.setText(foundPerson.getBloodGroup());
+				textfield_Postcode.setText(foundPerson.getPostcode());
+				textfield_Telephone.setText(foundPerson.getTelephone());
+				allergy.setValue(allergic[0]);
+			}
+			/*textfield_First_Name.setText(search_First_Name.getText());
 			textfield_Surname.setText(search_Surname.getText());
 			textfield_NHS_Num.setText(search_NHS_No.getText());
 			textfield_Title.setText("Dr.");
@@ -234,7 +272,7 @@ public class RevController implements Initializable {
 			textfield_Blood_Group.setText("Oneg");
 			textfield_Postcode.setText(search_Postcode.getText());
 			textfield_Telephone.setText(search_Telephone_No.getText());
-			allergy.setValue(allergic[0]);
+			allergy.setValue(allergic[0]);*/
 			
 			enableTriage();
 			clearSearchFields();
