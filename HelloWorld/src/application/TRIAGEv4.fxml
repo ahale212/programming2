@@ -95,13 +95,13 @@
                         <Button fx:id="urg" layoutX="482.0" layoutY="312.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Urgent" disable="true" />
                         <Button fx:id="semi_urg" layoutX="614.0" layoutY="312.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Semi-Urgent" disable="true" />
                         <Button fx:id="non_urg" layoutX="746.0" layoutY="312.0" mnemonicParsing="false" prefWidth="130.0" text="Add as Non-Urgent" disable="true" />
-                        <CheckBox fx:id="walk" layoutX="691.0" layoutY="128.0" mnemonicParsing="false" text="Yes" />
-                        <CheckBox fx:id="walk_no" layoutX="775.0" layoutY="128.0" mnemonicParsing="false" text="No" />
+                        <CheckBox fx:id="walk" layoutX="691.0" layoutY="128.0" mnemonicParsing="false" text="Yes" disable="true" />
+                        <CheckBox fx:id="walk_no" layoutX="775.0" layoutY="128.0" mnemonicParsing="false" text="No" disable="true" />
                         <ComboBox fx:id="conditions" layoutX="689.0" layoutY="244.0" prefHeight="25.0" prefWidth="160.0" disable="true" />
                         <ComboBox fx:id="medication" layoutX="689.0" layoutY="274.0" prefHeight="25.0" prefWidth="160.0" disable="true" />
-                        <ChoiceBox fx:id="breathing_yes" layoutX="689.0" layoutY="92.0" prefWidth="150.0" />
-                        <Slider fx:id="respiratory_rate" blockIncrement="50.0" layoutX="689.0" layoutY="162.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
-                        <Slider fx:id="pulse_rate" blockIncrement="50.0" layoutX="689.0" layoutY="206.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+                        <ChoiceBox fx:id="breathing_yes" layoutX="689.0" layoutY="92.0" prefWidth="150.0" disable="true" />
+                        <Slider fx:id="respiratory_rate" blockIncrement="50.0" layoutX="689.0" layoutY="162.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" disable="true" />
+                        <Slider fx:id="pulse_rate" blockIncrement="50.0" layoutX="689.0" layoutY="206.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" disable="true" />
                         <Button fx:id="search_database" layoutX="813.0" layoutY="10.0" mnemonicParsing="false" text="Search" />
                      </children></AnchorPane>
             </content>

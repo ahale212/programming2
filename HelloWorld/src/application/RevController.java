@@ -235,10 +235,8 @@ public class RevController implements Initializable {
 			textfield_Postcode.setText(search_Postcode.getText());
 			textfield_Telephone.setText(search_Telephone_No.getText());
 			allergy.setValue(allergic[0]);
-			walk.setDisable(false);
-			walk_no.setDisable(false);
-
-			enableTBs();
+			
+			enableTriage();
 			clearSearchFields();
 		});
 
@@ -284,37 +282,37 @@ public class RevController implements Initializable {
 			emergency.setStyle("-fx-base: red;");
 		});
 
-		walk.setOnAction(e -> {
-			non_urg.setDisable(false);
-			non_urg.setStyle("-fx-base: green;");
-		});
-
 		emergency.setOnAction(e -> {
 			trList.remove(0);
 			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
 			clearTextFields();
-			resetButtons();
+			resetTriage();
 		});
 
 		urg.setOnAction(e -> {
 			QList.remove(0);
 			QList.add(0, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
-			resetButtons();
+			resetTriage();
 		});
 
 		semi_urg.setOnAction(e -> {
 			QList.remove(0);
 			QList.add(4, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
-			resetButtons();
+			resetTriage();
 		});
 
 		non_urg.setOnAction(e -> {
 			QList.remove(0);
 			QList.add(9, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
-			resetButtons();
+			resetTriage();
+		});
+		
+		walk.setOnAction(e -> {
+			non_urg.setDisable(false);
+			non_urg.setStyle("-fx-base: green;");
 		});
 
 		walk_no.setOnAction(e -> {
@@ -351,7 +349,7 @@ public class RevController implements Initializable {
 
 	}
 
-	private void resetButtons() {
+	private void resetTriage() {
 
 		tb1.setDisable(true);
 		tb1.setSelected(false);
@@ -386,11 +384,23 @@ public class RevController implements Initializable {
 		non_urg.setDisable(true);
 		non_urg.setStyle(null);
 		walk.setDisable(true);
+		walk.setSelected(false);
 		walk_no.setDisable(true);
+		walk_no.setSelected(false);
+		breathing_yes.setDisable(true);
+		breathing_yes.setValue(null);
+		respiratory_rate.setDisable(true);
+		respiratory_rate.setValue(50);
+		pulse_rate.setDisable(true);
+		pulse_rate.setValue(50);
+		medication.setDisable(true);
+		medication.setValue(null);
+		conditions.setDisable(true);
+		conditions.setValue(null);
 
 	}
 
-	private void enableTBs() {
+	private void enableTriage() {
 
 		tb1.setDisable(false);
 		tb2.setDisable(false);
@@ -398,5 +408,12 @@ public class RevController implements Initializable {
 		tb4.setDisable(false);
 		tb5.setDisable(false);
 		tb6.setDisable(false);
+		walk.setDisable(false);
+		walk_no.setDisable(false);
+		breathing_yes.setDisable(false);
+		respiratory_rate.setDisable(false);
+		pulse_rate.setDisable(false);
+		medication.setDisable(false);
+		conditions.setDisable(false);
 	}
 }

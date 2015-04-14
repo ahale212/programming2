@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.util.logging.Level;
 
 import com.sun.javafx.logging.Logger;
@@ -19,22 +19,24 @@ import javafx.scene.layout.StackPane;
 
 public class Main extends Application {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Application.launch(Main.class, (java.lang.String[])null);
-    }
+	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(String[] args) {
+		Application.launch(Main.class, (java.lang.String[]) null);
+	}
 
-    @Override
-    public void start(Stage primaryStage) {
-        try {
-            BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGEv4.fxml"));
-            Scene scene = new Scene(page);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+	@Override
+	public void start(Stage primaryStage) {
+
+		try {
+			BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGEv4.fxml"));
+			Scene scene = new Scene(page);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
