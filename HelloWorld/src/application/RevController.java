@@ -51,7 +51,7 @@ public class RevController implements Initializable {
 			textfield_First_Name, textfield_Surname, textfield_DOB,
 			textfield_Address, textfield_Telephone, textfield_Blood_Group;
 
-	PopOver popover = new PopOver();
+	PopOver p = new PopOver();
 
 	private final ObservableList QList = FXCollections.observableArrayList();
 	private final ObservableList trList = FXCollections.observableArrayList();
@@ -217,10 +217,10 @@ public class RevController implements Initializable {
 		});
 		trooms.setItems(trList);
 		Q_view.setOnAction(e -> {
-			popover.show(Q_view);
+			p.show(Q_view);
 		});
 		TRooms_view.setOnAction(e -> {
-			popover.show(TRooms_view);
+			p.show(TRooms_view);
 		});
 
 		search_database.setOnAction(e -> {
