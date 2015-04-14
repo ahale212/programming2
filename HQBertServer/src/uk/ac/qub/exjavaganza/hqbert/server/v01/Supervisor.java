@@ -153,7 +153,7 @@ public enum Supervisor {
 
 		Patient test = new Patient();
 		test.person = testPerson;
-		test.SetUrgency(testUrgencies[testPatientNo]);
+		test.setUrgency(testUrgencies[testPatientNo]);
 
 		admitPatient(test);
 		testPatientNo++;
@@ -216,7 +216,7 @@ public enum Supervisor {
 						treatmentFacilities.get(i).emergencyInterruption(patient);
 					}
 				}
-			}
+			} 
 		}
 		return false;
 	}
@@ -254,6 +254,17 @@ public enum Supervisor {
 			ManagerAlert.smsWaitingTimeAlert();
 		}
 	}
+	
+	private void checkQueueFull() {
+		
+		// If the patient queue is full
+		if (hQueue.getPQ().size() == 10) {
+			
+			OnCallTeamAlert.onCallTeamQueueCapacity();
+		}
+		
+	}
+	
 
 	public void removeFromQueue(Patient patient) {
 		System.out.println("Removing " + patient.getPerson().getFirstName()

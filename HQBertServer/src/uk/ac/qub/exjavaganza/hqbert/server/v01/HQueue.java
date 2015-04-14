@@ -162,7 +162,7 @@ public class HQueue implements Serializable {
 			//Someone has to be sent home
 			pq.removeLast();
 		}
-		patient.SetPriority(true);
+		patient.setPriority(true);
 		hiPriQueue.add(patient);
 		sortQueue(hiPriQueue);
 		buildPQ();

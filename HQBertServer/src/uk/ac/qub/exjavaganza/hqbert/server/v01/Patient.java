@@ -36,7 +36,7 @@ public class Patient implements Comparable<Patient>, Serializable {
 	
 	private void checkPriority(){
 		if(waitTime > Supervisor.INSTANCE.MAX_WAIT_TIME){
-			SetPriority(true);
+			setPriority(true);
 		}
 	}
 	
@@ -58,11 +58,11 @@ public class Patient implements Comparable<Patient>, Serializable {
 		return this.urgency;
 	}
 	
-	public void SetUrgency(Urgency urgency){
+	public void setUrgency(Urgency urgency){
 		this.urgency = urgency;
 	}
 	
-	public void SetPriority(boolean isPriority){
+	public void setPriority(boolean isPriority){
 		this.priority = isPriority;
 	}
 	

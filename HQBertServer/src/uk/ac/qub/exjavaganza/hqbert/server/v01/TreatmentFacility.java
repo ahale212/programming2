@@ -1,8 +1,9 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class TreatmentFacility implements ITreatmentFacility {
+public abstract class TreatmentFacility implements ITreatmentFacility, Serializable {
 	
 	protected ArrayList<StaffMember> staff;
 	protected Patient patient;
@@ -63,7 +64,7 @@ public abstract class TreatmentFacility implements ITreatmentFacility {
 	 * or redirect them elsewhere
 	 */
 	public void returnPatientToQueue(){
-		patient.SetPriority(true);
+		patient.setPriority(true);
 		//Log that patient leaves treatment room
 		if(Supervisor.INSTANCE.admitPatient(patient)){
 			System.out.println(patient.getPerson().getFirstName()+" back in queue");

@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Interface that defines the methods that can be called from the 
@@ -36,7 +37,7 @@ public interface RemoteServer extends Remote {
 	 * @return	The Person that matches the passed in search terms.
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	public Person searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber) throws RemoteException;
+	public List<Person> searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber) throws RemoteException;
 	
 
 	/**
@@ -52,5 +53,17 @@ public interface RemoteServer extends Remote {
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
 	public ArrayList<TreatmentFacility> getTreatmentRooms() throws RemoteException;
+	
+	/**
+	 * Adds a newly triaged emergency patient to the backend list along with the details of their current state.
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	public void addPrimaryPatient(Person person, boolean airway, boolean breating, boolean spine, boolean circulation, boolean disability, boolean exposure) throws RemoteException;
+	
+	/**
+	 * Adds a newly triaged non-emergency patient to the backend list along with the details of their current state.
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	public void addSecondaryPatient(Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication);
 	
 }

@@ -2,6 +2,7 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -18,6 +19,6 @@ public interface ClientCallback extends Remote {
 	 * @param queue		The patient queue
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	public void udpate(LinkedList<Patient> queue) throws RemoteException;
+	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException;
 	
 }
