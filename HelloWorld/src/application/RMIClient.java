@@ -6,9 +6,11 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.LinkedList;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.HQueue;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer;
 
 /**
@@ -65,7 +67,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
 	@Override
-	public void udpate(HQueue queue) throws RemoteException {
+	public void udpate(LinkedList<Patient> queue) throws RemoteException {
 		System.out.println("Updating");
 	}
 	

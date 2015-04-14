@@ -87,11 +87,11 @@ public class SocketClient extends Thread {
 					HQueue queue = (HQueue)recievedObject;
 					System.out.println("Client: Object recieved");
 					// Temp: testing that values can be accessed as expected
-					for (Patient patient : queue.getHQueue()) {
+					/*for (Patient patient : queue.getHQueue()) {
 						System.out.println(patient.getPerson().getFirstName());
 						
 						// do something with the data
-					}
+					}*/
 				}
 				
 			} catch (ClassNotFoundException ex) {
