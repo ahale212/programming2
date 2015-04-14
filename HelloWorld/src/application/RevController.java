@@ -2,7 +2,9 @@ package application;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.ResourceBundle;
+
 
 
 
@@ -82,7 +84,7 @@ public class RevController implements Initializable {
 	private String[] medicine = { "Pain Killers", "Antibiotics", "Steroids",
 			"Beta-Blockers", "Anti-Depressants", "Anticoagulants" };
 	
-	private String[] allergic = { "None", "Nuts", "Penicillen", "Stings",
+	private String[] allergic = { "None", "Nuts", "Penicillin", "Stings",
 			"Seafood", "Hayfever", "Animals", "Latex" };
 
 	@Override
@@ -240,18 +242,18 @@ public class RevController implements Initializable {
 
 		search_database.setOnAction(e -> {
 
-			Person foundPerson = null;
-			
+			List<Person> matchingPeople = null;
 
-				try {
-					foundPerson = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
-				} catch (RemoteException ex) {
-					System.err.println("Server communication error.");
-					ex.printStackTrace();
-				}
+			try {
+				matchingPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+			} catch (RemoteException ex) {
+				System.err.println("Server communication error.");
+				ex.printStackTrace();
+			}	
 			
-			
-			if (foundPerson != null) {
+			// If there were people matching the criteria display them to the user
+			if (matchingPeople.size() > 0) {
+				Person foundPerson = matchingPeople.get(0);
 				textfield_First_Name.setText(foundPerson.getFirstName());
 				textfield_Surname.setText(foundPerson.getLastName());
 				textfield_NHS_Num.setText(foundPerson.getNHSNum());
@@ -261,7 +263,15 @@ public class RevController implements Initializable {
 				textfield_Blood_Group.setText(foundPerson.getBloodGroup());
 				textfield_Postcode.setText(foundPerson.getPostcode());
 				textfield_Telephone.setText(foundPerson.getTelephone());
-				allergy.setValue(allergic[0]);
+				
+				// If the returned allergy is "null" set the allergy
+				// box to display "None".
+				if (foundPerson.getAllergies().equalsIgnoreCase("null")) {
+					allergy.setValue(allergic[0]);
+				} else {
+					// Else set the allergy box value to the returned alergy
+					allergy.setValue(foundPerson.getAllergies());
+				}
 			}
 			/*textfield_First_Name.setText(search_First_Name.getText());
 			textfield_Surname.setText(search_Surname.getText());
