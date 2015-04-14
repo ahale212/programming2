@@ -43,7 +43,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			
 			try {
 				// calls the update method with the current state of the patients queue
-				client.udpate(Supervisor.INSTANCE.getHQueue().getPQ());
+				client.udpate(Supervisor.INSTANCE.getHQueue().getPQ(), Supervisor.INSTANCE.getTreatmentFacilities());
 			} catch (RemoteException e) {
 				System.err.println("RemoteException occurred while calling 'update' callback method. "
 						+ "Removing client from clients list.");
@@ -76,7 +76,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 
 	@Override
-	public Person searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber)
+	public List<Person> searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber)
 			throws RemoteException {
 		
 
@@ -84,10 +84,28 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 
 
 		try {
-			List<Person> people;
+			List<Person> people;// = new ArrayList<Person>();
 
-			people = Supervisor.INSTANCE.getDataAccessor().personList("", firstName, lastName, dateOfBirth, postCode, telephoneNumber);
-			return people.get(0);
+			// Search for the person in the database
+			people = Supervisor.INSTANCE.getDataAccessor().personList(nhsNumber, firstName, lastName, dateOfBirth, postCode, telephoneNumber);
+			
+			// Test
+			/*Person testPerson = new Person();
+			testPerson.setTitle("Mrs");
+			testPerson.setFirstName ("Barbara");
+			testPerson.setLastName ("Balmer");
+			testPerson.setAddress("12 McDonald Road");
+			testPerson.setCity("Bristol");
+			testPerson.setCountry("United Kingdom");
+			testPerson.setPostcode("TA8 1RE");
+			testPerson.setBloodGroup("B");
+			testPerson.setNHSNum("242512612781236");
+			testPerson.setTelephone("01278 795326");
+			
+			people.add(testPerson);*/
+			
+			// Return the matching people found in the database
+			return people;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,6 +132,41 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 */
 	public ArrayList<TreatmentFacility> getTreatmentRooms() throws RemoteException {
 		 return Supervisor.INSTANCE.getTreatmentFacilities();
+	}
+
+	/**
+	 * Adds a newly triaged emergency patient to the backend list along with the details of their current state.
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	@Override
+	public void addPrimaryPatient(Person person, boolean airway,
+			boolean breating, boolean spine, boolean circulation,
+			boolean disability, boolean exposure) throws RemoteException {
+		Patient patient = new Patient();
+		patient.setPerson(person);
+		patient.setUrgency(Urgency.EMERGENCY);
+		patient.setPriority(true);
+		
+		Supervisor.INSTANCE.admitPatient(patient);
+		
+	}
+
+	/**
+	 * Adds a newly triaged non-emergency patient to the backend list along with the details of their current state.
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	@Override
+	public void addSecondaryPatient(Person person, Urgency urgency,
+			boolean breathingWithoutResusitation, boolean canWalk,
+			int respirationRate, int pulseRate, String underlyingCondition,
+			String prescribedMedication) {
+
+		Patient patient = new Patient();
+		patient.setPerson(person);
+		patient.setUrgency(urgency);
+		patient.setPriority(false);
+		
+		Supervisor.INSTANCE.admitPatient(patient);
 	}
 	
 	
