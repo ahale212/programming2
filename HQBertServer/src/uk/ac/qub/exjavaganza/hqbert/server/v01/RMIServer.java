@@ -88,6 +88,8 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	
 	@Override
 	public void unregisterForUpdates(ClientCallback client) {
+		System.out.println("Removing client from client callback list.");
+		
 		clients.remove(client);
 	}
 
@@ -104,21 +106,6 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 
 			// Search for the person in the database
 			people = Supervisor.INSTANCE.getDataAccessor().personList(nhsNumber, firstName, lastName, dateOfBirth, postCode, telephoneNumber);
-			
-			// Test
-			/*Person testPerson = new Person();
-			testPerson.setTitle("Mrs");
-			testPerson.setFirstName ("Barbara");
-			testPerson.setLastName ("Balmer");
-			testPerson.setAddress("12 McDonald Road");
-			testPerson.setCity("Bristol");
-			testPerson.setCountry("United Kingdom");
-			testPerson.setPostcode("TA8 1RE");
-			testPerson.setBloodGroup("B");
-			testPerson.setNHSNum("242512612781236");
-			testPerson.setTelephone("01278 795326");
-			
-			people.add(testPerson);*/
 			
 			// Return the matching people found in the database
 			return people;
