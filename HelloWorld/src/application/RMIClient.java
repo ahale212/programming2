@@ -37,12 +37,16 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 */
 	private int serverPort = 1099;
 	
+	private ClientCallback callbackObject;
+	
 	/**
 	 * Constructor for RMIClient
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	protected RMIClient() throws RemoteException {
+	protected RMIClient(ClientCallback callbackObject) throws RemoteException {
 		super();
+		
+		this.callbackObject = callbackObject;
 		
 		try {
 			// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
@@ -71,7 +75,19 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	@Override
 	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException {
 		System.out.println("Updating: " + queue.get(0).getPerson().getFirstName());
+		// Pass the callback call onto the controller
+		callbackObject.udpate(queue, treatmentFacilities);
 	}
+	
+	/**
+	 * Sends log messages to the client
+	 * @param log		The log text
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	@Override
+	public void log(String log) throws RemoteException {
+		callbackObject.log(log);
+	};
 	
 	/**
 	 * Informs the server that the client no longer wished to receive updates.

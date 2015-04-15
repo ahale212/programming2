@@ -2,6 +2,8 @@ package application;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -11,9 +13,15 @@ import java.util.ResourceBundle;
 
 
 
+
+
+
 import org.controlsfx.control.PopOver;
 
+import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,7 +37,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.util.StringConverter;
 
-public class RevController implements Initializable {
+public class RevController implements Initializable, ClientCallback {
 
 	private RMIClient client;
 	
@@ -98,7 +106,7 @@ public class RevController implements Initializable {
 		buttonFunction();
 		
 		try {
-			client = new RMIClient();
+			client = new RMIClient(this);
 		} catch (RemoteException e) {
 			System.err.println("Failed to set up client.");
 			e.printStackTrace();
@@ -473,5 +481,18 @@ public class RevController implements Initializable {
 		pulse_rate.setDisable(false);
 		medication.setDisable(false);
 		conditions.setDisable(false);
+	}
+
+	@Override
+	public void udpate(LinkedList<Patient> queue,
+			ArrayList<TreatmentFacility> treatmentFacilities)
+			throws RemoteException {
+		System.out.println("RevController: Queue recieved");
+		
+	}
+
+	@Override
+	public void log(String log) throws RemoteException {
+		System.out.println("RevController: " + log);
 	}
 }
