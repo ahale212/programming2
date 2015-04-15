@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 
 
 
+
 import org.controlsfx.control.PopOver;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
@@ -33,6 +34,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.util.StringConverter;
@@ -40,6 +42,9 @@ import javafx.util.StringConverter;
 public class RevController implements Initializable, ClientCallback {
 
 	private RMIClient client;
+	
+	@FXML
+	private TextArea outputTextArea;
 	
 	@FXML
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6;
@@ -104,6 +109,7 @@ public class RevController implements Initializable, ClientCallback {
 		labelSliders();
 		loadArrayLists();
 		buttonFunction();
+		search();
 		
 		try {
 			client = new RMIClient(this);
@@ -112,6 +118,11 @@ public class RevController implements Initializable, ClientCallback {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void search() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void labelSliders() {
@@ -241,6 +252,8 @@ public class RevController implements Initializable, ClientCallback {
 				trList.remove(0);
 				trList.add(3, "");
 				trList.add(3, potential);
+				
+				outputTextArea.appendText(potential+" is now an emergency!\n");
 			}
 		});
 		trooms.setItems(trList);
@@ -253,6 +266,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		search_database.setOnAction(e -> {
 
+			outputTextArea.appendText(search_Surname.getText()+", "+search_First_Name.getText()+" ready for Triage!\n");
 			List<Person> matchingPeople = null;
 
 			try {
@@ -300,6 +314,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb1.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has a blocked airway!\n");
 			tb1.setText("!");
 			tb1.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -307,6 +322,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb2.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has difficulty breathing!\n");
 			tb2.setText("!");
 			tb2.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -314,6 +330,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb3.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has circulation difficulties!\n");
 			tb3.setText("!");
 			tb3.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -321,6 +338,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb4.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has suspected cervia spine trauma!\n");
 			tb4.setText("!");
 			tb4.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -328,6 +346,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb5.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" is incapacitated!\n");
 			tb5.setText("!");
 			tb5.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -494,5 +513,6 @@ public class RevController implements Initializable, ClientCallback {
 	@Override
 	public void log(String log) throws RemoteException {
 		System.out.println("RevController: " + log);
+		
 	}
 }

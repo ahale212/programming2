@@ -169,6 +169,6 @@
       </SplitPane>
    </center>
    <right>
-      <TextArea prefHeight="200.0" prefWidth="180.0" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="outputTextArea" prefHeight="200.0" prefWidth="180.0" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>
