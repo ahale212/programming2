@@ -2,7 +2,10 @@ package application;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.ResourceBundle;
+
+
 
 
 
@@ -82,9 +85,11 @@ public class RevController implements Initializable {
 	private String[] medicine = { "Pain Killers", "Antibiotics", "Steroids",
 			"Beta-Blockers", "Anti-Depressants", "Anticoagulants" };
 	
-	private String[] allergic = { "None", "Nuts", "Penicillen", "Stings",
+	private String[] allergic = { "None", "Nuts", "Penicillin", "Stings",
 			"Seafood", "Hayfever", "Animals", "Latex" };
 
+	private Person displayedPerson;
+	
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
@@ -240,28 +245,36 @@ public class RevController implements Initializable {
 
 		search_database.setOnAction(e -> {
 
-			Person foundPerson = null;
-			
+			List<Person> matchingPeople = null;
 
-				try {
-					foundPerson = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
-				} catch (RemoteException ex) {
-					System.err.println("Server communication error.");
-					ex.printStackTrace();
+			try {
+				matchingPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+			} catch (RemoteException ex) {
+				System.err.println("Server communication error.");
+				ex.printStackTrace();
+			}	
+			
+			// If there were people matching the criteria display them to the user
+			if (matchingPeople.size() > 0) {
+				displayedPerson = matchingPeople.get(0);
+				textfield_First_Name.setText(displayedPerson.getFirstName());
+				textfield_Surname.setText(displayedPerson.getLastName());
+				textfield_NHS_Num.setText(displayedPerson.getNHSNum());
+				textfield_Title.setText(displayedPerson.getTitle());
+				textfield_DOB.setText(displayedPerson.getDOB());
+				textfield_Address.setText(displayedPerson.getAddress());
+				textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
+				textfield_Postcode.setText(displayedPerson.getPostcode());
+				textfield_Telephone.setText(displayedPerson.getTelephone());
+				
+				// If the returned allergy is "null" set the allergy
+				// box to display "None".
+				if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
+					allergy.setValue(allergic[0]);
+				} else {
+					// Else set the allergy box value to the returned alergy
+					allergy.setValue(displayedPerson.getAllergies());
 				}
-			
-			
-			if (foundPerson != null) {
-				textfield_First_Name.setText(foundPerson.getFirstName());
-				textfield_Surname.setText(foundPerson.getLastName());
-				textfield_NHS_Num.setText(foundPerson.getNHSNum());
-				textfield_Title.setText(foundPerson.getTitle());
-				textfield_DOB.setText(foundPerson.getDOB());
-				textfield_Address.setText(foundPerson.getAddress());
-				textfield_Blood_Group.setText(foundPerson.getBloodGroup());
-				textfield_Postcode.setText(foundPerson.getPostcode());
-				textfield_Telephone.setText(foundPerson.getTelephone());
-				allergy.setValue(allergic[0]);
 			}
 			/*textfield_First_Name.setText(search_First_Name.getText());
 			textfield_Surname.setText(search_Surname.getText());
@@ -323,6 +336,13 @@ public class RevController implements Initializable {
 		emergency.setOnAction(e -> {
 			trList.remove(0);
 			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
+			
+			try {
+				client.getServer().addPrimaryPatient(displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
 			clearTextFields();
 			resetTriage();
 		});

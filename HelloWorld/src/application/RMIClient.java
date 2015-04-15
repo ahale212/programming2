@@ -6,12 +6,14 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.HQueue;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 
 /**
  * The client calls that interacts with the server using RMI (Remote Method Invocation).
@@ -48,7 +50,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			
 			// Register for the update callbacks. This passes a reference
 			// of the client to the server so the 'update' method can be called remotely.
-			//server.registerForUpdates(this);
+			server.registerForUpdates(this);
 			
 			System.out.println("Connected to server and registered for updates.");
 			
@@ -67,8 +69,8 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
 	@Override
-	public void udpate(LinkedList<Patient> queue) throws RemoteException {
-		System.out.println("Updating");
+	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException {
+		System.out.println("Updating: " + queue.get(0).getPerson().getFirstName());
 	}
 	
 	/**
