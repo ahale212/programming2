@@ -231,12 +231,14 @@ public enum Supervisor {
 			}
 			
 			hQueue.sortDisplacable();
-			Patient displacablePateint = null;
-			displacablePateint = hQueue.getMostDisplacable();
-			if(displacablePateint != null){
+			Patient displacablePatient = null;
+			displacablePatient = hQueue.getMostDisplacable();
+			if(displacablePatient != null){
 				for(int i = 0; i < treatmentFacilities.size(); i++){
-					if(treatmentFacilities.get(i).getPatient().equals(displacablePateint));{
-						treatmentFacilities.get(i).emergencyInterruption(patient);
+					TreatmentFacility tf = treatmentFacilities.get(i);
+					Patient roomCurrentPatient = tf.getPatient();
+					if(roomCurrentPatient.equals(displacablePatient)){
+						tf.emergencyInterruption(patient);
 						return true;
 					}
 				}
