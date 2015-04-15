@@ -161,6 +161,7 @@ public enum Supervisor {
 
 	public boolean admitPatient(Patient patient) {
 		if (hQueue.insert(patient) == true) {
+			server.updateClients();
 			return true;
 		} else {
 			System.out.println("Queue at capacity : "
@@ -168,6 +169,7 @@ public enum Supervisor {
 					+ patient.getUrgency() + " - sent away.");
 			return false;
 		}
+		
 	}
 
 	/**
@@ -243,7 +245,7 @@ public enum Supervisor {
 		int delayedCount = 0;
 		
 		for (Patient p : hQueue.getPQ()){
-			if (p.getWaitTime() >= 30){
+			if (p.getWaitTime() >= MAX_WAIT_TIME){
 				delayedCount++;
 			}
 		}
@@ -258,7 +260,7 @@ public enum Supervisor {
 	private void checkQueueFull() {
 		
 		// If the patient queue is full
-		if (hQueue.getPQ().size() == 10) {
+		if (hQueue.getPQ().size() == HQueue.MAX_QUEUE_SIZE) {
 			
 			OnCallTeamAlert.onCallTeamQueueCapacity();
 		}
