@@ -64,13 +64,12 @@ public enum Supervisor {
 
 		exit = false;
 		
+		//set up connection to database
 		try {
 			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
