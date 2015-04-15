@@ -107,10 +107,16 @@ public class HQueue implements Serializable {
 	public boolean insert(Patient patient){
 		Urgency urgency = patient.urgency;
 		//If they are an emergency, skip the queue and attempt to send for treatment
-		if(urgency == urgency.EMERGENCY){
+		if(urgency == Urgency.EMERGENCY){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
-			}else{ //Full of emergencies, send away
+			}else{ //Full of emergencies
+				//Check if the onCall team is on-site
+				if(Supervisor.INSTANCE.getTreatmentFacilities().size() > Supervisor.INSTANCE.MAX_TREATMENT_ROOMS){
+					//on-call active already, send this patient away
+				}else{
+					//Alert the on-call team, and keep this patient in the emergency queue until they arrive
+				}
 				return false;
 			}
 		}

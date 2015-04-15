@@ -17,6 +17,7 @@ public enum Supervisor {
 	INSTANCE;
 
 	public final int MAX_WAIT_TIME = 12;
+	public final int MAX_OVERDUE_PATIENTS = 3;
 	public final int BASE_UPDATE_INTERVAL = 5;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
@@ -135,6 +136,8 @@ public enum Supervisor {
 		}
 
 		hQueue.update(deltaTime);
+		
+		
 
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
@@ -231,8 +234,12 @@ public enum Supervisor {
 		return false;
 	}
 
-	private void checkCapacity() {
-
+	public void alertOnCall(){
+		
+	}
+	
+	
+	private boolean checkRoomsFull() {
 		boolean roomsFull = true;
 
 		for (TreatmentFacility facility : treatmentFacilities) {
@@ -241,15 +248,17 @@ public enum Supervisor {
 			}
 		}
 		
+		return roomsFull;
+		
+		/*
 		if (roomsFull){
 			System.out.println("Sending capacity messages");			
 			ManagerAlert.emailCapacityAlert();
 			ManagerAlert.smsCapacityAlert();
-		}
+		}*/
 	}
 	
-	private void checkWaitingTime(){
-		
+	private boolean checkWaitingTimes(){
 		int delayedCount = 0;
 		
 		for (Patient p : hQueue.getPQ()){
@@ -258,11 +267,18 @@ public enum Supervisor {
 			}
 		}
 		
+		if(delayedCount > MAX_OVERDUE_PATIENTS){
+			return true;
+		}else{
+			return false;
+		}
+		
+		/*
 		if (delayedCount>=2){
 			System.out.println("Sending wait time messages");
 			ManagerAlert.emailWaitingTimeAlert();
 			ManagerAlert.smsWaitingTimeAlert();
-		}
+		}*/
 	}
 	
 	private void checkQueueFull() {
