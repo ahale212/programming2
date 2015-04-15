@@ -10,10 +10,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
+
+
 import org.controlsfx.control.PopOver;
+
+
+
 
 import com.sun.javafx.application.PlatformImpl.FinishListener;
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
+
+
+
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
@@ -28,16 +37,19 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -80,6 +92,11 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group;
 
 	PopOver p = new PopOver();
+	Label l1 = new Label();
+	TextField tf1 = new TextField();
+	TextField tf2 = new TextField();
+	AnchorPane ap1 = new AnchorPane();
+	Button bt1 = new Button();
 
 	private final ObservableList<String> QList = FXCollections.observableArrayList();
 	private final ObservableList trList = FXCollections.observableArrayList();
@@ -336,6 +353,25 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 	private void buttonFunction() {
+		
+		login.setOnAction(e -> {
+			l1.setText("Welcome to Triage!");
+			l1.setLayoutX(15);
+			tf1.setPromptText("Username");
+			tf1.setLayoutY(26);
+			tf2.setPromptText("Password");
+			tf2.setLayoutY(52);
+			bt1.setText("Login");
+			bt1.setLayoutY(80);
+			ap1.setMinWidth(100);
+			ap1.getChildren().add(l1);
+			ap1.getChildren().add(tf1);
+			ap1.getChildren().add(tf2);
+			ap1.getChildren().add(bt1);
+			ap1.setCursor(null);
+			p.setContentNode(ap1);
+			p.show(login);
+		});
 
 		UPGRADE.setOnAction(e -> {
 			String potential = (String) queue.getSelectionModel()
@@ -415,7 +451,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb3.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has circulation difficulties!\n");
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has suspected cervia spine trauma!\n");
 			tb3.setText("!");
 			tb3.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -423,7 +459,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb4.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has suspected cervia spine trauma!\n");
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has circulation difficulties!\n");
 			tb4.setText("!");
 			tb4.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -439,7 +475,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb6.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has bee expsed to extreme conditions!\n");
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been exposed to extreme conditions!\n");
 			tb6.setText("!");
 			tb6.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -447,7 +483,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		emergency.setOnAction(e -> {
-			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been sent to the Treatment room!\n");
+			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 			trList.remove(0);
 			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
 			
