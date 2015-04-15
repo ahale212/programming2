@@ -14,7 +14,7 @@
             <items>
             <MenuItem mnemonicParsing="false" text="Open" />
             <SeparatorMenuItem />
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" text="Close" onAction="#closeButtonAction" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">

@@ -3,6 +3,7 @@ package application;
 import java.io.Closeable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -43,7 +44,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * Constructor for RMIClient
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	protected RMIClient(ClientCallback callbackObject) throws RemoteException {
+	protected RMIClient(ClientCallback callbackObject) throws RemoteException, NotBoundException, MalformedURLException {
 		super();
 		
 		this.callbackObject = callbackObject;
@@ -56,11 +57,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			// of the client to the server so the 'update' method can be called remotely.
 			server.registerForUpdates(this);
 			
-			System.out.println("Connected to server and registered for updates.");
-			
-		} catch (MalformedURLException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			// Remove the RMIClient from the RMI runtime
+			RMIClient.unexportObject(this, true);
+			throw e;
 		}
 	}
 
@@ -74,7 +74,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 */
 	@Override
 	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException {
-		System.out.println("Updating: " + queue.get(0).getPerson().getFirstName());
+
 		// Pass the callback call onto the controller
 		callbackObject.udpate(queue, treatmentFacilities);
 	}
@@ -85,12 +85,13 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
 	@Override
-	public void log(String log) throws RemoteException {
-		callbackObject.log(log);
+	public void log(String message) throws RemoteException {
+		callbackObject.log(message);
 	};
 	
 	/**
-	 * Informs the server that the client no longer wished to receive updates.
+	 * Informs the server that the client no longer wished to receive updates and removes the client
+	 * from the RMI runtime.
 	 */
 	@Override
 	public void close() {
@@ -99,8 +100,15 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			server.unregisterForUpdates(this);
 		} catch (RemoteException e) {
 			System.err.println("Failed to unregister from server updates.");
-			e.printStackTrace();
 		}
+		
+		try {
+			// Remove the RMIClient from the RMI runtime
+			RMIClient.unexportObject(this, true);
+		} catch (NoSuchObjectException e) {
+			System.err.println("Failed to remove RMIClient from RMI run time.");
+		}
+		
 	}
 	
 	public RemoteServer getServer() {
