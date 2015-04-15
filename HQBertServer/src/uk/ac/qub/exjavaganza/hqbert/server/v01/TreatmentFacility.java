@@ -69,7 +69,7 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		if(Supervisor.INSTANCE.admitPatient(patient)){
 			System.out.println(patient.getPerson().getFirstName()+" back in queue");
 		}else{
-			
+			//remove least proority person from queues and send them home, re-attempt to readmit
 		}
 		//log where they went
 	}

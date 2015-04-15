@@ -116,6 +116,9 @@ public class HQueue implements Serializable {
 					//on-call active already, send this patient away
 				}else{
 					//Alert the on-call team, and keep this patient in the emergency queue until they arrive
+					//Supervisor.INSTANCE.alertOnCall();
+					emergency.add(patient);
+					//buildPQ();
 				}
 				return false;
 			}
@@ -180,6 +183,7 @@ public class HQueue implements Serializable {
 	 */
 	private void buildPQ(){
 		pq.clear();
+		pq.addAll(emergency);
 		pq.addAll(hiPriQueue);
 		pq.addAll(urgent);
 		pq.addAll(semiUrgent);

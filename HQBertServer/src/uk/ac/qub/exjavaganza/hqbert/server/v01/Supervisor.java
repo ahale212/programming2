@@ -18,11 +18,11 @@ public enum Supervisor {
 
 	public final int MAX_WAIT_TIME = 12;
 	public final int MAX_OVERDUE_PATIENTS = 3;
-	public final int BASE_UPDATE_INTERVAL = 5;
+	public final int BASE_UPDATE_INTERVAL = 1;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
-	public final int MAX_TREATMENT_ROOMS = 3;
+	public final int MAX_TREATMENT_ROOMS = 4;
 
 	private final int serverPort = 1099;
 
@@ -166,18 +166,28 @@ public enum Supervisor {
 		test.person = testPerson;
 		test.setUrgency(testUrgencies[testPatientNo]);
 
+		if(testPatientNo >= 7){
+			boolean stop;
+			stop = true;
+		}
+		
 		admitPatient(test);
 		testPatientNo++;
 	}
 
 	public boolean admitPatient(Patient patient) {
-		if (hQueue.insert(patient) == true) {
-			server.updateClients();
-			return true;
-		} else {
-			System.out.println("Queue at capacity : "
-					+ patient.getPerson().getFirstName() + " - "
-					+ patient.getUrgency() + " - sent away.");
+		try{
+			if (hQueue.insert(patient) == true) {
+				server.updateClients();
+				return true;
+			} else {
+				System.out.println("Queue at capacity : "
+						+ patient.getPerson().getFirstName() + " - "
+						+ patient.getUrgency() + " - sent away.");
+				return false;
+			}
+		}catch(StackOverflowError so){
+			so.printStackTrace();
 			return false;
 		}
 		
@@ -227,6 +237,7 @@ public enum Supervisor {
 				for(int i = 0; i < treatmentFacilities.size(); i++){
 					if(treatmentFacilities.get(i).getPatient().equals(displacablePateint));{
 						treatmentFacilities.get(i).emergencyInterruption(patient);
+						return true;
 					}
 				}
 			} 
