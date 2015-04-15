@@ -21,4 +21,11 @@ public interface ClientCallback extends Remote {
 	 */
 	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException;
 	
+	/**
+	 * Sends log messages to the client
+	 * @param log		The log text
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	public void log(String log) throws RemoteException;
+	
 }

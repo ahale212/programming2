@@ -56,6 +56,22 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 	}
 	
+	public void broadcastLog(String log) {
+		
+		// Loops through each of the clients in the clients list
+		for (int loop = clients.size() - 1; loop >= 0; loop--) {
+			ClientCallback client = clients.get(loop);
+			
+			try {
+				client.log(log);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
 	/**
 	 * The methods defined in the RemoteServer interface, that clients of the server can call
 	 */

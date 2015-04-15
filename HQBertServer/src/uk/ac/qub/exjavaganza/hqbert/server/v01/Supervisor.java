@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 public enum Supervisor {
 
 	INSTANCE;
@@ -27,6 +30,7 @@ public enum Supervisor {
 	private boolean exit;
 	private ArrayList<TreatmentFacility> treatmentFacilities;
 	private RMIServer server;
+	private Logger logger;
 
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
@@ -48,6 +52,8 @@ public enum Supervisor {
 
 		startServer();
 
+		logger = Logger.getLogger(Supervisor.class);
+		
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
 		for (int i = 0; i < MAX_TREATMENT_ROOMS; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
@@ -141,6 +147,8 @@ public enum Supervisor {
 
 		// Send the updated queue to clients via the server
 		server.updateClients();
+		
+		log("Update Complete");
 		
 		//checkCapacity();
 		//checkWaitingTime();
@@ -293,6 +301,11 @@ public enum Supervisor {
 
 	public void setDataAccessor(PersonDataAccessor dataAccessor) {
 		this.dataAccessor = dataAccessor;
+	}
+	
+	public void log(String message) {
+		logger.debug(message);
+		server.broadcastLog(message);
 	}
 	
 	
