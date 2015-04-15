@@ -439,6 +439,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb6.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has bee expsed to extreme conditions!\n");
 			tb6.setText("!");
 			tb6.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -446,6 +447,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		emergency.setOnAction(e -> {
+			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been sent to the Treatment room!\n");
 			trList.remove(0);
 			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
 			
@@ -460,6 +462,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		urg.setOnAction(e -> {
+			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(0, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
@@ -467,6 +470,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		semi_urg.setOnAction(e -> {
+			outputTextArea.appendText("Semi-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(4, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
@@ -474,6 +478,7 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		non_urg.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(9, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
