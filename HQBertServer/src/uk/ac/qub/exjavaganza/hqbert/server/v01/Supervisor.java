@@ -25,7 +25,7 @@ public enum Supervisor {
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int MAX_TREATMENT_ROOMS = 4;
 	
-	public final float TIME_MULTI = 30;
+	public final float TIME_MULTI = 120;
 	
 	private final int serverPort = 1099;
 
@@ -242,20 +242,21 @@ public enum Supervisor {
 			
 			for (int i = 0; i < treatmentFacilities.size(); i++) {
 				TreatmentFacility tf = treatmentFacilities.get(i);
+				Patient tfPatient = tf.getPatient();
 				if (tf.getPatient() == null) { 
 					/* The room is empty, just not "unlocked" yet*/
 					tf.receivePatient(patient);
 					return true;
 				/* Another patient is in the room, check if they are an emergency*/
-				} else if (tf.getPatient().getUrgency() != Urgency.EMERGENCY) { 
+				} else if (tfPatient.getUrgency() != Urgency.EMERGENCY) { 
 					/*They aren't - add them to a list of possible to replace patients*/
-					hQueue.addToDisplacable(tf.getPatient());
+					hQueue.addToDisplacable(tfPatient);
 				}
 			}
 			
-			hQueue.sortDisplacable();
+
 			Patient displacablePatient = null;
-			displacablePatient = hQueue.getMostDisplacable();
+			displacablePatient = hQueue.findMostDisplacable();
 			if(displacablePatient != null){
 				for(int i = 0; i < treatmentFacilities.size(); i++){
 					TreatmentFacility tf = treatmentFacilities.get(i);

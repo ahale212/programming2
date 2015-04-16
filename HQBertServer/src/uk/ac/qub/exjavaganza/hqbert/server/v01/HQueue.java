@@ -103,6 +103,10 @@ public class HQueue implements Serializable {
 	 * @return
 	 */
 	public boolean insert(Patient patient){
+		if(patient.getPerson().getFirstName().equalsIgnoreCase("Bobby12")){
+			boolean stop;
+			stop = true;
+		}
 		Urgency urgency = patient.urgency;
 		//If they are an emergency, skip the queue and attempt to send for treatment
 		if(urgency == Urgency.EMERGENCY){
@@ -282,7 +286,13 @@ public class HQueue implements Serializable {
 		displacable.addAll(dNonUrgent);
 	}
 	
-	public Patient getMostDisplacable(){
-		return displacable.removeLast();
+	public Patient findMostDisplacable(){
+		Patient displacablePatient = null;
+		
+		sortDisplacable();
+		displacablePatient = displacable.removeLast();
+		initDisplacable();
+		
+		return displacablePatient;
 	}
 }
