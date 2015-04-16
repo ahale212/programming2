@@ -16,14 +16,17 @@ public enum Supervisor {
 
 	INSTANCE;
 
-	public final int MAX_WAIT_TIME = 12;
+	public final int MAX_QUEUE_SIZE = 5;
+	public final int MAX_WAIT_TIME = 30;
 	public final int MAX_OVERDUE_PATIENTS = 3;
 	public final int BASE_UPDATE_INTERVAL = 1;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int MAX_TREATMENT_ROOMS = 4;
-
+	
+	public final float TIME_MULTI = 120;
+	
 	private final int serverPort = 1099;
 
 	private HQueue hQueue;
@@ -33,8 +36,13 @@ public enum Supervisor {
 	private RMIServer server;
 	private Logger logger;
 
+	
+	//Test stuff
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
+	private int[] extensions;
+	
+	
 	
 	// URL for the database connection
 	private String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
@@ -44,6 +52,9 @@ public enum Supervisor {
 	// Person table in the database.
 	private PersonDataAccessor dataAccessor;
 
+	
+	
+	
 	private Supervisor() {
 	}
 
@@ -68,7 +79,9 @@ public enum Supervisor {
 				Urgency.NON_URGENT, Urgency.URGENT, Urgency.SEMI_URGENT,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.SEMI_URGENT };
-
+		
+		extensions = new int[]{0,1,2};		
+		
 		exit = false;
 		
 		//set up connection to database
@@ -136,15 +149,23 @@ public enum Supervisor {
 
 		hQueue.update(deltaTime);
 		
-		
 
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
 			insertTestPatient();
 		}
-		if (treatmentFacilities.get(0).getPatient() != null
-				&& treatmentFacilities.get(0).getTimeToAvailable() < BASE_ROOM_OCCUPANCY_TIME / 2) {
-			treatmentFacilities.get(0).DischargePatient();
+		
+		//automated extension tests
+		for(int i = 0; i < treatmentFacilities.size(); i++){
+			TreatmentFacility tf = treatmentFacilities.get(i);
+			if(tf.getTimeToAvailable() == 1 && tf.getPatient() != null){
+				if(i > 0 && i < 3){
+					if(extensions[i] > 0){
+						tf.extendTime();
+						extensions[i]--;
+					}
+				}
+			}
 		}
 
 		// Send the updated queue to clients via the server
@@ -183,6 +204,8 @@ public enum Supervisor {
 				System.out.println("Queue at capacity : "
 						+ patient.getPerson().getFirstName() + " - "
 						+ patient.getUrgency() + " - sent away.");
+				server.updateClients();
+				System.out.println("PATIENT REJECTED : "+patient.getPerson().getFirstName());
 				return false;
 			}
 		}catch(StackOverflowError so){
@@ -218,20 +241,21 @@ public enum Supervisor {
 			
 			for (int i = 0; i < treatmentFacilities.size(); i++) {
 				TreatmentFacility tf = treatmentFacilities.get(i);
+				Patient tfPatient = tf.getPatient();
 				if (tf.getPatient() == null) { 
 					/* The room is empty, just not "unlocked" yet*/
 					tf.receivePatient(patient);
 					return true;
 				/* Another patient is in the room, check if they are an emergency*/
-				} else if (tf.getPatient().getUrgency() != Urgency.EMERGENCY) { 
+				} else if (tfPatient.getUrgency() != Urgency.EMERGENCY) { 
 					/*They aren't - add them to a list of possible to replace patients*/
-					hQueue.addToDisplacable(tf.getPatient());
+					hQueue.addToDisplacable(tfPatient);
 				}
 			}
 			
-			hQueue.sortDisplacable();
+
 			Patient displacablePatient = null;
-			displacablePatient = hQueue.getMostDisplacable();
+			displacablePatient = hQueue.findMostDisplacable();
 			if(displacablePatient != null){
 				for(int i = 0; i < treatmentFacilities.size(); i++){
 					TreatmentFacility tf = treatmentFacilities.get(i);
@@ -250,6 +274,9 @@ public enum Supervisor {
 		
 	}
 	
+	public void extendRoom(int roomIndex){
+		treatmentFacilities.get(roomIndex).extendTime();
+	}
 	
 	private boolean checkRoomsFull() {
 		boolean roomsFull = true;
@@ -296,7 +323,7 @@ public enum Supervisor {
 	private void checkQueueFull() {
 		
 		// If the patient queue is full
-		if (hQueue.getPQ().size() == HQueue.MAX_QUEUE_SIZE) {
+		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
 			
 			OnCallTeamAlert.onCallTeamQueueCapacity();
 		}

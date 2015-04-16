@@ -11,6 +11,8 @@ public class Clock {
 	
 	Calendar cal = Calendar.getInstance();
 	
+	float multi = Supervisor.INSTANCE.TIME_MULTI;
+	
 	Date startTime;
 	Date currentTime;
 	Date lastTriggerTime;
@@ -21,7 +23,7 @@ public class Clock {
 	
 	public Clock(int baseInterval) {
 		try{
-			interval = baseInterval * 1000;
+			interval = baseInterval * 1000 * 60;
 			startTime = cal.getTime();
 			lastTriggerTime = startTime;
 		}catch(Exception e){
@@ -39,10 +41,14 @@ public class Clock {
 		currentTime = Calendar.getInstance().getTime();
 		difference = currentTime.getTime() - lastTriggerTime.getTime();
 		
-		if(difference  >= interval){
+		if(difference * multi >= interval){
 			lastTriggerTime = currentTime;
-			Supervisor.INSTANCE.update(interval);
+			float dtFloat = ((difference*multi)/1000)/60;
+			int dtInt = (int)dtFloat;
+			
+			Supervisor.INSTANCE.update(dtInt);
 		}
+		//System.out.println("Curr: "+currentTime+"\tlast: "+lastTriggerTime+"\tDiff: "+difference+"\tinterval: "+interval+"\tmutlti: "+multi);
 	}
 	
 	public Date getCurrentTime(){
