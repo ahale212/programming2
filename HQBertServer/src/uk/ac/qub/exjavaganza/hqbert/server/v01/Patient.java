@@ -30,7 +30,7 @@ public class Patient implements Comparable<Patient>, Serializable {
 	}	
 
 	public void incrementWaitTime(int difference){
-		this.waitTime += (difference/1000);
+		this.waitTime += (difference);
 		checkPriority();
 	}
 	

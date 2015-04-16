@@ -41,7 +41,7 @@ public class Clock {
 		
 		if(difference  >= interval){
 			lastTriggerTime = currentTime;
-			Supervisor.INSTANCE.update(interval);
+			Supervisor.INSTANCE.update(interval/Supervisor.INSTANCE.TIME_MULTI);
 		}
 	}
 	

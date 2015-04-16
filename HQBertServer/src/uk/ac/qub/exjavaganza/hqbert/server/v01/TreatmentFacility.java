@@ -27,9 +27,9 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		timeToAvailable = Math.max(0, timeToAvailable - deltaTime);
 		
 		if(patient != null){
-			patient.incrementWaitTime(deltaTime);
+			//patient.incrementWaitTime(deltaTime);
 			if(timeToAvailable <= 0){
-				setTimeToAvailable(extensionTime);
+				DischargePatient();
 			}
 		}
 	}
@@ -74,6 +74,9 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		//log where they went
 	}
 	
+	public void extendTime(){
+		setTimeToAvailable(extensionTime + 1);
+	}
 	
 	public abstract void showFacilityInConsole();
 	

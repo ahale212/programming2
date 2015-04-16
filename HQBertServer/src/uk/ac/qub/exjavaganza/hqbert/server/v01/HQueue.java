@@ -19,8 +19,6 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.LocatorEx.Snapshot;
  *
  */
 public class HQueue implements Serializable {
-
-	public static final int MAX_QUEUE_SIZE = 10;
 	
 	private LinkedList<Patient> emergency;
 	private LinkedList<Patient> urgent;
@@ -124,7 +122,7 @@ public class HQueue implements Serializable {
 			}
 		}
 		
-		if(pq.size() >= MAX_QUEUE_SIZE
+		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE
 			|| patient.urgency == null){
 			//Log failure
 			return false;
@@ -167,7 +165,7 @@ public class HQueue implements Serializable {
 	 * @param patient
 	 */
 	public void reQueue(Patient patient){
-		if(pq.size() >= MAX_QUEUE_SIZE){
+		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE){
 			//Someone has to be sent home
 			pq.removeLast();
 		}
@@ -285,6 +283,6 @@ public class HQueue implements Serializable {
 	}
 	
 	public Patient getMostDisplacable(){
-		return displacable.removeFirst();
+		return displacable.removeLast();
 	}
 }

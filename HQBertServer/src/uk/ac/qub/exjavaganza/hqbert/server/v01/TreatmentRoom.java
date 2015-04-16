@@ -15,14 +15,7 @@ public class TreatmentRoom extends TreatmentFacility {
 	
 	
 	public void update(int deltaTime){
-		timeToAvailable = Math.max(0, timeToAvailable - deltaTime/1000);
-		
-		if(patient != null){
-			patient.incrementWaitTime(deltaTime);
-			if(timeToAvailable <= 0){
-				super.setTimeToAvailable(Supervisor.INSTANCE.ROOM_OCCUPANCY_EXTENSION_TIME);
-			}
-		}
+		super.update(deltaTime);
 	}
 	
 	public void showFacilityInConsole(){
