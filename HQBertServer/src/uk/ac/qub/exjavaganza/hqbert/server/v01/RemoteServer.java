@@ -64,6 +64,6 @@ public interface RemoteServer extends Remote {
 	 * Adds a newly triaged non-emergency patient to the backend list along with the details of their current state.
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	public void addSecondaryPatient(Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication);
+	public void addSecondaryPatient(Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication) throws RemoteException;
 	
 }

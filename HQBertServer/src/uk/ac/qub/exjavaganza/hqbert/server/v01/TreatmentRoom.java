@@ -31,4 +31,12 @@ public class TreatmentRoom extends TreatmentFacility {
 		String patientName = (patient!=null)? patient.getPerson().getFirstName() : "None";
 		System.out.println("Room no. : "+roomNumber+"\tPatient : "+patientName+"\tUrgency : "+patientUrgency+"\tTime to available : "+timeToAvailable+"\tPatientWaitTime : "+patientWaitTime);
 	}
+	
+	/**
+	 * Getter for the TreatmentRoom's room number
+	 * @return	The room number of the TreatmentRoom
+	 */
+	public int getRoomNumber() {
+		return this.roomNumber;
+	}
 }

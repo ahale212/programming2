@@ -1,42 +1,72 @@
 package application;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.temporal.IsoFields;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 
 
 
-
-
 import org.controlsfx.control.PopOver;
 
+
+
+
+import com.sun.javafx.application.PlatformImpl.FinishListener;
+import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
+
+
+
+
+import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
-public class RevController implements Initializable {
+public class RevController implements Initializable, ClientCallback {
 
 	private RMIClient client;
+	
+	@FXML
+	private TextArea outputTextArea;
 	
 	@FXML
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6;
 
 	@FXML
-	private ListView queue, trooms, treatment_room_list, on_call_list;
+	private ListView queue, trooms, treatment_room_list, on_call_list, on_call;
 
 	@FXML
 	private Button login, UPGRADE, search_database, emergency, Q_view,
@@ -62,16 +92,37 @@ public class RevController implements Initializable {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group;
 
 	PopOver p = new PopOver();
+	Label l1 = new Label();
+	TextField tf1 = new TextField();
+	TextField tf2 = new TextField();
+	AnchorPane ap1 = new AnchorPane();
+	Button bt1 = new Button();
 
-	private final ObservableList QList = FXCollections.observableArrayList();
+	private final ObservableList<String> QList = FXCollections.observableArrayList();
 	private final ObservableList trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
 	private final ObservableList ocu = FXCollections.observableArrayList();
+	private final ObservableList<String> onCallList = FXCollections.observableArrayList();
 	private final ObservableList breathingList = FXCollections.observableArrayList();
 	private final ObservableList medi_condition = FXCollections.observableArrayList();
 	private final ObservableList meds = FXCollections.observableArrayList();
 	private final ObservableList allergy_list = FXCollections.observableArrayList();
 
+	/**
+	 * Data Lists:
+	 */
+	
+	/**
+	 * The list that holds the Patients in the queue
+	 */
+	List<Patient> queueList = new LinkedList<Patient>();
+	
+	/**
+	 * The list of Treatment Rooms / On call team
+	 */
+	List<TreatmentFacility> treatmentFacilities = new ArrayList<TreatmentFacility>();
+	
+	
 	private String[] array = new String[10];
 	private String[] array1 = new String[4];
 	private String[] onCall = new String[1];
@@ -87,20 +138,36 @@ public class RevController implements Initializable {
 	private String[] allergic = { "None", "Nuts", "Penicillin", "Stings",
 			"Seafood", "Hayfever", "Animals", "Latex" };
 
+	private Person displayedPerson;
+	
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
 		labelSliders();
 		loadArrayLists();
 		buttonFunction();
+		search();
 		
 		try {
-			client = new RMIClient();
-		} catch (RemoteException e) {
-			System.err.println("Failed to set up client.");
+			client = new RMIClient(this);
+			log("Connected to server and registered for updates.");
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			log("Failed to connect to the server.");
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void closeButtonAction() {
+		if (client != null) {
+			client.close();
+		}
+		Platform.exit();
+	}
+
+	private void search() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void labelSliders() {
@@ -168,9 +235,67 @@ public class RevController implements Initializable {
 
 	}
 
+	/**
+	 * Update the UI to display the current state of the queue List
+	 */
+	private synchronized void updateQueue() {
+		// Clear the observable list that contains the patients displayed on the UI
+		QList.clear();
+		
+		// Loop through each of the patients in queueList
+		for (Patient patient : queueList) {
+			// Concatenate the patients first and second name and add them to the observable queue.
+			QList.add(patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName());
+		}
+	}
+	
+	/**
+	 * Update the UI to display the current state of the treatment rooms
+	 */
+	public synchronized void updateTreatmentRooms() {
+		
+		// Clear the observable lists that hold the names of patients in the treatment rooms
+		// and the patient being treated by the on call team
+		trList.clear();
+		onCallList.clear();
+		
+		// Loop through the various facilities help in the treatmentFacilities list
+		for (TreatmentFacility facility : treatmentFacilities) {
+			
+			// Check if there is a patient in the facility
+			Patient patient = facility.getPatient();
+			
+			// Declare a string to hold the patient name
+			String patientName = "";
+			// If there is a patient concatenate their first and last name, else leave first name as a blank string
+			if (patient != null) {
+				patientName = patient.getPerson().getFirstName() + 
+						" " + patient.getPerson().getLastName();
+			}
+			
+			// If the current facility is the on call team, add their name to the on call team box on the UI
+			if (facility instanceof OnCallTeam) {
+				onCallList.add(patientName);
+			} else if (facility instanceof TreatmentRoom) { // if the facility is a treatment room 
+
+				// Cast the facility to a treament room so the room number can be accessed
+				TreatmentRoom room = (TreatmentRoom)facility;
+				try {
+					// Add the patients name to the observable array in the correct position for the room they're in.
+					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
+				} catch (Exception ex) {
+					System.err.println("failed!!!!!!!!!!!!!");
+				}
+			}
+
+		}
+	}
+	
 	private void loadArrayLists() {
 
-		array[0] = "Jim";
+		ocu.clear();
+
+		/*array[0] = "Jim";
 		array[1] = "Mary";
 		array[2] = "Illy";
 		array[3] = "OMM";
@@ -181,27 +306,36 @@ public class RevController implements Initializable {
 		array[8] = "bn67BNhgg";
 		array[9] = "Kim";
 		
+		
 		array1[0] = "JimJonJoe";
 		array1[1] = "JonJoe";
 		array1[2] = "Joe";
-		array1[3] = "JJJoe";
+		array1[3] = "JJJoe";*/
 		
 		onCall[0] = "On Call Unit";
+		
+		
+		// Link the observable list of treatment rooms to the treatment rooms ListView
+		trooms.setItems(trList);
+		// Link the observable list of patients in the queue, to the queue ListView
+		queue.setItems(QList);
 
 		treatmentRoomNum[0] = "Treatment Room 1";
 		treatmentRoomNum[1] = "Treatment Room 2";
 		treatmentRoomNum[2] = "Treatment Room 3";
 		treatmentRoomNum[3] = "Treatment Room 4";
-
+		
 		trno.addAll(treatmentRoomNum);
 
+
 		ocu.addAll(onCall);
-		QList.addAll(array);
-		trList.addAll(array1);
-		queue.setItems(QList);
+
+
 		treatment_room_list.setItems(trno);
 		on_call_list.setItems(ocu);
+		on_call.setItems(onCallList);
 
+		
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
 		breathingList.addAll(breaths);
@@ -219,6 +353,25 @@ public class RevController implements Initializable {
 	}
 
 	private void buttonFunction() {
+		
+		login.setOnAction(e -> {
+			l1.setText("Welcome to Triage!");
+			l1.setLayoutX(15);
+			tf1.setPromptText("Username");
+			tf1.setLayoutY(26);
+			tf2.setPromptText("Password");
+			tf2.setLayoutY(52);
+			bt1.setText("Login");
+			bt1.setLayoutY(80);
+			ap1.setMinWidth(100);
+			ap1.getChildren().add(l1);
+			ap1.getChildren().add(tf1);
+			ap1.getChildren().add(tf2);
+			ap1.getChildren().add(bt1);
+			ap1.setCursor(null);
+			p.setContentNode(ap1);
+			p.show(login);
+		});
 
 		UPGRADE.setOnAction(e -> {
 			String potential = (String) queue.getSelectionModel()
@@ -230,6 +383,8 @@ public class RevController implements Initializable {
 				trList.remove(0);
 				trList.add(3, "");
 				trList.add(3, potential);
+				
+				outputTextArea.appendText(potential+" is now an emergency!\n");
 			}
 		});
 		trooms.setItems(trList);
@@ -242,6 +397,7 @@ public class RevController implements Initializable {
 
 		search_database.setOnAction(e -> {
 
+			outputTextArea.appendText(search_Surname.getText()+", "+search_First_Name.getText()+" ready for Triage!\n");
 			List<Person> matchingPeople = null;
 
 			try {
@@ -251,44 +407,35 @@ public class RevController implements Initializable {
 				ex.printStackTrace();
 			}	
 			
-			// If there were people matching the criteria display them to the user
+			// If there were people matching the criteria, display them to the user
 			if (matchingPeople.size() > 0) {
-				Person foundPerson = matchingPeople.get(0);
-				textfield_First_Name.setText(foundPerson.getFirstName());
-				textfield_Surname.setText(foundPerson.getLastName());
-				textfield_NHS_Num.setText(foundPerson.getNHSNum());
-				textfield_Title.setText(foundPerson.getTitle());
-				textfield_DOB.setText(foundPerson.getDOB());
-				textfield_Address.setText(foundPerson.getAddress());
-				textfield_Blood_Group.setText(foundPerson.getBloodGroup());
-				textfield_Postcode.setText(foundPerson.getPostcode());
-				textfield_Telephone.setText(foundPerson.getTelephone());
+				displayedPerson = matchingPeople.get(0);
+				textfield_First_Name.setText(displayedPerson.getFirstName());
+				textfield_Surname.setText(displayedPerson.getLastName());
+				textfield_NHS_Num.setText(displayedPerson.getNHSNum());
+				textfield_Title.setText(displayedPerson.getTitle());
+				textfield_DOB.setText(displayedPerson.getDOB());
+				textfield_Address.setText(displayedPerson.getAddress());
+				textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
+				textfield_Postcode.setText(displayedPerson.getPostcode());
+				textfield_Telephone.setText(displayedPerson.getTelephone());
 				
 				// If the returned allergy is "null" set the allergy
 				// box to display "None".
-				if (foundPerson.getAllergies().equalsIgnoreCase("null")) {
+				if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
 					allergy.setValue(allergic[0]);
 				} else {
 					// Else set the allergy box value to the returned alergy
-					allergy.setValue(foundPerson.getAllergies());
+					allergy.setValue(displayedPerson.getAllergies());
 				}
 			}
-			/*textfield_First_Name.setText(search_First_Name.getText());
-			textfield_Surname.setText(search_Surname.getText());
-			textfield_NHS_Num.setText(search_NHS_No.getText());
-			textfield_Title.setText("Dr.");
-			textfield_DOB.setText(search_DOB.getText());
-			textfield_Address.setText("Breenagh, Letterkenny, Co. Donegal");
-			textfield_Blood_Group.setText("Oneg");
-			textfield_Postcode.setText(search_Postcode.getText());
-			textfield_Telephone.setText(search_Telephone_No.getText());
-			allergy.setValue(allergic[0]);*/
 			
 			enableTriage();
 			clearSearchFields();
 		});
 
 		tb1.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has a blocked airway!\n");
 			tb1.setText("!");
 			tb1.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -296,6 +443,7 @@ public class RevController implements Initializable {
 		});
 
 		tb2.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has difficulty breathing!\n");
 			tb2.setText("!");
 			tb2.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -303,6 +451,7 @@ public class RevController implements Initializable {
 		});
 
 		tb3.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has suspected cervia spine trauma!\n");
 			tb3.setText("!");
 			tb3.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -310,6 +459,7 @@ public class RevController implements Initializable {
 		});
 
 		tb4.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has circulation difficulties!\n");
 			tb4.setText("!");
 			tb4.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -317,6 +467,7 @@ public class RevController implements Initializable {
 		});
 
 		tb5.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" is incapacitated!\n");
 			tb5.setText("!");
 			tb5.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -324,6 +475,7 @@ public class RevController implements Initializable {
 		});
 
 		tb6.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been exposed to extreme conditions!\n");
 			tb6.setText("!");
 			tb6.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -331,13 +483,22 @@ public class RevController implements Initializable {
 		});
 
 		emergency.setOnAction(e -> {
+			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 			trList.remove(0);
 			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
+			
+			try {
+				client.getServer().addPrimaryPatient(displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
 			clearTextFields();
 			resetTriage();
 		});
 
 		urg.setOnAction(e -> {
+			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(0, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
@@ -345,6 +506,7 @@ public class RevController implements Initializable {
 		});
 
 		semi_urg.setOnAction(e -> {
+			outputTextArea.appendText("Semi-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(4, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
@@ -352,6 +514,7 @@ public class RevController implements Initializable {
 		});
 
 		non_urg.setOnAction(e -> {
+			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(9, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
 			clearTextFields();
@@ -464,4 +627,40 @@ public class RevController implements Initializable {
 		medication.setDisable(false);
 		conditions.setDisable(false);
 	}
+
+	@Override
+	public void udpate(LinkedList<Patient> queue,
+			ArrayList<TreatmentFacility> treatmentFacilities) {
+		// Store the passed in queue and treatment facilities
+		this.queueList = queue;
+		this.treatmentFacilities = treatmentFacilities;
+		
+		// Call run later to run updates to the UI on the JavaFX thread
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// Update the queue on the UI with the updated data
+				updateQueue();
+				// Update the treatment room list on the UI with the updated data
+				updateTreatmentRooms();
+			}
+		});
+		
+
+	}
+
+	@Override
+	public void log(String log) {
+		// Call run later to run updates to the UI on the JavaFX thread
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+					outputTextArea.appendText(log + "\n");
+			}
+		});
+	}
+	
+
 }

@@ -9,16 +9,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 public enum Supervisor {
 
 	INSTANCE;
 
 	public final int MAX_WAIT_TIME = 12;
-	public final int BASE_UPDATE_INTERVAL = 5;
+	public final int MAX_OVERDUE_PATIENTS = 3;
+	public final int BASE_UPDATE_INTERVAL = 1;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
-	public final int MAX_TREATMENT_ROOMS = 3;
+	public final int MAX_TREATMENT_ROOMS = 4;
 
 	private final int serverPort = 1099;
 
@@ -27,6 +31,7 @@ public enum Supervisor {
 	private boolean exit;
 	private ArrayList<TreatmentFacility> treatmentFacilities;
 	private RMIServer server;
+	private Logger logger;
 
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
@@ -48,6 +53,8 @@ public enum Supervisor {
 
 		startServer();
 
+		logger = Logger.getLogger(Supervisor.class);
+		
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
 		for (int i = 0; i < MAX_TREATMENT_ROOMS; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
@@ -128,6 +135,8 @@ public enum Supervisor {
 		}
 
 		hQueue.update(deltaTime);
+		
+		
 
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
@@ -140,6 +149,8 @@ public enum Supervisor {
 
 		// Send the updated queue to clients via the server
 		server.updateClients();
+		
+		log("Update Complete");
 		
 		//checkCapacity();
 		//checkWaitingTime();
@@ -154,19 +165,31 @@ public enum Supervisor {
 		test.person = testPerson;
 		test.setUrgency(testUrgencies[testPatientNo]);
 
+		if(testPatientNo >= 7){
+			boolean stop;
+			stop = true;
+		}
+		
 		admitPatient(test);
 		testPatientNo++;
 	}
 
 	public boolean admitPatient(Patient patient) {
-		if (hQueue.insert(patient) == true) {
-			return true;
-		} else {
-			System.out.println("Queue at capacity : "
-					+ patient.getPerson().getFirstName() + " - "
-					+ patient.getUrgency() + " - sent away.");
+		try{
+			if (hQueue.insert(patient) == true) {
+				server.updateClients();
+				return true;
+			} else {
+				System.out.println("Queue at capacity : "
+						+ patient.getPerson().getFirstName() + " - "
+						+ patient.getUrgency() + " - sent away.");
+				return false;
+			}
+		}catch(StackOverflowError so){
+			so.printStackTrace();
 			return false;
 		}
+		
 	}
 
 	/**
@@ -207,12 +230,15 @@ public enum Supervisor {
 			}
 			
 			hQueue.sortDisplacable();
-			Patient displacablePateint = null;
-			displacablePateint = hQueue.getMostDisplacable();
-			if(displacablePateint != null){
+			Patient displacablePatient = null;
+			displacablePatient = hQueue.getMostDisplacable();
+			if(displacablePatient != null){
 				for(int i = 0; i < treatmentFacilities.size(); i++){
-					if(treatmentFacilities.get(i).getPatient().equals(displacablePateint));{
-						treatmentFacilities.get(i).emergencyInterruption(patient);
+					TreatmentFacility tf = treatmentFacilities.get(i);
+					Patient roomCurrentPatient = tf.getPatient();
+					if(roomCurrentPatient.equals(displacablePatient)){
+						tf.emergencyInterruption(patient);
+						return true;
 					}
 				}
 			} 
@@ -220,8 +246,12 @@ public enum Supervisor {
 		return false;
 	}
 
-	private void checkCapacity() {
-
+	public void alertOnCall(){
+		
+	}
+	
+	
+	private boolean checkRoomsFull() {
 		boolean roomsFull = true;
 
 		for (TreatmentFacility facility : treatmentFacilities) {
@@ -230,34 +260,43 @@ public enum Supervisor {
 			}
 		}
 		
+		return roomsFull;
+		
+		/*
 		if (roomsFull){
 			System.out.println("Sending capacity messages");			
 			ManagerAlert.emailCapacityAlert();
 			ManagerAlert.smsCapacityAlert();
-		}
+		}*/
 	}
 	
-	private void checkWaitingTime(){
-		
+	private boolean checkWaitingTimes(){
 		int delayedCount = 0;
 		
 		for (Patient p : hQueue.getPQ()){
-			if (p.getWaitTime() >= 30){
+			if (p.getWaitTime() >= MAX_WAIT_TIME){
 				delayedCount++;
 			}
 		}
 		
+		if(delayedCount > MAX_OVERDUE_PATIENTS){
+			return true;
+		}else{
+			return false;
+		}
+		
+		/*
 		if (delayedCount>=2){
 			System.out.println("Sending wait time messages");
 			ManagerAlert.emailWaitingTimeAlert();
 			ManagerAlert.smsWaitingTimeAlert();
-		}
+		}*/
 	}
 	
 	private void checkQueueFull() {
 		
 		// If the patient queue is full
-		if (hQueue.getPQ().size() == 10) {
+		if (hQueue.getPQ().size() == HQueue.MAX_QUEUE_SIZE) {
 			
 			OnCallTeamAlert.onCallTeamQueueCapacity();
 		}
@@ -290,6 +329,11 @@ public enum Supervisor {
 
 	public void setDataAccessor(PersonDataAccessor dataAccessor) {
 		this.dataAccessor = dataAccessor;
+	}
+	
+	public void log(String message) {
+		logger.debug(message);
+		server.broadcastLog(message);
 	}
 	
 	
