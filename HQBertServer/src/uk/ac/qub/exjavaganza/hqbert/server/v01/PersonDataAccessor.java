@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 
 /**
- * JDBC class for getting people from the database to display the searc results on the GUI
+ * JDBC class for getting people from the database to display the search results on the GUI
  * 
  * @author adamhale
  *

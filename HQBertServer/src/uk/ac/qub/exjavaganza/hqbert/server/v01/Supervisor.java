@@ -51,6 +51,7 @@ public enum Supervisor {
 	// The data accessor for the person table. Allows for searching of the 
 	// Person table in the database.
 	private PersonDataAccessor dataAccessor;
+	private StaffDataAccessor staffAccessor;
 
 	
 	
@@ -361,6 +362,14 @@ public enum Supervisor {
 	public void log(String message) {
 		logger.debug(message);
 		server.broadcastLog(message);
+	}
+
+	public StaffDataAccessor getStaffAccessor() {
+		return staffAccessor;
+	}
+
+	public void setStaffAccessor(StaffDataAccessor staffAccessor) {
+		this.staffAccessor = staffAccessor;
 	}
 	
 	

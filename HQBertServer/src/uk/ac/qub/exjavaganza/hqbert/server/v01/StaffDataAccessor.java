@@ -64,7 +64,7 @@ public class StaffDataAccessor {
 				ResultSet rs = findStaff
 						.executeQuery("SELECT Employee_Number FROM staff WHERE '"+ username + "' AND '"+ password +"'");) {
 			List<Staff> staffList = new ArrayList<>();
-
+			//"SELECT Employee_Number FROM staff WHERE '"+ username + "' AND '"+ password +"'");
 			while (rs.next()) {
 				String EmployeeNumber = rs.getString("Employee_Number");
 				String FirstName = rs.getString("Employee_first_name");
@@ -80,6 +80,6 @@ public class StaffDataAccessor {
 			return staffList;
 		}
 
-		// other methods, eg. addPerson(...) etc
+		
 	}
 }

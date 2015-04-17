@@ -323,4 +323,5 @@ public class Person implements Serializable {
 		this.bloodGroup = bloodGroup;
 	}
 
+
 }// end of class

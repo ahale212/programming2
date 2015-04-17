@@ -3,7 +3,7 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import javafx.application.Application ;
 import javafx.scene.control.TableView ;
 import javafx.scene.control.TableColumn ;
@@ -15,14 +15,14 @@ import javafx.stage.Stage ;
 public class PersonTableApp extends Application {
 	
 	
-    private PersonDataAccessor dataAccessor ;
+    private StaffDataAccessor dataAccessor ;
  // establish connection to mySQl
 	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
 	Connection con;
     @SuppressWarnings("unchecked")
 	@Override
     public void start(Stage primaryStage) throws Exception {
-    	dataAccessor = new PersonDataAccessor(url, "40058483", "VPK7789");
+    	dataAccessor = new StaffDataAccessor(url, "40058483", "VPK7789");
     	
     	// Loading the driver
     			try {
@@ -38,38 +38,29 @@ public class PersonTableApp extends Application {
         
     			// all demo test to make sure it ran, makes its own fx
 
-        TableView<Person> patientsTable = new TableView<>();
-        TableColumn<Person, String> Title = new TableColumn<>("Title");
-        Title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        TableColumn<Person, String> NHSNum = new TableColumn<>("NHSNum");
-        NHSNum.setCellValueFactory(new PropertyValueFactory<>("NHSNum"));
-        TableColumn<Person, String> firstName = new TableColumn<>("First Name");
+        TableView<Staff> staffTable = new TableView<>();
+        TableColumn<Staff, String> employeeNumber = new TableColumn<>("EmployeeNum");
+        employeeNumber.setCellValueFactory(new PropertyValueFactory<>("employeeNum"));
+        TableColumn<Staff, String> firstName = new TableColumn<>("First Name");
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        TableColumn<Person, String> lastName = new TableColumn<>("Last Name");
+        TableColumn<Staff, String> lastName = new TableColumn<>("Last Name");
         lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        TableColumn<Person, String> DOB = new TableColumn<>("DOB");
-        DOB.setCellValueFactory(new PropertyValueFactory<>("DOB"));
-        TableColumn<Person, String> Address = new TableColumn<>("Address");
-        Address.setCellValueFactory(new PropertyValueFactory<>("address"));
-        TableColumn<Person, String> City = new TableColumn<>("City");
-        City.setCellValueFactory(new PropertyValueFactory<>("city"));
-        TableColumn<Person, String> Country = new TableColumn<>("Country");
-        Country.setCellValueFactory(new PropertyValueFactory<>("country"));
-        TableColumn<Person, String> Telephone = new TableColumn<>("Telephone");
-        Telephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
-        TableColumn<Person, String> Allergies = new TableColumn<>("Allergies");
-        Allergies.setCellValueFactory(new PropertyValueFactory<>("allergies"));
-        TableColumn<Person, String> BloodGroup = new TableColumn<>("BloodGroup");
-        BloodGroup.setCellValueFactory(new PropertyValueFactory<>("bloodGroup"));
+        TableColumn<Staff, String> username = new TableColumn<>("Username");
+        username.setCellValueFactory(new PropertyValueFactory<>("username"));
+        TableColumn<Staff, String> password = new TableColumn<>("Password");
+        password.setCellValueFactory(new PropertyValueFactory<>("password"));
+        TableColumn<Staff, String> email = new TableColumn<>("Email");
+        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+       
         
         // adds all info to the table, wont work now changed the query
-        patientsTable.getColumns().addAll(NHSNum,Title,firstName, lastName, DOB, Address, City, Country, Allergies, BloodGroup);
-
+        staffTable.getColumns().addAll(employeeNumber,firstName, lastName, username, password, email);
+        //staffTable.getItems().addAll(dataAccessor.staffList(employeeNumber, firstName, lastName, username, password, email));
       //used to get the items for demo purposes
-       //patientsTable.getItems().addAll(dataAccessor.personList());
+       staffTable.getItems().addAll(dataAccessor.staffList(url, url, url, url, url, url));
        //fx set up
         BorderPane root = new BorderPane();
-        root.setCenter(patientsTable);
+        root.setCenter(staffTable);
         Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
