@@ -10,7 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class OnCallTeam {
+public class OnCallTeamAlert {
 
 	/**
 	 * Method to send automated sms to the On Call Team when when all the
