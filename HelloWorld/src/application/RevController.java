@@ -28,6 +28,7 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
 import javafx.application.Platform;
@@ -139,6 +140,7 @@ public class RevController implements Initializable, ClientCallback {
 			"Seafood", "Hayfever", "Animals", "Latex" };
 
 	private Person displayedPerson;
+	private Staff displayedStaff;
 	
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
@@ -371,6 +373,8 @@ public class RevController implements Initializable, ClientCallback {
 			ap1.setCursor(null);
 			p.setContentNode(ap1);
 			p.show(login);
+			tf1.setText(displayedStaff.getEmplolyeeUsername());
+			tf2.setText(displayedStaff.getEmployeePassword());
 		});
 
 		UPGRADE.setOnAction(e -> {
