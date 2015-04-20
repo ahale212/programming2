@@ -51,6 +51,7 @@ public enum Supervisor {
 	// The data accessor for the person table. Allows for searching of the 
 	// Person table in the database.
 	private PersonDataAccessor dataAccessor;
+	private StaffDataAccessor staffAccessor;
 
 	
 	
@@ -84,13 +85,12 @@ public enum Supervisor {
 		
 		exit = false;
 		
+		//set up connection to database
 		try {
 			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -362,6 +362,14 @@ public enum Supervisor {
 	public void log(String message) {
 		logger.debug(message);
 		server.broadcastLog(message);
+	}
+
+	public StaffDataAccessor getStaffAccessor() {
+		return staffAccessor;
+	}
+
+	public void setStaffAccessor(StaffDataAccessor staffAccessor) {
+		this.staffAccessor = staffAccessor;
 	}
 	
 	

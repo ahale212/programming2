@@ -13,7 +13,25 @@ import java.util.ResourceBundle;
 
 
 
+
+
+
+
+
+
+
+
+
 import org.controlsfx.control.PopOver;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -24,6 +42,15 @@ import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
 
 
+
+
+
+
+
+
+
+import com.sun.prism.paint.Color;
+
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
@@ -31,6 +58,7 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,12 +72,18 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -57,6 +91,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 public class RevController implements Initializable, ClientCallback {
+	
+	TableRow trow = new TableRow();
 
 	private RMIClient client;
 	
@@ -93,14 +129,13 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group;
 
 	PopOver p = new PopOver();
-	Label l1 = new Label();
-	TextField tf1 = new TextField();
-	TextField tf2 = new TextField();
-	AnchorPane ap1 = new AnchorPane();
-	Button bt1 = new Button();
+	PopOver p1 = new PopOver();
+	PopOver p2 = new PopOver();
+	
+	
 
 	private final ObservableList<String> QList = FXCollections.observableArrayList();
-	private final ObservableList trList = FXCollections.observableArrayList();
+	private final ObservableList<String> trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
 	private final ObservableList ocu = FXCollections.observableArrayList();
 	private final ObservableList<String> onCallList = FXCollections.observableArrayList();
@@ -122,6 +157,7 @@ public class RevController implements Initializable, ClientCallback {
 	 * The list of Treatment Rooms / On call team
 	 */
 	List<TreatmentFacility> treatmentFacilities = new ArrayList<TreatmentFacility>();
+	
 	
 	
 	private String[] array = new String[10];
@@ -307,20 +343,22 @@ public class RevController implements Initializable, ClientCallback {
 		array[7] = "0987";
 		array[8] = "bn67BNhgg";
 		array[9] = "Kim";
-		
+		*/
 		
 		array1[0] = "JimJonJoe";
 		array1[1] = "JonJoe";
 		array1[2] = "Joe";
-		array1[3] = "JJJoe";*/
+		array1[3] = "JJJoe";
 		
 		onCall[0] = "On Call Unit";
 		
-		
-		// Link the observable list of treatment rooms to the treatment rooms ListView
-		trooms.setItems(trList);
 		// Link the observable list of patients in the queue, to the queue ListView
 		queue.setItems(QList);
+		
+		// Link the observable list of treatment rooms to the treatment rooms ListView
+		trList.addAll(array1);
+		trooms.setItems(trList);
+		
 
 		treatmentRoomNum[0] = "Treatment Room 1";
 		treatmentRoomNum[1] = "Treatment Room 2";
@@ -357,6 +395,12 @@ public class RevController implements Initializable, ClientCallback {
 	private void buttonFunction() {
 		
 		login.setOnAction(e -> {
+
+			Label l1 = new Label();
+			TextField tf1 = new TextField();
+			PasswordField tf2 = new PasswordField();
+			AnchorPane ap1 = new AnchorPane();
+			Button bt1 = new Button();
 			l1.setText("Welcome to Triage!");
 			l1.setLayoutX(15);
 			tf1.setPromptText("Username");
@@ -365,6 +409,21 @@ public class RevController implements Initializable, ClientCallback {
 			tf2.setLayoutY(52);
 			bt1.setText("Login");
 			bt1.setLayoutY(80);
+			
+			
+				
+			bt1.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					
+					if (tf1.getText().equals("Tom") && tf2.getText().equals("tits")) {
+					p.hide();
+					}
+					
+				}});
+			
+			
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
 			ap1.getChildren().add(tf1);
@@ -392,11 +451,50 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		});
 		trooms.setItems(trList);
+		
 		Q_view.setOnAction(e -> {
-			p.show(Q_view);
+			
+			AnchorPane ap2 = new AnchorPane();
+			TableView tv1 = new TableView();
+			tv1.setItems(QList);
+			ap2.getChildren().add(tv1);
+			p1.setContentNode(ap2);
+			p1.show(Q_view);
+			
 		});
+		
 		TRooms_view.setOnAction(e -> {
-			p.show(TRooms_view);
+			
+			AnchorPane ap3 = new AnchorPane();
+			TableView<Patient> tv2 = new TableView<Patient>();
+			Patient pat = new Patient();
+			Person cia = new Person("","","C","Molloy","","","","","","","","");
+			pat.setPerson(cia);
+			pat.setUrgency(Urgency.URGENT);
+			ObservableList<Patient> data = FXCollections.observableArrayList(pat);
+
+			TableColumn fName = new TableColumn("First Name");
+			
+			fName.setCellValueFactory(new PropertyValueFactory<Patient, String>("person"));
+			
+			TableColumn lName = new TableColumn("Last Name");
+			
+			lName.setCellValueFactory(new PropertyValueFactory<Patient, String>("person"));
+			
+			TableColumn tc1 = new TableColumn("Urgency");
+			
+			tc1.setCellValueFactory(new PropertyValueFactory<Patient, String>("urgency"));
+			
+			TableColumn tc4 = new TableColumn("Wait Time");
+			
+			tc4.setCellValueFactory(new PropertyValueFactory<Patient, String>("waitTime"));
+						
+			tv2.setItems(data);
+			tv2.getColumns().addAll(fName, lName, tc1, tc4);
+			ap3.getChildren().add(tv2);
+			p2.setContentNode(ap3);
+			p2.show(TRooms_view);
+			
 		});
 
 		search_database.setOnAction(e -> {
@@ -487,9 +585,12 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		emergency.setOnAction(e -> {
+			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 			trList.remove(0);
 			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
+			TableRow tr1 = new TableRow();
+			ListCell lr1 = new ListCell();
 			
 			try {
 				client.getServer().addPrimaryPatient(displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
