@@ -22,7 +22,9 @@ import java.util.ResourceBundle;
 
 
 
+
 import org.controlsfx.control.PopOver;
+
 
 
 
@@ -55,6 +57,7 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
@@ -91,8 +94,6 @@ import javafx.util.StringConverter;
 
 public class RevController implements Initializable, ClientCallback {
 	
-	TableRow trow = new TableRow();
-
 	private RMIClient client;
 	
 	@FXML
@@ -131,8 +132,8 @@ public class RevController implements Initializable, ClientCallback {
 	PopOver p1 = new PopOver();
 	PopOver p2 = new PopOver();
 	
+	Staff staff = new Staff();
 	
-
 	private final ObservableList<String> QList = FXCollections.observableArrayList();
 	private final ObservableList<String> trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
@@ -160,9 +161,9 @@ public class RevController implements Initializable, ClientCallback {
 	
 	
 	private String[] array = new String[10];
-	private String[] array1 = new String[4];
+	private String[] array1 = new String[5];
 	private String[] onCall = new String[1];
-	private String[] treatmentRoomNum = new String[4];
+	private String[] treatmentRoomNum = new String[5];
 	private String[] breaths = new String[2];
 	
 	private String[] condition = { "Neurological", "Respiratory",
@@ -362,6 +363,7 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomNum[1] = "Treatment Room 2";
 		treatmentRoomNum[2] = "Treatment Room 3";
 		treatmentRoomNum[3] = "Treatment Room 4";
+		treatmentRoomNum[4] = "Treatment Room 5";
 		
 		trno.addAll(treatmentRoomNum);
 
@@ -408,19 +410,36 @@ public class RevController implements Initializable, ClientCallback {
 			bt1.setText("Login");
 			bt1.setLayoutY(80);
 			
-			
-				
 			bt1.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
 					
-					if (tf1.getText().equals("Tom") && tf2.getText().equals("tits")) {
-					p.hide();
-					}
+					Staff s1 = new Staff();
 					
-				}});
-			
+					boolean logMeIn = false;
+					
+					String _user = tf1.getText();
+					String _pass = tf2.getText();
+					String db_pass = s1.setEmployeePassword(_pass);
+					List<Staff> matchingPeople1 = null;
+					
+					try {
+						matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
+						
+						if (matchingPeople1.size() > 0) {
+							logMeIn = true;
+						}
+						
+					} catch (RemoteException ex) {
+						System.err.println("Server communication error.");
+						ex.printStackTrace();
+					
+					if (logMeIn == true){
+					p.hide();
+					
+					}
+				}}});
 			
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
@@ -462,31 +481,29 @@ public class RevController implements Initializable, ClientCallback {
 		TRooms_view.setOnAction(e -> {
 			
 			AnchorPane ap3 = new AnchorPane();
-			TableView<Patient> tv2 = new TableView<Patient>();
+			
+			TableView<Object> tv2 = new TableView<Object>();			
+			
+			
 			Patient pat = new Patient();
-			Person cia = new Person("","","C","Molloy","","","","","","","","");
-			pat.setPerson(cia);
+			Person pete = new Person();
+			pete.setFirstName("Pete");
+			pat.setPerson(pete);
 			pat.setUrgency(Urgency.URGENT);
-			ObservableList<Patient> data = FXCollections.observableArrayList(pat);
-
-			TableColumn fName = new TableColumn("First Name");
+			ObservableList<Object> o = FXCollections.observableArrayList(pat);
+			o.add(pete);
 			
-			fName.setCellValueFactory(new PropertyValueFactory<Patient, String>("person"));
+			TableColumn person = new TableColumn("Person");			
+			person.setCellValueFactory(new PropertyValueFactory<Object, String>("firstName"));
 			
-			TableColumn lName = new TableColumn("Last Name");
+			TableColumn Urgency = new TableColumn("Urgency");			
+			Urgency.setCellValueFactory(new PropertyValueFactory<Object, String>("urgency"));
 			
-			lName.setCellValueFactory(new PropertyValueFactory<Patient, String>("person"));
+			TableColumn WaitingTime = new TableColumn("Wait Time");			
+			WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 			
-			TableColumn tc1 = new TableColumn("Urgency");
-			
-			tc1.setCellValueFactory(new PropertyValueFactory<Patient, String>("urgency"));
-			
-			TableColumn tc4 = new TableColumn("Wait Time");
-			
-			tc4.setCellValueFactory(new PropertyValueFactory<Patient, String>("waitTime"));
-						
-			tv2.setItems(data);
-			tv2.getColumns().addAll(fName, lName, tc1, tc4);
+			tv2.setItems(o);
+			tv2.getColumns().addAll(person, Urgency, WaitingTime);
 			ap3.getChildren().add(tv2);
 			p2.setContentNode(ap3);
 			p2.show(TRooms_view);
