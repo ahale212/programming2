@@ -63,7 +63,7 @@ public class Staff implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getEmplolyeeUsername() {
+	public String getEmployeeUsername() {
 		return employeeUsername;
 	}
 
