@@ -97,10 +97,6 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	public List<Person> searchPersonByDetails(String nhsNumber, String firstName, String lastName, String dateOfBirth, String postCode, String telephoneNumber)
 			throws RemoteException {
 		
-
-
-
-
 		try {
 			List<Person> people;// = new ArrayList<Person>();
 
@@ -115,6 +111,26 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		} 
 		
 		return null;
+	}
+	
+	@Override
+	public List<Staff> searchStaffByDetails(String username, String password) throws RemoteException {
+	
+	try {
+		List<Staff> staff;// = new ArrayList<Staff>();
+
+		// Search for the staff in the database
+		staff = Supervisor.INSTANCE.getStaffAccessor().staffList(username, password);
+		
+		
+		// Return the matching staff found in the database
+		return staff;
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	return null;
 	}
 
 	/**
@@ -171,8 +187,5 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		
 		Supervisor.INSTANCE.admitPatient(patient);
 	}
-	
-	
-	
 	
 }

@@ -14,6 +14,17 @@ public class Staff implements Serializable {
 	public Staff() {
 
 	}
+	
+	/**
+	 * Staff Constructor
+	 * Overload with params username and password
+	 * @param employeeUsername
+	 * @param employeePassword
+	 */
+	public Staff(String employeeUsername, String employeePassword) { 
+		this.employeeUsername = employeeUsername;
+		this.employeePassword = employeePassword;
+	}
 
 	public Staff(String employeeNumber, String firstName, String lastName,
 			String employeeUsername, String employeePassword,
@@ -64,7 +75,7 @@ public class Staff implements Serializable {
 		return employeePassword;
 	}
 
-	public void setEmployeePassword(String employeePassword) {
+	public String setEmployeePassword(String employeePassword) {
 
 		int key = 4;
 		char ch;
@@ -80,11 +91,15 @@ public class Staff implements Serializable {
 			// append encrypted character to end of string
 			encryptedPassword += ch;
 		}
-		this.employeePassword = encryptedPassword;
+		return this.employeePassword = encryptedPassword;
 	}
 
 	public String getEmployeeEmail() {
-		return employeeEmail;
+		if(employeeEmail.contains("@")){
+			return employeeEmail;
+		} else {
+			throw new IllegalArgumentException("Error, email is not in the correct format");
+		}
 	}
 
 	public void setEmployeeEmail(String employeeEmail) {

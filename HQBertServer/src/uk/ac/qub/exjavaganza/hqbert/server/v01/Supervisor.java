@@ -53,9 +53,6 @@ public enum Supervisor {
 	private PersonDataAccessor dataAccessor;
 	private StaffDataAccessor staffAccessor;
 
-	
-	
-	
 	private Supervisor() {
 	}
 
@@ -93,7 +90,18 @@ public enum Supervisor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	
+	
+	//set up connection to database
+			try {
+				setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 
 	public void startLoop() {
 		while (exit == false) {

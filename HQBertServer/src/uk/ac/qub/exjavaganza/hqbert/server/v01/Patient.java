@@ -22,8 +22,7 @@ public class Patient implements Comparable<Patient>, Serializable {
 	
 	/**The patient object has a person object - their identity*/
 	Person person;
-	
-	
+		
 	public Patient(){
 		waitTime = 0;
 		//symptoms = new ArrayList<String>();
