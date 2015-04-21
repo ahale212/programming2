@@ -65,5 +65,15 @@ public interface RemoteServer extends Remote {
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
 	public void addSecondaryPatient(Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication) throws RemoteException;
+
+	/**
+	 * Searches for a staff by their username and password.
+	 * @param username	The username of the staff
+	 * @param password	The password of the staff
+	 * @return	The Staff that matches the passed in search terms.
+	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 */
+	public List<Staff> searchStaffByDetails(String username, String password) throws RemoteException;
 	
 }
+
