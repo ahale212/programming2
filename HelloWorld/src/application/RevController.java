@@ -22,7 +22,9 @@ import java.util.ResourceBundle;
 
 
 
+
 import org.controlsfx.control.PopOver;
+
 
 
 
@@ -51,10 +53,12 @@ import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
 import com.sun.prism.paint.Color;
 
+
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
@@ -415,11 +419,29 @@ public class RevController implements Initializable, ClientCallback {
 				@Override
 				public void handle(ActionEvent event) {
 					
-					if (tf1.getText().equals("Tom") && tf2.getText().equals("tits")) {
-					p.hide();
-					}
+					Staff s1 = new Staff();
 					
-				}});
+					boolean logMeIn = false;
+					
+					String _user = tf1.getText();
+					String _pass = tf2.getText();
+					String db_pass = s1.setEmployeePassword(_pass);
+					List<Staff> matchingPeople1=null;
+					
+					try{
+						matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
+						
+						if (matchingPeople1.size() >0) {
+							logMeIn = true;
+						}
+					} catch (RemoteException ex) {
+						System.out.println("Server communication error.");
+						ex.printStackTrace();
+					
+					if(logMeIn == true){
+						p.hide();
+					}
+				}}});
 			
 			
 			ap1.setMinWidth(100);
@@ -464,29 +486,21 @@ public class RevController implements Initializable, ClientCallback {
 			AnchorPane ap3 = new AnchorPane();
 			TableView<Patient> tv2 = new TableView<Patient>();
 			Patient pat = new Patient();
-			Person cia = new Person("","","C","Molloy","","","","","","","","");
-			pat.setPerson(cia);
+			Person pete = new Person();
+			pat.setPerson(pete);
 			pat.setUrgency(Urgency.URGENT);
-			ObservableList<Patient> data = FXCollections.observableArrayList(pat);
+			ObservableList<Object> o = FXCollections.observableArrayList(pat);
+			o.add(pete);
 
-			TableColumn fName = new TableColumn("First Name");
-			
-			fName.setCellValueFactory(new PropertyValueFactory<Patient, String>("person"));
-			
-			TableColumn lName = new TableColumn("Last Name");
-			
-			lName.setCellValueFactory(new PropertyValueFactory<Patient, String>("person"));
-			
-			TableColumn tc1 = new TableColumn("Urgency");
-			
-			tc1.setCellValueFactory(new PropertyValueFactory<Patient, String>("urgency"));
-			
-			TableColumn tc4 = new TableColumn("Wait Time");
-			
-			tc4.setCellValueFactory(new PropertyValueFactory<Patient, String>("waitTime"));
+			TableColumn person = new TableColumn("Person");
+			person.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
+			TableColumn Urgency = new TableColumn("Urgency");
+			Urgency.setCellValueFactory(new PropertyValueFactory<Patient, String>("urgency"));
+			TableColumn WaitingTime = new TableColumn("Wait Time");
+			WaitingTime.setCellValueFactory(new PropertyValueFactory<Patient, String>("waitTime"));
 						
-			tv2.setItems(data);
-			tv2.getColumns().addAll(fName, lName, tc1, tc4);
+			tv2.setItems(o);
+			tv2.getColumns().addAll(person, Urgency,WaitingTime);
 			ap3.getChildren().add(tv2);
 			p2.setContentNode(ap3);
 			p2.show(TRooms_view);
