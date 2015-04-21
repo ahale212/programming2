@@ -84,7 +84,11 @@ public class Staff implements Serializable {
 	}
 
 	public String getEmployeeEmail() {
-		return employeeEmail;
+		if(employeeEmail.contains("@")){
+			return employeeEmail;
+		} else {
+			throw new IllegalArgumentException("Error, email is not in the correct format");
+		}
 	}
 
 	public void setEmployeeEmail(String employeeEmail) {
