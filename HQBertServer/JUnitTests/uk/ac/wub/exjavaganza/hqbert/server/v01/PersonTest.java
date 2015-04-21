@@ -32,29 +32,18 @@ public class PersonTest {
 	@Before
 	public void setUp() throws Exception {
 		NHSNum = "1010101010";
-		invalidNHSNum = "invalid";
+		
 		title = "mr";
-		invalidTitle = "invalid";
 		firstName = "a";
-		invalidFirstName = "invalid";
 		lastName = "b";
-		invalidLastName = "invalid";
 		DOB = "11/11/1111";
-		invalidDOB = "invalid";
 		address = "QUB";
-		invalidAddress = "invalid";
 		city = "belfast";
-		invalidCity = "invalid";
 		country = "NI";
-		invalidCountry = "invalid";
 		postcode = "bt23 8dy";
-		invalidPostcode = "invalid";
 		telephone = "123456789";
-		invalidTelephone = "invalid";
 		allergies = "none";
-		invalidAllergies = "invalid";
 		bloodGroup = "a+";
-		invalidBloodGroup = "invalid";
 
 	}
 
@@ -88,7 +77,7 @@ public class PersonTest {
 		assertEquals(firstName, person.getFirstName());
 		// use assert equals to compare expected and actual values
 		assertEquals(lastName, person.getLastName());
-
+		//use assert equals to compare expected and actual values
 		assertEquals(DOB, person.getDOB());
 		// use assert equals to compare expected and actual values
 		assertEquals(address, person.getAddress());
@@ -121,19 +110,6 @@ public class PersonTest {
 	}
 
 	/**
-	 * method to test the NHSNum with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidNHSNum() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setNHSNum(invalidNHSNum);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidNHSNum, person.getNHSNum());
-	}
-
-	/**
 	 * method to test get and set NHSNum using valid info
 	 */
 	@Test
@@ -145,18 +121,7 @@ public class PersonTest {
 		assertEquals(title, person.getTitle());
 	}
 
-	/**
-	 * method to test the title with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidTitle() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setTitle(invalidTitle);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidTitle, person.getTitle());
-	}
+	
 
 	/**
 	 * method to test get and set firstName using valid info
@@ -170,18 +135,7 @@ public class PersonTest {
 		assertEquals(firstName, person.getFirstName());
 	}
 
-	/**
-	 * method to test the firstName with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidFirstName() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setFirstName(invalidFirstName);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidFirstName, person.getFirstName());
-	}
+	
 
 	/**
 	 * method to test get and set lastName using valid info
@@ -195,18 +149,7 @@ public class PersonTest {
 		assertEquals(lastName, person.getLastName());
 	}
 
-	/**
-	 * method to test the lastName with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidLastName() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setLastName(invalidLastName);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidLastName, person.getLastName());
-	}
+	
 
 	/**
 	 * method to test get and set address using valid info
@@ -220,18 +163,7 @@ public class PersonTest {
 		assertEquals(address, person.getAddress());
 	}
 
-	/**
-	 * method to test the address with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidAddress() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setAddress(invalidAddress);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidAddress, person.getAddress());
-	}
+	
 
 	/**
 	 * method to test get and set city using valid info
@@ -246,18 +178,7 @@ public class PersonTest {
 		assertEquals(city, person.getCity());
 	}
 
-	/**
-	 * method to test the city with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidCity() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setCity(invalidCity);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidCity, person.getCity());
-	}
+	
 
 	/**
 	 * method to test get and set country using valid info
@@ -271,18 +192,7 @@ public class PersonTest {
 		assertEquals(country, person.getCountry());
 	}
 
-	/**
-	 * method to test the country with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidCountry() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setCountry(invalidCountry);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidCountry, person.getCountry());
-	}
+	
 
 	/**
 	 * method to test get and set postcode using valid info
@@ -296,19 +206,7 @@ public class PersonTest {
 		assertEquals(postcode, person.getPostcode());
 	}
 
-	/**
-	 * method to test the postcode with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidPostcode() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setPostcode(invalidPostcode);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidPostcode, person.getPostcode());
-	}
-
+	
 	/**
 	 * method to test get and set telephone using valid info
 	 */
@@ -321,18 +219,7 @@ public class PersonTest {
 		assertEquals(telephone, person.getTelephone());
 	}
 
-	/**
-	 * method to test the telephone with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidTelephone() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setTelephone(invalidTelephone);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidTelephone, person.getTelephone());
-	}
+	
 
 	/**
 	 * method to test get and set allergies using valid info
@@ -346,19 +233,7 @@ public class PersonTest {
 		assertEquals(allergies, person.getAllergies());
 	}
 
-	/**
-	 * method to test the allergies with invalid info expecting exception
-	 */
-	@Test
-	public void GetSetInvalidAllergies() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setAllergies(invalidAllergies);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidAllergies, person.getAllergies());
-	}
-
+	
 	/**
 	 * method to test get and set bloodGroup using valid info
 	 */
@@ -369,19 +244,6 @@ public class PersonTest {
 		person.setBloodGroup(bloodGroup);
 		// use assert equals to compare expected and actual values
 		assertEquals(bloodGroup, person.getBloodGroup());
-	}
-
-	/**
-	 * method to test the blood group with invalid info expecting exception
-	 */
-	// @Test(expected = IllegalArgumentException.class)
-	public void GetSetInvalidBloodGroup() {
-		// create object from EBook
-		Person person = new Person();
-		// set to invalid upper length
-		person.setBloodGroup(invalidBloodGroup);
-		// use assert equals to compare expected and actual values
-		assertEquals(invalidBloodGroup, person.getBloodGroup());
 	}
 
 }

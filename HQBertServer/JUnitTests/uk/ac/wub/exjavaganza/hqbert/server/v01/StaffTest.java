@@ -22,7 +22,7 @@ public class StaffTest {
 			employeeEmail, invalidEmployeeEmail;
 
 	/**
-	 * method to initialise the vars needed to test Staff class
+	 * method to initialize the vars needed to test Staff class
 	 * 
 	 * @throws Exception
 	 */

@@ -24,9 +24,9 @@ public enum Supervisor {
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int MAX_TREATMENT_ROOMS = 4;
-	
+
 	public final float TIME_MULTI = 120;
-	
+
 	private final int serverPort = 1099;
 
 	private HQueue hQueue;
@@ -36,21 +36,20 @@ public enum Supervisor {
 	private RMIServer server;
 	private Logger logger;
 
-	
-	//Test stuff
+	// Test stuff
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
 	private int[] extensions;
-	
-	
-	
+
 	// URL for the database connection
 	private String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
 	// Connection that holds the session with the database
 	private Connection con;
-	// The data accessor for the person table. Allows for searching of the 
+	// The data accessor for the person table. Allows for searching of the
 	// Person table in the database.
 	private PersonDataAccessor dataAccessor;
+	//The data accessor for the staff table. Allows for searching of the 
+	//staff table in the database
 	private StaffDataAccessor staffAccessor;
 
 	private Supervisor() {
@@ -63,7 +62,7 @@ public enum Supervisor {
 		startServer();
 
 		logger = Logger.getLogger(Supervisor.class);
-		
+
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
 		for (int i = 0; i < MAX_TREATMENT_ROOMS; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
@@ -77,12 +76,12 @@ public enum Supervisor {
 				Urgency.NON_URGENT, Urgency.URGENT, Urgency.SEMI_URGENT,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.SEMI_URGENT };
-		
-		extensions = new int[]{0,1,2};		
-		
+
+		extensions = new int[] { 0, 1, 2 };
+
 		exit = false;
-		
-		//set up connection to database
+
+		// set up connection to database
 		try {
 			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
@@ -90,18 +89,16 @@ public enum Supervisor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
-	
-	//set up connection to database
-			try {
-				setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 
+		// set up connection to database
+		try {
+			setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void startLoop() {
 		while (exit == false) {
@@ -157,19 +154,18 @@ public enum Supervisor {
 		}
 
 		hQueue.update(deltaTime);
-		
 
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
 			insertTestPatient();
 		}
-		
-		//automated extension tests
-		for(int i = 0; i < treatmentFacilities.size(); i++){
+
+		// automated extension tests
+		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
-			if(tf.getTimeToAvailable() == 1 && tf.getPatient() != null){
-				if(i > 0 && i < 3){
-					if(extensions[i] > 0){
+			if (tf.getTimeToAvailable() == 1 && tf.getPatient() != null) {
+				if (i > 0 && i < 3) {
+					if (extensions[i] > 0) {
 						tf.extendTime();
 						extensions[i]--;
 					}
@@ -179,33 +175,33 @@ public enum Supervisor {
 
 		// Send the updated queue to clients via the server
 		server.updateClients();
-		
+
 		log("Update Complete");
-		
-		//checkCapacity();
-		//checkWaitingTime();
+
+		// checkCapacity();
+		// checkWaitingTime();
 	}
 
 	private void insertTestPatient() {
 		Person testPerson = new Person();
-		testPerson.setFirstName ("Bobby" + testPatientNo);
-		testPerson.setLastName ("Branson" + testPatientNo);
+		testPerson.setFirstName("Bobby" + testPatientNo);
+		testPerson.setLastName("Branson" + testPatientNo);
 
 		Patient test = new Patient();
 		test.person = testPerson;
 		test.setUrgency(testUrgencies[testPatientNo]);
 
-		if(testPatientNo >= 7){
+		if (testPatientNo >= 7) {
 			boolean stop;
 			stop = true;
 		}
-		
+
 		admitPatient(test);
 		testPatientNo++;
 	}
 
 	public boolean admitPatient(Patient patient) {
-		try{
+		try {
 			if (hQueue.insert(patient) == true) {
 				server.updateClients();
 				return true;
@@ -214,14 +210,15 @@ public enum Supervisor {
 						+ patient.getPerson().getFirstName() + " - "
 						+ patient.getUrgency() + " - sent away.");
 				server.updateClients();
-				System.out.println("PATIENT REJECTED : "+patient.getPerson().getFirstName());
+				System.out.println("PATIENT REJECTED : "
+						+ patient.getPerson().getFirstName());
 				return false;
 			}
-		}catch(StackOverflowError so){
+		} catch (StackOverflowError so) {
 			so.printStackTrace();
 			return false;
 		}
-		
+
 	}
 
 	/**
@@ -233,7 +230,7 @@ public enum Supervisor {
 	 *         treatment room available
 	 */
 	public boolean sendToTreatment(Patient patient) {
-		
+
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
 
@@ -247,46 +244,51 @@ public enum Supervisor {
 		// Patient didn't make it to a treatment room - check if they are an
 		// emergency
 		if (patient.urgency == Urgency.EMERGENCY) {
-			
+
 			for (int i = 0; i < treatmentFacilities.size(); i++) {
 				TreatmentFacility tf = treatmentFacilities.get(i);
 				Patient tfPatient = tf.getPatient();
-				if (tf.getPatient() == null) { 
-					/* The room is empty, just not "unlocked" yet*/
+				if (tf.getPatient() == null) {
+					/* The room is empty, just not "unlocked" yet */
 					tf.receivePatient(patient);
 					return true;
-				/* Another patient is in the room, check if they are an emergency*/
-				} else if (tfPatient.getUrgency() != Urgency.EMERGENCY) { 
-					/*They aren't - add them to a list of possible to replace patients*/
+					/*
+					 * Another patient is in the room, check if they are an
+					 * emergency
+					 */
+				} else if (tfPatient.getUrgency() != Urgency.EMERGENCY) {
+					/*
+					 * They aren't - add them to a list of possible to replace
+					 * patients
+					 */
 					hQueue.addToDisplacable(tfPatient);
 				}
 			}
-			
 
 			Patient displacablePatient = null;
 			displacablePatient = hQueue.findMostDisplacable();
-			if(displacablePatient != null){
-				for(int i = 0; i < treatmentFacilities.size(); i++){
+			if (displacablePatient != null) {
+				for (int i = 0; i < treatmentFacilities.size(); i++) {
 					TreatmentFacility tf = treatmentFacilities.get(i);
 					Patient roomCurrentPatient = tf.getPatient();
-					if(roomCurrentPatient.equals(displacablePatient)){
+					if (roomCurrentPatient.equals(displacablePatient)) {
 						tf.emergencyInterruption(patient);
 						return true;
 					}
 				}
-			} 
+			}
 		}
 		return false;
 	}
 
-	public void alertOnCall(){
-		
+	public void alertOnCall() {
+
 	}
-	
-	public void extendRoom(int roomIndex){
+
+	public void extendRoom(int roomIndex) {
 		treatmentFacilities.get(roomIndex).extendTime();
 	}
-	
+
 	private boolean checkRoomsFull() {
 		boolean roomsFull = true;
 
@@ -295,50 +297,47 @@ public enum Supervisor {
 				roomsFull = false;
 			}
 		}
-		
+
 		return roomsFull;
-		
+
 		/*
-		if (roomsFull){
-			System.out.println("Sending capacity messages");			
-			ManagerAlert.emailCapacityAlert();
-			ManagerAlert.smsCapacityAlert();
-		}*/
+		 * if (roomsFull){ System.out.println("Sending capacity messages");
+		 * ManagerAlert.emailCapacityAlert(); ManagerAlert.smsCapacityAlert(); }
+		 */
 	}
-	
-	private boolean checkWaitingTimes(){
+
+	private boolean checkWaitingTimes() {
 		int delayedCount = 0;
-		
-		for (Patient p : hQueue.getPQ()){
-			if (p.getWaitTime() >= MAX_WAIT_TIME){
+
+		for (Patient p : hQueue.getPQ()) {
+			if (p.getWaitTime() >= MAX_WAIT_TIME) {
 				delayedCount++;
 			}
 		}
-		
-		if(delayedCount > MAX_OVERDUE_PATIENTS){
+
+		if (delayedCount > MAX_OVERDUE_PATIENTS) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
-		
+
 		/*
-		if (delayedCount>=2){
-			System.out.println("Sending wait time messages");
-			ManagerAlert.emailWaitingTimeAlert();
-			ManagerAlert.smsWaitingTimeAlert();
-		}*/
+		 * if (delayedCount>=2){
+		 * System.out.println("Sending wait time messages");
+		 * ManagerAlert.emailWaitingTimeAlert();
+		 * ManagerAlert.smsWaitingTimeAlert(); }
+		 */
 	}
-	
+
 	private void checkQueueFull() {
-		
+
 		// If the patient queue is full
 		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
-			
+
 			OnCallTeamAlert.onCallTeamQueueCapacity();
 		}
-		
+
 	}
-	
 
 	public void removeFromQueue(Patient patient) {
 		System.out.println("Removing " + patient.getPerson().getFirstName()
@@ -359,26 +358,45 @@ public enum Supervisor {
 		return treatmentFacilities;
 	}
 
+	/**
+	 * getter for person data accessor
+	 * 
+	 * @return
+	 */
 	public PersonDataAccessor getDataAccessor() {
 		return dataAccessor;
 	}
 
+	/**
+	 * setter for person data accessor
+	 * 
+	 * @param dataAccessor
+	 */
 	public void setDataAccessor(PersonDataAccessor dataAccessor) {
 		this.dataAccessor = dataAccessor;
 	}
-	
+
 	public void log(String message) {
 		logger.debug(message);
 		server.broadcastLog(message);
 	}
 
+	/**
+	 * getter for staff data accessor
+	 * 
+	 * @return
+	 */
 	public StaffDataAccessor getStaffAccessor() {
 		return staffAccessor;
 	}
 
+	/**
+	 * setter for staff data accessor
+	 * 
+	 * @param staffAccessor
+	 */
 	public void setStaffAccessor(StaffDataAccessor staffAccessor) {
 		this.staffAccessor = staffAccessor;
 	}
-	
-	
+
 }
