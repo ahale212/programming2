@@ -440,6 +440,7 @@ public class RevController implements Initializable, ClientCallback {
 					
 					if(logMeIn == true){
 						p.hide();
+						
 					}
 				}}});
 			
