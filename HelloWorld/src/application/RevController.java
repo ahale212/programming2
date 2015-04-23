@@ -145,6 +145,7 @@ public class RevController implements Initializable, ClientCallback {
 	Staff staff = new Staff();
 	
 	private final ObservableList<Patient> emergency_room = FXCollections.observableArrayList();
+	private final ObservableList<Patient> waiting_room = FXCollections.observableArrayList();
 	private final ObservableList<String> QList = FXCollections.observableArrayList();
 	private final ObservableList<String> trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
@@ -355,17 +356,13 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	private void loadArrayLists() {
-
-		ocu.clear();				
-
-		onCall[0] = "On Call Unit";
-		ocu.addAll(onCall);
+			
+		ocu.add("On Call Unit");
 		on_call_list.setItems(ocu);
 		
 		for (int i = 0; i < treatmentRoomNum.length; i++) {
 			treatmentRoomNum[i] = "Treatment Room "+(i+1);
-		}
-		
+		}		
 		trno.addAll(treatmentRoomNum);
 		treatment_room_list.setItems(trno);		
 		
@@ -389,12 +386,11 @@ public class RevController implements Initializable, ClientCallback {
 		
 		login.setOnAction(e -> {
 
-			Label l1 = new Label();
+			Label l1 = new Label("Welcome to Triage!");
 			TextField tf1 = new TextField();
 			PasswordField tf2 = new PasswordField();
 			AnchorPane ap1 = new AnchorPane();
 			Button bt1 = new Button();
-			l1.setText("Welcome to Triage!");
 			l1.setLayoutX(15);
 			tf1.setPromptText("Username");
 			tf1.setLayoutY(26);
@@ -461,13 +457,14 @@ public class RevController implements Initializable, ClientCallback {
 		trooms.setItems(trList);
 		
 		Q_view.setOnAction(e -> {
-			
+			/*
 			AnchorPane ap2 = new AnchorPane();
 			TableView tv1 = new TableView();
 			tv1.setItems(QList);
 			ap2.getChildren().add(tv1);
 			p1.setContentNode(ap2);
 			p1.show(Q_view);
+			*/
 			
 		});
 		
@@ -587,29 +584,39 @@ public class RevController implements Initializable, ClientCallback {
 		urg.setOnAction(e -> {
 			
 			Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.URGENT);
-			emergency_room.add(urgent_patient);
+			waiting_room.add(urgent_patient);
+			demoWRV(waiting_room);
 			QList.add(urgent_patient.getPatientName());
 			queue.setItems(QList);
 			
 			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
-			QList.remove(0);
-			QList.add(0, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
+			
 			clearTextFields();
 			resetTriage();
 		});
 
 		semi_urg.setOnAction(e -> {
+			
+			Patient semi_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.SEMI_URGENT);
+			waiting_room.add(semi_urgent_patient);
+			demoWRV(waiting_room);
+			QList.add(semi_urgent_patient.getPatientName());
+			queue.setItems(QList);
 			outputTextArea.appendText("Semi-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
-			QList.remove(0);
-			QList.add(4, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
+			
 			clearTextFields();
 			resetTriage();
 		});
 
 		non_urg.setOnAction(e -> {
+			
+			Patient non_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.NON_URGENT);
+			waiting_room.add(non_urgent_patient);
+			demoWRV(waiting_room);
+			QList.add(non_urgent_patient.getPatientName());
+			queue.setItems(QList);
 			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
-			QList.remove(0);
-			QList.add(9, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
+			
 			clearTextFields();
 			resetTriage();
 		});
@@ -651,14 +658,30 @@ public class RevController implements Initializable, ClientCallback {
 		ap3.getChildren().add(treatmentRoomTable);
 		p2.setContentNode(ap3);
 		p2.show(TRooms_view);
-		Thread time_out = new Thread();
-		try {
-			time_out.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		p.hide();
+	}
+	
+	private void demoWRV(ObservableList<Patient> oL ) {
+		
+		AnchorPane ap2 = new AnchorPane();			
+		TableView<Patient>  waitingRoomTable = new TableView<Patient>();
+		
+		TableColumn patName1 = new TableColumn("Patient");			
+		patName1.setCellValueFactory(new PropertyValueFactory<Object, String>("patientName"));
+		
+		TableColumn Urgency1 = new TableColumn("Urgency");			
+		Urgency1.setCellValueFactory(new PropertyValueFactory<Object, String>("urgency"));
+		
+		TableColumn WaitingTime1 = new TableColumn("Wait Time");			
+		WaitingTime1.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
+		
+		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null), null);
+		oL.add(pat);
+		waitingRoomTable.setItems(oL);
+		waitingRoomTable.getColumns().addAll(patName1, Urgency1, WaitingTime1);
+		ap2.getChildren().add(waitingRoomTable);
+		p2.setContentNode(ap2);
+		p2.show(Q_view);
+		
 	}
 
 	private void clearSearchFields() {
