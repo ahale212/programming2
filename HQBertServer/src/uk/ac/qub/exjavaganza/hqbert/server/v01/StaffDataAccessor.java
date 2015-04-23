@@ -12,23 +12,13 @@ import java.util.ArrayList;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 
 /**
- * JDBC class for getting people from the database
+ * JDBC class for getting staff from the database
  *
  */
 public class StaffDataAccessor {
 
-	Person person = new Person();
-	/**
-	 * constant linking to the front end to serach db for first name - still
-	 * needs linked
-	 */
-	public final String FIRSTNAME = person.getFirstName();
-
-	/**
-	 * constant linking to the front end to search db for last name - still
-	 * needs linked
-	 */
-	public final String LASTNAME = null;
+	Staff staff = new Staff();
+	
 
 	// establish connection to mySQl
 	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
@@ -44,7 +34,7 @@ public class StaffDataAccessor {
 		// connection to database using login name and password
 		con = DriverManager.getConnection(url, "40058483", "VPK7789");
 
-	}
+	}//end of staffDataAccessor method
 
 	/**
 	 * method to shut down connection
@@ -55,31 +45,29 @@ public class StaffDataAccessor {
 		if (con != null) {
 			con.close();
 		}
-	}
+	}//end of shut down method
 
-	List<Staff> staffList(String employeeNumber, String firstName, String lastName, String username, String password, String email) throws SQLException {
-
-		try (Statement findPatients = con.prepareStatement(findStaffString);
+	//create a new list for staff
+	List<Staff> staffList(String username,  String password) throws SQLException {
+		// start of try to initiate query statement
+		try (Statement findStaff = con.prepareStatement(findStaffString);
 				// execute query
-				ResultSet rs = findStaff
-						.executeQuery("SELECT Employee_Number FROM staff WHERE '"+ username + "' AND '"+ password +"'");) {
+			ResultSet rs1 = findStaff.executeQuery("SELECT * FROM staff WHERE Employee_username = '" + username + "' AND Employee_Password = '" + password + "'");) {
 			List<Staff> staffList = new ArrayList<>();
-			//"SELECT Employee_Number FROM staff WHERE '"+ username + "' AND '"+ password +"'");
-			while (rs.next()) {
-				String EmployeeNumber = rs.getString("Employee_Number");
-				String FirstName = rs.getString("Employee_first_name");
-				String LastName = rs.getString("Employee_last_name");
-				String Username = rs.getString("Employee_username");
-				String Password = rs.getString("Employee_Password");
-				String Email = rs.getString("Employee_Email");
+			while (rs1.next()) {
+				//String EmployeeNumber = rs.getString("Employee_Number");
+				//String FirstName = rs.getString("Employee_first_name");
+				//String LastName = rs.getString("Employee_last_name");
+				String Username = rs1.getString("Employee_username");
+				String Password = rs1.getString("Employee_Password");
+				//String Email = rs.getString("Employee_Email");
 
-				Staff staff = new Staff(EmployeeNumber, FirstName, LastName,
-						Username, Password, Email);
+				Staff staff = new Staff(Username, Password);
 				staffList.add(staff);
 			}
+			//return the stafflist
 			return staffList;
-		}
-
-		
+					
 	}
 }
+}//end of class

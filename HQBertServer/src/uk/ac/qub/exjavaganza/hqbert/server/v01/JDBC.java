@@ -1,3 +1,4 @@
+/*
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.sql.Connection;
@@ -14,6 +15,9 @@ public class JDBC {
 	 * 
 	 * @param args
 	 */
+/*
+ 
+ 
 	public static void runDB() {
 
 		// establish connection to mySQl
@@ -62,5 +66,6 @@ public class JDBC {
 	//}
 	
 
-}// end of class
+}
 
+*/

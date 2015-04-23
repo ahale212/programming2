@@ -2,11 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="properties"/>
+	<classpathentry kind="src" path="JUnitTests"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="Dependencies/mail.jar"/>
 	<classpathentry kind="lib" path="Dependencies/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="Dependencies/slf4j-api-1.7.12.jar"/>
 	<classpathentry kind="lib" path="Dependencies/slf4j-log4j12-1.7.12.jar"/>
 	<classpathentry kind="lib" path="Dependencies/com.mysql.jdbc_5.1.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

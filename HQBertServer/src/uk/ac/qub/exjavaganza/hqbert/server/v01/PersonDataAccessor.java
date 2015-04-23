@@ -19,28 +19,12 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 public class PersonDataAccessor {
 
 	Person person = new Person();
-	/**
-	 * constant linking to the front end to serach db for first name
-	 */
-	public final String FIRSTNAME = person.getFirstName();
-
-	/**
-	 * constant linking to the front end to search db for last name
-	 */
-	public final String LASTNAME = person.getLastName();
-	/**
-	 * constant linking to the front end to search db for NHS number
-	 */
-	public final String NHSNUM = person.getNHSNum();
-
-	
-	
 	
 	// establish connection to mySQl
 	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
 	Connection con;
 	PreparedStatement findPatients, findPatientsWithNHSNum;
-	// declare var
+	// declare vars
 	String findPatientsString = "";
 	String findPatientWithNHSNumString = "";
 
@@ -51,7 +35,7 @@ public class PersonDataAccessor {
 		// connection to database using login name and password
 		con = DriverManager.getConnection(url, "40058483", "VPK7789");
 
-	}
+	}// end of PersonDataAccessor method
 
 	/**
 	 * method to shut down connection
@@ -62,31 +46,19 @@ public class PersonDataAccessor {
 		if (con != null) {
 			con.close();
 		}
-	}
+	}//end of shutdown method
 
+	//create a new list for person
 	List<Person> personList(String nhsNumber, String firstName,
 			String lastName, String dateOfBirth, String postCode,
 			String telephoneNumber) throws SQLException {
 
-		// to be used for searching with nhs number alone, not finished yet
-		// try(
-		// Statement findPatientsWithNHSNum =
-		// con.prepareStatement(findPatientWithNHSNumString);
-		// execute query
-		// ResultSet rs1 =
-		// findPatientsWithNHSNum.executeQuery("SELECT * FROM patients WHERE NHS_number = '"+nhsNumber+"'");
-		// ){
-		
-		
-		
-		//one currently being used to search by only names
+		//start of try to initiate query statement
 		try (Statement findPatients = con.prepareStatement(findPatientsString);
 				// execute query
 				ResultSet rs = findPatients
 						.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "' AND last_name = '" + lastName + "'");) {
-
 			List<Person> personList = new ArrayList<>();
-
 			while (rs.next()) {
 				String NHSNum = rs.getString("NHS_number");
 				String title = rs.getString("title");

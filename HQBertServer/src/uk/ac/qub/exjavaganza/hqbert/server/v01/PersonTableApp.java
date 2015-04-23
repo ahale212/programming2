@@ -57,7 +57,7 @@ public class PersonTableApp extends Application {
         staffTable.getColumns().addAll(employeeNumber,firstName, lastName, username, password, email);
         //staffTable.getItems().addAll(dataAccessor.staffList(employeeNumber, firstName, lastName, username, password, email));
       //used to get the items for demo purposes
-       staffTable.getItems().addAll(dataAccessor.staffList(url, url, url, url, url, url));
+       //staffTable.getItems().addAll(dataAccessor.staffList(url, url, url, url, url, url));
        //fx set up
         BorderPane root = new BorderPane();
         root.setCenter(staffTable);
