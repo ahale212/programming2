@@ -23,7 +23,11 @@ import java.util.ResourceBundle;
 
 
 
+
+
 import org.controlsfx.control.PopOver;
+
+
 
 
 
@@ -88,6 +92,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
@@ -97,6 +102,9 @@ public class RevController implements Initializable, ClientCallback {
 	private RMIClient client;
 	
 	@FXML
+	private Rectangle countdown;
+	
+	@FXML // comment
 	private TextArea outputTextArea;
 	
 	@FXML
@@ -107,7 +115,7 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private Button login, UPGRADE, search_database, emergency, Q_view,
-			TRooms_view, urg, semi_urg, non_urg;
+			TRooms_view, urg, semi_urg, non_urg, extend;
 
 	@FXML
 	private Slider respiratory_rate, pulse_rate;
@@ -131,9 +139,12 @@ public class RevController implements Initializable, ClientCallback {
 	PopOver p = new PopOver();
 	PopOver p1 = new PopOver();
 	PopOver p2 = new PopOver();
+	PopOver p3 = new PopOver();
+	
 	
 	Staff staff = new Staff();
 	
+	private final ObservableList<Patient> emergency_room = FXCollections.observableArrayList();
 	private final ObservableList<String> QList = FXCollections.observableArrayList();
 	private final ObservableList<String> trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
@@ -143,6 +154,8 @@ public class RevController implements Initializable, ClientCallback {
 	private final ObservableList medi_condition = FXCollections.observableArrayList();
 	private final ObservableList meds = FXCollections.observableArrayList();
 	private final ObservableList allergy_list = FXCollections.observableArrayList();
+	
+	List<Person> matchingPeople, matchingPeople1;
 
 	/**
 	 * Data Lists:
@@ -157,8 +170,6 @@ public class RevController implements Initializable, ClientCallback {
 	 * The list of Treatment Rooms / On call team
 	 */
 	List<TreatmentFacility> treatmentFacilities = new ArrayList<TreatmentFacility>();
-	
-	
 	
 	private String[] array = new String[10];
 	private String[] array1 = new String[5];
@@ -183,8 +194,9 @@ public class RevController implements Initializable, ClientCallback {
 		labelSliders();
 		loadArrayLists();
 		buttonFunction();
-		search();
+		treatmentRoomEggTimer();
 		
+				
 		try {
 			client = new RMIClient(this);
 			log("Connected to server and registered for updates.");
@@ -192,19 +204,25 @@ public class RevController implements Initializable, ClientCallback {
 			log("Failed to connect to the server.");
 			e.printStackTrace();
 		}
-
 	}
 	
+	private void treatmentRoomEggTimer() {
+		
+		int eggtimer = 1;
+		switch(eggtimer) {
+		case 4: countdown.setHeight(240.0); countdown.setLayoutY(83.0); break;
+		case 3: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
+		case 2: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
+		case 1: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
+		}
+		
+	}
+
 	public void closeButtonAction() {
 		if (client != null) {
 			client.close();
 		}
 		Platform.exit();
-	}
-
-	private void search() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void labelSliders() {
@@ -236,9 +254,13 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		respiratory_rate.setOnMouseClicked(e -> {
+			
+			if (respiratory_rate.getValue() < 0.5 || respiratory_rate.getValue() > 50.5  ) {
 			urg.setDisable(false);
 			urg.setStyle("-fx-base: orange;");
-		});
+			semi_urg.setDisable(true); semi_urg.setStyle(null);
+			non_urg.setDisable(true); non_urg.setStyle(null);
+			}});
 
 		pulse_rate.setLabelFormatter(new StringConverter<Double>() {
 			@Override
@@ -266,9 +288,13 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		pulse_rate.setOnMouseClicked(e -> {
+			
+			if (pulse_rate.getValue() < 0.5 || pulse_rate.getValue() > 50.5  ) {
 			urg.setDisable(false);
 			urg.setStyle("-fx-base: orange;");
-		});
+			semi_urg.setDisable(true); semi_urg.setStyle(null);
+			non_urg.setDisable(true); non_urg.setStyle(null);
+			}});
 
 	}
 
@@ -330,51 +356,18 @@ public class RevController implements Initializable, ClientCallback {
 	
 	private void loadArrayLists() {
 
-		ocu.clear();
+		ocu.clear();				
 
-		/*array[0] = "Jim";
-		array[1] = "Mary";
-		array[2] = "Illy";
-		array[3] = "OMM";
-		array[4] = "B3B4";
-		array[5] = "A";
-		array[6] = "JHSjhd";
-		array[7] = "0987";
-		array[8] = "bn67BNhgg";
-		array[9] = "Kim";
-		*/
-		
-		array1[0] = "JimJonJoe";
-		array1[1] = "JonJoe";
-		array1[2] = "Joe";
-		array1[3] = "JJJoe";
-		
 		onCall[0] = "On Call Unit";
+		ocu.addAll(onCall);
+		on_call_list.setItems(ocu);
 		
-		// Link the observable list of patients in the queue, to the queue ListView
-		queue.setItems(QList);
-		
-		// Link the observable list of treatment rooms to the treatment rooms ListView
-		trList.addAll(array1);
-		trooms.setItems(trList);
-		
-
-		treatmentRoomNum[0] = "Treatment Room 1";
-		treatmentRoomNum[1] = "Treatment Room 2";
-		treatmentRoomNum[2] = "Treatment Room 3";
-		treatmentRoomNum[3] = "Treatment Room 4";
-		treatmentRoomNum[4] = "Treatment Room 5";
+		for (int i = 0; i < treatmentRoomNum.length; i++) {
+			treatmentRoomNum[i] = "Treatment Room "+(i+1);
+		}
 		
 		trno.addAll(treatmentRoomNum);
-
-
-		ocu.addAll(onCall);
-
-
-		treatment_room_list.setItems(trno);
-		on_call_list.setItems(ocu);
-		on_call.setItems(onCallList);
-
+		treatment_room_list.setItems(trno);		
 		
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
@@ -480,33 +473,7 @@ public class RevController implements Initializable, ClientCallback {
 		
 		TRooms_view.setOnAction(e -> {
 			
-			AnchorPane ap3 = new AnchorPane();
-			
-			TableView<Object> tv2 = new TableView<Object>();			
-			
-			
-			Patient pat = new Patient();
-			Person pete = new Person();
-			pete.setFirstName("Pete");
-			pat.setPerson(pete);
-			pat.setUrgency(Urgency.URGENT);
-			ObservableList<Object> o = FXCollections.observableArrayList(pat);
-			o.add(pete);
-			
-			TableColumn person = new TableColumn("Person");			
-			person.setCellValueFactory(new PropertyValueFactory<Object, String>("firstName"));
-			
-			TableColumn Urgency = new TableColumn("Urgency");			
-			Urgency.setCellValueFactory(new PropertyValueFactory<Object, String>("urgency"));
-			
-			TableColumn WaitingTime = new TableColumn("Wait Time");			
-			WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
-			
-			tv2.setItems(o);
-			tv2.getColumns().addAll(person, Urgency, WaitingTime);
-			ap3.getChildren().add(tv2);
-			p2.setContentNode(ap3);
-			p2.show(TRooms_view);
+			//demoTRV();
 			
 		});
 
@@ -599,12 +566,14 @@ public class RevController implements Initializable, ClientCallback {
 
 		emergency.setOnAction(e -> {
 			
+			Patient emergency_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.EMERGENCY);
+			emergency_room.add(emergency_patient);
+			demoTRV(emergency_room);
+			trList.add(emergency_patient.getPatientName());
+			trooms.setItems(trList);
+						
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
-			trList.remove(0);
-			trList.add(3, textfield_Surname.getText() + ", " + textfield_First_Name.getText());
-			TableRow tr1 = new TableRow();
-			ListCell lr1 = new ListCell();
-			
+									
 			try {
 				client.getServer().addPrimaryPatient(displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
 			} catch (Exception e1) {
@@ -616,6 +585,12 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		urg.setOnAction(e -> {
+			
+			Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.URGENT);
+			emergency_room.add(urgent_patient);
+			QList.add(urgent_patient.getPatientName());
+			queue.setItems(QList);
+			
 			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			QList.remove(0);
 			QList.add(0, textfield_Surname.getText() + ", "	+ textfield_First_Name.getText());
@@ -651,6 +626,39 @@ public class RevController implements Initializable, ClientCallback {
 				clearTextFields();
 			}
 		});
+		
+		extend.setOnAction(e -> {p3.show(extend);});
+	}
+
+	private void demoTRV(ObservableList<Patient> o ) {
+				
+		AnchorPane ap3 = new AnchorPane();			
+		TableView<Patient>  treatmentRoomTable = new TableView<Patient>();
+		
+		TableColumn patName = new TableColumn("Patient");			
+		patName.setCellValueFactory(new PropertyValueFactory<Object, String>("patientName"));
+		
+		TableColumn Urgency = new TableColumn("Urgency");			
+		Urgency.setCellValueFactory(new PropertyValueFactory<Object, String>("urgency"));
+		
+		TableColumn WaitingTime = new TableColumn("Wait Time");			
+		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
+		
+		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null), null);
+		o.add(pat);
+		treatmentRoomTable.setItems(o);
+		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
+		ap3.getChildren().add(treatmentRoomTable);
+		p2.setContentNode(ap3);
+		p2.show(TRooms_view);
+		Thread time_out = new Thread();
+		try {
+			time_out.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		p.hide();
 	}
 
 	private void clearSearchFields() {
