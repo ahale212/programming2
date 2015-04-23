@@ -22,11 +22,21 @@ public class Patient implements Comparable<Patient>, Serializable {
 	
 	/**The patient object has a person object - their identity*/
 	Person person;
+	
+	String patientName;
 		
 	public Patient(){
 		waitTime = 0;
 		//symptoms = new ArrayList<String>();
-	}	
+	}
+	
+	public Patient(Person person, Urgency urgency){
+		this.setPerson(person);
+		this.setPatientName(person);
+		this.setUrgency(urgency);
+		waitTime = 0;
+		//symptoms = new ArrayList<String>();
+	}
 
 	public void incrementWaitTime(int difference){
 		this.waitTime += (difference);
@@ -75,6 +85,14 @@ public class Patient implements Comparable<Patient>, Serializable {
 	
 	public boolean getPriority(){
 		return priority;
+	}
+	
+	public String getPatientName() {
+		return patientName;
+	}
+
+	public void setPatientName(Person person) {
+		this.patientName = this.person.getLastName()+", "+this.person.getFirstName();
 	}
 
 	/*
