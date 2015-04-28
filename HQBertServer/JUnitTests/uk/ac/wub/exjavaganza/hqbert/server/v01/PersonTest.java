@@ -7,7 +7,7 @@ import org.junit.Test;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
 
 /**
- * Unit testing for Person class Coverage is 97.1%
+ * Unit testing for Person class 
  * 
  * @author adamhale
  *
