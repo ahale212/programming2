@@ -25,7 +25,11 @@ import java.util.ResourceBundle;
 
 
 
+
+
 import org.controlsfx.control.PopOver;
+
+
 
 
 
@@ -82,6 +86,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -89,6 +94,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -128,6 +134,9 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private CheckBox walk, walk_no;
+	
+	@FXML
+	private Tab triage_tab, tr_tab, stats_tab;
 
 	@FXML
 	private TextField search_NHS_No, search_First_Name, search_Surname,
@@ -140,7 +149,6 @@ public class RevController implements Initializable, ClientCallback {
 	PopOver p1 = new PopOver();
 	PopOver p2 = new PopOver();
 	PopOver p3 = new PopOver();
-	
 	
 	Staff staff = new Staff();
 	
@@ -194,9 +202,10 @@ public class RevController implements Initializable, ClientCallback {
 
 		labelSliders();
 		loadArrayLists();
+		updateQueue();
 		buttonFunction();
 		treatmentRoomEggTimer();
-		
+		toolTime();		
 				
 		try {
 			client = new RMIClient(this);
@@ -205,7 +214,14 @@ public class RevController implements Initializable, ClientCallback {
 			log("Failed to connect to the server.");
 			e.printStackTrace();
 		}
+		search_NHS_No.setOnMouseExited(e -> {
+			if (search_NHS_No.getText().length() == 10) {
+			search_First_Name.setDisable(true);
+			search_database.setDisable(false);
+			} 				
+		});		
 	}
+	
 	
 	private void treatmentRoomEggTimer() {
 		
@@ -215,8 +231,7 @@ public class RevController implements Initializable, ClientCallback {
 		case 3: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
 		case 2: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
 		case 1: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
-		}
-		
+		}		
 	}
 
 	public void closeButtonAction() {
@@ -231,25 +246,18 @@ public class RevController implements Initializable, ClientCallback {
 		respiratory_rate.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
-				if (n < 0.5)
-					return "<10pm";
-				if (n < 50.5)
-					return "10-30pm";
-
-				return ">30pm";
-			}
+				if (n < 0.5) { return "<10pm"; 	}
+				if (n < 50.5) { return "10-30pm"; } 
+				else { return ">30pm";	}
+				}
 
 			@Override
 			public Double fromString(String s) {
 				switch (s) {
-				case "<10pm":
-					return 0d;
-				case "10-30pm":
-					return 1d;
-				case ">30pm":
-					return 2d;
-				default:
-					return 1d;
+				case "<10pm": return 0d;
+				case "10-30pm":	return 1d;
+				case ">30pm": return 2d;
+				default: return 1d;
 				}
 			}
 		});
@@ -296,7 +304,6 @@ public class RevController implements Initializable, ClientCallback {
 			semi_urg.setDisable(true); semi_urg.setStyle(null);
 			non_urg.setDisable(true); non_urg.setStyle(null);
 			}});
-
 	}
 
 	/**
@@ -311,6 +318,8 @@ public class RevController implements Initializable, ClientCallback {
 			// Concatenate the patients first and second name and add them to the observable queue.
 			QList.add(patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName());
 		}
+		
+		queue.setItems(QList);
 	}
 	
 	/**
@@ -349,9 +358,7 @@ public class RevController implements Initializable, ClientCallback {
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
 				} catch (Exception ex) {
 					System.err.println("failed!!!!!!!!!!!!!");
-				}
-			}
-
+				}}
 		}
 	}
 	
@@ -359,6 +366,7 @@ public class RevController implements Initializable, ClientCallback {
 			
 		ocu.add("On Call Unit");
 		on_call_list.setItems(ocu);
+		on_call_list.setTooltip(new Tooltip("On Call Unit"));
 		
 		for (int i = 0; i < treatmentRoomNum.length; i++) {
 			treatmentRoomNum[i] = "Treatment Room "+(i+1);
@@ -379,10 +387,9 @@ public class RevController implements Initializable, ClientCallback {
 
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
-
 	}
 
-	private void buttonFunction() {
+	private void buttonFunction() {		
 		
 		login.setOnAction(e -> {
 
@@ -404,10 +411,8 @@ public class RevController implements Initializable, ClientCallback {
 				@Override
 				public void handle(ActionEvent event) {
 					
-					Staff s1 = new Staff();
-					
-					boolean logMeIn = false;
-					
+					Staff s1 = new Staff();					
+					boolean logMeIn = false;					
 					String _user = tf1.getText();
 					String _pass = tf2.getText();
 					String db_pass = s1.setEmployeePassword(_pass);
@@ -425,8 +430,7 @@ public class RevController implements Initializable, ClientCallback {
 						ex.printStackTrace();
 					
 					if (logMeIn == true){
-					p.hide();
-					
+					p.hide();					
 					}
 				}}});
 			
@@ -464,14 +468,13 @@ public class RevController implements Initializable, ClientCallback {
 			ap2.getChildren().add(tv1);
 			p1.setContentNode(ap2);
 			p1.show(Q_view);
-			*/
-			
+			*/			
 		});
 		
 		TRooms_view.setOnAction(e -> {
 			
-			//demoTRV();
-			
+			p2.show(TRooms_view);
+						
 		});
 
 		search_database.setOnAction(e -> {
@@ -657,7 +660,7 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
 		ap3.getChildren().add(treatmentRoomTable);
 		p2.setContentNode(ap3);
-		p2.show(TRooms_view);
+		
 	}
 	
 	private void demoWRV(ObservableList<Patient> oL ) {
@@ -795,8 +798,6 @@ public class RevController implements Initializable, ClientCallback {
 				updateTreatmentRooms();
 			}
 		});
-		
-
 	}
 
 	@Override
@@ -810,6 +811,40 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		});
 	}
-	
 
+	private void toolTime() {
+		
+		triage_tab.setTooltip(new Tooltip("Search Patient Database and commence triage"));
+		tr_tab.setTooltip(new Tooltip("Display Treatment Room details"));
+		stats_tab.setTooltip(new Tooltip("Display Management System Statistics"));
+		login.setTooltip(new Tooltip("Log in here"));
+		UPGRADE.setTooltip(new Tooltip("Select a Patient in the Queue to Upgrade to EMERGENCY!"));		
+		Q_view.setTooltip(new Tooltip("View Queued Patient Details"));
+		TRooms_view.setTooltip(new Tooltip("View Treatment Room Patient Details"));
+		search_database.setTooltip(new Tooltip("Search NHS DBMS"));
+		tb1.setTooltip(new Tooltip("Patient has BLOCKED AIRWAY!"));
+		tb2.setTooltip(new Tooltip("Patient is NOT BREATHING!"));
+		tb3.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
+		tb4.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
+		tb5.setTooltip(new Tooltip("Patient is INCAPACITATED!"));
+		tb6.setTooltip(new Tooltip("Patient has been EXPOSED TO EXTREME CONDITIONS!"));
+		emergency.setTooltip(new Tooltip("Send Patiently directly to Treatment Room"));
+		urg.setTooltip(new Tooltip("Send Patient to Waiting Room with URGENT priority"));
+		semi_urg.setTooltip(new Tooltip("Send Patient to Waiting Room with SEMI-URGENT priority"));
+		non_urg.setTooltip(new Tooltip("Send Patient to Waiting Room"));
+		extend.setTooltip(new Tooltip("Extend Patient Treatment time"));
+		search_DOB.setTooltip(new Tooltip("Enter D.o.B. in the Format DD/MM/YYYY"));
+		search_First_Name.setTooltip(new Tooltip("Search by Name"));
+		search_NHS_No.setTooltip(new Tooltip("Search by Patient NHS Number"));
+		search_Postcode.setTooltip(new Tooltip("Enter Postcode"));
+		search_Surname.setTooltip(new Tooltip("Search by Name"));
+		search_Telephone_No.setTooltip(new Tooltip("Enter Telephone Number"));	
+		respiratory_rate.setTooltip(new Tooltip("Breaths taken per minute"));
+		pulse_rate.setTooltip(new Tooltip("Heart beats taken per minute"));
+		breathing_yes.setTooltip(new Tooltip("Select option"));
+		walk.setTooltip(new Tooltip("The patient is mobile and stable"));
+		walk_no.setTooltip(new Tooltip("The patient is immobile and requires assistence"));
+		conditions.setTooltip(new Tooltip("Select option"));
+		medication.setTooltip(new Tooltip("Select option"));
+	}
 }

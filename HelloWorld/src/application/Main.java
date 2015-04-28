@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 public class Main extends Application {
 
@@ -34,6 +35,7 @@ public class Main extends Application {
 			BorderPane page = (BorderPane) FXMLLoader.load(Main.class.getResource("TRIAGEv4.fxml"));
 			Scene scene = new Scene(page);
 			primaryStage.setScene(scene);
+			
 			primaryStage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
