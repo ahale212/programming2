@@ -444,11 +444,11 @@ public class RevController implements Initializable, ClientCallback {
 					} catch (RemoteException ex) {
 						System.err.println("Server communication error.");
 						ex.printStackTrace();
-					
+					}
 					if (logMeIn == true){
 					p.hide();					
 					}
-				}}});
+				}});
 			
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
