@@ -18,6 +18,7 @@ public class TreatmentRoom extends TreatmentFacility {
 		super.update(deltaTime);
 	}
 	
+	
 	public void showFacilityInConsole(){
 		int patientWaitTime = (patient != null)? patient.getWaitTime() : 0;
 		String patientUrgency = (patient != null)? patient.getUrgency().toString() : "na";

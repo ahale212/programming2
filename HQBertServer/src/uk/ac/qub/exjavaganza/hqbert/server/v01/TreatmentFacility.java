@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public abstract class TreatmentFacility implements ITreatmentFacility, Serializable {
 	
-	protected ArrayList<StaffMember> staff;
+	protected ArrayList<Staff> staff;
 	protected Patient patient;
 	protected int timeToAvailable;
 	protected int baseOccupancyTime;
@@ -13,10 +13,15 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 
 	public TreatmentFacility(){
 		setTimeToAvailable(0);
+		staff = new ArrayList<Staff>();
 	}
 	
-	public void assignStaff(StaffMember sm){
-		staff.add(sm);
+	public void assignStaff(Staff staffMember){
+		staff.add(staffMember);
+	}
+	
+	public ArrayList<Staff> getStaff(){
+		return this.staff;
 	}
 	
 	public void setTimeToAvailable(int tta){
@@ -37,6 +42,11 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 	public void receivePatient(Patient patient){
 		//Log the patient's arrival in the room and the staff present at the time
 		this.patient = patient;
+		
+		if(patient.getPerson().getFirstName().equalsIgnoreCase("Bobby7")){
+			System.out.println("Bobby7 recieved");
+		}
+		
 		setTimeToAvailable(this.getBaseOccupancyTime());
 
 		Supervisor.INSTANCE.removeFromQueue(patient);

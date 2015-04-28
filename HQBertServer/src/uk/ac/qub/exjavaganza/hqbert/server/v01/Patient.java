@@ -4,29 +4,47 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+/**
+ * Class that holds details pertaining to a patient. Including a Person object that holds
+ * details such as name their NHS number, name, date of birth and address. The class also holds details
+ * about the patients time in the queue, their priority and notes made by doctors.
+ * @author James Thompson
+ * @author Ciaran Molloy
+ * @autior Tom Couchman
+ */
 public class Patient implements Comparable<Patient>, Serializable {
 	/**Urgency assigned by triage*/
-	Urgency urgency;
+	private Urgency urgency;
 	
 	/**A Patient waiting more than a predetermined limit gets priority
 	 * regardless of urgency*/
-	boolean priority;
+	private boolean priority;
 	
 	/**Date (and time) the patient entered the local system*/
-	Date entryDate;
+	private Date entryDate;
 	
 	/**How long since the patient entered the queue
 	 * stored as seconds for future flexibility*/
-	int waitTime;
+	private int waitTime;
 	
 	/**The patient object has a person object - their identity*/
-	Person person;
+	private Person person;
+	
+	/** the concatenated name of the patient */
+	private String patientName;
 		
 	public Patient(){
 		waitTime = 0;
 		//symptoms = new ArrayList<String>();
-	}	
+	}
+	
+	public Patient(Person person, Urgency urgency){
+		this.setPerson(person);
+		this.setPatientName(person);
+		this.setUrgency(urgency);
+		waitTime = 0;
+		//symptoms = new ArrayList<String>();
+	}
 
 	public void incrementWaitTime(int difference){
 		this.waitTime += (difference);
@@ -75,6 +93,22 @@ public class Patient implements Comparable<Patient>, Serializable {
 	
 	public boolean getPriority(){
 		return priority;
+	}
+	
+	public String getPatientName() {
+		return patientName;
+	}
+
+	public void setPatientName(Person person) {
+		this.patientName = this.person.getLastName()+", "+this.person.getFirstName();
+	}
+
+	public Date getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
 	}
 
 	/*
