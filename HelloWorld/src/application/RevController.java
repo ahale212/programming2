@@ -202,6 +202,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		labelSliders();
 		loadArrayLists();
+		runValidSearch();
 		updateQueue();
 		buttonFunction();
 		treatmentRoomEggTimer();
@@ -214,15 +215,30 @@ public class RevController implements Initializable, ClientCallback {
 			log("Failed to connect to the server.");
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private void runValidSearch() {
+		
 		search_NHS_No.setOnMouseExited(e -> {
+			if (search_First_Name.getText().length() >= 1) {
+				search_First_Name.clear();
+			}
 			if (search_NHS_No.getText().length() == 10) {
 			search_First_Name.setDisable(true);
 			search_database.setDisable(false);
 			} 				
-		});		
+		});	
+		
+		search_First_Name.setOnMouseDragExited(e -> {
+			if (search_First_Name.getText().length() >= 1) {
+				search_NHS_No.setDisable(true);
+				search_Surname.setDisable(false);
+				}
+		});
 	}
-	
-	
+
+
 	private void treatmentRoomEggTimer() {
 		
 		int eggtimer = 1;
@@ -461,20 +477,13 @@ public class RevController implements Initializable, ClientCallback {
 		trooms.setItems(trList);
 		
 		Q_view.setOnAction(e -> {
-			/*
-			AnchorPane ap2 = new AnchorPane();
-			TableView tv1 = new TableView();
-			tv1.setItems(QList);
-			ap2.getChildren().add(tv1);
-			p1.setContentNode(ap2);
-			p1.show(Q_view);
-			*/			
+			
+			p1.show(Q_view);				
 		});
 		
 		TRooms_view.setOnAction(e -> {
 			
-			p2.show(TRooms_view);
-						
+			p2.show(TRooms_view);						
 		});
 
 		search_database.setOnAction(e -> {
