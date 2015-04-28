@@ -23,10 +23,11 @@ public class PersonDataAccessor {
 	// establish connection to mySQl
 	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
 	Connection con;
-	PreparedStatement findPatients, findPatientsWithNHSNum;
+	PreparedStatement findPatients, findPatientsWithNHSNum, findPatientsWithOnlyFirstName;
 	// declare vars
 	String findPatientsString = "";
 	String findPatientWithNHSNumString = "";
+	String findPatientWithOnlyFirstNameString = "";
 
 	public PersonDataAccessor(String dbURL, String user, String password)
 			throws SQLException, ClassNotFoundException {
@@ -35,7 +36,7 @@ public class PersonDataAccessor {
 		// connection to database using login name and password
 		con = DriverManager.getConnection(url, "40058483", "VPK7789");
 
-	}// end of PersonDataAccessor method
+	}
 
 	/**
 	 * method to shut down connection
@@ -58,7 +59,13 @@ public class PersonDataAccessor {
 				// execute query
 				ResultSet rs = findPatients
 						.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "' AND last_name = '" + lastName + "'");) {
+			
+			try(Statement findPatientsWithOnlyFirstName = con.prepareStatement(findPatientWithOnlyFirstNameString);
+					ResultSet rs1 = findPatientsWithOnlyFirstName.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "'");){
+			
+			
 			List<Person> personList = new ArrayList<>();
+			//instantiate the String vars to that of the database entry
 			while (rs.next()) {
 				String NHSNum = rs.getString("NHS_number");
 				String title = rs.getString("title");
@@ -82,6 +89,7 @@ public class PersonDataAccessor {
 			}// end of while
 			return personList;
 		}
+			}
 
 	}
 }
