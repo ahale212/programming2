@@ -79,6 +79,37 @@ public enum Supervisor {
 		onCallTeam = null;
 		
 		//Testing
+		runBobbyTest();
+
+		// set up connection to database
+		try {
+			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// set up connection to database
+		try {
+			setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		exit = false;
+	}
+
+	public void startLoop() {
+		while (exit == false) {
+			clock.update();
+		}
+	}
+	
+	public void runBobbyTest(){
 		testPatientNo = 0;
 
 		testUrgencies = new Urgency[] { Urgency.EMERGENCY, Urgency.EMERGENCY,
@@ -108,33 +139,6 @@ public enum Supervisor {
 		staffOnCall.add(drOctopus);
 		staffOnCall.add(nurseBetty);
 		
-
-		// set up connection to database
-		try {
-			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// set up connection to database
-		try {
-			setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		
-		exit = false;
-	}
-
-	public void startLoop() {
-		while (exit == false) {
-			clock.update();
-		}
 	}
 
 	/**
@@ -399,7 +403,11 @@ public enum Supervisor {
 		treatmentFacilities.add(onCallTeam);
 		return true;
 	}
-	
+
+	public void alertOnCall() {
+		// TODO
+	}
+
 	public void extendRoom(int roomIndex) {
 		treatmentFacilities.get(roomIndex).extendTime();
 	}
@@ -448,10 +456,12 @@ public enum Supervisor {
 
 		// If the patient queue is full
 		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
-
-					// Send a message to the on call team informing them that the 
+			// Send a message to the on call team informing them that the 
 			// queue is full.
-	OnCallTeamAlert.onCallTeamQueueCapacity();
+			OnCallTeamAlert.onCallTeamQueueCapacity();
+			// Alert the clients that the queue is full
+			// via the RMI server.
+			server.broadcastQueueFullAlert();
 		}
 
 	}

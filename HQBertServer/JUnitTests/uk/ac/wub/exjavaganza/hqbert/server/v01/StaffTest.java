@@ -8,7 +8,7 @@ import org.junit.Test;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 
 /**
- * Unit tests for Staff coverage is 94.7%
+ * Unit test for class Staff
  * 
  * @author adamhale
  *

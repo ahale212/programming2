@@ -6,9 +6,9 @@ import java.io.Serializable;
  * class for declaring staff and their details. This will be used mostly for the
  * login whereby staff input their details to successfully gain access to the
  * PAS. This will also include password encryption which has been stored in a
- * database alongside their other details. This means that if access
- * to the database is obtained without consent, the stored encryption of the password is what is
- * recorded
+ * database alongside their other details. This means that if access to the
+ * database is obtained without consent, the stored encryption of the password
+ * is what is recorded
  * 
  * @author adamhale
  *
@@ -31,6 +31,7 @@ public class Staff implements Serializable {
 /**
  * default constructor
  */
+
 	public Staff() {
 	}// end of constructor
 
@@ -210,4 +211,5 @@ public class Staff implements Serializable {
 		return this.job;
 	}
 	
-}//end of class
+
+}// end of class
