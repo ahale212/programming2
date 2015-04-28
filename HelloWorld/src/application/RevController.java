@@ -202,6 +202,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		labelSliders();
 		loadArrayLists();
+		runValidSearch();
 		updateQueue();
 		buttonFunction();
 		treatmentRoomEggTimer();
@@ -214,15 +215,30 @@ public class RevController implements Initializable, ClientCallback {
 			log("Failed to connect to the server.");
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private void runValidSearch() {
+		
 		search_NHS_No.setOnMouseExited(e -> {
+			if (search_First_Name.getText().length() >= 1) {
+				search_First_Name.clear();
+			}
 			if (search_NHS_No.getText().length() == 10) {
 			search_First_Name.setDisable(true);
 			search_database.setDisable(false);
 			} 				
-		});		
+		});	
+		
+		search_First_Name.setOnMouseDragExited(e -> {
+			if (search_First_Name.getText().length() >= 1) {
+				search_NHS_No.setDisable(true);
+				search_Surname.setDisable(false);
+				}
+		});
 	}
-	
-	
+
+
 	private void treatmentRoomEggTimer() {
 		
 		int eggtimer = 1;
@@ -428,11 +444,11 @@ public class RevController implements Initializable, ClientCallback {
 					} catch (RemoteException ex) {
 						System.err.println("Server communication error.");
 						ex.printStackTrace();
-					
+					}
 					if (logMeIn == true){
 					p.hide();					
 					}
-				}}});
+				}});
 			
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
@@ -461,20 +477,13 @@ public class RevController implements Initializable, ClientCallback {
 		trooms.setItems(trList);
 		
 		Q_view.setOnAction(e -> {
-			/*
-			AnchorPane ap2 = new AnchorPane();
-			TableView tv1 = new TableView();
-			tv1.setItems(QList);
-			ap2.getChildren().add(tv1);
-			p1.setContentNode(ap2);
-			p1.show(Q_view);
-			*/			
+			
+			p1.show(Q_view);				
 		});
 		
 		TRooms_view.setOnAction(e -> {
 			
-			p2.show(TRooms_view);
-						
+			p2.show(TRooms_view);						
 		});
 
 		search_database.setOnAction(e -> {
@@ -566,7 +575,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		emergency.setOnAction(e -> {
 			
-			Patient emergency_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.EMERGENCY);
+			Patient emergency_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.EMERGENCY);
 			emergency_room.add(emergency_patient);
 			demoTRV(emergency_room);
 			trList.add(emergency_patient.getPatientName());
@@ -586,7 +595,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		urg.setOnAction(e -> {
 			
-			Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.URGENT);
+			Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.URGENT);
 			waiting_room.add(urgent_patient);
 			demoWRV(waiting_room);
 			QList.add(urgent_patient.getPatientName());
@@ -600,7 +609,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		semi_urg.setOnAction(e -> {
 			
-			Patient semi_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.SEMI_URGENT);
+			Patient semi_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.SEMI_URGENT);
 			waiting_room.add(semi_urgent_patient);
 			demoWRV(waiting_room);
 			QList.add(semi_urgent_patient.getPatientName());
@@ -613,7 +622,7 @@ public class RevController implements Initializable, ClientCallback {
 
 		non_urg.setOnAction(e -> {
 			
-			Patient non_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null), Urgency.NON_URGENT);
+			Patient non_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.NON_URGENT);
 			waiting_room.add(non_urgent_patient);
 			demoWRV(waiting_room);
 			QList.add(non_urgent_patient.getPatientName());
@@ -654,7 +663,7 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime = new TableColumn("Wait Time");			
 		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
-		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null), null);
+		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null, null), null);
 		o.add(pat);
 		treatmentRoomTable.setItems(o);
 		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
@@ -677,7 +686,7 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime1 = new TableColumn("Wait Time");			
 		WaitingTime1.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
-		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null), null);
+		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null, null), null);
 		oL.add(pat);
 		waitingRoomTable.setItems(oL);
 		waitingRoomTable.getColumns().addAll(patName1, Urgency1, WaitingTime1);
@@ -846,5 +855,12 @@ public class RevController implements Initializable, ClientCallback {
 		walk_no.setTooltip(new Tooltip("The patient is immobile and requires assistence"));
 		conditions.setTooltip(new Tooltip("Select option"));
 		medication.setTooltip(new Tooltip("Select option"));
+	}
+
+
+	@Override
+	public void alertQueueFull() throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 }

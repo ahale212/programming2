@@ -188,7 +188,7 @@ public enum Supervisor {
 		testPerson.setLastName("Branson" + testPatientNo);
 
 		Patient test = new Patient();
-		test.person = testPerson;
+		test.setPerson(testPerson);
 		test.setUrgency(testUrgencies[testPatientNo]);
 
 		if (testPatientNo >= 7) {
@@ -243,7 +243,7 @@ public enum Supervisor {
 		}
 		// Patient didn't make it to a treatment room - check if they are an
 		// emergency
-		if (patient.urgency == Urgency.EMERGENCY) {
+		if (patient.getUrgency() == Urgency.EMERGENCY) {
 
 			for (int i = 0; i < treatmentFacilities.size(); i++) {
 				TreatmentFacility tf = treatmentFacilities.get(i);
@@ -282,7 +282,7 @@ public enum Supervisor {
 	}
 
 	public void alertOnCall() {
-
+		// TODO
 	}
 
 	public void extendRoom(int roomIndex) {
@@ -334,7 +334,12 @@ public enum Supervisor {
 		// If the patient queue is full
 		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
 
+			// Send a message to the on call team informing them that the 
+			// queue is full.
 			OnCallTeamAlert.onCallTeamQueueCapacity();
+			// Alert the clients that the queue is full
+			// via the RMI server.
+			server.broadcastQueueFullAlert();
 		}
 
 	}
