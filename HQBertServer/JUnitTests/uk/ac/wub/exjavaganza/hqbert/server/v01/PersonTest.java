@@ -21,7 +21,7 @@ public class PersonTest {
 			address, invalidAddress, city, invalidCity, country,
 			invalidCountry, postcode, invalidPostcode, telephone,
 			invalidTelephone, allergies, invalidAllergies, bloodGroup,
-			invalidBloodGroup;
+			invalidBloodGroup, doctorsNotes, invalidDoctorsNotes;
 	int severity, invalidSeverity;
 
 	/**
@@ -44,7 +44,7 @@ public class PersonTest {
 		telephone = "123456789";
 		allergies = "none";
 		bloodGroup = "a+";
-
+		doctorsNotes = "Doctors' notes";
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class PersonTest {
 		// create new object from the Person and fill constructor
 		Person person = new Person(NHSNum, title, firstName, lastName, DOB,
 				address, city, country, postcode, telephone, allergies,
-				bloodGroup);
+				bloodGroup, doctorsNotes);
 		// use assert equals to compare expected and actual values
 		assertEquals(NHSNum, person.getNHSNum());
 		// use assert equals to compare expected and actual values

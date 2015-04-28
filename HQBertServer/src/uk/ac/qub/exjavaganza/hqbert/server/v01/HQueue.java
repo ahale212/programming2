@@ -91,10 +91,10 @@ public class HQueue implements Serializable {
 	 * @param newUrgency : the required new level of urgency for the patient
 	 */
 	public void reAssignUrgency(Patient p, Urgency newUrgency){
-		allSubqueues[p.urgency.getValue()].remove(p);
-		p.urgency = newUrgency;
-		allSubqueues[p.urgency.getValue()].add(p);
-		sortQueue(allSubqueues[p.urgency.getValue()]);
+		allSubqueues[p.getUrgency().getValue()].remove(p);
+		p.setUrgency(newUrgency);
+		allSubqueues[p.getUrgency().getValue()].add(p);
+		sortQueue(allSubqueues[p.getUrgency().getValue()]);
 	}
 	
 	/**Insert a patient in the appropriate sub-queue place and so, correct position in overall queue
@@ -107,7 +107,7 @@ public class HQueue implements Serializable {
 			boolean stop;
 			stop = true;
 		}
-		Urgency urgency = patient.urgency;
+		Urgency urgency = patient.getUrgency();
 		//If they are an emergency, skip the queue and attempt to send for treatment
 		if(urgency == Urgency.EMERGENCY){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
@@ -127,7 +127,7 @@ public class HQueue implements Serializable {
 		}
 		
 		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE
-			|| patient.urgency == null){
+			|| patient.getUrgency() == null){
 			//Log failure
 			return false;
 		}

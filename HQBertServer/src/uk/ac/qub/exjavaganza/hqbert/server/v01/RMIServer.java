@@ -5,6 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,9 +38,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	public void updateClients() {
 		System.out.println("Sending updated queue to clients");
 		
+		Iterator clientIterator = clients.iterator();
+		
 		// Loops through each of the clients in the clients list
-		for (int loop = clients.size() - 1; loop >= 0; loop--) {
-			ClientCallback client = clients.get(loop);
+		while (clientIterator.hasNext()) {
+			ClientCallback client = (ClientCallback)clientIterator.next();
 			
 			try {
 				// calls the update method with the current state of the patients queue
@@ -59,8 +62,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	public void broadcastLog(String log) {
 		
 		// Loops through each of the clients in the clients list
-		for (int loop = clients.size() - 1; loop >= 0; loop--) {
-			ClientCallback client = clients.get(loop);
+		for (ClientCallback client : clients) {		
 			
 			try {
 				client.log(log);
@@ -70,6 +72,22 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			
 		}
 		
+	}
+	
+	/**
+	 * Inform the clients that the queue is full
+	 */
+	public void broadcastQueueFullAlert() {
+		
+		// Loops through each of the clients in the clients list
+		for (ClientCallback client : clients) {			
+			try {
+				// Alert the client that the queue is full
+				client.alertQueueFull();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -186,6 +204,17 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		patient.setPriority(false);
 		
 		Supervisor.INSTANCE.admitPatient(patient);
+	}
+
+	@Override
+	public void updateDoctorsNotes(String nhsNumber, String doctorsNotes)
+			throws RemoteException {
+		
+	}
+
+	@Override
+	public void extendTreatmentTime(int treatmentRoom) throws RemoteException {
+		
 	}
 	
 }

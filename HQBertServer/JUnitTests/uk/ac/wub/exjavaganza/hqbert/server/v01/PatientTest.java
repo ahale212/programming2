@@ -36,7 +36,7 @@ public class PatientTest {
 
 		person = new Person("1010101010", "Mr", "Alan", "Simms", "12.06.89",
 				"123 Main Street", "Belfast", "UK", "BT56 7TE", "0712345678",
-				"Yeast", "A+");
+				"Yeast", "A+","Doctors' notes");
 		
 		patientName = "Simms, Alan";
 		
