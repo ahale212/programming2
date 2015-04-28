@@ -72,7 +72,7 @@ public class PersonDataAccessor {
 				String telephone = rs.getString("telephone");
 				String allergies = rs.getString("known_allergies");
 				String bloodGroup = rs.getString("blood_group");
-				String doctorsNotes = ""; //rs.getString("doctors_notes");
+				String doctorsNotes = rs.getString("doctors_notes");
 				
 				Person person = new Person(NHSNum, title, lfirstName,
 						llastName, DOB, address, city, country, postcode,
