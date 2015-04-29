@@ -74,7 +74,7 @@ public class RevController implements Initializable, ClientCallback {
 	private TextArea outputTextArea;
 	
 	@FXML
-	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6;
+	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6, server_check;
 
 	@FXML
 	private ListView queue, trooms, treatment_room_list, on_call_list, on_call;
@@ -882,8 +882,12 @@ public class RevController implements Initializable, ClientCallback {
 			public void run() {
 				if (accessible) {
 					outputTextArea.appendText("Server accessible\n");
+					server_check.setText("Server Connected");
+					server_check.setStyle("-fx-base: green;");
 				} else {
 					outputTextArea.appendText("Server inaccessible\n");
+					server_check.setText("Error Connecting to Server");
+					server_check.setStyle("-fx-base: red;");
 				}
 			}
 		});
