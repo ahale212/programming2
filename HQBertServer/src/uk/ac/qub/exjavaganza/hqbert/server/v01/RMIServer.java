@@ -1,7 +1,13 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.RemoteException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
+import java.rmi.server.RMISocketFactory;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.SecureRandom;
@@ -14,6 +20,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
+
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
+
+import sun.security.ssl.SSLSocketFactoryImpl;
 
 import com.sun.jndi.url.rmi.rmiURLContext;
 import com.sun.security.ntlm.Client;
@@ -40,6 +51,21 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	public RMIServer() throws RemoteException {
 		super();
 
+		init();
+		
+	}
+	public RMIServer(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
+		super(port, csf, ssf);
+		
+		init();
+		
+	}
+	
+	
+	/**
+	 * Initialise the server
+	 */
+	private void init() {
 		// Initialises the clients list
 		clients = new HashMap<String, ClientCallback>();
 	}
@@ -303,7 +329,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 *            The id of the client sending the ping.
 	 */
 	@Override
-	public boolean ping(String clientID) throws RemoteException {
+	public boolean heartbeat(String clientID) throws RemoteException {
 		// Check to see if the client is in the clients list
 		if (clients.containsKey(clientID)) {
 			// if the client is registered return true
