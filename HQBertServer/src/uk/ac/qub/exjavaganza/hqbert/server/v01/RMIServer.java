@@ -312,7 +312,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 
 	@Override
-	public void extendTreatmentTime(TreatmentFacility facility)
+	public void extendTreatmentTime(TreatmentFacility facility, ExtensionReason reason)
 			throws RemoteException {
 
 		// Call the extend treatment room method on the supervisor.

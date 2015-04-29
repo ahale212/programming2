@@ -98,6 +98,6 @@ public interface RemoteServer extends Remote {
 	 * 
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void extendTreatmentTime(TreatmentFacility facility) throws RemoteException;
+	public void extendTreatmentTime(TreatmentFacility facility, ExtensionReason reason) throws RemoteException;
 }
 
