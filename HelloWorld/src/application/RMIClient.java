@@ -14,6 +14,7 @@ import java.util.TimerTask;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer.ConnectionState;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 
 /**
@@ -48,7 +49,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	/**
 	 * Boolean to hold the current status of the server.
 	 */
-	private boolean serverAccessible;
+	private ConnectionState serverAccessible;
 
 	/**
 	 * The ID assigned by the remote server that allows the server to identify the client
@@ -92,7 +93,9 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws NotBoundException 		The name looked up in the call to Naming.lookup() has no associated binding
 	 */
 	public void initConnection() throws RemoteException, MalformedURLException, NotBoundException {
-
+		serverAccessible = ConnectionState.CONNECTING;
+		controller.serverStatusChanged(serverAccessible);
+		
 		// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
 		server = (RemoteServer)Naming.lookup("rmi://" + serverAddress + ":" + serverPort + "/HQBertServer");
 		
@@ -101,7 +104,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		clientID = server.register(this);
 		
 		// The user has registered successfully, so set serverAccessible to true
-		serverAccessible = true;
+		serverAccessible = ConnectionState.CONNECTED;
 		controller.serverStatusChanged(serverAccessible);
 	}
 
@@ -113,12 +116,14 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		public void run() {
 			
 			// Boolean to hold whether or not the server is running
-			boolean accessible = true;
+			ConnectionState accessible;
 			// If the server is no null
 			if (server != null) {
 				try {
 					// Ping the server
-					boolean pingResult = server.ping(clientID);
+					boolean pingResult = server.heartbeat(clientID);
+					// If no error was thrown the server is connected
+					accessible = ConnectionState.CONNECTED;
 					// A result of false means that the client is not registered
 					if (pingResult == false) {
 						System.out.println("Server accessible but client not registered. Re-registering...");
@@ -128,10 +133,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 				} catch (RemoteException e) {
 					System.err.println("Server not accessible.");
 					// Communication with the server has failed, so set running to false;
-					accessible = false;
+					accessible = ConnectionState.NOT_CONNECTED;
 				}
 			} else { // else if the server is null, set accessible to false
-				accessible = false;
+				accessible = ConnectionState.NOT_CONNECTED;
 			}
 			
 			// If the status has changed since last check, inform the controller
@@ -142,12 +147,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			serverAccessible = accessible;
 			
 			// I accessible is false, try to reconnect
-			if (accessible == false) {
+			if (accessible == ConnectionState.NOT_CONNECTED) {
 				try {
 					// Attempt a re-connection
 					initConnection();
-					// If the connection was successful, accesible is true;
-					accessible = true;
 				} catch (RemoteException | MalformedURLException
 						| NotBoundException e1) {
 				}

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
@@ -19,19 +22,22 @@ public enum Supervisor {
 
 	public final int MAX_QUEUE_SIZE = 5;
 	public final int MAX_WAIT_TIME = 30;
-	public final int MAX_OVERDUE_PATIENTS = 3;
+	public final int PRIORITY_WAIT_TIME = 25;
+	public final int MAX_OVERDUE_PATIENTS = 2
+			;
 	public final int BASE_UPDATE_INTERVAL = 1;
 	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
-	public final int MAX_TREATMENT_ROOMS = 4;
+	
+	public final int MAX_TREATMENT_ROOMS = 3;
 	public final int ONCALL_TEAM_DOCTORS = 2;
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
 	public final float TIME_MULTI = 60;
 
-	private final int serverPort = 1099;
+	private int serverPort = 1099;
 
 	private HQueue hQueue;
 	private Clock clock;
@@ -43,6 +49,9 @@ public enum Supervisor {
 	private RMIServer server;
 	private Logger logger;
 
+	//whether too many patients have been waiting too long
+	private boolean waitTimesUnacceptable;
+	
 	// Test stuff
 	private int testPatientNo;
 	private Urgency[] testUrgencies;
@@ -62,11 +71,18 @@ public enum Supervisor {
 	private Supervisor() {
 	}
 
-	public void init() {
+	public void init(int serverPort, boolean useSSL) {
+		
+		// If server port has been passed in set it, else leave it as its default value
+		if (serverPort != 0) {
+			this.serverPort = serverPort;
+		}
+		
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
-		startServer();
+		// Start the server to allow clients to connect
+		startServer(useSSL);
 
 		logger = Logger.getLogger(Supervisor.class);
 
@@ -81,6 +97,7 @@ public enum Supervisor {
 		
 		//Testing
 		runBobbyTest();
+		fakeOnCallTeam();
 
 		// set up connection to database
 		try {
@@ -100,6 +117,8 @@ public enum Supervisor {
 			e.printStackTrace();
 		}
 		
+		waitTimesUnacceptable = false;
+
 		try {
 			List<Staff> staff = getStaff();
 			System.out.println(staff);
@@ -125,11 +144,17 @@ public enum Supervisor {
 				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
 				Urgency.EMERGENCY, Urgency.URGENT, Urgency.SEMI_URGENT,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
-				Urgency.SEMI_URGENT };
+				Urgency.SEMI_URGENT, Urgency.EMERGENCY, Urgency.EMERGENCY,
+				Urgency.NON_URGENT, Urgency.NON_URGENT, Urgency.NON_URGENT,
+				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
+				Urgency.EMERGENCY, Urgency.URGENT, Urgency.EMERGENCY,
+				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
+				Urgency.EMERGENCY };
 
 		extensions = new int[] { 0, 1, 2 };
+	}
 
-		
+	public void fakeOnCallTeam(){
 		Staff drOctopus = new Staff("docOc", "8ArmsBaby");
 		drOctopus.setJob(Job.DOCTOR);
 		Staff drDoom = new Staff("drDoom", "hahaha");
@@ -146,14 +171,13 @@ public enum Supervisor {
 		staffOnCall.add(nurseJohn);
 		staffOnCall.add(drOctopus);
 		staffOnCall.add(nurseBetty);
-		
 	}
-
+	
 	/**
 	 * Starts the RMI server so that clients can connect and communicate with
 	 * the back end.
 	 */
-	public void startServer() {
+	public void startServer(boolean useSSL) {
 		try {
 
 			// Creates a registry that accepts requests on the port specified in
@@ -161,7 +185,14 @@ public enum Supervisor {
 			LocateRegistry.createRegistry(serverPort);
 
 			// Instantiate the RMI server
-			server = new RMIServer();
+			if (useSSL) {
+				// If set to use SSL use pass the SSlRMISocketFactory into the constructor
+				server = new RMIServer(serverPort, new SslRMIClientSocketFactory(),
+		                 new SslRMIServerSocketFactory(null, null, true));
+			} else {
+				// If not set to use SSL use the default constructor
+				server = new RMIServer();
+			}
 			// Bind the server object to the name it will be accessible by on
 			// the client side.
 			Naming.rebind("HQBertServer", server);
@@ -208,7 +239,7 @@ public enum Supervisor {
 		}
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
-		manageOnCall();
+		manageOnCallAndAlerts();
 		
 		
 		//update the treatment facilities (rooms and on-call if on-site)
@@ -249,11 +280,6 @@ public enum Supervisor {
 		Patient test = new Patient();
 		test.setPerson(testPerson);
 		test.setUrgency(testUrgencies[testPatientNo]);
-
-		if (testPatientNo >= 7) {
-			boolean stop;
-			stop = true;
-		}
 
 		admitPatient(test);
 		testPatientNo++;
@@ -341,9 +367,11 @@ public enum Supervisor {
 						}
 					}
 				}else{
-					//Log Stuff: Full of emergencies - send this emergency away
-					System.out.println("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
-				}
+					if(onCallTeam != null){
+						//Log Stuff: Full of emergencies - send this emergency away
+						System.out.println("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
+					}
+				}					
 			}
 			
 			//Still didn't make it - try onCall
@@ -370,17 +398,51 @@ public enum Supervisor {
 		return success;
 	}
 
-	public void manageOnCall(){
-		//check if queue at max and alert on-call
-		if(hQueue.getPQ().size() == MAX_QUEUE_SIZE && treatmentFacilities.size() == MAX_TREATMENT_ROOMS){
+	public void manageOnCallAndAlerts(){
+		if(checkQueueFull() == true && onCallTeam == null){
 			assembleOnCall();
+			System.out.println("\tONCALL: full queue - ASSEMBLE!");
+			// Alert the clients that the queue is full
+			// via the RMI server.
+			
 		}
 		
-		if(hQueue.getPQ().size() < MAX_QUEUE_SIZE && onCallTeam != null && onCallTeam.getPatient() == null){
-			//Send the onCall team away
+		
+		if(checkWaitingTimes() == true && waitTimesUnacceptable == false){
+			waitTimesUnacceptable = false;
+			if(ALERTS_ACTIVE == true){
+				ManagerAlert.emailWaitingTimeAlert();
+				ManagerAlert.smsWaitingTimeAlert();
+			}
 		}
 	}
 	
+	public void onCallTryLeave(){
+		boolean canLeave = false;
+		if(checkQueueFull() == false){
+			for(int i = 0; i < MAX_TREATMENT_ROOMS; i++){
+				if(treatmentFacilities.get(i).patient == null){
+					canLeave = true;
+					break;
+				}else if(treatmentFacilities.get(i).patient.getUrgency() != Urgency.EMERGENCY){
+					canLeave = true;
+					break;
+				}
+			}
+		}
+		if(canLeave == true){
+			onCallGoAway();
+		}
+	}
+	
+	public void onCallGoAway(){
+		for(int i = 0; i < onCallTeam.getStaff().size(); i++){
+			activeOnCallStaff.add(onCallTeam.getStaff().get(i));
+		}
+		treatmentFacilities.remove(onCallTeam);
+		System.out.println("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
+		onCallTeam = null;
+	}
 	
 	/**
 	 * send messages to staff on the onCall list and assemble an onCall team
@@ -420,29 +482,9 @@ public enum Supervisor {
 		return true;
 	}
 
-	public void alertOnCall() {
-		// TODO
-	}
 
 	public void extendRoom(int roomIndex) {
 		treatmentFacilities.get(roomIndex).extendTime();
-	}
-
-	private boolean checkRoomsFull() {
-		boolean roomsFull = true;
-
-		for (TreatmentFacility facility : treatmentFacilities) {
-			if (facility.getPatient() == null) {
-				roomsFull = false;
-			}
-		}
-
-		return roomsFull;
-
-		/*
-		 * if (roomsFull){ System.out.println("Sending capacity messages");
-		 * ManagerAlert.emailCapacityAlert(); ManagerAlert.smsCapacityAlert(); }
-		 */
 	}
 
 	private boolean checkWaitingTimes() {
@@ -468,16 +510,12 @@ public enum Supervisor {
 		 */
 	}
 
-	private void checkQueueFull() {
-
+	private boolean checkQueueFull() {
 		// If the patient queue is full
 		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
-			// Send a message to the on call team informing them that the 
-			// queue is full.
-			OnCallTeamAlert.onCallTeamQueueCapacity();
-			// Alert the clients that the queue is full
-			// via the RMI server.
-			server.broadcastQueueFullAlert();
+			return true;
+		}else{
+			return false;
 		}
 
 	}

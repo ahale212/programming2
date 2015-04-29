@@ -806,6 +806,7 @@ public class RevController implements Initializable, ClientCallback {
 	 * Display a person in the patient triage tab.
 =======
 	 * 
+>>>>>>> branch 'master' of https://github.com/ahale212/programming2
 	 * @param displayedPerson
 	 */
 	public void displayPerson(Person displayedPerson) {

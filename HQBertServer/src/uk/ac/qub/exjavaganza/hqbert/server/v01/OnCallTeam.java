@@ -13,11 +13,6 @@ public class OnCallTeam extends TreatmentFacility {
 	@Override
 	public void update(int deltaTime) {
 		super.update(deltaTime);
-		
-		//Maybe onCall team should go away
-		if(patient == null){
-			
-		}
 	}
 	
 	@Override
@@ -28,12 +23,9 @@ public class OnCallTeam extends TreatmentFacility {
 	@Override
 	public void DischargePatient(){
 		super.DischargePatient();
+		Supervisor.INSTANCE.onCallTryLeave();
 	}
 	
-	public void goAway(){
-		
-	}
-
 	@Override
 	public void showFacilityInConsole() {
 		
@@ -42,6 +34,4 @@ public class OnCallTeam extends TreatmentFacility {
 		String patientName = (patient!=null)? patient.getPerson().getFirstName() : "None";
 		System.out.println("On-call Team : "+"\tPatient : "+patientName+"\tUrgency : "+patientUrgency+"\tTime to available : "+timeToAvailable+"\tPatientWaitTime : "+patientWaitTime);
 	}
-	
-
 }
