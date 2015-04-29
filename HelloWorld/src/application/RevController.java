@@ -18,6 +18,7 @@ import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 import com.sun.prism.paint.Color;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Job;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
@@ -82,7 +83,8 @@ public class RevController implements Initializable, ClientCallback {
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6, server_check;
 
 	@FXML
-	private ListView queue, trooms, treatment_room_list, on_call_list, on_call;
+	private ListView queue, trooms, treatment_room_list, on_call_list, on_call,
+			doctor_on_duty;
 
 	@FXML
 	private Button login, UPGRADE, search_database, emergency, Q_view,
@@ -108,7 +110,8 @@ public class RevController implements Initializable, ClientCallback {
 			search_DOB, search_Postcode, search_Telephone_No,
 			textfield_NHS_Num, textfield_Postcode, textfield_Title,
 			textfield_First_Name, textfield_Surname, textfield_DOB,
-			textfield_Address, textfield_Telephone, textfield_Blood_Group;
+			textfield_Address, textfield_Telephone, textfield_Blood_Group,
+			triage_nurse_on_duty, admin;
 
 	PopOver p = new PopOver();
 	PopOver p1 = new PopOver();
@@ -486,9 +489,38 @@ public class RevController implements Initializable, ClientCallback {
 					if (logMeIn == true){
 					p.hide();			
 					Notifications.create().title("Logged in").text("F2D!").showConfirm();
+					if (logMeIn == true) {
+
+						staff_LastName = matchingPeople1.get(0).getLastName();
+						staff_FirstName = matchingPeople1.get(0).getFirstName();
+
+						Job jobs = Job.values()[4];
+						switch (jobs) {
+						case TRIAGE_NURSE:
+							triage_nurse_on_duty.setText(staff_LastName + ","
+									+ staff_FirstName);
+							break;
+						case DOCTOR:
+							;
+							break;
+						case ADMIN:
+							admin.setText(staff_LastName + ","
+									+ staff_FirstName);
+							break;
+						case ON_CALL:
+							;
+							break;
+						default:
+							;
+
+						}
+
+						p.hide();
+
 					}
-				}});
-			
+				}
+			});
+
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
 			ap1.getChildren().add(tf1);
