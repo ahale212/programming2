@@ -349,8 +349,6 @@ public enum Supervisor {
 			//if onCall was already here, they would have been checked for displacable patients already
 		}
 		
-		
-		
 		return success;
 	}
 

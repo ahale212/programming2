@@ -48,10 +48,6 @@ public class Patient implements Comparable<Patient>, Serializable {
 
 	public void incrementWaitTime(int difference){
 		this.waitTime += (difference);
-		checkPriority();
-	}
-	
-	private void checkPriority(){
 		if(waitTime > Supervisor.INSTANCE.MAX_WAIT_TIME){
 			setPriority(true);
 		}
@@ -111,9 +107,4 @@ public class Patient implements Comparable<Patient>, Serializable {
 		this.entryDate = entryDate;
 	}
 
-	/*
-	public ArrayList<String> getSymptoms(){
-		return symptoms;
-	}
-	*/
 }

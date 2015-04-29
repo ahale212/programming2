@@ -75,6 +75,7 @@ public interface RemoteServer extends Remote {
 	 */
 	public List<Staff> searchStaffByDetails(String username, String password) throws RemoteException;
 	
+	
 	/**
 	 * 
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
