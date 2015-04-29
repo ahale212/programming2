@@ -26,6 +26,7 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,6 +61,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
@@ -71,7 +73,7 @@ public class RevController implements Initializable, ClientCallback {
 	ToolBar toolbar_left;
 	
 	@FXML
-	MenuItem settings;
+	MenuItem settings, close_system;
 	
 	@FXML
 	private Rectangle countdown;
@@ -166,6 +168,18 @@ public class RevController implements Initializable, ClientCallback {
 	private Person displayedPerson;
 	private List<Person> search_results;
 	
+	
+	
+	@Override
+	protected void finalize() throws Throwable {
+		
+		if (client != null) {
+			client.close();
+		}
+		
+		super.finalize();
+	}
+
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
@@ -255,15 +269,6 @@ public class RevController implements Initializable, ClientCallback {
 		}		
 	}
 
-	/**
-	 * turns off server with control action
-	 */
-	public void closeButtonAction() {
-		if (client != null) {
-			client.close();
-		}
-		Platform.exit();
-	}
 
 	/**
 	 * adds tags to slider controls
@@ -417,7 +422,27 @@ public class RevController implements Initializable, ClientCallback {
 	 * Controller method to set button functionality
 	 * uses lambda expression to handle events (e->)
 	 */
-	private void buttonFunction() {		
+	private void buttonFunction() {	
+		
+		close_system.setOnAction( e -> {
+			
+			/*try {
+
+					this.finalize();
+
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
+			Platform.exit();
+			
+			
+			//Stage test = (Stage)allergy.getScene().getWindow();
+			
+			//View window = (View)this;*
+			//window.getScene();
+			
+		});
 		
 		settings.setOnAction(e -> {
 			Stage settings_stage = new Stage();
@@ -425,7 +450,8 @@ public class RevController implements Initializable, ClientCallback {
 			//VBox configurations_settings = new VBox();
 			Label plus_trs = new Label("Set Amount of Treatment Roooms");
 			TextField set_no_trs = new TextField();
-			Button save_no_trs = new Button();
+			set_no_trs.setPromptText("1-10");
+			Button save_no_trs = new Button("Set");
 			set_no_trs.setLayoutY(25.0);	
 			save_no_trs.setLayoutY(52.0);
 			
@@ -433,8 +459,14 @@ public class RevController implements Initializable, ClientCallback {
 
 				@Override
 				public void handle(ActionEvent event) {
-				if (set_no_trs.getText().toString().equalsIgnoreCase("10")) {
-					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").showError();
+					Integer i = (Integer.parseInt(set_no_trs.getText().toString()));
+					int a = i;
+				if (i < 0)  {
+					Notifications.create().title("Not Enough Treatment Rooms added").text("Please set a number between 1-10").darkStyle().showError();
+				} else if (i > 10) {
+					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").darkStyle().showError();
+				} else {
+					settings_stage.close();
 				}
 				}});
 			
@@ -984,6 +1016,8 @@ public class RevController implements Initializable, ClientCallback {
 					outputTextArea.appendText("Server inaccessible\n");
 					server_check.setText("Error Connecting to Server");
 					server_check.setStyle("-fx-base: red;");
+					server_check.setSelected(false);
+					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
 				}
 			}
 		});

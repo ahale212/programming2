@@ -17,7 +17,7 @@
             <items>
             <MenuItem mnemonicParsing="false" text="Open" />
             <SeparatorMenuItem />
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="close_system" mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -28,7 +28,7 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu  mnemonicParsing="false" text="Configuration">
+          <Menu fx:id="configurations" mnemonicParsing="false" text="Configuration">
             <items>
               <MenuItem fx:id="settings" mnemonicParsing="false" text="Settings" />
             </items>
