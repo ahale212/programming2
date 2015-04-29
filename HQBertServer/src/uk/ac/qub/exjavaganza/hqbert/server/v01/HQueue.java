@@ -91,10 +91,10 @@ public class HQueue implements Serializable {
 	 * @param newUrgency : the required new level of urgency for the patient
 	 */
 	public void reAssignUrgency(Patient p, Urgency newUrgency){
-		allSubqueues[p.urgency.getValue()].remove(p);
-		p.urgency = newUrgency;
-		allSubqueues[p.urgency.getValue()].add(p);
-		sortQueue(allSubqueues[p.urgency.getValue()]);
+		allSubqueues[p.getUrgency().getValue()].remove(p);
+		p.setUrgency(newUrgency); 
+		allSubqueues[p.getUrgency().getValue()].add(p);
+		sortQueue(allSubqueues[p.getUrgency().getValue()]);
 	}
 	
 	/**Insert a patient in the appropriate sub-queue place and so, correct position in overall queue
@@ -103,31 +103,35 @@ public class HQueue implements Serializable {
 	 * @return
 	 */
 	public boolean insert(Patient patient){
-		if(patient.getPerson().getFirstName().equalsIgnoreCase("Bobby12")){
-			boolean stop;
-			stop = true;
-		}
-		Urgency urgency = patient.urgency;
+		Urgency urgency = patient.getUrgency();
 		//If they are an emergency, skip the queue and attempt to send for treatment
 		if(urgency == Urgency.EMERGENCY){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
 				//Check if the onCall team is on-site
-				if(Supervisor.INSTANCE.getTreatmentFacilities().size() > Supervisor.INSTANCE.MAX_TREATMENT_ROOMS){
+				if(Supervisor.INSTANCE.getOncallTeam() != null){
 					//on-call active already, send this patient away
+					//log details
+					return false;
 				}else{
-					//Alert the on-call team, and keep this patient in the emergency queue until they arrive
-					//Supervisor.INSTANCE.alertOnCall();
-					emergency.add(patient);
-					//buildPQ();
+					//Alert the on-call team, "send" them this patient
+					if(Supervisor.INSTANCE.assembleOnCall()==true){
+						if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
+							//This call should snd the patient to the onCall team
+							return true;
+						}else{
+							//Something went wrong - log details
+							return false;
+						}
+					}
 				}
 				return false;
 			}
 		}
 		
 		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE
-			|| patient.urgency == null){
+			|| patient.getUrgency() == null){
 			//Log failure
 			return false;
 		}
@@ -290,7 +294,11 @@ public class HQueue implements Serializable {
 		Patient displacablePatient = null;
 		
 		sortDisplacable();
-		displacablePatient = displacable.removeLast();
+		try{
+			displacablePatient = displacable.removeLast();
+		}catch(Exception e){
+			System.out.println("No one displaceable");
+		}
 		initDisplacable();
 		
 		return displacablePatient;

@@ -28,4 +28,12 @@ public interface ClientCallback extends Remote {
 	 */
 	public void log(String log) throws RemoteException;
 	
+	/**
+	 * Informs the client that the queue is full
+	 * @throws RemoteException
+	 */
+	public void alertQueueFull() throws RemoteException;
+	
+	
+	
 }

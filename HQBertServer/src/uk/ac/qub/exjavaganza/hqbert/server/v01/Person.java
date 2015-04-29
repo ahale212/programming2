@@ -3,6 +3,7 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.LinkedList;
+
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -10,9 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
  * class for declaring a person and their details. This will be used to display
  * the details from the database when they are brought from the front end to the
  * back end
- * 
- * 
- *
  */
 public class Person implements Serializable {
 
@@ -37,11 +35,12 @@ public class Person implements Serializable {
 	 * @param telephone
 	 * @param allergies
 	 * @param bloodGroup
+	 * @param doctorsNotes
 	 */
 	public Person(String NHSNum, String title, String firstName,
 			String lastName, String DOB, String address, String city,
 			String country, String postcode, String telephone,
-			String allergies, String bloodGroup) {
+			String allergies, String bloodGroup, String doctorsNotes) {
 		
 		setFirstName(firstName);
 		setLastName(lastName);
@@ -55,6 +54,7 @@ public class Person implements Serializable {
 		setTelephone(telephone);
 		setAllergies(allergies);
 		setBloodGroup(bloodGroup);
+		setDoctorsNotes(doctorsNotes);
 	}
 
 	/**
@@ -105,6 +105,10 @@ public class Person implements Serializable {
 	 * private var for blood group
 	 */
 	private String bloodGroup;
+	/** 
+	 * Private bar storing notes that have been made about the patient by doctors 
+	 */
+	private String doctorsNotes;
 
 	/**
 	 * getter for nhs number
@@ -321,6 +325,14 @@ public class Person implements Serializable {
 	 */
 	public void setBloodGroup(String bloodGroup) {
 		this.bloodGroup = bloodGroup;
+	}
+
+	public String getDoctorsNotes() {
+		return doctorsNotes;
+	}
+
+	public void setDoctorsNotes(String doctorsNotes) {
+		this.doctorsNotes = doctorsNotes;
 	}
 
 

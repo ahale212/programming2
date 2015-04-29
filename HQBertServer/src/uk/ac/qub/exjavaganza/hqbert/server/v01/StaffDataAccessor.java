@@ -16,12 +16,28 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
  *
  */
 public class StaffDataAccessor {
-
-	Staff staff = new Staff();
 	
+	/**
+	 * constant for the SQL driver 
+	 */
+	public static final String DRIVER = "com.mysql.jdbc.Driver";
+	/**
+	 * URL for the SQL database
+	 */
+	public static final String URL = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	/**
+	 * username for the SQL database
+	 */
+	public static final String USERNAME = "40058483";
+	/**
+	 * password for the SQL database
+	 */
+	public static final String PASSWORD = "VPK7789";
+	
+	Staff staff = new Staff();
 
 	// establish connection to mySQl
-	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+;
 	Connection con;
 	PreparedStatement findStaff;
 	// declare var
@@ -30,11 +46,11 @@ public class StaffDataAccessor {
 	public StaffDataAccessor(String dbURL, String user, String password)
 			throws SQLException, ClassNotFoundException {
 		// driver name
-		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER);
 		// connection to database using login name and password
-		con = DriverManager.getConnection(url, "40058483", "VPK7789");
+		con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
-	}//end of staffDataAccessor method
+	}
 
 	/**
 	 * method to shut down connection
@@ -45,29 +61,29 @@ public class StaffDataAccessor {
 		if (con != null) {
 			con.close();
 		}
-	}//end of shut down method
+	}// end of shut down method
 
-	//create a new list for staff
-	List<Staff> staffList(String username,  String password) throws SQLException {
+	// create a new list for staff
+	List<Staff> staffList(String username, String password) throws SQLException {
 		// start of try to initiate query statement
 		try (Statement findStaff = con.prepareStatement(findStaffString);
 				// execute query
-			ResultSet rs1 = findStaff.executeQuery("SELECT * FROM staff WHERE Employee_username = '" + username + "' AND Employee_Password = '" + password + "'");) {
+				ResultSet rs1 = findStaff.executeQuery("SELECT * FROM staff WHERE Employee_username = '"+ username+ "' AND Employee_Password = '"+ password + "'");) {
 			List<Staff> staffList = new ArrayList<>();
 			while (rs1.next()) {
-				//String EmployeeNumber = rs.getString("Employee_Number");
-				//String FirstName = rs.getString("Employee_first_name");
-				//String LastName = rs.getString("Employee_last_name");
+				// String EmployeeNumber = rs.getString("Employee_Number");
+				// String FirstName = rs.getString("Employee_first_name");
+				// String LastName = rs.getString("Employee_last_name");
 				String Username = rs1.getString("Employee_username");
 				String Password = rs1.getString("Employee_Password");
-				//String Email = rs.getString("Employee_Email");
+				// String Email = rs.getString("Employee_Email");
 
 				Staff staff = new Staff(Username, Password);
 				staffList.add(staff);
 			}
-			//return the stafflist
+			// return the stafflist
 			return staffList;
-					
+
+		}
 	}
-}
-}//end of class
+}// end of class

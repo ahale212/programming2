@@ -115,4 +115,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		return this.server;
 	}
 
+	@Override
+	public void alertQueueFull() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
