@@ -348,7 +348,7 @@ public class RevController implements Initializable, ClientCallback {
 					// Add the patients name to the observable array in the correct position for the room they're in.
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
 				} catch (Exception ex) {
-					System.err.println("failed!!!!!!!!!!!!!");
+					System.err.println("failed.");
 				}}
 		}
 	}

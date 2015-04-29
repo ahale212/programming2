@@ -533,4 +533,32 @@ public enum Supervisor {
 		return this.onCallTeam;
 	}
 
+	
+	/**
+	 * Find a person by nhsNumber and update their doctors notes.
+	 */
+	public void updatePatientNotes(String nhsNumber, String doctorsNotes) {
+		
+		// Loop through the various facilities to find the patient
+		for (TreatmentFacility facility : treatmentFacilities) {
+			Person person = facility.patient.getPerson();
+			if (person.getNHSNum().equals(nhsNumber)) {
+				person.setDoctorsNotes(doctorsNotes);
+			}
+		}
+	}
+	
+	/**
+	 * Extends the treatment time for a given facility
+	 * @param facility		The facility to be updated
+	 */
+	public void extendTreatmentRoom(TreatmentFacility facility) {
+		for (TreatmentFacility loopedFacility : treatmentFacilities) {
+			if (facility instanceof OnCallTeam && loopedFacility instanceof OnCallTeam) {
+				loopedFacility.extendTime();
+			}
+		}
+	}
+
+
 }

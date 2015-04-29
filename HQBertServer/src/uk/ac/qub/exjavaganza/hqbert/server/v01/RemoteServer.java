@@ -21,14 +21,19 @@ public interface RemoteServer extends Remote {
 	 * @param client	The client that wishes to receive the update.
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void registerForUpdates(ClientCallback client) throws RemoteException;
+	public String register(ClientCallback client) throws RemoteException;
 	
 	/**
 	 * Unregisters clients for callbacks. No more updates will be sent to the client passed in.
 	 * @param client	The client that wishes to be unregistered
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void unregisterForUpdates(ClientCallback client) throws RemoteException;
+	public void deregister(String clientID) throws RemoteException;
+	
+	/**
+	 * A ping call that allows the user to ensure that the server is still running.
+	 */
+	public boolean ping(String clientID) throws RemoteException;
 	
 	/**
 	 * Searches for a person by their firstName and lastName.
@@ -85,6 +90,6 @@ public interface RemoteServer extends Remote {
 	 * 
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void extendTreatmentTime(int treatmentRoom) throws RemoteException;
+	public void extendTreatmentTime(TreatmentFacility facility) throws RemoteException;
 }
 
