@@ -79,8 +79,8 @@ public class PersonDataAccessor {
 		try (Statement findPatients = con.prepareStatement(findPatientsString);
 				// execute query
 				ResultSet rs = findPatients
-						.executeQuery("SELECT * FROM patients WHERE first_name LIKE '%" +  firstName + "%' AND last_name LIKE '%" + lastName + "%'");) {
-				System.out.println("SELECT * FROM patients WHERE first_name LIKE '%" +  firstName + "%' AND last_name LIKE '%" + lastName + "%'");
+						.executeQuery("SELECT * FROM patients WHERE NHS_number LIKE '%" + nhsNumber + "%' AND first_name LIKE '%" +  firstName + "%' AND last_name LIKE '%" + lastName + "%'");) {
+				System.out.println("SELECT * FROM patients WHERE NHS_number LIKE '%" + nhsNumber + "%' AND first_name LIKE '%" +  firstName + "%' AND last_name LIKE '%" + lastName + "%'");
 			return resultOfQuery(rs);
 		}
 		
