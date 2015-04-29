@@ -18,11 +18,17 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
  *
  */
 public class PersonDataAccessor {
+	
+	public static final String DRIVER = "com.mysql.jdbc.Driver";
+	public static final String URL = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	public static final String USERNAME = "40058483";
+	public static final String PASSWORD = "VPK7789";
+	
 
 	Person person = new Person();
 
 	// establish connection to mySQl
-	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	
 	Connection con;
 	PreparedStatement findPatients, findPatientsWithNHSNum,
 			findPatientsWithOnlyFirstName;
@@ -34,9 +40,9 @@ public class PersonDataAccessor {
 	public PersonDataAccessor(String dbURL, String user, String password)
 			throws SQLException, ClassNotFoundException {
 		// driver name
-		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER);
 		// connection to database using login name and password
-		con = DriverManager.getConnection(url, "40058483", "VPK7789");
+		con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
 	}
 
