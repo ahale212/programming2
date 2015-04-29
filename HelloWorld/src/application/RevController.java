@@ -473,6 +473,8 @@ public class RevController implements Initializable, ClientCallback {
 					String _user = tf1.getText();
 					String _pass = tf2.getText();
 					String db_pass = s1.setEmployeePassword(_pass);
+					String staff_LastName;
+					String staff_FirstName;
 					List<Staff> matchingPeople1 = null;
 					
 					try {
@@ -486,10 +488,10 @@ public class RevController implements Initializable, ClientCallback {
 						System.err.println("Server communication error.");
 						ex.printStackTrace();
 					}
+					
 					if (logMeIn == true){
 					p.hide();			
-					Notifications.create().title("Logged in").text("F2D!").showConfirm();
-					if (logMeIn == true) {
+					Notifications.create().title("Logged in").text("F2D!").showConfirm();		
 
 						staff_LastName = matchingPeople1.get(0).getLastName();
 						staff_FirstName = matchingPeople1.get(0).getFirstName();
@@ -507,7 +509,7 @@ public class RevController implements Initializable, ClientCallback {
 							admin.setText(staff_LastName + ","
 									+ staff_FirstName);
 							break;
-						case ON_CALL:
+						case NURSE:
 							;
 							break;
 						default:
