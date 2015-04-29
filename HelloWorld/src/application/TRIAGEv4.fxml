@@ -6,6 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Label?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
@@ -26,6 +27,11 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
+          <Menu  mnemonicParsing="false" text="Configuration">
+            <items>
+              <MenuItem fx:id="settings" mnemonicParsing="false" text="Settings" />
+            </items>
+          </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
             <MenuItem mnemonicParsing="false" text="Wizard" />
@@ -43,12 +49,12 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0">
                      <children>
                         <Label layoutX="25.0" layoutY="14.0" text="Search By:" />
-                        <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="10.0" maxWidth="100" promptText="NHS Number" />
-                        <TextField fx:id="search_First_Name" layoutX="194.0" layoutY="10.0" promptText="First Name" />
-                        <TextField fx:id="search_Surname" disable="true" layoutX="347.0" layoutY="10.0" promptText="Surname" />
-                        <TextField fx:id="search_DOB" disable="true" layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
-                        <TextField fx:id="search_Postcode" disable="true" layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
-                        <TextField fx:id="search_Telephone_No" disable="true" layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
+                        <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="1.0" maxWidth="100" promptText="NHS Number" />
+                        <TextField fx:id="search_First_Name" layoutX="194.0" layoutY="1.0" promptText="First Name" />
+                        <TextField fx:id="search_Surname" layoutX="347.0" layoutY="1.0" promptText="Surname" />
+                        <TextField fx:id="search_DOB" disable="true" layoutX="500.0" layoutY="1.0" maxWidth="100" promptText="Date of Birth" />
+                        <TextField fx:id="search_Postcode" disable="true" layoutX="604.0" layoutY="1.0" maxWidth="100" promptText="Postcode" />
+                        <TextField fx:id="search_Telephone_No" disable="true" layoutX="708.0" layoutY="1.0" maxWidth="100" promptText="Telephone" />
                         <Label fx:id="NHS_No" layoutX="27.0" layoutY="56.0" text="NHS Number" />
                         <Label fx:id="Title" layoutX="27.0" layoutY="88.0" text="Title" />
                         <Label fx:id="first_name" layoutX="27.0" layoutY="120.0" text="First Name" />
@@ -59,7 +65,7 @@
                         <Label layoutX="27.0" layoutY="344.0" text="Allergies" />
                         <Label fx:id="blood_group" layoutX="27.0" layoutY="312.0" text="Blood Group" />
                         <Label fx:id="dob" layoutX="27.0" layoutY="184.0" text="Date of Birth" />
-                        <Line fx:id="line1" endX="155.0" layoutX="115.0" layoutY="46.0" startX="-100.0" />
+                        <ChoiceBox fx:id="patient_finder" layoutX="115.0" layoutY="26.0" minWidth="600"/>
                         <TextField fx:id="textfield_NHS_Num" editable="false" layoutX="110.0" layoutY="52.0" />
                         <TextField fx:id="textfield_Title" editable="false" layoutX="110.0" layoutY="84.0" />
                         <TextField fx:id="textfield_First_Name" editable="false" layoutX="110.0" layoutY="116.0" />
@@ -69,8 +75,6 @@
                         <TextField fx:id="textfield_Telephone" editable="false" layoutX="110.0" layoutY="276.0" />
                         <ChoiceBox fx:id="allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
                         <TextField fx:id="textfield_Blood_Group" editable="false" layoutX="110.0" layoutY="307.0" />
-                        <Line fx:id="divider" endY="200.0" layoutX="280.0" layoutY="160.0" startY="-100.0" />
-                        <Line endX="480.0" layoutX="391.0" layoutY="47.0" startX="-100.0" />
                         <TextField fx:id="textfield_Postcode" editable="false" layoutX="110.0" layoutY="244.0" />
                         <Label fx:id="triage" layoutX="315.0" layoutY="56.0" text="TRIAGE: Primary" />
                         <Label fx:id="airway" layoutX="315.0" layoutY="96.0" text="Airway" />
@@ -122,11 +126,25 @@
                         <TextField layoutX="14.0" layoutY="148.0" />
                         <Label layoutX="14.0" layoutY="191.0" text="Incident Details" />
                         <TextField layoutX="14.0" layoutY="218.0" />
+                        <Button fx:id="sign" layoutX="514.0" layoutY="50.0" mnemonicParsing="false" text="Signature" />
                         <TextArea layoutX="222.0" layoutY="87.0" prefHeight="200.0" prefWidth="398.0" />
                         <Label layoutX="222.0" layoutY="61.0" text="Treatment Notes:" />
                      </children></AnchorPane>
             </content>
           </Tab>
+          <Tab fx:id="staff_tab" text="Staff On Duty">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                <children>
+                <Label text="Triage Nurse:" layoutX="14.0" layoutY="14.0" />
+                <TextField layoutX="14.0" layoutY="87.0" />
+                <Label text="Treatment Room Doctors:" layoutX="14.0" layoutY="14.0" />
+                <ListView layoutX="14.0" layoutY="87.0" />
+                <Label text="Treatment Room Doctors:" layoutX="14.0" layoutY="14.0" />
+                <ListView layoutX="14.0" layoutY="87.0" />
+                </children></AnchorPane>
+              </content>
+            </Tab>
             <Tab fx:id="stats_tab" text="Statistics">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
