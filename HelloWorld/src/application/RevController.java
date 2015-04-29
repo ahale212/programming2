@@ -192,7 +192,7 @@ public class RevController implements Initializable, ClientCallback {
 			} 				
 		});	
 		
-		search_Surname.setOnMouseExited(e -> {
+		search_First_Name.setOnMouseExited(e -> {
 			
 			search_database.setDisable(false);
 			List<Person> matchingPeople = null;
@@ -866,9 +866,26 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 
+	/** Method called by RMIClient when the remote server reports that the queue is full */
 	@Override
 	public void alertQueueFull() throws RemoteException {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	/** Called by RMI client when the server status changes (whether its accessible or not) */
+	public void serverStatusChanged(boolean accessible) {
+
+		// Call run later to run updates to the UI on the JavaFX thread
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (accessible) {
+					outputTextArea.appendText("Server accessible\n");
+				} else {
+					outputTextArea.appendText("Server inaccessible\n");
+				}
+			}
+		});
 	}
 }
