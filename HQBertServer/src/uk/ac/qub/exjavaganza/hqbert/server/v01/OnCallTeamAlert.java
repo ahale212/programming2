@@ -17,8 +17,13 @@ public class OnCallTeamAlert {
 	 * treatment rooms are engaged with emergency priorities and a new emergency
 	 * patient enters the system.
 	 */
-	public static void onCallEmergencyPriority() {
+	public static boolean onCallEmergencyPriority(Staff teamMember, boolean alertsActive) {
 
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return true;
+		}
+		
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
@@ -52,8 +57,13 @@ public class OnCallTeamAlert {
 			msg.saveChanges();
 			tr.sendMessage(msg, msg.getAllRecipients());
 			tr.close();
+			
+			return true;
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
+			
+			//log the exeption details
+			return false;
 		}
 	}
 

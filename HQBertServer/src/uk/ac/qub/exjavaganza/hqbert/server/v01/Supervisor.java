@@ -532,6 +532,7 @@ public enum Supervisor {
 	public OnCallTeam getOncallTeam(){
 		return this.onCallTeam;
 	}
+
 	
 	/**
 	 * Find a person by nhsNumber and update their doctors notes.
@@ -558,5 +559,6 @@ public enum Supervisor {
 			}
 		}
 	}
+
 
 }
