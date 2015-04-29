@@ -135,11 +135,11 @@ public enum Supervisor {
 		Staff drDoom = new Staff("drDoom", "hahaha");
 		drDoom.setJob(Job.DOCTOR);
 		Staff nurseBetty = new Staff("Betty","bettyPass");
-		nurseBetty.setJob(Job.TRIAGE_NURSE);
+		nurseBetty.setJob(Job.NURSE);
 		Staff nurseJohn = new Staff("John","johnPass");
-		nurseJohn.setJob(Job.TRIAGE_NURSE);
+		nurseJohn.setJob(Job.NURSE);
 		Staff nurseJane = new Staff("Jane","janePass");
-		nurseJane.setJob(Job.TRIAGE_NURSE);
+		nurseJane.setJob(Job.NURSE);
 		
 		staffOnCall.add(nurseJane);
 		staffOnCall.add(drDoom);
