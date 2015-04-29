@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -99,6 +100,13 @@ public enum Supervisor {
 			e.printStackTrace();
 		}
 		
+		try {
+			List<Staff> staff = getStaff();
+			System.out.println(staff);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		exit = false;
 	}
@@ -164,6 +172,14 @@ public enum Supervisor {
 			System.err.println("Error ocurred while setting up RMI server.");
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * @throws SQLException 
+	 * 
+	 */
+	private List<Staff> getStaff() throws SQLException {
+		return getStaffAccessor().getStaffList();
 	}
 
 	/**
