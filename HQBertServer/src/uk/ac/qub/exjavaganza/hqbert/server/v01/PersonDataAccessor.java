@@ -79,21 +79,21 @@ public class PersonDataAccessor {
 		try (Statement findPatients = con.prepareStatement(findPatientsString);
 				// execute query
 				ResultSet rs = findPatients
-						.executeQuery("SELECT * FROM patients WHERE first_name LIKE '%" + firstName + "%' AND last_name = '%" + lastName + "%'");) {
-			
-			resultOfQuery(rs);
+						.executeQuery("SELECT * FROM patients WHERE NHS_number LIKE '%" + nhsNumber + "%' AND first_name LIKE '%" +  firstName + "%' AND last_name LIKE '%" + lastName + "%'");) {
+				System.out.println("SELECT * FROM patients WHERE NHS_number LIKE '%" + nhsNumber + "%' AND first_name LIKE '%" +  firstName + "%' AND last_name LIKE '%" + lastName + "%'");
+			return resultOfQuery(rs);
 		}
 		
-		try(Statement findPatientsWithOnlyFirstName = con.prepareStatement(findPatientWithOnlyFirstNameString);
+		/*try(Statement findPatientsWithOnlyFirstName = con.prepareStatement(findPatientWithOnlyFirstNameString);
 				ResultSet rs1 = findPatientsWithOnlyFirstName.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "'");){
 		
 			resultOfQuery(rs1);
-		}
-		return personList(nhsNumber, firstName, lastName, dateOfBirth, postCode, telephoneNumber);
+		}*/
+	
 	}
 
 
-	public void resultOfQuery(ResultSet rs) throws SQLException {
+	public List<Person> resultOfQuery(ResultSet rs) throws SQLException {
 		List<Person> personList = new ArrayList<>();
 		// instantiate the String vars to that of the database entry
 		while (rs.next()) {
@@ -114,10 +114,12 @@ public class PersonDataAccessor {
 			Person person = new Person(NHSNum, title, lfirstName, llastName,
 					DOB, address, city, country, postcode, telephone,
 					allergies, bloodGroup, doctorsNotes);
-			personList.add(person);
+			personList.add(person);	
 			
 		}// end of while
 
+		return personList;
+		
 	}
 
 } // end of class

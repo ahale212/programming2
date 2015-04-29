@@ -15,21 +15,22 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
 
 public class PatientTest {
 
-	Patient patient;
-
 	static Urgency urgency;
 
 	boolean priority;
 
 	Date entryDate;
 
-	int waitTime;
+	int differenceUnder;
 
 	Person person;
 
 	String patientName;
 	
 	boolean isPriority;
+	
+	int difference;
+	
 
 	@Before
 	public void setUp() throws Exception {
@@ -42,10 +43,9 @@ public class PatientTest {
 		
 		urgency = Urgency.SEMI_URGENT;
 		
-		waitTime = 40;
+		differenceUnder = 10;
 		
-		
-		
+		difference = 40;
 	}
 
 	@Test
@@ -63,29 +63,24 @@ public class PatientTest {
 
 		assertEquals(person, patient.getPerson());
 		assertEquals(urgency, patient.getUrgency());
-		
-
-	}
-	
-
-	@Test
-	public void testIncrementWaitTime() {
-		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testCheckPriority() {
+	public void testIncrementWaitTimeOver() {
 		
 		Patient patient = new Patient();
 		priority = true;
-		patient.setPriority(priority);
+		patient.incrementWaitTime(difference);
 		assertEquals(priority, patient.getPriority());
-		
 	}
-	
+
 	@Test
-	public void testCompareTo() {
-		fail("Not yet implemented");
+	public void testIncrementWaitTimeUnder() {
+		
+		Patient patient = new Patient();
+		priority = false;
+		patient.incrementWaitTime(differenceUnder);
+		assertEquals(priority, patient.getPriority());
 	}
 
 	@Test
@@ -96,9 +91,17 @@ public class PatientTest {
 	}
 
 	@Test
-	public void testSetPriority() {
+	public void testSetPriorityTrue() {
 		Patient patient = new Patient();
 		isPriority = true;
+		patient.setPriority(isPriority);
+		assertEquals(isPriority, patient.getPriority());
+	}
+	
+	@Test
+	public void testSetPriorityFalse() {
+		Patient patient = new Patient();
+		isPriority = false;
 		patient.setPriority(isPriority);
 		assertEquals(isPriority, patient.getPriority());
 	}

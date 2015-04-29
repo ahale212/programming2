@@ -108,7 +108,7 @@ public enum Supervisor {
 		}
 		
 		waitTimesUnacceptable = false;
-		
+
 		try {
 			List<Staff> staff = getStaff();
 			System.out.println(staff);

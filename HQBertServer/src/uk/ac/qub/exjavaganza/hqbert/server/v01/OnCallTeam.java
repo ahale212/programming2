@@ -34,6 +34,4 @@ public class OnCallTeam extends TreatmentFacility {
 		String patientName = (patient!=null)? patient.getPerson().getFirstName() : "None";
 		System.out.println("On-call Team : "+"\tPatient : "+patientName+"\tUrgency : "+patientUrgency+"\tTime to available : "+timeToAvailable+"\tPatientWaitTime : "+patientWaitTime);
 	}
-	
-
 }
