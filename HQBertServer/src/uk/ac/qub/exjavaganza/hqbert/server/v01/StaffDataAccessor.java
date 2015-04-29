@@ -86,4 +86,41 @@ public class StaffDataAccessor {
 
 		}
 	}
+	
+	// create a new list for staff
+	List<Staff> getStaffList() throws SQLException {
+		// start of try to initiate query statement
+		try (Statement findStaff = con.prepareStatement(findStaffString);
+			// execute query
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff");) {
+			
+			// return the staff list
+			return resultOfQuery(rs1);
+		}
+	}
+	
+	
+	public List<Staff> resultOfQuery(ResultSet rs) throws SQLException {
+		List<Staff> staffList = new ArrayList<>();
+		// instantiate the String vars to that of the database entry
+		while (rs.next()) {
+			// Get the staff memeber details from the result set
+			String employeeNumber = rs.getString("Employee_Number");
+			String firstName = rs.getString("Employee_first_name");
+			String lastName = rs.getString("Employee_last_name");
+			String email = rs.getString("Employee_Email");
+
+			// Create a new staff member with the details from the database
+			Staff  staffMember = new Staff(employeeNumber, firstName, lastName, "", "", email);
+			// Add the user to the staff list
+			staffList.add(staffMember);	
+			
+		}// end of while
+
+		// Return the filled staff list
+		return staffList;
+		
+	}
+	
+	
 }// end of class

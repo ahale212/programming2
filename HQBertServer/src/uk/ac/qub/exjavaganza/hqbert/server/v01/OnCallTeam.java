@@ -13,11 +13,6 @@ public class OnCallTeam extends TreatmentFacility {
 	@Override
 	public void update(int deltaTime) {
 		super.update(deltaTime);
-		
-		//Maybe onCall team should go away
-		if(patient == null){
-			
-		}
 	}
 	
 	@Override
@@ -28,12 +23,9 @@ public class OnCallTeam extends TreatmentFacility {
 	@Override
 	public void DischargePatient(){
 		super.DischargePatient();
+		Supervisor.INSTANCE.onCallTryLeave();
 	}
 	
-	public void goAway(){
-		
-	}
-
 	@Override
 	public void showFacilityInConsole() {
 		
