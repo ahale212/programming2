@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
@@ -31,7 +34,7 @@ public enum Supervisor {
 
 	public final float TIME_MULTI = 60;
 
-	private final int serverPort = 1099;
+	private int serverPort = 1099;
 
 	private HQueue hQueue;
 	private Clock clock;
@@ -62,11 +65,18 @@ public enum Supervisor {
 	private Supervisor() {
 	}
 
-	public void init() {
+	public void init(int serverPort, boolean useSSL) {
+		
+		// If server port has been passed in set it, else leave it as its default value
+		if (serverPort != 0) {
+			this.serverPort = serverPort;
+		}
+		
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
-		startServer();
+		// Start the server to allow clients to connect
+		startServer(useSSL);
 
 		logger = Logger.getLogger(Supervisor.class);
 
@@ -153,7 +163,7 @@ public enum Supervisor {
 	 * Starts the RMI server so that clients can connect and communicate with
 	 * the back end.
 	 */
-	public void startServer() {
+	public void startServer(boolean useSSL) {
 		try {
 
 			// Creates a registry that accepts requests on the port specified in
@@ -161,7 +171,14 @@ public enum Supervisor {
 			LocateRegistry.createRegistry(serverPort);
 
 			// Instantiate the RMI server
-			server = new RMIServer();
+			if (useSSL) {
+				// If set to use SSL use pass the SSlRMISocketFactory into the constructor
+				server = new RMIServer(serverPort, new SslRMIClientSocketFactory(),
+		                 new SslRMIServerSocketFactory(null, null, true));
+			} else {
+				// If not set to use SSL use the default constructor
+				server = new RMIServer();
+			}
 			// Bind the server object to the name it will be accessible by on
 			// the client side.
 			Naming.rebind("HQBertServer", server);
@@ -404,7 +421,7 @@ public enum Supervisor {
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (staffMember.getJob() == Job.NURSE && !(activeOnCallStaff.contains(staffMember))){
+				if (staffMember.getJob() == Job.TRIAGE_NURSE && !(activeOnCallStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
 						activeOnCallStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);

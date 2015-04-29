@@ -15,6 +15,10 @@ import java.util.List;
  */
 public interface RemoteServer extends Remote {
 
+	public enum ConnectionState {
+		CONNECTED, CONNECTING, NOT_CONNECTED
+	}
+	
 	/**
 	 * Registers clients for callbacks. This allows the server to communicate with clients
 	 * that with to register for the times updates.
@@ -33,7 +37,7 @@ public interface RemoteServer extends Remote {
 	/**
 	 * A ping call that allows the user to ensure that the server is still running.
 	 */
-	public boolean ping(String clientID) throws RemoteException;
+	public boolean heartbeat(String clientID) throws RemoteException;
 	
 	/**
 	 * Searches for a person by their firstName and lastName.

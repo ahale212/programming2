@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 
 import com.sun.javafx.application.PlatformImpl.FinishListener;
@@ -17,6 +18,7 @@ import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 import com.sun.prism.paint.Color;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Job;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
@@ -24,6 +26,8 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer.ConnectionState;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,6 +54,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -57,6 +62,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
@@ -65,7 +71,10 @@ public class RevController implements Initializable, ClientCallback {
 	private RMIClient client;
 	
 	@FXML
-	MenuItem settings;
+	ToolBar toolbar_left;
+	
+	@FXML
+	MenuItem settings, close_system;
 	
 	@FXML
 	private Rectangle countdown;
@@ -77,7 +86,8 @@ public class RevController implements Initializable, ClientCallback {
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6, server_check;
 
 	@FXML
-	private ListView queue, trooms, treatment_room_list, on_call_list, on_call;
+	private ListView queue, trooms, treatment_room_list, on_call_list, on_call,
+			doctor_on_duty;
 
 	@FXML
 	private Button login, UPGRADE, search_database, emergency, Q_view,
@@ -87,11 +97,11 @@ public class RevController implements Initializable, ClientCallback {
 	private Slider respiratory_rate, pulse_rate;
 
 	@FXML
-	private ChoiceBox breathing_yes, allergy, patient_finder;
+	private ComboBox conditions, medication, select_tr, breathing_yes, allergy;
 
 	@FXML
-	private ComboBox conditions, medication;
-
+	private ComboBox<String> patient_finder;
+	
 	@FXML
 	private CheckBox walk, walk_no;
 	
@@ -103,7 +113,8 @@ public class RevController implements Initializable, ClientCallback {
 			search_DOB, search_Postcode, search_Telephone_No,
 			textfield_NHS_Num, textfield_Postcode, textfield_Title,
 			textfield_First_Name, textfield_Surname, textfield_DOB,
-			textfield_Address, textfield_Telephone, textfield_Blood_Group;
+			textfield_Address, textfield_Telephone, textfield_Blood_Group,
+			triage_nurse_on_duty, admin;
 
 	PopOver p = new PopOver();
 	PopOver p1 = new PopOver();
@@ -123,7 +134,7 @@ public class RevController implements Initializable, ClientCallback {
 	private final ObservableList medi_condition = FXCollections.observableArrayList();
 	private final ObservableList meds = FXCollections.observableArrayList();
 	private final ObservableList allergy_list = FXCollections.observableArrayList();
-	private final ObservableList<Person> search_patient_results = FXCollections.observableArrayList();
+	private final ObservableList<String> search_patient_results = FXCollections.observableArrayList();
 	List<Person> matchingPeople, matchingPeople1;
 
 	/**
@@ -159,8 +170,19 @@ public class RevController implements Initializable, ClientCallback {
 	private List<Person> search_results;
 	
 	@Override
+	protected void finalize() throws Throwable {
+		
+		if (client != null) {
+			client.close();
+		}
+		
+		super.finalize();
+	}
+
+	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
+		colours();
 		labelSliders();
 		loadArrayLists();
 		runValidSearch();
@@ -179,6 +201,14 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	/**
+	 * Sets layout colours and patterns
+	 */
+	private void colours() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
 	 * performs actions to conduct valid searches
 	 */
 	private void runValidSearch() {
@@ -192,49 +222,81 @@ public class RevController implements Initializable, ClientCallback {
 			} 				
 		});	
 		
+		// when the first name text box loses focus perform the search
 		search_First_Name.setOnMouseExited(e -> {
 			
 			search_database.setDisable(false);
-			List<Person> matchingPeople = null;
 
-			try {
-				matchingPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
-			} catch (RemoteException ex) {
-				System.err.println("Server communication error.");
-				ex.printStackTrace();
-			}	
+			matchingPeople = searchForPerson();
 			
 			if (matchingPeople.size() > 0) {
-				
-			search_patient_results.addAll(matchingPeople);				
-			patient_finder.setItems(search_patient_results);
+				populateMatchingPatientList();
+			}
 			
-			}});
+		});
+		
+		// When a user selects a patient from the matching patient list 
+		patient_finder.setOnAction( e-> {
+			
+			displayPerson(matchingPeople.get(patient_finder.getSelectionModel().getSelectedIndex()));
+			enableTriage();
+			
+		});
+		
+		
 	}
 
 	/**
 	 * sets graphical timer in treatment room view
 	 */
 	private void treatmentRoomEggTimer() {
+		TreatmentFacility treatment = new TreatmentFacility() {			
+			@Override
+			public void showFacilityInConsole() {
+				// TODO Auto-generated method stub
+				}};
 		
 		int eggtimer = 1;
-		switch(eggtimer) {
-		case 4: countdown.setHeight(240.0); countdown.setLayoutY(83.0); break;
-		case 3: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
-		case 2: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
-		case 1: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
+		switch(treatment.getTimeToAvailable()) {
+		
+		case 9: countdown.setHeight(270.0); countdown.setLayoutY(53.0); break;
+		case 8: countdown.setHeight(240.0); countdown.setLayoutY(83.0); break;
+		case 7: countdown.setHeight(210.0); countdown.setLayoutY(113.0); break;
+		case 6: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
+		case 5: countdown.setHeight(150.0); countdown.setLayoutY(173.0); break;
+		case 4: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
+		case 3: countdown.setHeight(90.0); countdown.setLayoutY(233.0); break;
+		case 2: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
+		case 1: countdown.setHeight(30.0); countdown.setLayoutY(293.0); break;
+		default: countdown.setHeight(300.0); countdown.setLayoutY(23.0); break;
 		}		
 	}
-
+	
 	/**
-	 * turns off server with control action
+	 * Adds the matching patients to a combo box
 	 */
-	public void closeButtonAction() {
-		if (client != null) {
-			client.close();
+	public void populateMatchingPatientList() {
+		
+		// Clear the patient results array, ready to be refilled
+		search_patient_results.clear();
+		
+		// Loop through each person in the results
+		for (Person person : matchingPeople) {
+			// Concatenate a string of the person's details
+			String personDetails = String.format("%-12s %s, %-10s %-25s %-10s %-10s %-11s", person.getNHSNum(), person.getLastName(), 
+														person.getFirstName(), 
+														person.getAddress(),
+														person.getPostcode(),
+														person.getCity(),
+														person.getDOB());
+			// Add the patient details to the results
+			search_patient_results.add(personDetails);				
 		}
-		Platform.exit();
+		
+		// Display the results on screen
+		patient_finder.setItems(search_patient_results);
 	}
+
 
 	/**
 	 * adds tags to slider controls
@@ -366,7 +428,8 @@ public class RevController implements Initializable, ClientCallback {
 			treatmentRoomNum[i] = "Treatment Room "+(i+1);
 		}		
 		trno.addAll(treatmentRoomNum);
-		treatment_room_list.setItems(trno);		
+		treatment_room_list.setItems(trno);	
+		select_tr.setItems(trno);
 		
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
@@ -387,12 +450,86 @@ public class RevController implements Initializable, ClientCallback {
 	 * Controller method to set button functionality
 	 * uses lambda expression to handle events (e->)
 	 */
-	private void buttonFunction() {		
+	private void buttonFunction() {	
 		
-		settings.setOnAction(e -> {
-			VBox configurations = new VBox();
+		close_system.setOnAction( e -> {
+			
+			/*try {
+
+					this.finalize();
+
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
+			Platform.exit();
+			
+			
+			//Stage test = (Stage)allergy.getScene().getWindow();
+			
+			//View window = (View)this;*
+			//window.getScene();
 			
 		});
+		
+		settings.setOnAction(e -> {
+			Stage settings_stage = new Stage();
+			AnchorPane root = new AnchorPane();			
+			//VBox configurations_settings = new VBox();
+			Label plus_trs = new Label("Set Amount of Treatment Roooms");
+			TextField set_no_trs = new TextField();
+			Button save_no_trs = new Button();
+			set_no_trs.setLayoutY(25.0);	
+			save_no_trs.setLayoutY(52.0);
+			
+			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+				if (set_no_trs.getText().toString().equalsIgnoreCase("10")) {
+					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").showError();
+				}
+				}});
+			
+			root.getChildren().addAll(plus_trs,set_no_trs, save_no_trs);
+			Scene s = new Scene(root, 200, 200);
+			settings_stage.setScene(s);
+			settings_stage.show();	
+			
+			Stage settings_stage = new Stage();
+			AnchorPane root = new AnchorPane();			
+			//VBox configurations_settings = new VBox();
+			Label plus_trs = new Label("Set Amount of Treatment Roooms");
+			TextField set_no_trs = new TextField();
+			set_no_trs.setPromptText("1-10");
+			Button save_no_trs = new Button("Set");
+			set_no_trs.setLayoutY(25.0);	
+			save_no_trs.setLayoutY(52.0);
+			
+			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					Integer i = (Integer.parseInt(set_no_trs.getText().toString()));
+					int a = i;
+				if (i < 0)  {
+					Notifications.create().title("Not Enough Treatment Rooms added").text("Please set a number between 1-10").darkStyle().showError();
+				} else if (i > 10) {
+					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").darkStyle().showError();
+				} else {
+					settings_stage.close();
+				}
+				}});
+			
+			root.getChildren().addAll(plus_trs,set_no_trs, save_no_trs);
+			Scene s = new Scene(root, 200, 200);
+			settings_stage.setScene(s);
+			settings_stage.show();	
+			
+			
+		});
+		
+		
 		
 		login.setOnAction(e -> {
 
@@ -419,6 +556,8 @@ public class RevController implements Initializable, ClientCallback {
 					String _user = tf1.getText();
 					String _pass = tf2.getText();
 					String db_pass = s1.setEmployeePassword(_pass);
+					String staff_LastName;
+					String staff_FirstName;
 					List<Staff> matchingPeople1 = null;
 					
 					try {
@@ -432,11 +571,41 @@ public class RevController implements Initializable, ClientCallback {
 						System.err.println("Server communication error.");
 						ex.printStackTrace();
 					}
+					
 					if (logMeIn == true){
-					p.hide();					
+					p.hide();			
+					Notifications.create().title("Logged in").text("F2D!").showConfirm();		
+
+						staff_LastName = matchingPeople1.get(0).getLastName();
+						staff_FirstName = matchingPeople1.get(0).getFirstName();
+
+						Job jobs = Job.values()[4];
+						switch (jobs) {
+						case TRIAGE_NURSE:
+							triage_nurse_on_duty.setText(staff_LastName + ","
+									+ staff_FirstName);
+							break;
+						case DOCTOR:
+							;
+							break;
+						case ADMIN:
+							admin.setText(staff_LastName + ","
+									+ staff_FirstName);
+							break;
+						case NURSE:
+							;
+							break;
+						default:
+							;
+
+						}
+
+						p.hide();
+
 					}
-				}});
-			
+				}
+			});
+
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
 			ap1.getChildren().add(tf1);
@@ -475,40 +644,20 @@ public class RevController implements Initializable, ClientCallback {
 
 		search_database.setOnAction(e -> {
 
-			outputTextArea.appendText(search_Surname.getText()+", "+search_First_Name.getText()+" ready for Triage!\n");
-			List<Person> matchingPeople = null;
-
-			try {
-				matchingPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
-			} catch (RemoteException ex) {
-				System.err.println("Server communication error.");
-				ex.printStackTrace();
-			}	
+			matchingPeople = searchForPerson();	
 			
-			// If there were people matching the criteria, display them to the user
-			if (matchingPeople.size() > 0) {
-				displayedPerson = matchingPeople.get(0);
-				textfield_First_Name.setText(displayedPerson.getFirstName());
-				textfield_Surname.setText(displayedPerson.getLastName());
-				textfield_NHS_Num.setText(displayedPerson.getNHSNum());
-				textfield_Title.setText(displayedPerson.getTitle());
-				textfield_DOB.setText(displayedPerson.getDOB());
-				textfield_Address.setText(displayedPerson.getAddress());
-				textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
-				textfield_Postcode.setText(displayedPerson.getPostcode());
-				textfield_Telephone.setText(displayedPerson.getTelephone());
+			// If there was only a single user that matched the criteria, show them
+			if (matchingPeople.size() == 1) {
+				// display the matching person
+				displayPerson(matchingPeople.get(0));
+				// Enable triage as there is a patient being displayed.
+				enableTriage();
 				
-				// If the returned allergy is "null" set the allergy
-				// box to display "None".
-				if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
-					allergy.setValue(allergic[0]);
-				} else {
-					// Else set the allergy box value to the returned alergy
-					allergy.setValue(displayedPerson.getAllergies());
-				}
-			}
+			} else if (matchingPeople.size() > 1) { 
+				// else if there were multiple people show a list
+				populateMatchingPatientList();
+			} 
 			
-			enableTriage();
 			clearSearchFields();
 		});
 
@@ -634,6 +783,33 @@ public class RevController implements Initializable, ClientCallback {
 		});
 		
 		extend.setOnAction(e -> {p3.show(extend);});
+	}
+	
+	
+	/**
+	 * Display a person in the patient triage tab.
+	 * @param displayedPerson
+	 */
+	public void displayPerson(Person displayedPerson) {
+
+		textfield_First_Name.setText(displayedPerson.getFirstName());
+		textfield_Surname.setText(displayedPerson.getLastName());
+		textfield_NHS_Num.setText(displayedPerson.getNHSNum());
+		textfield_Title.setText(displayedPerson.getTitle());
+		textfield_DOB.setText(displayedPerson.getDOB());
+		textfield_Address.setText(displayedPerson.getAddress());
+		textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
+		textfield_Postcode.setText(displayedPerson.getPostcode());
+		textfield_Telephone.setText(displayedPerson.getTelephone());
+		
+		// If the returned allergy is "null" set the allergy
+		// box to display "None".
+		if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
+			allergy.setValue(allergic[0]);
+		} else {
+			// Else set the allergy box value to the returned alergy
+			allergy.setValue(displayedPerson.getAllergies());
+		}
 	}
 
 	/**
@@ -841,7 +1017,7 @@ public class RevController implements Initializable, ClientCallback {
 		search_database.setTooltip(new Tooltip("Search NHS DBMS"));
 		tb1.setTooltip(new Tooltip("Patient has BLOCKED AIRWAY!"));
 		tb2.setTooltip(new Tooltip("Patient is NOT BREATHING!"));
-		tb3.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
+		tb3.setTooltip(new Tooltip("Patient has suspected SPINAL TRAUMA!"));
 		tb4.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
 		tb5.setTooltip(new Tooltip("Patient is INCAPACITATED!"));
 		tb6.setTooltip(new Tooltip("Patient has been EXPOSED TO EXTREME CONDITIONS!"));
@@ -863,6 +1039,7 @@ public class RevController implements Initializable, ClientCallback {
 		walk_no.setTooltip(new Tooltip("The patient is immobile and requires assistence"));
 		conditions.setTooltip(new Tooltip("Select option"));
 		medication.setTooltip(new Tooltip("Select option"));
+		server_check.setTooltip(new Tooltip("Server Status"));
 	}
 
 
@@ -873,23 +1050,49 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	/** Called by RMI client when the server status changes (whether its accessible or not) */
-	public void serverStatusChanged(boolean accessible) {
+	public void serverStatusChanged(ConnectionState accessible) {
 
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
 			
 			@Override
 			public void run() {
-				if (accessible) {
+				switch(accessible) {
+				case CONNECTED:
 					outputTextArea.appendText("Server accessible\n");
 					server_check.setText("Server Connected");
 					server_check.setStyle("-fx-base: green;");
-				} else {
+					break;
+				case NOT_CONNECTED:
 					outputTextArea.appendText("Server inaccessible\n");
 					server_check.setText("Error Connecting to Server");
 					server_check.setStyle("-fx-base: red;");
+					break;
+				case CONNECTING:
+					break;
 				}
 			}
 		});
 	}
+	
+	/**
+	 * Calls server method to find people
+	 * @return A list of people who match the details input into the search fields
+	 */
+	public List<Person> searchForPerson() {
+		// Init a list to hold the results
+		List<Person> foundPeople = null;
+		
+		try {
+			// Call the searchPersonByDetails method on the server to get the details from the database
+			foundPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+		} catch (RemoteException ex) {
+			System.err.println("Server communication error.");
+			ex.printStackTrace();
+		}	
+		
+		// return the results.
+		return foundPeople;
+	}
+	
 }
