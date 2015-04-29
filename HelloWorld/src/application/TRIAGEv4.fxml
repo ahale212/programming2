@@ -159,7 +159,7 @@
       </TabPane>
    </bottom>
    <left>
-      <ToolBar orientation="VERTICAL" prefHeight="175.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <ToolBar fx:id="toolbar_left" orientation="VERTICAL" prefHeight="175.0" prefWidth="100.0" BorderPane.alignment="CENTER">
         <items>
         <Button fx:id="login" mnemonicParsing="false" prefWidth="98.0" text="Login" />
           <Button fx:id="UPGRADE" mnemonicParsing="false" prefWidth="98.0" text="UPGRADE!" />

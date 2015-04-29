@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 
 import com.sun.javafx.application.PlatformImpl.FinishListener;
@@ -50,6 +51,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -63,6 +65,9 @@ import javafx.util.StringConverter;
 public class RevController implements Initializable, ClientCallback {
 	
 	private RMIClient client;
+	
+	@FXML
+	ToolBar toolbar_left;
 	
 	@FXML
 	MenuItem settings;
@@ -90,7 +95,7 @@ public class RevController implements Initializable, ClientCallback {
 	private ChoiceBox breathing_yes, allergy, patient_finder;
 
 	@FXML
-	private ComboBox conditions, medication;
+	private ComboBox conditions, medication, select_tr;
 
 	@FXML
 	private CheckBox walk, walk_no;
@@ -161,6 +166,7 @@ public class RevController implements Initializable, ClientCallback {
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
+		colours();
 		labelSliders();
 		loadArrayLists();
 		runValidSearch();
@@ -178,6 +184,14 @@ public class RevController implements Initializable, ClientCallback {
 		}
 	}
 	
+	/**
+	 * Sets layout colours and patterns
+	 */
+	private void colours() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * performs actions to conduct valid searches
 	 */
@@ -216,13 +230,25 @@ public class RevController implements Initializable, ClientCallback {
 	 * sets graphical timer in treatment room view
 	 */
 	private void treatmentRoomEggTimer() {
+		TreatmentFacility treatment = new TreatmentFacility() {			
+			@Override
+			public void showFacilityInConsole() {
+				// TODO Auto-generated method stub
+				}};
 		
 		int eggtimer = 1;
-		switch(eggtimer) {
-		case 4: countdown.setHeight(240.0); countdown.setLayoutY(83.0); break;
-		case 3: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
-		case 2: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
-		case 1: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
+		switch(treatment.getTimeToAvailable()) {
+		
+		case 9: countdown.setHeight(270.0); countdown.setLayoutY(53.0); break;
+		case 8: countdown.setHeight(240.0); countdown.setLayoutY(83.0); break;
+		case 7: countdown.setHeight(210.0); countdown.setLayoutY(113.0); break;
+		case 6: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
+		case 5: countdown.setHeight(150.0); countdown.setLayoutY(173.0); break;
+		case 4: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
+		case 3: countdown.setHeight(90.0); countdown.setLayoutY(233.0); break;
+		case 2: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
+		case 1: countdown.setHeight(30.0); countdown.setLayoutY(293.0); break;
+		default: countdown.setHeight(300.0); countdown.setLayoutY(23.0); break;
 		}		
 	}
 
@@ -366,7 +392,8 @@ public class RevController implements Initializable, ClientCallback {
 			treatmentRoomNum[i] = "Treatment Room "+(i+1);
 		}		
 		trno.addAll(treatmentRoomNum);
-		treatment_room_list.setItems(trno);		
+		treatment_room_list.setItems(trno);	
+		select_tr.setItems(trno);
 		
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
@@ -390,9 +417,33 @@ public class RevController implements Initializable, ClientCallback {
 	private void buttonFunction() {		
 		
 		settings.setOnAction(e -> {
-			VBox configurations = new VBox();
+			Stage settings_stage = new Stage();
+			AnchorPane root = new AnchorPane();			
+			//VBox configurations_settings = new VBox();
+			Label plus_trs = new Label("Set Amount of Treatment Roooms");
+			TextField set_no_trs = new TextField();
+			Button save_no_trs = new Button();
+			set_no_trs.setLayoutY(25.0);	
+			save_no_trs.setLayoutY(52.0);
+			
+			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+				if (set_no_trs.getText().toString().equalsIgnoreCase("10")) {
+					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").showError();
+				}
+				}});
+			
+			root.getChildren().addAll(plus_trs,set_no_trs, save_no_trs);
+			Scene s = new Scene(root, 200, 200);
+			settings_stage.setScene(s);
+			settings_stage.show();	
+			
 			
 		});
+		
+		
 		
 		login.setOnAction(e -> {
 
@@ -433,7 +484,8 @@ public class RevController implements Initializable, ClientCallback {
 						ex.printStackTrace();
 					}
 					if (logMeIn == true){
-					p.hide();					
+					p.hide();			
+					Notifications.create().title("Logged in").text("F2D!").showConfirm();
 					}
 				}});
 			
@@ -487,25 +539,7 @@ public class RevController implements Initializable, ClientCallback {
 			
 			// If there were people matching the criteria, display them to the user
 			if (matchingPeople.size() > 0) {
-				displayedPerson = matchingPeople.get(0);
-				textfield_First_Name.setText(displayedPerson.getFirstName());
-				textfield_Surname.setText(displayedPerson.getLastName());
-				textfield_NHS_Num.setText(displayedPerson.getNHSNum());
-				textfield_Title.setText(displayedPerson.getTitle());
-				textfield_DOB.setText(displayedPerson.getDOB());
-				textfield_Address.setText(displayedPerson.getAddress());
-				textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
-				textfield_Postcode.setText(displayedPerson.getPostcode());
-				textfield_Telephone.setText(displayedPerson.getTelephone());
-				
-				// If the returned allergy is "null" set the allergy
-				// box to display "None".
-				if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
-					allergy.setValue(allergic[0]);
-				} else {
-					// Else set the allergy box value to the returned alergy
-					allergy.setValue(displayedPerson.getAllergies());
-				}
+				displayPerson(matchingPeople.get(0));
 			}
 			
 			enableTriage();
@@ -634,6 +668,33 @@ public class RevController implements Initializable, ClientCallback {
 		});
 		
 		extend.setOnAction(e -> {p3.show(extend);});
+	}
+	
+	
+	/**
+	 * 
+	 * @param displayedPerson
+	 */
+	public void displayPerson(Person displayedPerson) {
+
+		textfield_First_Name.setText(displayedPerson.getFirstName());
+		textfield_Surname.setText(displayedPerson.getLastName());
+		textfield_NHS_Num.setText(displayedPerson.getNHSNum());
+		textfield_Title.setText(displayedPerson.getTitle());
+		textfield_DOB.setText(displayedPerson.getDOB());
+		textfield_Address.setText(displayedPerson.getAddress());
+		textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
+		textfield_Postcode.setText(displayedPerson.getPostcode());
+		textfield_Telephone.setText(displayedPerson.getTelephone());
+		
+		// If the returned allergy is "null" set the allergy
+		// box to display "None".
+		if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
+			allergy.setValue(allergic[0]);
+		} else {
+			// Else set the allergy box value to the returned alergy
+			allergy.setValue(displayedPerson.getAllergies());
+		}
 	}
 
 	/**
@@ -841,7 +902,7 @@ public class RevController implements Initializable, ClientCallback {
 		search_database.setTooltip(new Tooltip("Search NHS DBMS"));
 		tb1.setTooltip(new Tooltip("Patient has BLOCKED AIRWAY!"));
 		tb2.setTooltip(new Tooltip("Patient is NOT BREATHING!"));
-		tb3.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
+		tb3.setTooltip(new Tooltip("Patient has suspected SPINAL TRAUMA!"));
 		tb4.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
 		tb5.setTooltip(new Tooltip("Patient is INCAPACITATED!"));
 		tb6.setTooltip(new Tooltip("Patient has been EXPOSED TO EXTREME CONDITIONS!"));
@@ -863,6 +924,7 @@ public class RevController implements Initializable, ClientCallback {
 		walk_no.setTooltip(new Tooltip("The patient is immobile and requires assistence"));
 		conditions.setTooltip(new Tooltip("Select option"));
 		medication.setTooltip(new Tooltip("Select option"));
+		server_check.setTooltip(new Tooltip("Server Status"));
 	}
 
 
