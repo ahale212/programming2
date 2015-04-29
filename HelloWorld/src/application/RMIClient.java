@@ -1,6 +1,5 @@
 package application;
 
-import java.io.Closeable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NoSuchObjectException;
@@ -9,11 +8,13 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
-import uk.ac.qub.exjavaganza.hqbert.server.v01.HQueue;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer.ConnectionState;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 
 /**
@@ -29,64 +30,158 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * A reference to the remote server
 	 */
 	private RemoteServer server;
+	
 	/**
 	 * The URI/IP of the server
 	 */
 	private String serverAddress = "localhost";
+	
 	/**
 	 * The port of the server
 	 */
 	private int serverPort = 1099;
 	
-	private ClientCallback callbackObject;
+	/**
+	 * The controller of the client application
+	 */
+	private RevController controller;
+	
+	/**
+	 * Boolean to hold the current status of the server.
+	 */
+	private ConnectionState serverAccessible;
+
+	/**
+	 * The ID assigned by the remote server that allows the server to identify the client
+	 */
+	String clientID;
 	
 	/**
 	 * Constructor for RMIClient
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	protected RMIClient(ClientCallback callbackObject) throws RemoteException, NotBoundException, MalformedURLException {
+	protected RMIClient(RevController controller) throws RemoteException, NotBoundException, MalformedURLException {
 		super();
 		
-		this.callbackObject = callbackObject;
+		this.controller = controller;
 		
 		try {
-			// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
-			server = (RemoteServer)Naming.lookup("rmi://" + serverAddress + ":" + serverPort + "/HQBertServer");
 			
-			// Register for the update callbacks. This passes a reference
-			// of the client to the server so the 'update' method can be called remotely.
-			server.registerForUpdates(this);
+			// Set up the connection to the server, and register for updates.
+			initConnection();
 			
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			// Remove the RMIClient from the RMI runtime
-			RMIClient.unexportObject(this, true);
+			// End connection to server and remove the RMIClient from the RMI runtime
+			close();
+			
+			// Re-throw the exception to be handled elsewhere
 			throw e;
 		}
+		
+		// Create a timer to handle pings
+		Timer timer = new Timer();
+		// Set the time to repeat every 5 seconds and run the timedPing Timer Tast each tick
+		timer.scheduleAtFixedRate(new timedPing(), 5000, 5000);
+			
+
+	}
+	
+	/**
+	 * Sets up the connection to the server, and register for updates.
+	 * @throws RemoteException			Exception thrown when an communication issue occurs during RMI
+	 * @throws MalformedURLException	The URL provided for the connection could not be parsed
+	 * @throws NotBoundException 		The name looked up in the call to Naming.lookup() has no associated binding
+	 */
+	public void initConnection() throws RemoteException, MalformedURLException, NotBoundException {
+		serverAccessible = ConnectionState.CONNECTING;
+		controller.serverStatusChanged(serverAccessible);
+		
+		// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
+		server = (RemoteServer)Naming.lookup("rmi://" + serverAddress + ":" + serverPort + "/HQBertServer");
+		
+		// Register for the update callbacks. This passes a reference
+		// of the client to the server so the 'update' method can be called remotely.
+		clientID = server.register(this);
+		
+		// The user has registered successfully, so set serverAccessible to true
+		serverAccessible = ConnectionState.CONNECTED;
+		controller.serverStatusChanged(serverAccessible);
 	}
 
+	/**
+	 * TimerTask that pings the server to ensure that it is still accessible
+	 */
+	public class timedPing extends TimerTask {
+		@Override
+		public void run() {
+			
+			// Boolean to hold whether or not the server is running
+			ConnectionState accessible;
+			// If the server is no null
+			if (server != null) {
+				try {
+					// Ping the server
+					boolean pingResult = server.heartbeat(clientID);
+					// If no error was thrown the server is connected
+					accessible = ConnectionState.CONNECTED;
+					// A result of false means that the client is not registered
+					if (pingResult == false) {
+						System.out.println("Server accessible but client not registered. Re-registering...");
+						// so re-register
+						clientID = server.register(RMIClient.this);
+					}
+				} catch (RemoteException e) {
+					System.err.println("Server not accessible.");
+					// Communication with the server has failed, so set running to false;
+					accessible = ConnectionState.NOT_CONNECTED;
+				}
+			} else { // else if the server is null, set accessible to false
+				accessible = ConnectionState.NOT_CONNECTED;
+			}
+			
+			// If the status has changed since last check, inform the controller
+			if (accessible != serverAccessible) {
+				controller.serverStatusChanged(accessible);
+			}
+			// update the value help in serverAccessible
+			serverAccessible = accessible;
+			
+			// I accessible is false, try to reconnect
+			if (accessible == ConnectionState.NOT_CONNECTED) {
+				try {
+					// Attempt a re-connection
+					initConnection();
+				} catch (RemoteException | MalformedURLException
+						| NotBoundException e1) {
+				}
+			}
+		}
+
+	}
+	
 	/**
 	 * Callback method defined in the ClientCallback interface. This method can be 
 	 * invoked remotely from the server as a callback, whenever the queue is updated.
 	 * It updates the local state of the queue to match the remote changes.
 	 * 
-	 * @param queue		The updated patient queue sent from the server
-	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 * @param queue					The updated patient queue sent from the server
+	 * @throws RemoteException		Exception thrown when an communication issue occurs during RMI
 	 */
 	@Override
 	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException {
 
 		// Pass the callback call onto the controller
-		callbackObject.udpate(queue, treatmentFacilities);
+		controller.udpate(queue, treatmentFacilities);
 	}
 	
 	/**
 	 * Sends log messages to the client
-	 * @param log		The log text
+	 * @param log				The log text
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
 	@Override
 	public void log(String message) throws RemoteException {
-		callbackObject.log(message);
+		controller.log(message);
 	};
 	
 	/**
@@ -95,12 +190,18 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 */
 	@Override
 	public void close() {
-		try {
-			// Unregister for updates
-			server.unregisterForUpdates(this);
-		} catch (RemoteException e) {
-			System.err.println("Failed to unregister from server updates.");
+
+		if (server != null) {
+			try {
+				// Unregister for updates
+				server.deregister(clientID);
+			} catch (RemoteException e) {
+				System.err.println("Failed to unregister from server updates.");
+			}
 		}
+		
+		// Set the server reference to null
+		server = null;
 		
 		try {
 			// Remove the RMIClient from the RMI runtime
@@ -117,8 +218,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 
 	@Override
 	public void alertQueueFull() throws RemoteException {
-		// TODO Auto-generated method stub
 		
 	}
-
+	
 }
