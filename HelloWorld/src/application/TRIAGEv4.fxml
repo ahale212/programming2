@@ -140,13 +140,13 @@
                 <children>
                 <Label text="Staff on Duty" layoutX="14.0" layoutY="10.0" />
                 <Label text="Triage Nurse:" layoutX="14.0" layoutY="30.0" />
-                <TextField layoutX="14.0" layoutY="87.0" />
+                <TextField fx:id="triage_nurse_on_duty" layoutX="14.0" layoutY="87.0" />
                 <Label text="Treatment Room Doctors:" layoutX="114.0" layoutY="30.0" />
-                <ListView layoutX="114.0" layoutY="87.0" />
+                <ListView fx:id="doctor_on_duty" layoutX="114.0" layoutY="87.0" />
                 <Label text="On Call Staff:" layoutX="314.0" layoutY="30.0" />
                 <TableView layoutX="314.0" layoutY="87.0" />
                 <Label text="Administrator:" layoutX="514.0" layoutY="30.0" />
-                <TextField layoutX="514.0" layoutY="87.0" />
+                <TextField fx:id="admin" layoutX="514.0" layoutY="87.0" />
                 </children></AnchorPane>
               </content>
             </Tab>
