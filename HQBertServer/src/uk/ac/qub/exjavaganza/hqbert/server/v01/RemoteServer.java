@@ -60,16 +60,20 @@ public interface RemoteServer extends Remote {
 	public ArrayList<TreatmentFacility> getTreatmentRooms() throws RemoteException;
 	
 	/**
-	 * Adds a newly triaged emergency patient to the backend list along with the details of their current state.
+	 * Adds a newly triaged emergency patient to the backend list along with the details of their current state. If they 
+	 * are added, true is returned. If they cannot be added (e.g. the queue is full), false is returned.
+	 * @return Whether the patient was successfully added or not.
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void addPrimaryPatient(Person person, boolean airway, boolean breating, boolean spine, boolean circulation, boolean disability, boolean exposure) throws RemoteException;
+	public boolean addPrimaryPatient(Person person, boolean airway, boolean breating, boolean spine, boolean circulation, boolean disability, boolean exposure) throws RemoteException;
 	
 	/**
-	 * Adds a newly triaged non-emergency patient to the backend list along with the details of their current state.
+	 * Adds a newly triaged non-emergency patient to the backend list along with the details of their current state. If they 
+	 * are added, true is returned. If they cannot be added (e.g. the queue is full), false is returned.
+	 * @return Whether the patient was successfully added or not.
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void addSecondaryPatient(Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication) throws RemoteException;
+	public boolean addSecondaryPatient(Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication) throws RemoteException;
 
 	/**
 	 * Searches for a staff by their username and password.

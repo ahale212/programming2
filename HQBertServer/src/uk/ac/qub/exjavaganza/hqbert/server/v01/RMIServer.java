@@ -238,7 +238,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 *             RMI
 	 */
 	@Override
-	public void addPrimaryPatient(Person person, boolean airway,
+	public boolean addPrimaryPatient(Person person, boolean airway,
 			boolean breating, boolean spine, boolean circulation,
 			boolean disability, boolean exposure) throws RemoteException {
 		Patient patient = new Patient();
@@ -246,7 +246,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		patient.setUrgency(Urgency.EMERGENCY);
 		patient.setPriority(true);
 
-		Supervisor.INSTANCE.admitPatient(patient);
+		return Supervisor.INSTANCE.admitPatient(patient);
 
 	}
 
@@ -259,7 +259,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 *             RMI
 	 */
 	@Override
-	public void addSecondaryPatient(Person person, Urgency urgency,
+	public boolean addSecondaryPatient(Person person, Urgency urgency,
 			boolean breathingWithoutResusitation, boolean canWalk,
 			int respirationRate, int pulseRate, String underlyingCondition,
 			String prescribedMedication) {
@@ -269,7 +269,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		patient.setUrgency(urgency);
 		patient.setPriority(false);
 
-		Supervisor.INSTANCE.admitPatient(patient);
+		return Supervisor.INSTANCE.admitPatient(patient);
 	}
 
 	/**
