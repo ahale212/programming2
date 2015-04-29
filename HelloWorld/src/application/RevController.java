@@ -100,6 +100,7 @@ public class RevController implements Initializable, ClientCallback {
 	private ComboBox conditions, medication, select_tr, breathing_yes, allergy;
 
 	@FXML
+
 	private ComboBox<String> patient_finder;
 	
 	@FXML
@@ -169,6 +170,7 @@ public class RevController implements Initializable, ClientCallback {
 	private Person displayedPerson;
 	private List<Person> search_results;
 	
+
 	@Override
 	protected void finalize() throws Throwable {
 		
@@ -199,7 +201,7 @@ public class RevController implements Initializable, ClientCallback {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Sets layout colours and patterns
 	 */
@@ -296,7 +298,6 @@ public class RevController implements Initializable, ClientCallback {
 		// Display the results on screen
 		patient_finder.setItems(search_patient_results);
 	}
-
 
 	/**
 	 * adds tags to slider controls
@@ -473,29 +474,6 @@ public class RevController implements Initializable, ClientCallback {
 		});
 		
 		settings.setOnAction(e -> {
-			Stage settings_stage = new Stage();
-			AnchorPane root = new AnchorPane();			
-			//VBox configurations_settings = new VBox();
-			Label plus_trs = new Label("Set Amount of Treatment Roooms");
-			TextField set_no_trs = new TextField();
-			Button save_no_trs = new Button();
-			set_no_trs.setLayoutY(25.0);	
-			save_no_trs.setLayoutY(52.0);
-			
-			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-				if (set_no_trs.getText().toString().equalsIgnoreCase("10")) {
-					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").showError();
-				}
-				}});
-			
-			root.getChildren().addAll(plus_trs,set_no_trs, save_no_trs);
-			Scene s = new Scene(root, 200, 200);
-			settings_stage.setScene(s);
-			settings_stage.show();	
-			
 			Stage settings_stage = new Stage();
 			AnchorPane root = new AnchorPane();			
 			//VBox configurations_settings = new VBox();
@@ -787,7 +765,11 @@ public class RevController implements Initializable, ClientCallback {
 	
 	
 	/**
+<<<<<<< HEAD
 	 * Display a person in the patient triage tab.
+=======
+	 * 
+>>>>>>> branch 'master' of https://github.com/ahale212/programming2
 	 * @param displayedPerson
 	 */
 	public void displayPerson(Person displayedPerson) {
@@ -1067,8 +1049,13 @@ public class RevController implements Initializable, ClientCallback {
 					outputTextArea.appendText("Server inaccessible\n");
 					server_check.setText("Error Connecting to Server");
 					server_check.setStyle("-fx-base: red;");
+					server_check.setSelected(false);
+					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
 					break;
 				case CONNECTING:
+					outputTextArea.appendText("Connecting to server...\n");
+					server_check.setText("Connecting...");
+					server_check.setStyle("-fx-base: yellow;");
 					break;
 				}
 			}
