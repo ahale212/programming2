@@ -373,7 +373,7 @@ public class RevController implements Initializable, ClientCallback {
 					// Add the patients name to the observable array in the correct position for the room they're in.
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
 				} catch (Exception ex) {
-					System.err.println("failed!!!!!!!!!!!!!");
+					System.err.println("failed.");
 				}}
 		}
 	}
@@ -858,9 +858,26 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 
+	/** Method called by RMIClient when the remote server reports that the queue is full */
 	@Override
 	public void alertQueueFull() throws RemoteException {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	/** Called by RMI client when the server status changes (whether its accessible or not) */
+	public void serverStatusChanged(boolean accessible) {
+
+		// Call run later to run updates to the UI on the JavaFX thread
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (accessible) {
+					outputTextArea.appendText("Server accessible\n");
+				} else {
+					outputTextArea.appendText("Server inaccessible\n");
+				}
+			}
+		});
 	}
 }

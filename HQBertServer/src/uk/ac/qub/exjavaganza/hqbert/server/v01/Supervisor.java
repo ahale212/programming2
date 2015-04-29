@@ -24,8 +24,11 @@ public enum Supervisor {
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	public final int MAX_TREATMENT_ROOMS = 4;
+	public final int ONCALL_TEAM_DOCTORS = 2;
+	public final int ONCALL_TEAM_NURSES = 3;
+	public final boolean ALERTS_ACTIVE = false;
 
-	public final float TIME_MULTI = 120;
+	public final float TIME_MULTI = 60;
 
 	private final int serverPort = 1099;
 
@@ -33,6 +36,9 @@ public enum Supervisor {
 	private Clock clock;
 	private boolean exit;
 	private ArrayList<TreatmentFacility> treatmentFacilities;
+	private OnCallTeam onCallTeam;
+	private ArrayList<Staff> staffOnCall;
+	private ArrayList<Staff> activeOnCallStaff;
 	private RMIServer server;
 	private Logger logger;
 
@@ -68,18 +74,12 @@ public enum Supervisor {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
 		}
 
-		testPatientNo = 0;
-
-		testUrgencies = new Urgency[] { Urgency.NON_URGENT, Urgency.NON_URGENT,
-				Urgency.SEMI_URGENT, Urgency.SEMI_URGENT, Urgency.NON_URGENT,
-				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
-				Urgency.NON_URGENT, Urgency.URGENT, Urgency.SEMI_URGENT,
-				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
-				Urgency.SEMI_URGENT };
-
-		extensions = new int[] { 0, 1, 2 };
-
-		exit = false;
+		staffOnCall = new ArrayList<Staff>();
+		activeOnCallStaff = new ArrayList<Staff>();
+		onCallTeam = null;
+		
+		//Testing
+		runBobbyTest();
 
 		// set up connection to database
 		try {
@@ -98,12 +98,47 @@ public enum Supervisor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
+		exit = false;
 	}
 
 	public void startLoop() {
 		while (exit == false) {
 			clock.update();
 		}
+	}
+	
+	public void runBobbyTest(){
+		testPatientNo = 0;
+
+		testUrgencies = new Urgency[] { Urgency.EMERGENCY, Urgency.EMERGENCY,
+				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.NON_URGENT,
+				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
+				Urgency.EMERGENCY, Urgency.URGENT, Urgency.SEMI_URGENT,
+				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
+				Urgency.SEMI_URGENT };
+
+		extensions = new int[] { 0, 1, 2 };
+
+		
+		Staff drOctopus = new Staff("docOc", "8ArmsBaby");
+		drOctopus.setJob(Job.DOCTOR);
+		Staff drDoom = new Staff("drDoom", "hahaha");
+		drDoom.setJob(Job.DOCTOR);
+		Staff nurseBetty = new Staff("Betty","bettyPass");
+		nurseBetty.setJob(Job.NURSE);
+		Staff nurseJohn = new Staff("John","johnPass");
+		nurseJohn.setJob(Job.NURSE);
+		Staff nurseJane = new Staff("Jane","janePass");
+		nurseJane.setJob(Job.NURSE);
+		
+		staffOnCall.add(nurseJane);
+		staffOnCall.add(drDoom);
+		staffOnCall.add(nurseJohn);
+		staffOnCall.add(drOctopus);
+		staffOnCall.add(nurseBetty);
+		
 	}
 
 	/**
@@ -139,27 +174,10 @@ public enum Supervisor {
 	 *            : time (in milliseconds) since the last update
 	 */
 	public void update(int deltaTime) {
-
-		for (int i = 0; i < treatmentFacilities.size(); i++) {
-			TreatmentFacility tf = treatmentFacilities.get(i);
-			tf.update(deltaTime);
-			if (tf.getTimeToAvailable() <= 0) {
-				Patient nextPatient = hQueue.getNextPatient();
-				if (nextPatient != null) {
-					sendToTreatment(nextPatient);
-
-				}
-			}
-			tf.showFacilityInConsole();
-		}
-
-		hQueue.update(deltaTime);
-
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
 			insertTestPatient();
 		}
-
 		// automated extension tests
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
@@ -172,6 +190,31 @@ public enum Supervisor {
 				}
 			}
 		}
+		
+		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
+		manageOnCall();
+		
+		
+		//update the treatment facilities (rooms and on-call if on-site)
+		for (int i = 0; i < treatmentFacilities.size(); i++) {
+			TreatmentFacility tf = treatmentFacilities.get(i);
+			tf.update(deltaTime);
+			if (tf.getTimeToAvailable() <= 0) {
+				Patient nextPatient = hQueue.getNextPatient();
+				if (nextPatient != null) {
+					if(sendToTreatment(nextPatient) == true){
+						//log sending of patient to treatment
+					}else{
+						//log that the patient didn't make it to treatment
+					}
+				}
+			}
+			tf.showFacilityInConsole();
+		}
+
+		//update the queue
+		hQueue.update(deltaTime);
+
 
 		// Send the updated queue to clients via the server
 		server.updateClients();
@@ -230,32 +273,35 @@ public enum Supervisor {
 	 *         treatment room available
 	 */
 	public boolean sendToTreatment(Patient patient) {
-
+		boolean success = false;
+		
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
 
-			// If a room is available and the patient is at the send the new
-			// patient straight to a room
+			// If a room is available send the patient
 			if (tf.getTimeToAvailable() <= 0 && tf.getPatient() == null) {
 				tf.receivePatient(patient);
-				return true;
+				success = true;
+				break;
 			}
 		}
 		// Patient didn't make it to a treatment room - check if they are an
 		// emergency
-		if (patient.getUrgency() == Urgency.EMERGENCY) {
+		if (success == false && patient.getUrgency() == Urgency.EMERGENCY) {
 
 			for (int i = 0; i < treatmentFacilities.size(); i++) {
 				TreatmentFacility tf = treatmentFacilities.get(i);
 				Patient tfPatient = tf.getPatient();
 				if (tf.getPatient() == null) {
-					/* The room is empty, just not "unlocked" yet */
+					/* The room is empty, just not "unlocked" yet 
+					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
-					return true;
-					/*
-					 * Another patient is in the room, check if they are an
-					 * emergency
-					 */
+					success = true;
+					break;
+				/*
+				 * Another patient is in the room, check if they are an
+				 * emergency
+				 */
 				} else if (tfPatient.getUrgency() != Urgency.EMERGENCY) {
 					/*
 					 * They aren't - add them to a list of possible to replace
@@ -264,21 +310,98 @@ public enum Supervisor {
 					hQueue.addToDisplacable(tfPatient);
 				}
 			}
+			
+			if(success == false){
+				Patient displacablePatient = null;
+				displacablePatient = hQueue.findMostDisplacable();
+				if (displacablePatient != null) {
+					for (int i = 0; i < treatmentFacilities.size(); i++) {
+						TreatmentFacility tf = treatmentFacilities.get(i);
+						Patient roomCurrentPatient = tf.getPatient();
+						if (roomCurrentPatient.equals(displacablePatient)) {
+							tf.emergencyInterruption(patient);
+							success = true;
+							break;
+						}
+					}
+				}else{
+					//Log Stuff: Full of emergencies - send this emergency away
+					System.out.println("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
+				}
+			}
+			
+			//Still didn't make it - try onCall
+			boolean onCallHere = false;
+			if(success == false){
+				if(onCallTeam == null){
+					if(assembleOnCall() == true){
+						onCallHere = true;
+					}
+				}
+				
+				if(onCallHere == true){
+					onCallTeam.receivePatient(patient);
+					success = true;
+				}
+				
+			}
+			
+			//if onCall was already here, they would have been checked for displacable patients already
+		}
+		
+		
+		
+		return success;
+	}
 
-			Patient displacablePatient = null;
-			displacablePatient = hQueue.findMostDisplacable();
-			if (displacablePatient != null) {
-				for (int i = 0; i < treatmentFacilities.size(); i++) {
-					TreatmentFacility tf = treatmentFacilities.get(i);
-					Patient roomCurrentPatient = tf.getPatient();
-					if (roomCurrentPatient.equals(displacablePatient)) {
-						tf.emergencyInterruption(patient);
-						return true;
+	public void manageOnCall(){
+		//check if queue at max and alert on-call
+		if(hQueue.getPQ().size() == MAX_QUEUE_SIZE && treatmentFacilities.size() == MAX_TREATMENT_ROOMS){
+			assembleOnCall();
+		}
+		
+		if(hQueue.getPQ().size() < MAX_QUEUE_SIZE && onCallTeam != null && onCallTeam.getPatient() == null){
+			//Send the onCall team away
+		}
+	}
+	
+	
+	/**
+	 * send messages to staff on the onCall list and assemble an onCall team
+	 * @return whether the onCall team was successfully assembled
+	 */
+	public boolean assembleOnCall(){
+		onCallTeam = new OnCallTeam();
+		for(int count = 0; count < 2; count++){
+			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
+				Staff staffMember = staffOnCall.get(staffMemberIndex);
+				if (staffMember.getJob() == Job.DOCTOR && !(activeOnCallStaff.contains(staffMember))){
+					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
+						activeOnCallStaff.add(staffMember);
+						onCallTeam.assignStaff(staffMember);
 					}
 				}
 			}
+			if(onCallTeam.getStaff().size() < ONCALL_TEAM_DOCTORS){
+				//Log that insufficient doctors are available for an oncall team
+				return false;
+			}
+			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
+				Staff staffMember = staffOnCall.get(staffMemberIndex);
+				if (staffMember.getJob() == Job.NURSE && !(activeOnCallStaff.contains(staffMember))){
+					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
+						activeOnCallStaff.add(staffMember);
+						onCallTeam.assignStaff(staffMember);
+					}
+				}
+			}
+			if(onCallTeam.getStaff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
+				//Log that insufficient nurses are available for an oncall team
+				return false;
+			}
 		}
-		return false;
+		treatmentFacilities.add(onCallTeam);
+		return true;
 	}
 
 	public void alertOnCall() {
@@ -333,7 +456,6 @@ public enum Supervisor {
 
 		// If the patient queue is full
 		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
-
 			// Send a message to the on call team informing them that the 
 			// queue is full.
 			OnCallTeamAlert.onCallTeamQueueCapacity();
@@ -345,8 +467,10 @@ public enum Supervisor {
 	}
 
 	public void removeFromQueue(Patient patient) {
-		System.out.println("Removing " + patient.getPerson().getFirstName()
-				+ " from the queue.");
+		System.out.println("Removing "		 + patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
+			// via the RMI server.
+			server.broadcastQueueFullAlert();
+
 		hQueue.removePatient(patient);
 	}
 
@@ -402,6 +526,37 @@ public enum Supervisor {
 	 */
 	public void setStaffAccessor(StaffDataAccessor staffAccessor) {
 		this.staffAccessor = staffAccessor;
+	}
+
+	
+	public OnCallTeam getOncallTeam(){
+		return this.onCallTeam;
+	}
+	
+	/**
+	 * Find a person by nhsNumber and update their doctors notes.
+	 */
+	public void updatePatientNotes(String nhsNumber, String doctorsNotes) {
+		
+		// Loop through the various facilities to find the patient
+		for (TreatmentFacility facility : treatmentFacilities) {
+			Person person = facility.patient.getPerson();
+			if (person.getNHSNum().equals(nhsNumber)) {
+				person.setDoctorsNotes(doctorsNotes);
+			}
+		}
+	}
+	
+	/**
+	 * Extends the treatment time for a given facility
+	 * @param facility		The facility to be updated
+	 */
+	public void extendTreatmentRoom(TreatmentFacility facility) {
+		for (TreatmentFacility loopedFacility : treatmentFacilities) {
+			if (facility instanceof OnCallTeam && loopedFacility instanceof OnCallTeam) {
+				loopedFacility.extendTime();
+			}
+		}
 	}
 
 }

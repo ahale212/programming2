@@ -4,7 +4,7 @@ public interface ITreatmentFacility {
 	
 	public void setTimeToAvailable(int tta);
 	
-	public void assignStaff(StaffMember sm);
+	public void assignStaff(Staff sm);
 	
 	public void update(int deltaTime);
 	

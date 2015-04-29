@@ -1,11 +1,7 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 public class OnCallTeam extends TreatmentFacility {
-
-	StaffMember doctor0;
-	StaffMember nurse0;
 	
-	Patient patient;
 	
 	public OnCallTeam() {
 		super();
@@ -24,14 +20,28 @@ public class OnCallTeam extends TreatmentFacility {
 		}
 	}
 	
+	@Override
+	public void receivePatient(Patient patient){
+		super.receivePatient(patient);
+	}
+	
+	@Override
+	public void DischargePatient(){
+		super.DischargePatient();
+	}
+	
 	public void goAway(){
 		
 	}
 
 	@Override
 	public void showFacilityInConsole() {
-		// TODO Auto-generated method stub
-
+		
+		int patientWaitTime = (patient != null)? patient.getWaitTime() : 0;
+		String patientUrgency = (patient != null)? patient.getUrgency().toString() : "na";
+		String patientName = (patient!=null)? patient.getPerson().getFirstName() : "None";
+		System.out.println("On-call Team : "+"\tPatient : "+patientName+"\tUrgency : "+patientUrgency+"\tTime to available : "+timeToAvailable+"\tPatientWaitTime : "+patientWaitTime);
 	}
+	
 
 }

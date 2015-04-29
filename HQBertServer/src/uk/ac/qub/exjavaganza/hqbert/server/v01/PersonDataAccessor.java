@@ -18,11 +18,29 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
  *
  */
 public class PersonDataAccessor {
+	
+	/**
+	 * constant for the SQL driver
+	 */
+	public static final String DRIVER = "com.mysql.jdbc.Driver";
+	/**
+	 * URL for the SQL database 
+	 */
+	public static final String URL = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	/**
+	 * constant for the username for the SQL database
+	 */
+	public static final String USERNAME = "40058483";
+	/**
+	 * constant for the password for the SQL database 
+	 */
+	public static final String PASSWORD = "VPK7789";
+	
 
 	Person person = new Person();
 
 	// establish connection to mySQl
-	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	
 	Connection con;
 	PreparedStatement findPatients, findPatientsWithNHSNum,
 			findPatientsWithOnlyFirstName;
@@ -34,9 +52,9 @@ public class PersonDataAccessor {
 	public PersonDataAccessor(String dbURL, String user, String password)
 			throws SQLException, ClassNotFoundException {
 		// driver name
-		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER);
 		// connection to database using login name and password
-		con = DriverManager.getConnection(url, "40058483", "VPK7789");
+		con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
 	}
 
@@ -61,7 +79,7 @@ public class PersonDataAccessor {
 		try (Statement findPatients = con.prepareStatement(findPatientsString);
 				// execute query
 				ResultSet rs = findPatients
-						.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "' AND last_name = '" + lastName + "'");) {
+						.executeQuery("SELECT * FROM patients WHERE first_name LIKE '%" + firstName + "%' AND last_name = '%" + lastName + "%'");) {
 			
 			resultOfQuery(rs);
 		}

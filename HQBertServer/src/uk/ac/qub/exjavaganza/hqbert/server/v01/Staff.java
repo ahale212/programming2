@@ -26,10 +26,12 @@ public class Staff implements Serializable {
 	private String employeeUsername;
 	private String employeePassword;
 	private String employeeEmail;
+	
+	private Job job;
+/**
+ * default constructor
+ */
 
-	/**
-	 * default constructor
-	 */
 	public Staff() {
 	}// end of constructor
 
@@ -200,5 +202,14 @@ public class Staff implements Serializable {
 	public void setEmployeeEmail(String employeeEmail) {
 		this.employeeEmail = employeeEmail;
 	}// end of setter
+
+	public void setJob(Job job){
+		this.job = job;
+	}
+	
+	public Job getJob(){
+		return this.job;
+	}
+	
 
 }// end of class
