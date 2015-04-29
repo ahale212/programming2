@@ -135,11 +135,11 @@ public enum Supervisor {
 		Staff drDoom = new Staff("drDoom", "hahaha");
 		drDoom.setJob(Job.DOCTOR);
 		Staff nurseBetty = new Staff("Betty","bettyPass");
-		nurseBetty.setJob(Job.NURSE);
+		nurseBetty.setJob(Job.TRIAGE_NURSE);
 		Staff nurseJohn = new Staff("John","johnPass");
-		nurseJohn.setJob(Job.NURSE);
+		nurseJohn.setJob(Job.TRIAGE_NURSE);
 		Staff nurseJane = new Staff("Jane","janePass");
-		nurseJane.setJob(Job.NURSE);
+		nurseJane.setJob(Job.TRIAGE_NURSE);
 		
 		staffOnCall.add(nurseJane);
 		staffOnCall.add(drDoom);
@@ -404,7 +404,7 @@ public enum Supervisor {
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (staffMember.getJob() == Job.NURSE && !(activeOnCallStaff.contains(staffMember))){
+				if (staffMember.getJob() == Job.TRIAGE_NURSE && !(activeOnCallStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
 						activeOnCallStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
