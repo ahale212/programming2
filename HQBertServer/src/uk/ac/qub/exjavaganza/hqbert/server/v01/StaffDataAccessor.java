@@ -16,11 +16,28 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
  *
  */
 public class StaffDataAccessor {
-
+	
+	/**
+	 * constant for the SQL driver 
+	 */
+	public static final String DRIVER = "com.mysql.jdbc.Driver";
+	/**
+	 * URL for the SQL database
+	 */
+	public static final String URL = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	/**
+	 * username for the SQL database
+	 */
+	public static final String USERNAME = "40058483";
+	/**
+	 * password for the SQL database
+	 */
+	public static final String PASSWORD = "VPK7789";
+	
 	Staff staff = new Staff();
 
 	// establish connection to mySQl
-	String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+;
 	Connection con;
 	PreparedStatement findStaff;
 	// declare var
@@ -29,9 +46,9 @@ public class StaffDataAccessor {
 	public StaffDataAccessor(String dbURL, String user, String password)
 			throws SQLException, ClassNotFoundException {
 		// driver name
-		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER);
 		// connection to database using login name and password
-		con = DriverManager.getConnection(url, "40058483", "VPK7789");
+		con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
 	}
 

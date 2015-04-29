@@ -19,9 +19,21 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.Person;
  */
 public class PersonDataAccessor {
 	
+	/**
+	 * constant for the SQL driver
+	 */
 	public static final String DRIVER = "com.mysql.jdbc.Driver";
+	/**
+	 * URL for the SQL database 
+	 */
 	public static final String URL = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	/**
+	 * constant for the username for the SQL database
+	 */
 	public static final String USERNAME = "40058483";
+	/**
+	 * constant for the password for the SQL database 
+	 */
 	public static final String PASSWORD = "VPK7789";
 	
 
@@ -67,7 +79,7 @@ public class PersonDataAccessor {
 		try (Statement findPatients = con.prepareStatement(findPatientsString);
 				// execute query
 				ResultSet rs = findPatients
-						.executeQuery("SELECT * FROM patients WHERE first_name = '" + firstName + "' AND last_name = '" + lastName + "'");) {
+						.executeQuery("SELECT * FROM patients WHERE first_name LIKE '%" + firstName + "%' AND last_name = '%" + lastName + "%'");) {
 			
 			resultOfQuery(rs);
 		}
