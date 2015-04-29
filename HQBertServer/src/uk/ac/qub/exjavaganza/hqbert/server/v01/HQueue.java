@@ -1,12 +1,14 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.logging.Level;
 
 import javax.print.attribute.standard.Severity;
 
@@ -119,6 +121,9 @@ public class HQueue implements Serializable {
 					if(Supervisor.INSTANCE.assembleOnCall()==true){
 						if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 							//This call should snd the patient to the onCall team
+							
+							PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+							MetricsController.INSTANCE.AddMetric(metrics);
 							return true;
 						}else{
 							//Something went wrong - log details
