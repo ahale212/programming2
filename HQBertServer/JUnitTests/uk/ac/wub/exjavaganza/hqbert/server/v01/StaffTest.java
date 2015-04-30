@@ -19,7 +19,7 @@ public class StaffTest {
 	String employeeNumber, invalidEmployeeNumber, firstName, invalidFirstName,
 			lastName, invalidLastName, employeeUsername,
 			invalidEmployeeUsername, employeePassword, invalidEmployeePassword,
-			employeeEmail, invalidEmployeeEmail;
+			employeeEmail, invalidEmployeeEmail, mobileNumber;
 
 	/**
 	 * method to initialize the vars needed to test Staff class
@@ -41,6 +41,7 @@ public class StaffTest {
 		invalidEmployeePassword = "invalid";
 		employeeEmail = "test@test.com";
 		invalidEmployeeEmail = "invalid";
+		mobileNumber = "+447938812243";
 
 	}
 
@@ -60,11 +61,12 @@ public class StaffTest {
 	@Test
 	public void testStaffStringStringStringStringStringString() {
 		Staff staff = new Staff(employeeNumber, firstName, lastName,
-				employeeUsername, employeePassword, employeeEmail);
+				employeeUsername, employeePassword, employeeEmail, mobileNumber);
 		assertEquals(employeeNumber, staff.getEmployeeNumber());
 		assertEquals(firstName, staff.getFirstName());
 		assertEquals(lastName, staff.getLastName());
 		assertEquals(employeeUsername, staff.getEmployeeUsername());
+		assertEquals(mobileNumber, staff.getMobileNumber());
 		int key = 4;
 		char ch;
 		String encryptedPassword = "";
@@ -170,4 +172,13 @@ public class StaffTest {
 		assertEquals(invalidEmployeeEmail, staff.getEmployeeEmail());
 	}
 
+	/**
+	 * method testing getters and setters for mobile number
+	 */
+	@Test
+	public void testGetSetMobileNumber() {
+		Staff staff = new Staff();
+		staff.setMobileNumber(mobileNumber);
+		assertEquals(mobileNumber, staff.getMobileNumber());
+	}
 }
