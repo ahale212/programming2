@@ -32,9 +32,15 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * The number of times an attempt to communicate with the client before the client
+	 * is removed from the client list.
+	 */
+	private static final int MAX_FAILED_CONNECTION_ATTEMPTS = 3;
+	
+	/**
 	 * A map of ClientCallback objects, with clientIDs used as keys.
 	 */
-	private HashMap<String, ClientCallback> clients;
+	private HashMap<String, ClientDetails> clients;
 
 	/**
 	 * Constructor with args for the RMI Server.
@@ -68,7 +74,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 */
 	private void init() {
 		// Initialises the clients list
-		clients = new HashMap<String, ClientCallback>();
+		clients = new HashMap<String, ClientDetails>();
 	}
 
 	/**
@@ -88,12 +94,12 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			String key = keyIterator.next();
 
 			// Get the client associated with the current key
-			ClientCallback client = clients.get(key);
+			ClientDetails client = clients.get(key);
 
 			try {
 				// calls the update method with the current state of the
 				// patients queue
-				client.udpate(Supervisor.INSTANCE.getHQueue().getPQ(),
+				client.getCallback().udpate(Supervisor.INSTANCE.getHQueue().getPQ(),
 						Supervisor.INSTANCE.getTreatmentFacilities());
 			} catch (RemoteException e) {
 				System.err
@@ -102,8 +108,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 				// Display the stack trace for the exception
 				e.printStackTrace();
 
-				// Remove the client from the list.
-				deregister(key);
+				client.incrementFailedConnectionAttempts();
+				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Remove the client from the list.
+					deregister(key);
+				}
 			}
 		}
 	}
@@ -115,11 +124,17 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 
 		// Loops through each of the clients in the clients list
 		for (String key : keys) {
-			ClientCallback client = clients.get(key);
+			ClientDetails client = clients.get(key);
 			try {
-				client.log(log);
+				client.getCallback().log(log);
 			} catch (RemoteException e) {
 				e.printStackTrace();
+				
+				client.incrementFailedConnectionAttempts();
+				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Remove the client from the list.
+					deregister(key);
+				}
 			}
 
 		}
@@ -136,14 +151,18 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 
 		// Loops through each of the clients in the clients list
 		for (String key : keys) {
-			ClientCallback client = clients.get(key);
+			ClientDetails client = clients.get(key);
 			try {
 				// Alert the client that the queue is full
-				client.alertQueueFull();
+				client.getCallback().alertQueueFull();
 			} catch (RemoteException e) {
 				e.printStackTrace();
-				// Remove the client from the list.
-				deregister(key);
+				
+				client.incrementFailedConnectionAttempts();
+				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Remove the client from the list.
+					deregister(key);
+				}
 			}
 		}
 	}
@@ -153,7 +172,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 * server and returns a new ID
 	 */
 	@Override
-	public String register(String username, String password, ClientCallback client) throws RemoteException {
+	public String register(String username, String password, ClientCallback callbackObject) throws RemoteException {
 		System.out.println("Adding client to the client callback list.");
 		
 		// Search for the staff member in the database to
@@ -179,7 +198,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 		
 		// Add the passed in client to the HashMap of clients, along with their username
-		this.clients.put(newClientID, client);
+		this.clients.put(newClientID, new ClientDetails(callbackObject));
 		
 		return newClientID;
 
