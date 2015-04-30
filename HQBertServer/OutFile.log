@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2015-04-29T13:50:38</date>
+  <millis>1430311838762</millis>
+  <sequence>0</sequence>
+  <logger>uk.ac.qub.week</logger>
+  <level>WARNING</level>
+  <class>uk.ac.qub.exjavaganza.hqbert.server.v01.ErrorHandlingPrototype</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Outputs error warning.</message>
+</record>
+</log>
