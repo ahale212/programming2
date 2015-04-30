@@ -97,6 +97,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			ClientDetails client = clients.get(key);
 
 			try {
+				
 				// calls the update method with the current state of the
 				// patients queue
 				client.getCallback().udpate(Supervisor.INSTANCE.getHQueue().getPQ(),
