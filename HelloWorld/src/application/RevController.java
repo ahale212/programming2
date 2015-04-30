@@ -934,11 +934,6 @@ public class RevController implements Initializable, ClientCallback {
 		extend.setOnAction(e -> {
 			
 			try {
-<<<<<<< HEAD
-=======
-				//client.getServer().extendTreatmentTime(null, null);
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
-				//client.getServer().extendTreatmentTime(null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
