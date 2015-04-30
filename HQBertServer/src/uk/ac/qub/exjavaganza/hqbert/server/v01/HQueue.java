@@ -92,11 +92,10 @@ public class HQueue implements Serializable {
 	 * @param p : the patient who's urgency you wish to change
 	 * @param newUrgency : the required new level of urgency for the patient
 	 */
-	public void reAssignUrgency(Patient p, Urgency newUrgency){
+	public void reAssignTriage(Patient p, Urgency newUrgency){
 		allSubqueues[p.getUrgency().getValue()].remove(p);
 		p.setUrgency(newUrgency); 
-		allSubqueues[p.getUrgency().getValue()].add(p);
-		sortQueue(allSubqueues[p.getUrgency().getValue()]);
+		Supervisor.INSTANCE.admitPatient(p);
 	}
 	
 	/**Insert a patient in the appropriate sub-queue place and so, correct position in overall queue
@@ -106,11 +105,18 @@ public class HQueue implements Serializable {
 	 */
 	public boolean insert(Patient patient){
 		Urgency urgency = patient.getUrgency();
+		
+		//First : if queue full and all rooms full - anyone new is sent away,
+		//		even emergencies - as per Aidan's email.
+		
+		//if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE &&)
+		
 		//If they are an emergency, skip the queue and attempt to send for treatment
 		if(urgency == Urgency.EMERGENCY){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
+				System.out.println("\tAt emergency capacity!!!\t"+patient.getPatientName()+" sent away.");
 				return false;
 			}
 		}

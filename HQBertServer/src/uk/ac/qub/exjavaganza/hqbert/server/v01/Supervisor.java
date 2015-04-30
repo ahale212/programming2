@@ -90,18 +90,15 @@ public enum Supervisor {
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
-
-
 		logger = Logger.getLogger(Supervisor.class);
 
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
 		for (int i = 0; i < MAX_TREATMENT_ROOMS; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
 		}
-
-		
+	
 		//Testing
-		runBobbyTest();
+		makeBobbies();
 		//superFakeOnCallTeam();
 
 		// set up connection to database
@@ -145,12 +142,12 @@ public enum Supervisor {
 		}
 	}
 	
-	public void runBobbyTest(){
+	public void makeBobbies(){
 		testPatientNo = 0;
 
 		testUrgencies = new Urgency[] { Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.NON_URGENT,
-				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
+				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.NON_URGENT,
 				Urgency.EMERGENCY, Urgency.URGENT, Urgency.SEMI_URGENT,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.SEMI_URGENT, Urgency.EMERGENCY, Urgency.EMERGENCY,
@@ -161,6 +158,35 @@ public enum Supervisor {
 				Urgency.EMERGENCY };
 
 		extensions = new int[] { 0, 1, 2 };
+	}
+	
+	public void runBobbyTest(){
+		// Testing
+		if (testPatientNo < testUrgencies.length) {
+			insertTestPatientBobby();
+		}
+		// automated extension tests
+		for (int i = 0; i < treatmentFacilities.size(); i++) {
+			TreatmentFacility tf = treatmentFacilities.get(i);
+			if (tf.getTimeToAvailable() == 1 && tf.getPatient() != null) {
+				if (i > 0 && i < 3) {
+					if (extensions[i] > 0) {
+						tf.extendTime();
+						extensions[i]--;
+					}
+				}
+			}
+		}
+		
+		if(testPatientNo == 9){
+			Patient sample;
+			for(int i = 0; i < hQueue.getPQ().size(); i++){
+				sample =  hQueue.getPQ().get(i);
+				if(sample.getPerson().getFirstName().equalsIgnoreCase("bobby7")){
+					reAssignTriage(sample, Urgency.EMERGENCY);
+				}
+			}
+		}
 	}
 
 	public void superFakeOnCallTeam(){
@@ -181,6 +207,22 @@ public enum Supervisor {
 		staffOnCall.add(drOctopus);
 		staffOnCall.add(nurseBetty);
 	}
+	
+	/**
+	 * Auto-generate simple test patients to push through the system
+	 */
+	private void insertTestPatientBobby() {
+		Person testPerson = new Person();
+		testPerson.setFirstName("Bobby" + testPatientNo);
+		testPerson.setLastName("Branson" + testPatientNo);
+
+		Patient test = new Patient();
+		test.setPerson(testPerson);
+		test.setUrgency(testUrgencies[testPatientNo]);
+
+		admitPatient(test);
+		testPatientNo++;
+	}	
 	
 	/**
 	 * Starts the RMI server so that clients can connect and communicate with
@@ -260,22 +302,8 @@ public enum Supervisor {
 	 *            : time (in milliseconds) since the last update
 	 */
 	public void update(int deltaTime) {
-		// Testing
-		if (testPatientNo < testUrgencies.length) {
-			insertTestPatient();
-		}
-		// automated extension tests
-		for (int i = 0; i < treatmentFacilities.size(); i++) {
-			TreatmentFacility tf = treatmentFacilities.get(i);
-			if (tf.getTimeToAvailable() == 1 && tf.getPatient() != null) {
-				if (i > 0 && i < 3) {
-					if (extensions[i] > 0) {
-						tf.extendTime();
-						extensions[i]--;
-					}
-				}
-			}
-		}
+		
+		runBobbyTest();
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
 		manageOnCallAndAlerts();
@@ -311,21 +339,6 @@ public enum Supervisor {
 		// checkWaitingTime();
 	}
 
-	/**
-	 * Auto-generate simple test patients to push through the system
-	 */
-	private void insertTestPatient() {
-		Person testPerson = new Person();
-		testPerson.setFirstName("Bobby" + testPatientNo);
-		testPerson.setLastName("Branson" + testPatientNo);
-
-		Patient test = new Patient();
-		test.setPerson(testPerson);
-		test.setUrgency(testUrgencies[testPatientNo]);
-
-		admitPatient(test);
-		testPatientNo++;
-	}
 
 	/**
 	 * 
@@ -338,12 +351,7 @@ public enum Supervisor {
 				server.updateClients();
 				return true;
 			} else {
-				System.out.println("Queue at capacity : "
-						+ patient.getPerson().getFirstName() + " - "
-						+ patient.getUrgency() + " - sent away.");
 				server.updateClients();
-				System.out.println("PATIENT REJECTED : "
-						+ patient.getPerson().getFirstName());
 				return false;
 			}
 		} catch (StackOverflowError so) {
@@ -444,6 +452,14 @@ public enum Supervisor {
 	}
 
 	/**
+	 * Change a patient's triage category
+	 */
+	public void reAssignTriage(Patient patient, Urgency newUrgency){
+		System.out.println("\tRE-ASSIGNING TRAGE PRIORITY FOR "+patient.getPatientName());
+		hQueue.reAssignTriage(patient, newUrgency);
+	}
+	
+	/**
 	 * 
 	 */
 	public void manageOnCallAndAlerts(){
@@ -454,7 +470,6 @@ public enum Supervisor {
 			// via the RMI server.
 			
 		}
-		
 		
 		if(checkWaitingTimes() == true && waitTimesUnacceptable == false){
 			waitTimesUnacceptable = false;
@@ -576,6 +591,25 @@ public enum Supervisor {
 
 	}
 
+	/**
+	 * Checks if all treatment rooms are full and the onCall team is engaged with a patient.
+	 * @return true : everything full
+	 * 			false : at least one space (including oncall not engaged) 
+	 */
+	public boolean checkAtTreatmentCapacity(){
+		boolean allFull = true;
+		
+		if(onCallTeam == null){
+			
+		}
+		
+		for(TreatmentFacility tf : treatmentFacilities){
+			
+		}
+		
+		return allFull;
+	}
+	
 	public void removeFromQueue(Patient patient) {
 		System.out.println("Removing "		 + patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
 			// via the RMI server.
