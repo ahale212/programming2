@@ -6,5 +6,5 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
  *
  */
 public enum Job {
-	UNASSIGNED, DOCTOR, NURSE, TRIAGE_NURSE, ADMIN;
+	UNASSIGNED, DOCTOR, NURSE, TRIAGE_NURSE, MANAGER, ADMIN;
 }
