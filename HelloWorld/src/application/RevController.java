@@ -22,10 +22,6 @@ import javax.mail.internet.MimeMessage;
 
 import javax.naming.AuthenticationException;
 
-import javax.naming.AuthenticationException;
-
-import javax.naming.AuthenticationException;
-
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 
@@ -268,7 +264,9 @@ public class RevController implements Initializable, ClientCallback {
 		// When a user selects a patient from the matching patient list 
 		patient_finder.setOnAction( e-> {
 			
-			displayPerson(matchingPeople.get(patient_finder.getSelectionModel().getSelectedIndex()));
+			displayedPerson = matchingPeople.get(patient_finder.getSelectionModel().getSelectedIndex());
+			displayPerson(displayedPerson);
+			
 			enableTriage();
 			
 		});
@@ -579,11 +577,10 @@ public class RevController implements Initializable, ClientCallback {
 						
 						if (matchingPeople1.size() > 0) {
 							logMeIn = true;
-<<<<<<< HEAD
 						} else {
 							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
-=======
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
+						} else {
+							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
 						}*/
 						
 					try {
@@ -593,18 +590,18 @@ public class RevController implements Initializable, ClientCallback {
 						
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
-						Notifications.create().title("Login failed").text("Server communication error.").showConfirm();	
+						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER_LEFT).showConfirm();	
 						log("Login failed: Server communication error.");
 						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
-						Notifications.create().title("Login failed").text("Invalid username or password.").showConfirm();	
+						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER_LEFT).showConfirm();	
 						log("Login failed: Invalid username or password.");
 						ex.printStackTrace();
 					} 
 					
 					if (logMeIn == true){
 					login_pop.hide();			
-					Notifications.create().title("Logged in").text("F2D!").showConfirm();		
+					Notifications.create().title("Logged in").text("F2D!").position(Pos.CENTER_LEFT).showConfirm();		
 
 						Staff loggedInUser = null;
 						try {
@@ -788,8 +785,9 @@ public class RevController implements Initializable, ClientCallback {
 			
 			// If there was only a single user that matched the criteria, show them
 			if (matchingPeople.size() == 1) {
+				displayedPerson = matchingPeople.get(0);
 				// display the matching person
-				displayPerson(matchingPeople.get(0));
+				displayPerson(displayedPerson);
 				// Enable triage as there is a patient being displayed.
 				enableTriage();
 				
@@ -934,6 +932,8 @@ public class RevController implements Initializable, ClientCallback {
 		extend.setOnAction(e -> {
 			
 			try {
+				//client.getServer().extendTreatmentTime(null, null);
+				//client.getServer().extendTreatmentTime(null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -962,11 +962,8 @@ public class RevController implements Initializable, ClientCallback {
 	
 	
 	/**
-<<<<<<< HEAD
 	 * Display a person in the patient triage tab.
-=======
-	 * 
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
+	 *
 	 * @param displayedPerson
 	 */
 	public void displayPerson(Person displayedPerson) {
@@ -1244,13 +1241,13 @@ public class RevController implements Initializable, ClientCallback {
 					break;
 				case CONNECTION_ERROR:
 					outputTextArea.appendText("Server inaccessible\n");
-					server_check.setText("Error Connecting to Server");
+					server_check.setText("Connection Error");
 					server_check.setStyle("-fx-base: red;");
 					server_check.setSelected(false);
 					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
 					break;
 				case NOT_CONNECTED:
-					outputTextArea.appendText("Not connceted to server.\n");
+					outputTextArea.appendText("Not connected to server.\n");
 					server_check.setText("Not Connected");
 					server_check.setStyle("-fx-base: red;");
 					server_check.setSelected(false);
@@ -1284,9 +1281,6 @@ public class RevController implements Initializable, ClientCallback {
 			System.err.println("not authenticated to the server, please login");
 			ex.printStackTrace();
 		}	
-		
-		
-		
 		
 		// return the results.
 		return foundPeople;
@@ -1344,5 +1338,26 @@ public class RevController implements Initializable, ClientCallback {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
+	/**
+	 * Alert the user that they are logged off.
+	 */
+	public void alertLoggedOff() {
+		// Call run later to run updates to the UI on the JavaFX thread
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				Notifications.create().title("You have been logged off").text("Please reconnect.").position(Pos.CENTER_LEFT).showConfirm();	
+				log("Login failed: Server communication error.");
+				// Show the login popup
+				login_pop.show(login);
+				
+			}
+		});
+	}
+	
 	
 }
