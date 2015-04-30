@@ -25,6 +25,7 @@ public class OnCallTeamAlert {
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
 		String to = "+447821063144@sms.ipipi.com";
+		String to1 = "+447759351906@sms.ipipi.com";
 		String body = "All treatment rooms engaged! New emergency priority!";
 		Transport tr = null;
 
@@ -40,7 +41,7 @@ public class OnCallTeamAlert {
 
 			// Set message attributes
 			msg.setFrom(new InternetAddress(from));
-			InternetAddress[] address = { new InternetAddress(to) };
+			InternetAddress[] address = { new InternetAddress(to), new InternetAddress(to1) };
 			msg.setRecipients(Message.RecipientType.TO, address);
 			msg.setSubject(compression);
 			msg.setText(body);

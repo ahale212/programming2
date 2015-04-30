@@ -1,6 +1,7 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public abstract class TreatmentFacility implements ITreatmentFacility, Serializable {
@@ -43,6 +44,9 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		//Log the patient's arrival in the room and the staff present at the time
 		this.patient = patient;
 		
+		PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+		MetricsController.INSTANCE.AddMetric(metrics);
+		
 		if(patient.getPerson().getFirstName().equalsIgnoreCase("Bobby7")){
 			System.out.println("Bobby7 recieved");
 		}
@@ -66,6 +70,8 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 	public void DischargePatient(){
 		//Make appropriate calls to whatever admin class
 		//and log patient leaving the system
+		PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+		MetricsController.INSTANCE.AddMetric(metrics);
 		patient = null;
 	}
 	

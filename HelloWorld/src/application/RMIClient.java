@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.naming.AuthenticationException;
+
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer;
@@ -54,13 +56,14 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	/**
 	 * The ID assigned by the remote server that allows the server to identify the client
 	 */
-	String clientID;
-	
+	private String clientID;
+
 	/**
 	 * Constructor for RMIClient
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
+	 * @throws AuthenticationException 
 	 */
-	protected RMIClient(RevController controller) throws RemoteException, NotBoundException, MalformedURLException {
+	protected RMIClient(RevController controller, String username, String password) throws RemoteException, NotBoundException, MalformedURLException, AuthenticationException {
 		super();
 		
 		this.controller = controller;
@@ -68,7 +71,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		try {
 			
 			// Set up the connection to the server, and register for updates.
-			initConnection();
+			initConnection(username, password);
 			
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
 			// End connection to server and remove the RMIClient from the RMI runtime
@@ -91,8 +94,9 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException			Exception thrown when an communication issue occurs during RMI
 	 * @throws MalformedURLException	The URL provided for the connection could not be parsed
 	 * @throws NotBoundException 		The name looked up in the call to Naming.lookup() has no associated binding
+	 * @throws AuthenticationException 	Thrown when the user login details are incorrect.
 	 */
-	public void initConnection() throws RemoteException, MalformedURLException, NotBoundException {
+	public void initConnection(String username, String password) throws RemoteException, MalformedURLException, NotBoundException, AuthenticationException {
 		serverAccessible = ConnectionState.CONNECTING;
 		controller.serverStatusChanged(serverAccessible);
 		
@@ -101,7 +105,13 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		
 		// Register for the update callbacks. This passes a reference
 		// of the client to the server so the 'update' method can be called remotely.
-		clientID = server.register(this);
+		clientID = server.register(username, password, this);
+		
+		if (clientID.equals("")) {
+			serverAccessible = ConnectionState.NOT_CONNECTED;
+			controller.serverStatusChanged(serverAccessible);
+			throw new AuthenticationException("Login Failed");
+		}
 		
 		// The user has registered successfully, so set serverAccessible to true
 		serverAccessible = ConnectionState.CONNECTED;
@@ -128,15 +138,15 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 					if (pingResult == false) {
 						System.out.println("Server accessible but client not registered. Re-registering...");
 						// so re-register
-						clientID = server.register(RMIClient.this);
+						// TODO: re-register
 					}
 				} catch (RemoteException e) {
 					System.err.println("Server not accessible.");
 					// Communication with the server has failed, so set running to false;
-					accessible = ConnectionState.NOT_CONNECTED;
+					accessible = ConnectionState.CONNECTION_ERROR;
 				}
 			} else { // else if the server is null, set accessible to false
-				accessible = ConnectionState.NOT_CONNECTED;
+				accessible = ConnectionState.CONNECTION_ERROR;
 			}
 			
 			// If the status has changed since last check, inform the controller
@@ -148,12 +158,14 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			
 			// I accessible is false, try to reconnect
 			if (accessible == ConnectionState.NOT_CONNECTED) {
+				//TODO: tell user to login
+				/*
 				try {
 					// Attempt a re-connection
-					initConnection();
+					
 				} catch (RemoteException | MalformedURLException
 						| NotBoundException e1) {
-				}
+				}*/
 			}
 		}
 
@@ -219,6 +231,11 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	@Override
 	public void alertQueueFull() throws RemoteException {
 		
+	}
+	
+	/** Getter for the client ID */
+	public String getClientID() {
+		return clientID;
 	}
 	
 }

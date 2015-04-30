@@ -17,7 +17,7 @@ public class HQBertServer {
 		if (args.length > 0) {
 			try {
 				// parse the
-				Integer.parseInt(args[0]);
+				serverPort = Integer.parseInt(args[0]);
 			} catch (NumberFormatException ex) {
 				// Ignore the value
 			}
@@ -32,7 +32,7 @@ public class HQBertServer {
 		}
 		
 		System.out.println("Starting");
-	
+
 		Supervisor.INSTANCE.init(serverPort, useSSL);
 		Supervisor.INSTANCE.startLoop();
 

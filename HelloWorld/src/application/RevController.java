@@ -579,8 +579,11 @@ public class RevController implements Initializable, ClientCallback {
 						
 						if (matchingPeople1.size() > 0) {
 							logMeIn = true;
+<<<<<<< HEAD
 						} else {
 							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
+=======
+>>>>>>> branch 'master' of https://github.com/ahale212/programming2
 						}*/
 						
 					try {
@@ -931,6 +934,10 @@ public class RevController implements Initializable, ClientCallback {
 		extend.setOnAction(e -> {
 			
 			try {
+<<<<<<< HEAD
+=======
+				//client.getServer().extendTreatmentTime(null, null);
+>>>>>>> branch 'master' of https://github.com/ahale212/programming2
 				//client.getServer().extendTreatmentTime(null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
