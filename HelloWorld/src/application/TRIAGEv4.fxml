@@ -128,16 +128,16 @@
                         <Label layoutX="27.0" layoutY="344.0" text="Allergies" />
                         <Label fx:id="blood_group1" layoutX="27.0" layoutY="312.0" text="Blood Group" />
                         <Label fx:id="dob1" layoutX="27.0" layoutY="184.0" text="Date of Birth" />
-                        <TextField fx:id="textfield_NHS_Num1" editable="false" layoutX="110.0" layoutY="52.0" />
-                        <TextField fx:id="textfield_Title1" editable="false" layoutX="110.0" layoutY="84.0" />
-                        <TextField fx:id="textfield_First_Name1" editable="false" layoutX="110.0" layoutY="116.0" />
-                        <TextField fx:id="textfield_Surname1" editable="false" layoutX="110.0" layoutY="148.0" />
-                        <TextField fx:id="textfield_DOB1" editable="false" layoutX="110.0" layoutY="180.0" />
-                        <TextField fx:id="textfield_Address1" editable="false" layoutX="110.0" layoutY="212.0" />
-                        <TextField fx:id="textfield_Telephone1" editable="false" layoutX="110.0" layoutY="276.0" />
-                        <ComboBox fx:id="allergy1" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
-                        <TextField fx:id="textfield_Blood_Group1" editable="false" layoutX="110.0" layoutY="307.0" />
-                        <TextField fx:id="textfield_Postcode1" editable="false" layoutX="110.0" layoutY="244.0" />
+                        <TextField fx:id="tr_textfield_NHS_Num" editable="false" layoutX="110.0" layoutY="52.0" />
+                        <TextField fx:id="tr_textfield_Title" editable="false" layoutX="110.0" layoutY="84.0" />
+                        <TextField fx:id="tr_textfield_First_Name" editable="false" layoutX="110.0" layoutY="116.0" />
+                        <TextField fx:id="tr_textfield_Surname" editable="false" layoutX="110.0" layoutY="148.0" />
+                        <TextField fx:id="tr_textfield_DOB" editable="false" layoutX="110.0" layoutY="180.0" />
+                        <TextField fx:id="tr_textfield_Address" editable="false" layoutX="110.0" layoutY="212.0" />
+                        <TextField fx:id="tr_textfield_Telephone" editable="false" layoutX="110.0" layoutY="276.0" />
+                        <ComboBox fx:id="tr_allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
+                        <TextField fx:id="tr_textfield_Blood_Group" editable="false" layoutX="110.0" layoutY="307.0" />
+                        <TextField fx:id="tr_textfield_Postcode" editable="false" layoutX="110.0" layoutY="244.0" />
                         <ComboBox fx:id="select_tr" layoutX="222.0" layoutY="14.0" prefWidth="170.0" promptText="Select Treatment Room" />
                         <Button fx:id="extend" layoutX="844.0" layoutY="342.0" mnemonicParsing="false" text="Extend " />
                         <Button fx:id="cancel_extension" layoutX="912.0" layoutY="342.0" mnemonicParsing="false" text="Cancel" />

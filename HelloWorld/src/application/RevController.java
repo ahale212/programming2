@@ -231,37 +231,24 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	private void runValidSearch() {
 		
+		// When the user enters text into the NHS text box
 		search_NHS_No.setOnKeyTyped( e -> {
 			
-			matchingPeople = searchForPerson();
-			
-			if (matchingPeople.size() > 0) {
-				populateMatchingPatientList();
-				patient_finder.show();
-			}
-			
-		});
-		search_NHS_No.setOnMouseExited(e -> {
-			
+			// If the NHS number is 10 characters long
 			if (search_NHS_No.getText().length() == 10) {
-			
-			search_database.setDisable(false);
-			
-			
-			} 				
-		});	
+				// Show the people who match the criteria
+				displayMatchingPeople();
+			} 
+		});
 		
-		// when the first name text box loses focus perform the search
-		search_First_Name.setOnMouseExited(e -> {
+		// When the user enters text into the first name text box
+		search_First_Name.setOnKeyTyped( e -> {
 			
-			search_database.setDisable(false);
-
-			matchingPeople = searchForPerson();
-			
-			if (matchingPeople.size() > 0) {
-				populateMatchingPatientList();
-			}
-			
+			// If the NHS number is 10 characters long
+			if (search_First_Name.getText().length() > 1) {
+				// Show the people who match the criteria
+				displayMatchingPeople();
+			} 
 		});
 		
 		// When a user selects a patient from the matching patient list 
@@ -277,7 +264,24 @@ public class RevController implements Initializable, ClientCallback {
 		
 		
 	}
-
+	
+	
+	/**
+	 * Perform the searcg based on the user input
+	 */
+	public void displayMatchingPeople() {
+		// Enable the search button
+		search_database.setDisable(false);
+		// Get a list of people who match the search criteria
+		matchingPeople = searchForPerson();
+		
+		// If results have been returned display them
+		if (matchingPeople.size() > 0) {
+			populateMatchingPatientList();
+			patient_finder.show();
+		}
+	}
+	
 	/**
 	 * sets graphical timer in treatment room view
 	 */
@@ -431,6 +435,7 @@ public class RevController implements Initializable, ClientCallback {
 			if (patient != null) {
 				patientName = patient.getPerson().getFirstName() + 
 						" " + patient.getPerson().getLastName();
+				emergency_room.add(patient);
 			}
 			
 			// If the current facility is the on call team, add their name to the on call team box on the UI
@@ -443,6 +448,8 @@ public class RevController implements Initializable, ClientCallback {
 				try {
 					// Add the patients name to the observable array in the correct position for the room they're in.
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
+				treatmentRoomsView(emergency_room);
+				
 				} catch (Exception ex) {
 					System.err.println("failed.");
 				}}

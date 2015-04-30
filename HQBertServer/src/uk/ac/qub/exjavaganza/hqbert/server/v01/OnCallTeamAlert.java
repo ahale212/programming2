@@ -24,13 +24,12 @@ public class OnCallTeamAlert {
 			return true;
 		}
 		
-		
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = "+447821063144@sms.ipipi.com";
+		String to = teamMember.getMobileNumber()+"@sms.ipipi.com";
 		String body = "On Call team. ASSEMBLE!";
 		Transport tr = null;
 

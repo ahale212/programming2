@@ -114,7 +114,7 @@ public class StaffDataAccessor {
 		// start of try to initiate query statement
 		try (Statement findStaff = con.prepareStatement(findStaffString);
 			// execute query
-			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff");) {
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email, mobile_number FROM staff");) {
 			
 			// return the staff list
 			return resultOfQuery(rs1);
@@ -127,12 +127,12 @@ public class StaffDataAccessor {
 		while (rs.next()) {
 			// Get the staff member details from the result set
 			String EmployeeNumber = rs.getString("Employee_Number");
-			 String FirstName = rs.getString("Employee_first_name");
-			 String LastName = rs.getString("Employee_last_name");
-			String Username = rs.getString("Employee_username");
-			String Password = rs.getString("Employee_Password");
-			 String Email = rs.getString("Employee_Email");
-			 String MobileNumber = rs.getString("mobile_number");
+			String FirstName = rs.getString("Employee_first_name");
+			String LastName = rs.getString("Employee_last_name");
+			String Username = ""; //rs.getString("Employee_username");
+			String Password = ""; //rs.getString("Employee_Password");
+			String Email = rs.getString("Employee_Email");
+			String MobileNumber = rs.getString("mobile_number");
 
 			// Create a new staff member with the details from the database
 			Staff  staffMember = new Staff(EmployeeNumber, FirstName, LastName, Username, Password, Email, MobileNumber);
