@@ -8,7 +8,23 @@ import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import javax.naming.AuthenticationException;
+
+import javax.naming.AuthenticationException;
+
+import javax.naming.AuthenticationException;
 
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -35,6 +51,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -71,10 +88,10 @@ public class RevController implements Initializable, ClientCallback {
 	private RMIClient client;
 	
 	@FXML
-	ToolBar toolbar_left;
+	private ToolBar toolbar_left;
 	
 	@FXML
-	MenuItem settings, close_system;
+	private MenuItem settings, close_system;
 	
 	@FXML
 	private Rectangle countdown;
@@ -90,7 +107,7 @@ public class RevController implements Initializable, ClientCallback {
 			doctor_on_duty;
 
 	@FXML
-	private Button login, UPGRADE, search_database, emergency, Q_view,
+	private Button login, re_assign, search_database, emergency, Q_view,
 			TRooms_view, urg, semi_urg, non_urg, extend;
 
 	@FXML
@@ -100,7 +117,6 @@ public class RevController implements Initializable, ClientCallback {
 	private ComboBox conditions, medication, select_tr, breathing_yes, allergy;
 
 	@FXML
-
 	private ComboBox<String> patient_finder;
 	
 	@FXML
@@ -108,6 +124,9 @@ public class RevController implements Initializable, ClientCallback {
 	
 	@FXML
 	private Tab triage_tab, tr_tab, stats_tab;
+	
+	@FXML
+	private AnchorPane triage_anchorpane;
 
 	@FXML
 	private TextField search_NHS_No, search_First_Name, search_Surname,
@@ -184,7 +203,7 @@ public class RevController implements Initializable, ClientCallback {
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
-		colours();
+		// colours();
 		labelSliders();
 		loadArrayLists();
 		runValidSearch();
@@ -193,20 +212,18 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomEggTimer();
 		toolTime();		
 				
-		try {
-			client = new RMIClient(this);
-			log("Connected to server and registered for updates.");
-		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			log("Failed to connect to the server.");
-			e.printStackTrace();
-		}
 	}
 
 	/**
 	 * Sets layout colours and patterns
 	 */
 	private void colours() {
-		// TODO Auto-generated method stub
+		
+		triage_tab.setStyle("-fx-base: skyblue;");
+		tr_tab.setStyle("-fx-base: lightpink;");
+		stats_tab.setStyle("-fx-base: pink;");
+		toolbar_left.setStyle("-fx-base: black;");
+		login.setStyle("-fx-base: darkblue;");
 		
 	}
 
@@ -215,11 +232,22 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	private void runValidSearch() {
 		
+		search_NHS_No.setOnKeyTyped( e -> {
+			
+			matchingPeople = searchForPerson();
+			
+			if (matchingPeople.size() > 0) {
+				populateMatchingPatientList();
+				patient_finder.show();
+			}
+			
+		});
 		search_NHS_No.setOnMouseExited(e -> {
 			
 			if (search_NHS_No.getText().length() == 10) {
 			
 			search_database.setDisable(false);
+			
 			
 			} 				
 		});	
@@ -517,13 +545,20 @@ public class RevController implements Initializable, ClientCallback {
 			PasswordField tf2 = new PasswordField();
 			AnchorPane ap1 = new AnchorPane();
 			Button bt1 = new Button();
+			Button bt2 = new Button();
+			Button bt3 = new Button();
 			l1.setLayoutX(15);
 			tf1.setPromptText("Username");
 			tf1.setLayoutY(26);
 			tf2.setPromptText("Password");
 			tf2.setLayoutY(52);
 			bt1.setText("Login");
-			bt1.setLayoutY(80);
+			bt1.setLayoutY(110);
+			bt2.setText("Logoff");
+			bt2.setLayoutY(110);
+			bt2.setLayoutX(50);
+			bt3.setText("Forgot Username or Password");
+			bt3.setLayoutY(80);
 			
 			bt1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -539,24 +574,49 @@ public class RevController implements Initializable, ClientCallback {
 					String staff_FirstName;
 					List<Staff> matchingPeople1 = null;
 					
-					try {
-						matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
+	
+						/*matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
 						
 						if (matchingPeople1.size() > 0) {
 							logMeIn = true;
-						}
+						} else {
+							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
+						}*/
 						
-					} catch (RemoteException ex) {
-						System.err.println("Server communication error.");
+					try {
+						// Create the client
+						client = new RMIClient(RevController.this, _user, db_pass);
+						log("Connected to server and registered for updates.");
+						
+						logMeIn = true;
+					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
+						Notifications.create().title("Login failed").text("Server communication error.").showConfirm();	
+						log("Login failed: Server communication error.");
 						ex.printStackTrace();
-					}
+					} catch (AuthenticationException ex) {
+						Notifications.create().title("Login failed").text("Invalid username or password.").showConfirm();	
+						log("Login failed: Invalid username or password.");
+						ex.printStackTrace();
+					} 
 					
 					if (logMeIn == true){
 					login_pop.hide();			
 					Notifications.create().title("Logged in").text("F2D!").showConfirm();		
 
-						staff_LastName = matchingPeople1.get(0).getLastName();
-						staff_FirstName = matchingPeople1.get(0).getFirstName();
+						Staff loggedInUser = null;
+						try {
+							loggedInUser = client.getServer().searchStaffByUsername(client.getClientID(), _user);
+						} catch (AuthenticationException | RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+					
+						if (loggedInUser == null) {
+							return;
+						}
+						
+						staff_LastName = loggedInUser.getLastName();
+						staff_FirstName = loggedInUser.getFirstName();
 
 						Job jobs = Job.values()[4];
 						switch (jobs) {
@@ -584,33 +644,131 @@ public class RevController implements Initializable, ClientCallback {
 					}
 				}
 			});
+			
+			bt2.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					
+					resetTriage();
+					
+				}
+			});
+			
+			bt3.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					
+					PopOver userNameRequest = new PopOver();
+					Label emailLabel = new Label("Enter Email");
+					TextField EmailRequest = new TextField();
+					Button ConfirmRequest = new Button();
+					
+					EmailRequest.setLayoutY(26);
+					ConfirmRequest.setText("Send Request");
+					ConfirmRequest.setLayoutY(40);
+					
+					AnchorPane forgot = new AnchorPane();
+					forgot.getChildren().add(EmailRequest);
+					forgot.getChildren().add(ConfirmRequest);
+					forgot.getChildren().add(emailLabel);
+					userNameRequest.setContentNode(forgot);
+					
+					userNameRequest.show(bt3);
+					
+					ConfirmRequest.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent event) {
+							
+							emailNewPassword(EmailRequest);
+						}
+						
+					});
+				}
+			});
 
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
 			ap1.getChildren().add(tf1);
 			ap1.getChildren().add(tf2);
 			ap1.getChildren().add(bt1);
+			ap1.getChildren().add(bt2);
+			ap1.getChildren().add(bt3);
 			ap1.setCursor(null);
 			login_pop.setContentNode(ap1);
 			login_pop.show(login);
 		});
 
-		UPGRADE.setOnAction(e -> {
-			String potential = (String) queue.getSelectionModel()
-					.getSelectedItem();
+		re_assign.setOnAction(e -> {
+			
+			PopOver reassign_priority = new PopOver();
+			CheckBox set_e = new CheckBox("EMERGENCY"); set_e.setStyle("-fx-base: salmon;"); set_e.setLayoutY(26); set_e.setLayoutX(8);
+			CheckBox set_u = new CheckBox("Urgent"); set_u.setStyle("-fx-base: orange;"); set_u.setLayoutY(52); set_u.setLayoutX(8);
+			CheckBox set_semi_u = new CheckBox("Semi-Urgent"); set_semi_u.setStyle("-fx-base: yellow;"); set_semi_u.setLayoutY(78); set_semi_u.setLayoutX(8);
+			CheckBox set_non_u = new CheckBox("Non-Urgent"); set_non_u.setStyle("-fx-base: lightgreen;"); set_non_u.setLayoutY(104); set_non_u.setLayoutX(8);
+			Label select_new_urgency = new Label("Please Select the appropriate Priority Level:");
+			AnchorPane re_assign_pane = new AnchorPane();
+			re_assign_pane.getChildren().addAll(select_new_urgency, set_e, set_u, set_semi_u, set_non_u);
+			reassign_priority.setContentNode(re_assign_pane);
+			reassign_priority.show(re_assign);
+			
+			
+			set_e.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event){
+					
+					set_u.setSelected(false);
+					set_semi_u.setSelected(false);
+					set_non_u.setSelected(false);
+				
+				}
+			});
+			
+			set_u.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event){
+					set_e.setSelected(false);
+					set_semi_u.setSelected(false);
+					set_non_u.setSelected(false);
+				}
+			});
+			
+			set_semi_u.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event){
+					set_e.setSelected(false);
+					set_u.setSelected(false);
+					set_non_u.setSelected(false);
+				}
+			});
+			
+			set_non_u.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event){
+					
+					set_e.setSelected(false);
+					set_u.setSelected(false);
+					set_semi_u.setSelected(false);
+				}
+			});
+			
+			/*String potential = (String) queue.getSelectionModel().getSelectedItem();
 			if (potential != null) {
 				queue.getSelectionModel().clearSelection();
 				QList.remove(potential);
-
 				trList.remove(0);
 				trList.add(3, "");
-				trList.add(3, potential);
-				
+				trList.add(3, potential);				
 				outputTextArea.appendText(potential+" is now an emergency!\n");
-			}
+			}*/
 		});
-		trooms.setItems(trList);
-		
+				
 		Q_view.setOnAction(e -> {
 			
 			q_pop.show(Q_view);				
@@ -699,7 +857,7 @@ public class RevController implements Initializable, ClientCallback {
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 									
 			try {
-				client.getServer().addPrimaryPatient(displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
+				client.getServer().addPrimaryPatient(client.getClientID(), displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -773,7 +931,7 @@ public class RevController implements Initializable, ClientCallback {
 		extend.setOnAction(e -> {
 			
 			try {
-				client.getServer().extendTreatmentTime(null);
+				//client.getServer().extendTreatmentTime(null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -1030,7 +1188,7 @@ public class RevController implements Initializable, ClientCallback {
 		tr_tab.setTooltip(new Tooltip("Display Treatment Room details"));
 		stats_tab.setTooltip(new Tooltip("Display Management System Statistics"));
 		login.setTooltip(new Tooltip("Log in here"));
-		UPGRADE.setTooltip(new Tooltip("Select a Patient in the Queue to Upgrade to EMERGENCY!"));		
+		re_assign.setTooltip(new Tooltip("Select a Patient in the Queue to Upgrade to EMERGENCY!"));		
 		Q_view.setTooltip(new Tooltip("View Queued Patient Details"));
 		TRooms_view.setTooltip(new Tooltip("View Treatment Room Patient Details"));
 		search_database.setTooltip(new Tooltip("Search NHS DBMS"));
@@ -1082,9 +1240,16 @@ public class RevController implements Initializable, ClientCallback {
 					server_check.setText("Server Connected");
 					server_check.setStyle("-fx-base: green;");
 					break;
-				case NOT_CONNECTED:
+				case CONNECTION_ERROR:
 					outputTextArea.appendText("Server inaccessible\n");
 					server_check.setText("Error Connecting to Server");
+					server_check.setStyle("-fx-base: red;");
+					server_check.setSelected(false);
+					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
+					break;
+				case NOT_CONNECTED:
+					outputTextArea.appendText("Not connceted to server.\n");
+					server_check.setText("Not Connected");
 					server_check.setStyle("-fx-base: red;");
 					server_check.setSelected(false);
 					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
@@ -1109,14 +1274,73 @@ public class RevController implements Initializable, ClientCallback {
 		
 		try {
 			// Call the searchPersonByDetails method on the server to get the details from the database
-			foundPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+			foundPeople = client.getServer().searchPersonByDetails(client.getClientID(), search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
 		} catch (RemoteException ex) {
 			System.err.println("Server communication error.");
 			ex.printStackTrace();
+		} catch (AuthenticationException ex) {
+			System.err.println("not authenticated to the server, please login");
+			ex.printStackTrace();
 		}	
+		
+		
+		
 		
 		// return the results.
 		return foundPeople;
+	}
+	
+	/**
+	 * 
+	 */
+	public static void emailNewPassword(TextField emailRequest) {
+		// Recipient's email ID needs to be mentioned.
+		String to = emailRequest.getText().toString();
+
+		// Sender's email ID needs to be mentioned
+		String from = "pashospital@gmail.com";
+
+		// Get system properties
+		Properties properties = System.getProperties();
+
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.host", "smtp.gmail.com");
+
+		properties.put("mail.smtp.port", "587");
+		properties.put("mail.smtp.auth", "true");
+		Authenticator authenticator = new Authenticator() {
+			public PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication("pashospital@gmail.com",
+						"hospitalsystem");// userid and password for "from"
+											// email
+											// address
+			}
+		};
+
+		Session session = Session.getDefaultInstance(properties, authenticator);
+		try {
+			// Create a default MimeMessage object.
+			MimeMessage message = new MimeMessage(session);
+
+			// Set From
+			message.setFrom(new InternetAddress(from));
+
+			// Set To
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					to));
+
+			// Set Subject: header field
+			message.setSubject("PAS username and password retrival");
+
+			// Now set the actual message
+			message.setText("Your new Password is xxxxxxxx");
+
+			// Send message
+			Transport.send(message);
+			System.out.println("Sent message successfully....");
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }
