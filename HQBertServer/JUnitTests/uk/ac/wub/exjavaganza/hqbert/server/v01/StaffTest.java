@@ -59,14 +59,13 @@ public class StaffTest {
 	 * password
 	 */
 	@Test
-	public void testStaffStringStringStringStringStringString() {
+	public void testStaffStringStringStringStringStringStringString() {
 		Staff staff = new Staff(employeeNumber, firstName, lastName,
 				employeeUsername, employeePassword, employeeEmail, mobileNumber);
 		assertEquals(employeeNumber, staff.getEmployeeNumber());
 		assertEquals(firstName, staff.getFirstName());
 		assertEquals(lastName, staff.getLastName());
 		assertEquals(employeeUsername, staff.getEmployeeUsername());
-		assertEquals(mobileNumber, staff.getMobileNumber());
 		int key = 4;
 		char ch;
 		String encryptedPassword = "";
@@ -84,6 +83,7 @@ public class StaffTest {
 		this.employeePassword = encryptedPassword;
 		assertEquals(employeePassword, staff.getEmployeePassword());
 		assertEquals(employeeEmail, staff.getEmployeeEmail());
+		assertEquals(mobileNumber, staff.getMobileNumber());
 	}
 
 	/**
