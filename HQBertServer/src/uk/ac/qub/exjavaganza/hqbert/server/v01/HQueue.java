@@ -109,7 +109,10 @@ public class HQueue implements Serializable {
 		//First : if queue full and all rooms full - anyone new is sent away,
 		//		even emergencies - as per Aidan's email.
 		
-		//if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE &&)
+		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE){
+			System.out.println("\tQueue Full");
+			return false;
+		}
 		
 		//If they are an emergency, skip the queue and attempt to send for treatment
 		if(urgency == Urgency.EMERGENCY){

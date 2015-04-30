@@ -351,6 +351,9 @@ public enum Supervisor {
 				server.updateClients();
 				return true;
 			} else {
+				if(patient.getUrgency() == Urgency.EMERGENCY){
+					//Alert the manager of the next hoapital
+				}
 				server.updateClients();
 				return false;
 			}
@@ -611,7 +614,7 @@ public enum Supervisor {
 	}
 	
 	public void removeFromQueue(Patient patient) {
-		System.out.println("Removing "		 + patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
+		System.out.println("Removing "+ patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
 			// via the RMI server.
 			server.broadcastQueueFullAlert();
 
