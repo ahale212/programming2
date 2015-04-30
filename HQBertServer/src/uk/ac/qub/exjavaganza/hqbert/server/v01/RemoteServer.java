@@ -17,8 +17,13 @@ import javax.naming.AuthenticationException;
  */
 public interface RemoteServer extends Remote {
 
+	/** The various states that the server can be in */
 	public enum ConnectionState {
 		CONNECTED, CONNECTING, NOT_CONNECTED, CONNECTION_ERROR
+	}
+	
+	public enum PatientAdmittanceState {
+		ADMITTED, FAILED_QUEUE_FULL, FAILED_NO_EMERGENCY_CAPACITY
 	}
 	
 	/**

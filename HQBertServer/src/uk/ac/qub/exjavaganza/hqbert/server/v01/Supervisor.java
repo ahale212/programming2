@@ -1,5 +1,8 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -32,13 +35,15 @@ public enum Supervisor {
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	
-	public final int MAX_TREATMENT_ROOMS = 3;
+	public int TREATMENT_ROOMS_COUNT = 2;
 	public final int ONCALL_TEAM_DOCTORS = 2;
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
 	public final float TIME_MULTI = 1;
 
+	private File config;
+	
 	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
 	
 	private int serverPort = 1099;
@@ -93,7 +98,7 @@ public enum Supervisor {
 		logger = Logger.getLogger(Supervisor.class);
 
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
-		for (int i = 0; i < MAX_TREATMENT_ROOMS; i++) {
+		for (int i = 0; i < TREATMENT_ROOMS_COUNT; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
 		}
 	
@@ -158,6 +163,26 @@ public enum Supervisor {
 				Urgency.EMERGENCY };
 
 		extensions = new int[] { 0, 1, 2 };
+	}
+
+	public void getConfig(){
+		FileReader fr = null;
+		String path = "";
+		File config = new File(path);
+		try {
+			fr = new FileReader(config);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(fr != null){
+			
+		}
+	}
+	
+	public void updateMaxTreatmentRooms(){
+		
 	}
 	
 	public void runBobbyTest(){
@@ -486,7 +511,7 @@ public enum Supervisor {
 	public void onCallTryLeave(){
 		boolean canLeave = false;
 		if(checkQueueFull() == false){
-			for(int i = 0; i < MAX_TREATMENT_ROOMS; i++){
+			for(int i = 0; i < TREATMENT_ROOMS_COUNT; i++){
 				if(treatmentFacilities.get(i).patient == null){
 					canLeave = true;
 					break;
@@ -722,5 +747,8 @@ public enum Supervisor {
 		}
 	}
 
+	public int getCurrentNumberOfTreatmentRooms(){
+		return this.TREATMENT_ROOMS_COUNT;
+	}
 
 }
