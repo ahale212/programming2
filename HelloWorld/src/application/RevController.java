@@ -1414,7 +1414,7 @@ public class RevController implements Initializable, ClientCallback {
 			message.setSubject("PAS username and password retrival");
 
 			// Now set the actual message
-			message.setText("Your new Password is xxxxxxxx");
+			message.setText("Your new Username is xxxxxx. Your new Password is xxxxxxxx.");
 
 			// Send message
 			Transport.send(message);
