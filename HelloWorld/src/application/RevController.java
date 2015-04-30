@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.naming.AuthenticationException;
+
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 
@@ -193,13 +195,6 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomEggTimer();
 		toolTime();		
 				
-		try {
-			client = new RMIClient(this);
-			log("Connected to server and registered for updates.");
-		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			log("Failed to connect to the server.");
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -215,11 +210,22 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	private void runValidSearch() {
 		
+		search_NHS_No.setOnKeyTyped( e -> {
+			
+			matchingPeople = searchForPerson();
+			
+			if (matchingPeople.size() > 0) {
+				populateMatchingPatientList();
+				patient_finder.show();
+			}
+			
+		});
 		search_NHS_No.setOnMouseExited(e -> {
 			
 			if (search_NHS_No.getText().length() == 10) {
 			
 			search_database.setDisable(false);
+			
 			
 			} 				
 		});	
@@ -539,24 +545,47 @@ public class RevController implements Initializable, ClientCallback {
 					String staff_FirstName;
 					List<Staff> matchingPeople1 = null;
 					
-					try {
-						matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
+	
+						/*matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
 						
 						if (matchingPeople1.size() > 0) {
 							logMeIn = true;
-						}
+						}*/
 						
-					} catch (RemoteException ex) {
-						System.err.println("Server communication error.");
+					try {
+						// Create the client
+						client = new RMIClient(RevController.this, _user, db_pass);
+						log("Connected to server and registered for updates.");
+						
+						logMeIn = true;
+					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
+						Notifications.create().title("Login failed").text("Server communication error.").showConfirm();	
+						log("Login failed: Server communication error.");
 						ex.printStackTrace();
-					}
+					} catch (AuthenticationException ex) {
+						Notifications.create().title("Login failed").text("Invalid username or password.").showConfirm();	
+						log("Login failed: Invalid username or password.");
+						ex.printStackTrace();
+					} 
 					
 					if (logMeIn == true){
 					login_pop.hide();			
 					Notifications.create().title("Logged in").text("F2D!").showConfirm();		
 
-						staff_LastName = matchingPeople1.get(0).getLastName();
-						staff_FirstName = matchingPeople1.get(0).getFirstName();
+						Staff loggedInUser = null;
+						try {
+							loggedInUser = client.getServer().searchStaffByUsername(client.getClientID(), _user);
+						} catch (AuthenticationException | RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+					
+						if (loggedInUser == null) {
+							return;
+						}
+						
+						staff_LastName = loggedInUser.getLastName();
+						staff_FirstName = loggedInUser.getFirstName();
 
 						Job jobs = Job.values()[4];
 						switch (jobs) {
@@ -699,7 +728,7 @@ public class RevController implements Initializable, ClientCallback {
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 									
 			try {
-				client.getServer().addPrimaryPatient(displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
+				client.getServer().addPrimaryPatient(client.getClientID(), displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -773,7 +802,7 @@ public class RevController implements Initializable, ClientCallback {
 		extend.setOnAction(e -> {
 			
 			try {
-				client.getServer().extendTreatmentTime(null);
+				//client.getServer().extendTreatmentTime(null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -1082,9 +1111,16 @@ public class RevController implements Initializable, ClientCallback {
 					server_check.setText("Server Connected");
 					server_check.setStyle("-fx-base: green;");
 					break;
-				case NOT_CONNECTED:
+				case CONNECTION_ERROR:
 					outputTextArea.appendText("Server inaccessible\n");
 					server_check.setText("Error Connecting to Server");
+					server_check.setStyle("-fx-base: red;");
+					server_check.setSelected(false);
+					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
+					break;
+				case NOT_CONNECTED:
+					outputTextArea.appendText("Not connceted to server.\n");
+					server_check.setText("Not Connected");
 					server_check.setStyle("-fx-base: red;");
 					server_check.setSelected(false);
 					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
@@ -1109,11 +1145,15 @@ public class RevController implements Initializable, ClientCallback {
 		
 		try {
 			// Call the searchPersonByDetails method on the server to get the details from the database
-			foundPeople = client.getServer().searchPersonByDetails(search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+			foundPeople = client.getServer().searchPersonByDetails(client.getClientID(), search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
 		} catch (RemoteException ex) {
 			System.err.println("Server communication error.");
 			ex.printStackTrace();
+		} catch (AuthenticationException ex) {
+			System.err.println("not authenticated to the server, please login");
+			ex.printStackTrace();
 		}	
+		
 		
 		// return the results.
 		return foundPeople;
