@@ -406,10 +406,7 @@ public class RevController implements Initializable, ClientCallback {
 		}
 		queue.setItems(QList);
 		waitingRoomView(waiting_room);
-<<<<<<< HEAD
-=======
-	
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
+
 	}
 	
 	/**
