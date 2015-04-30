@@ -31,57 +31,7 @@ public class OnCallTeamAlert {
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
 		String to = "+447821063144@sms.ipipi.com";
-		String to1 = "+447759351906@sms.ipipi.com";
-		String body = "All treatment rooms engaged! New emergency priority!";
-		Transport tr = null;
-
-		try {
-			Properties props = System.getProperties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.port", "25");
-
-			// Get a Session object
-			Session mailSession = Session.getInstance(props, null);
-
-			// construct the message
-			Message msg = new MimeMessage(mailSession);
-
-			// Set message attributes
-			msg.setFrom(new InternetAddress(from));
-			InternetAddress[] address = { new InternetAddress(to), new InternetAddress(to1) };
-			msg.setRecipients(Message.RecipientType.TO, address);
-			msg.setSubject(compression);
-			msg.setText(body);
-			msg.setSentDate(new Date());
-
-			tr = mailSession.getTransport("smtp");
-			tr.connect(smtphost, username, password);
-			msg.saveChanges();
-			tr.sendMessage(msg, msg.getAllRecipients());
-			tr.close();
-			
-			return true;
-		} catch (MessagingException e) {
-			//throw new RuntimeException(e);
-			
-			//log the exeption details
-			return false;
-		}
-	}
-
-	/**
-	 * Method to send automated sms to the on call team when the hospital list
-	 * reaches 10 patients.
-	 */
-	public static void onCallTeamQueueCapacity() {
-
-		String username = "awhitten02";
-		String password = "71Great7";
-		String smtphost = "ipipi.com";
-		String compression = "None";
-		String from = "awhitten02@ipipi.com";
-		String to = "+447821063144@sms.ipipi.com";
-		String body = "The A&E Queue is at capacity!";
+		String body = "On Call team. ASSEMBLE!";
 		Transport tr = null;
 
 		try {
@@ -108,8 +58,13 @@ public class OnCallTeamAlert {
 			msg.saveChanges();
 			tr.sendMessage(msg, msg.getAllRecipients());
 			tr.close();
+			
+			return true;
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
+			
+			//log the exeption details
+			return false;
 		}
 	}
 
