@@ -87,6 +87,28 @@ public class StaffDataAccessor {
 		}
 	}
 	
+	
+	// create a new list for staff
+	Staff getStaffMemeberByUsername(String username) throws SQLException {
+		// start of try to initiate query statement
+		try (Statement findStaff = con.prepareStatement(findStaffString);
+			// execute query
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff WHERE Employee_username = " + username);) {
+			
+			// Get a list of staff objects based on the output from the database
+			List<Staff> staff = resultOfQuery(rs1);
+			
+			// If a staff member was found
+			if (staff.size() > 0) {
+				// return the first staff member in the list
+				return staff.get(0);
+			} else {
+				// else return null
+				return null;
+			}
+		}
+	}
+	
 	// create a new list for staff
 	List<Staff> getStaffList() throws SQLException {
 		// start of try to initiate query statement
@@ -98,7 +120,6 @@ public class StaffDataAccessor {
 			return resultOfQuery(rs1);
 		}
 	}
-	
 	
 	public List<Staff> resultOfQuery(ResultSet rs) throws SQLException {
 		List<Staff> staffList = new ArrayList<>();

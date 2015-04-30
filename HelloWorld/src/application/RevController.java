@@ -22,6 +22,10 @@ import javax.mail.internet.MimeMessage;
 
 import javax.naming.AuthenticationException;
 
+import javax.naming.AuthenticationException;
+
+import javax.naming.AuthenticationException;
+
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 
@@ -205,13 +209,6 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomEggTimer();
 		toolTime();		
 				
-		try {
-			client = new RMIClient(this);
-			log("Connected to server and registered for updates.");
-		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			log("Failed to connect to the server.");
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -1224,6 +1221,8 @@ public class RevController implements Initializable, ClientCallback {
 			System.err.println("not authenticated to the server, please login");
 			ex.printStackTrace();
 		}	
+		
+		
 		
 		
 		// return the results.

@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,15 +39,22 @@ public enum Supervisor {
 
 	public final float TIME_MULTI = 60;
 
+	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
+	
 	private int serverPort = 1099;
 
 	private HQueue hQueue;
 	private Clock clock;
 	private boolean exit;
 	private ArrayList<TreatmentFacility> treatmentFacilities;
+	
+	private ArrayList<Staff> availableStaff;
+	private ArrayList<Staff> loggedInStaff;
 	private OnCallTeam onCallTeam;
 	private ArrayList<Staff> staffOnCall;
-	private ArrayList<Staff> activeOnCallStaff;
+	private ArrayList<Staff> activeStaff;
+	
+	
 	private RMIServer server;
 	private Logger logger;
 
@@ -81,8 +90,7 @@ public enum Supervisor {
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
-		// Start the server to allow clients to connect
-		startServer(useSSL);
+
 
 		logger = Logger.getLogger(Supervisor.class);
 
@@ -91,13 +99,10 @@ public enum Supervisor {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
 		}
 
-		staffOnCall = new ArrayList<Staff>();
-		activeOnCallStaff = new ArrayList<Staff>();
-		onCallTeam = null;
 		
 		//Testing
 		runBobbyTest();
-		fakeOnCallTeam();
+		//superFakeOnCallTeam();
 
 		// set up connection to database
 		try {
@@ -117,15 +122,19 @@ public enum Supervisor {
 			e.printStackTrace();
 		}
 		
+		availableStaff = new ArrayList<Staff>();
+		loggedInStaff = new ArrayList<Staff>();
+		staffOnCall = new ArrayList<Staff>();
+		activeStaff = new ArrayList<Staff>();
+		onCallTeam = null;
+		
+		getAvailableStaff();
+		getOnCallList();
+		
 		waitTimesUnacceptable = false;
-
-		try {
-			List<Staff> staff = getStaff();
-			System.out.println(staff);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		// Start the server to allow clients to connect
+		startServer(useSSL);
 		
 		exit = false;
 	}
@@ -154,7 +163,7 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	public void fakeOnCallTeam(){
+	public void superFakeOnCallTeam(){
 		Staff drOctopus = new Staff("docOc", "8ArmsBaby");
 		drOctopus.setJob(Job.DOCTOR);
 		Staff drDoom = new Staff("drDoom", "hahaha");
@@ -186,12 +195,12 @@ public enum Supervisor {
 
 			// Instantiate the RMI server
 			if (useSSL) {
-				// If set to use SSL use pass the SSlRMISocketFactory into the constructor
+				// If SSL is to be used pass the SSlRMISocketFactory into the constructor
 				server = new RMIServer(serverPort, new SslRMIClientSocketFactory(),
 		                 new SslRMIServerSocketFactory(null, null, true));
 			} else {
-				// If not set to use SSL use the default constructor
-				server = new RMIServer();
+				// If SSL is not to be used, call the default with just port as args
+				server = new RMIServer(serverPort);
 			}
 			// Bind the server object to the name it will be accessible by on
 			// the client side.
@@ -204,6 +213,36 @@ public enum Supervisor {
 			e.printStackTrace();
 		}
 	}
+	
+	public void getAvailableStaff(){
+		try {
+			availableStaff = (ArrayList<Staff>)getStaff();
+			System.out.println(availableStaff);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * This populates staffOnCall with people from the availableStaff list:
+	 * in real-life they would come from a more robust rota system
+	 */
+	public void getOnCallList(){
+		try{
+		for(int i = availableStaff.size()-1; i >= 0; i--){
+			Staff member = availableStaff.get(i);
+			if(member.getJob() != Job.DOCTOR || member.getJob() == Job.NURSE){
+				staffOnCall.add(member);
+				availableStaff.remove(member);
+			}
+		}
+		}catch(IndexOutOfBoundsException iobE){
+			
+		}
+	}
+	
 	
 	/**
 	 * @throws SQLException 
@@ -272,6 +311,9 @@ public enum Supervisor {
 		// checkWaitingTime();
 	}
 
+	/**
+	 * Auto-generate simple test patients to push through the system
+	 */
 	private void insertTestPatient() {
 		Person testPerson = new Person();
 		testPerson.setFirstName("Bobby" + testPatientNo);
@@ -285,6 +327,11 @@ public enum Supervisor {
 		testPatientNo++;
 	}
 
+	/**
+	 * 
+	 * @param patient
+	 * @return
+	 */
 	public boolean admitPatient(Patient patient) {
 		try {
 			if (hQueue.insert(patient) == true) {
@@ -378,7 +425,7 @@ public enum Supervisor {
 			boolean onCallHere = false;
 			if(success == false){
 				if(onCallTeam == null){
-					if(assembleOnCall() == true){
+					if(assembleOnCall(ON_CALL_REASON.EXTRA_EMERGENCY) == true){
 						onCallHere = true;
 					}
 				}
@@ -392,16 +439,17 @@ public enum Supervisor {
 			
 			//if onCall was already here, they would have been checked for displacable patients already
 		}
-		
-		
-		
+
 		return success;
 	}
 
+	/**
+	 * 
+	 */
 	public void manageOnCallAndAlerts(){
 		if(checkQueueFull() == true && onCallTeam == null){
-			assembleOnCall();
-			System.out.println("\tONCALL: full queue - ASSEMBLE!");
+			assembleOnCall(ON_CALL_REASON.QUEUE_FULL);
+			
 			// Alert the clients that the queue is full
 			// via the RMI server.
 			
@@ -437,7 +485,7 @@ public enum Supervisor {
 	
 	public void onCallGoAway(){
 		for(int i = 0; i < onCallTeam.getStaff().size(); i++){
-			activeOnCallStaff.add(onCallTeam.getStaff().get(i));
+			activeStaff.add(onCallTeam.getStaff().get(i));
 		}
 		treatmentFacilities.remove(onCallTeam);
 		System.out.println("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
@@ -448,33 +496,41 @@ public enum Supervisor {
 	 * send messages to staff on the onCall list and assemble an onCall team
 	 * @return whether the onCall team was successfully assembled
 	 */
-	public boolean assembleOnCall(){
+	public boolean assembleOnCall(ON_CALL_REASON reason){
+		if(reason == ON_CALL_REASON.QUEUE_FULL){
+			System.out.println("\tONCALL: full queue - ASSEMBLE!");
+		}else if(reason == ON_CALL_REASON.EXTRA_EMERGENCY){
+			System.out.println("\tONCALL: extra emergency - ASSEMBLE!");
+		}
+		
 		onCallTeam = new OnCallTeam();
 		for(int count = 0; count < 2; count++){
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (staffMember.getJob() == Job.DOCTOR && !(activeOnCallStaff.contains(staffMember))){
+				if (/*staffMember.getJob() == Job.DOCTOR && */!(activeStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
-						activeOnCallStaff.add(staffMember);
+						activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
 					}
 				}
 			}
 			if(onCallTeam.getStaff().size() < ONCALL_TEAM_DOCTORS){
 				//Log that insufficient doctors are available for an oncall team
+				System.out.println("Not enough doctors for oncall  !!!");
 				return false;
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (staffMember.getJob() == Job.TRIAGE_NURSE && !(activeOnCallStaff.contains(staffMember))){
+				if (/*staffMember.getJob() == Job.NURSE && */!(activeStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
-						activeOnCallStaff.add(staffMember);
+						activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
 					}
 				}
 			}
 			if(onCallTeam.getStaff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
 				//Log that insufficient nurses are available for an oncall team
+				System.out.println("Not enough nurses for oncall  !!!");
 				return false;
 			}
 		}
@@ -590,16 +646,30 @@ public enum Supervisor {
 	
 	/**
 	 * Find a person by nhsNumber and update their doctors notes.
+	 * @param nhsNumber
+	 * @param doctorsNotes
+	 * @return
 	 */
-	public void updatePatientNotes(String nhsNumber, String doctorsNotes) {
+	public boolean updateDoctorsNotes(String nhsNumber, String doctorsNotes) {
 		
 		// Loop through the various facilities to find the patient
 		for (TreatmentFacility facility : treatmentFacilities) {
 			Person person = facility.patient.getPerson();
+			// If the NHS number matches, update the doctors notes.
 			if (person.getNHSNum().equals(nhsNumber)) {
 				person.setDoctorsNotes(doctorsNotes);
 			}
 		}
+		
+		try {
+			// Update the database with the updated doctors notes and pass the success boolean it
+			// returns on to front end to inform them that the update was successful
+			return dataAccessor.updateDoctorsNotes(nhsNumber, doctorsNotes);
+		} catch (SQLException e) {
+			// return false to inform the front end that the update failed.
+			return false;
+		}
+
 	}
 	
 	/**
