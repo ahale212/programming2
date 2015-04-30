@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 import javax.rmi.ssl.SslRMIServerSocketFactory;
@@ -42,7 +43,7 @@ public enum Supervisor {
 
 	public final float TIME_MULTI = 1;
 
-	private File config;
+	private Preferences prefs;
 	
 	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
 	
@@ -165,20 +166,28 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	public void getConfig(){
-		FileReader fr = null;
-		String path = "";
-		File config = new File(path);
-		try {
-			fr = new FileReader(config);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(fr != null){
-			
-		}
+	public void setPreferences(){
+		// This will define a node in which the preferences can be stored
+	    prefs = Preferences.userRoot().node(this.getClass().getName());
+	    String ID_Rooms = "rooms";
+	    String ID_Port = "port";
+
+	    // First we will get the values
+	    // Define a boolean value
+	    System.out.println(prefs.getBoolean(ID_Rooms, true));
+	    // Define a string with default "Hello World
+	    System.out.println(prefs.get(ID_Port, "Hello World"));
+	    // Define a integer with default 50
+	  //  System.out.println(prefs.getInt(ID3, 50));
+
+	    // now set the values
+	    prefs.putBoolean(ID_Rooms, false);
+	    prefs.put(ID_Port, "Hello Europa");
+	    //prefs.putInt(ID3, 45);
+
+	    // Delete the preference settings for the first value
+	   // prefs.remove(ID1);
+
 	}
 	
 	public void updateMaxTreatmentRooms(){
