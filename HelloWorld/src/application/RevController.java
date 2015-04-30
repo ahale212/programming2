@@ -406,6 +406,10 @@ public class RevController implements Initializable, ClientCallback {
 		}
 		queue.setItems(QList);
 		waitingRoomView(waiting_room);
+<<<<<<< HEAD
+=======
+	
+>>>>>>> branch 'master' of https://github.com/ahale212/programming2
 	}
 	
 	/**
@@ -1087,8 +1091,6 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime = new TableColumn("Wait Time");			
 		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
-		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null, null), null);
-		o.add(pat);
 		treatmentRoomTable.setItems(o);
 		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
 		ap3.getChildren().addAll(treatmentRoomTable, close_view1);
