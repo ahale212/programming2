@@ -577,7 +577,8 @@ public class RevController implements Initializable, ClientCallback {
 						
 						if (matchingPeople1.size() > 0) {
 							logMeIn = true;
-
+						} else {
+							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
 						} else {
 							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
 						}*/
@@ -687,6 +688,7 @@ public class RevController implements Initializable, ClientCallback {
 					});
 				}
 			});
+
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
 			ap1.getChildren().add(tf1);
@@ -1280,14 +1282,10 @@ public class RevController implements Initializable, ClientCallback {
 			ex.printStackTrace();
 		}	
 		
-		
-		
-		
 		// return the results.
 		return foundPeople;
 	}
 	
-
 	/**
 	 * 
 	 */
@@ -1340,6 +1338,7 @@ public class RevController implements Initializable, ClientCallback {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	
 	/**
 	 * Alert the user that they are logged off.
@@ -1360,110 +1359,5 @@ public class RevController implements Initializable, ClientCallback {
 		});
 	}
 	
-	/**
-	 * 
-	 */
-	public static void emailNewPassword(TextField emailRequest) {
-		// Recipient's email ID needs to be mentioned.
-		String to = emailRequest.getText().toString();
-
-		// Sender's email ID needs to be mentioned
-		String from = "pashospital@gmail.com";
-
-		// Get system properties
-		Properties properties = System.getProperties();
-
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-
-		properties.put("mail.smtp.port", "587");
-		properties.put("mail.smtp.auth", "true");
-		Authenticator authenticator = new Authenticator() {
-			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("pashospital@gmail.com",
-						"hospitalsystem");// userid and password for "from"
-											// email
-											// address
-			}
-		};
-
-		Session session = Session.getDefaultInstance(properties, authenticator);
-		try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-
-			// Set From
-			message.setFrom(new InternetAddress(from));
-
-			// Set To
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					to));
-
-			// Set Subject: header field
-			message.setSubject("PAS username and password retrival");
-
-			// Now set the actual message
-			message.setText("Your new Password is xxxxxxxx");
-
-			// Send message
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public static void emailNewPassword(TextField emailRequest) {
-		// Recipient's email ID needs to be mentioned.
-		String to = emailRequest.getText().toString();
-
-		// Sender's email ID needs to be mentioned
-		String from = "pashospital@gmail.com";
-
-		// Get system properties
-		Properties properties = System.getProperties();
-
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-
-		properties.put("mail.smtp.port", "587");
-		properties.put("mail.smtp.auth", "true");
-		Authenticator authenticator = new Authenticator() {
-			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("pashospital@gmail.com",
-						"hospitalsystem");// userid and password for "from"
-											// email
-											// address
-			}
-		};
-
-		Session session = Session.getDefaultInstance(properties, authenticator);
-		try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-
-			// Set From
-			message.setFrom(new InternetAddress(from));
-
-			// Set To
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					to));
-
-			// Set Subject: header field
-			message.setSubject("PAS username and password retrival");
-
-			// Now set the actual message
-			message.setText("Your new Password is xxxxxxxx");
-
-			// Send message
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-	}
 	
 }
