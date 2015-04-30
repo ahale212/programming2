@@ -19,11 +19,12 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import javax.naming.AuthenticationException;
 
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
+
+import application.RMIClient;
 
 import com.sun.javafx.application.PlatformImpl.FinishListener;
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
@@ -397,9 +398,12 @@ public class RevController implements Initializable, ClientCallback {
 		for (Patient patient : queueList) {
 			// Concatenate the patients first and second name and add them to the observable queue.
 			QList.add(patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName());
+			waiting_room.add(patient);
+			
 		}
 		
 		queue.setItems(QList);
+		waitingRoomView(waiting_room);
 	
 	}
 	
@@ -456,7 +460,8 @@ public class RevController implements Initializable, ClientCallback {
 			treatmentRoomNum[i] = "Treatment Room "+(i+1);
 		}		
 		trno.addAll(treatmentRoomNum);
-		treatment_room_list.setItems(trno);	
+		treatment_room_list.setItems(trno);
+		trno.add("On Call Unit");
 		select_tr.setItems(trno);
 		
 		breaths[0] = "Yes, without resuscitation";
@@ -542,6 +547,7 @@ public class RevController implements Initializable, ClientCallback {
 			TextField tf1 = new TextField();
 			PasswordField tf2 = new PasswordField();
 			AnchorPane ap1 = new AnchorPane();
+			ap1.setPrefSize(190,190);
 			Button bt1 = new Button();
 			Button bt2 = new Button();
 			Button bt3 = new Button();
@@ -667,9 +673,10 @@ public class RevController implements Initializable, ClientCallback {
 					
 					EmailRequest.setLayoutY(26);
 					ConfirmRequest.setText("Send Request");
-					ConfirmRequest.setLayoutY(40);
+					ConfirmRequest.setLayoutY(60);
 					
 					AnchorPane forgot = new AnchorPane();
+					forgot.setPrefSize(100,100);
 					forgot.getChildren().add(EmailRequest);
 					forgot.getChildren().add(ConfirmRequest);
 					forgot.getChildren().add(emailLabel);
@@ -683,6 +690,9 @@ public class RevController implements Initializable, ClientCallback {
 						public void handle(ActionEvent event) {
 							
 							emailNewPassword(EmailRequest);
+							userNameRequest.hide();
+							login_pop.hide();
+							
 						}
 						
 					});
@@ -704,16 +714,36 @@ public class RevController implements Initializable, ClientCallback {
 		re_assign.setOnAction(e -> {
 			
 			PopOver reassign_priority = new PopOver();
-			CheckBox set_e = new CheckBox("EMERGENCY"); set_e.setStyle("-fx-base: salmon;"); set_e.setLayoutY(26); set_e.setLayoutX(8);
-			CheckBox set_u = new CheckBox("Urgent"); set_u.setStyle("-fx-base: orange;"); set_u.setLayoutY(52); set_u.setLayoutX(8);
-			CheckBox set_semi_u = new CheckBox("Semi-Urgent"); set_semi_u.setStyle("-fx-base: yellow;"); set_semi_u.setLayoutY(78); set_semi_u.setLayoutX(8);
-			CheckBox set_non_u = new CheckBox("Non-Urgent"); set_non_u.setStyle("-fx-base: lightgreen;"); set_non_u.setLayoutY(104); set_non_u.setLayoutX(8);
-			Label select_new_urgency = new Label("Please Select the appropriate Priority Level:");
+			CheckBox set_e = new CheckBox("EMERGENCY"); set_e.setStyle("-fx-base: salmon;"); set_e.setLayoutY(26); set_e.setLayoutX(14);
+			CheckBox set_u = new CheckBox("Urgent"); set_u.setStyle("-fx-base: orange;"); set_u.setLayoutY(52); set_u.setLayoutX(14);
+			CheckBox set_semi_u = new CheckBox("Semi-Urgent"); set_semi_u.setStyle("-fx-base: yellow;"); set_semi_u.setLayoutY(78); set_semi_u.setLayoutX(14);
+			CheckBox set_non_u = new CheckBox("Non-Urgent"); set_non_u.setStyle("-fx-base: lightgreen;"); set_non_u.setLayoutY(104); set_non_u.setLayoutX(14);
+			Button confirm_new_priority = new Button("Confirm"); confirm_new_priority.setLayoutY(132); confirm_new_priority.setLayoutX(14);
+			Label select_new_urgency = new Label("Please Select the appropriate Priority Level:"); select_new_urgency.setLayoutX(14);
 			AnchorPane re_assign_pane = new AnchorPane();
-			re_assign_pane.getChildren().addAll(select_new_urgency, set_e, set_u, set_semi_u, set_non_u);
+			re_assign_pane.setPrefSize(280,190);
+			re_assign_pane.getChildren().addAll(select_new_urgency, set_e, set_u, set_semi_u, set_non_u, confirm_new_priority);
 			reassign_priority.setContentNode(re_assign_pane);
 			reassign_priority.show(re_assign);
 			
+			confirm_new_priority.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event){
+					
+					String potential = (String) queue.getSelectionModel().getSelectedItem();
+					if (potential != null) {
+						//queue.getSelectionModel().clearSelection();
+						//QList.remove(potential);
+						//trList.remove(0);
+						//trList.add(3, "");
+						//trList.add(3, potential);				
+						outputTextArea.appendText(potential+" is now !\n");
+						reassign_priority.hide();
+					}
+					
+				}
+			});
 			
 			set_e.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -757,25 +787,14 @@ public class RevController implements Initializable, ClientCallback {
 					set_semi_u.setSelected(false);
 				}
 			});
-			
-			/*String potential = (String) queue.getSelectionModel().getSelectedItem();
-			if (potential != null) {
-				queue.getSelectionModel().clearSelection();
-				QList.remove(potential);
-				trList.remove(0);
-				trList.add(3, "");
-				trList.add(3, potential);				
-				outputTextArea.appendText(potential+" is now an emergency!\n");
-			}*/
+						
 		});
 				
-		Q_view.setOnAction(e -> {
-			
+		Q_view.setOnAction(e -> {			
 			q_pop.show(Q_view);				
 		});
 		
-		TRooms_view.setOnAction(e -> {
-			
+		TRooms_view.setOnAction(e -> {			
 			tr_pop.show(TRooms_view);						
 		});
 
@@ -995,7 +1014,8 @@ public class RevController implements Initializable, ClientCallback {
 	private void treatmentRoomsView(ObservableList<Patient> o ) {
 				
 		AnchorPane ap3 = new AnchorPane();			
-		TableView<Patient>  treatmentRoomTable = new TableView<Patient>();
+		Button close_view1 = new Button("x"); close_view1.setStyle("-fx-base: red;");
+		TableView<Patient>  treatmentRoomTable = new TableView<Patient>(); treatmentRoomTable.setLayoutY(26);
 		
 		TableColumn patName = new TableColumn("Patient");			
 		patName.setCellValueFactory(new PropertyValueFactory<Object, String>("patientName"));
@@ -1006,11 +1026,9 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime = new TableColumn("Wait Time");			
 		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
-		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null, null), null);
-		o.add(pat);
 		treatmentRoomTable.setItems(o);
 		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
-		ap3.getChildren().add(treatmentRoomTable);
+		ap3.getChildren().addAll(treatmentRoomTable, close_view1);
 		tr_pop.setContentNode(ap3);
 		
 	}
@@ -1021,8 +1039,9 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	private void waitingRoomView(ObservableList<Patient> oL ) {
 		
-		AnchorPane ap2 = new AnchorPane();			
-		TableView<Patient>  waitingRoomTable = new TableView<Patient>();
+		AnchorPane ap2 = new AnchorPane();	
+		Button close_view2 = new Button("x"); close_view2.setStyle("-fx-base: red;");
+		TableView<Patient>  waitingRoomTable = new TableView<Patient>(); waitingRoomTable.setLayoutY(26);
 		
 		TableColumn patName1 = new TableColumn("Patient");			
 		patName1.setCellValueFactory(new PropertyValueFactory<Object, String>("patientName"));
@@ -1033,13 +1052,10 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime1 = new TableColumn("Wait Time");			
 		WaitingTime1.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
-		Patient pat = new Patient(new Person("", null, "Ciaran", "Molloy", null, null, null, null, null, null, null, null, null), null);
-		oL.add(pat);
 		waitingRoomTable.setItems(oL);
 		waitingRoomTable.getColumns().addAll(patName1, Urgency1, WaitingTime1);
-		ap2.getChildren().add(waitingRoomTable);
+		ap2.getChildren().addAll(waitingRoomTable, close_view2);
 		q_pop.setContentNode(ap2);
-		q_pop.show(Q_view);
 		
 	}
 
