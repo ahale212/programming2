@@ -125,7 +125,7 @@ public class StaffDataAccessor {
 		List<Staff> staffList = new ArrayList<>();
 		// instantiate the String vars to that of the database entry
 		while (rs.next()) {
-			// Get the staff memeber details from the result set
+			// Get the staff member details from the result set
 			String EmployeeNumber = rs.getString("Employee_Number");
 			 String FirstName = rs.getString("Employee_first_name");
 			 String LastName = rs.getString("Employee_last_name");
