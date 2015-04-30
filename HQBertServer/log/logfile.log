@@ -945,3 +945,349 @@
 2015-04-29 14:18:10,951 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 525 - Update Complete
 2015-04-29 14:18:11,953 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 525 - Update Complete
 >>>>>>> branch 'master' of https://github.com/ahale212/programming2
+2015-04-30 18:21:02,094 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:02 BST 2015
+2015-04-30 18:21:02,095 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:02,096 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:03,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:03 BST 2015
+2015-04-30 18:21:03,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:03,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:04,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:04 BST 2015
+2015-04-30 18:21:04,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:04,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:05,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:05 BST 2015
+2015-04-30 18:21:05,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:05,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:06,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:06 BST 2015
+2015-04-30 18:21:06,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 1
+2015-04-30 18:21:06,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:06,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:07,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:07 BST 2015
+2015-04-30 18:21:07,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : false : 1
+2015-04-30 18:21:07,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 2
+2015-04-30 18:21:07,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:07,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:08,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:08 BST 2015
+2015-04-30 18:21:08,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : false : 2
+2015-04-30 18:21:08,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 1
+2015-04-30 18:21:08,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 3
+2015-04-30 18:21:08,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:08,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:09,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:09 BST 2015
+2015-04-30 18:21:09,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : false : 3
+2015-04-30 18:21:09,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 2
+2015-04-30 18:21:09,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 4
+2015-04-30 18:21:09,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby7 : NON_URGENT : false : 1
+2015-04-30 18:21:09,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:09,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:10,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - No one displaceable
+2015-04-30 18:21:10,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	ONCALL: extra emergency - ASSEMBLE!
+2015-04-30 18:21:10,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Not enough doctors for oncall  !!!
+2015-04-30 18:21:10,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	At emergency capacity!!!	null sent away.
+2015-04-30 18:21:10,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	RE-ASSIGNING TRAGE PRIORITY FOR null
+2015-04-30 18:21:10,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - No one displaceable
+2015-04-30 18:21:10,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - No emergency treatment available: Bobby7 (EMERGENCY) sent away
+2015-04-30 18:21:10,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	At emergency capacity!!!	null sent away.
+2015-04-30 18:21:10,093 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:10 BST 2015
+2015-04-30 18:21:10,093 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : false : 4
+2015-04-30 18:21:10,093 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 3
+2015-04-30 18:21:10,093 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 5
+2015-04-30 18:21:10,093 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:10,093 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:11,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:11 BST 2015
+2015-04-30 18:21:11,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : false : 5
+2015-04-30 18:21:11,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 1
+2015-04-30 18:21:11,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 4
+2015-04-30 18:21:11,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 6
+2015-04-30 18:21:11,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:11,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:12,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:12 BST 2015
+2015-04-30 18:21:12,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : false : 6
+2015-04-30 18:21:12,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 2
+2015-04-30 18:21:12,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 5
+2015-04-30 18:21:12,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 1
+2015-04-30 18:21:12,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 7
+2015-04-30 18:21:12,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:12,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:13,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:13,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:13 BST 2015
+2015-04-30 18:21:13,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 3
+2015-04-30 18:21:13,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 6
+2015-04-30 18:21:13,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 2
+2015-04-30 18:21:13,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 8
+2015-04-30 18:21:13,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:13,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:14,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 back in queue
+2015-04-30 18:21:14,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:14 BST 2015
+2015-04-30 18:21:14,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 7
+2015-04-30 18:21:14,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 4
+2015-04-30 18:21:14,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 7
+2015-04-30 18:21:14,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 3
+2015-04-30 18:21:14,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 9
+2015-04-30 18:21:14,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:14,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:15,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:15,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:15 BST 2015
+2015-04-30 18:21:15,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 8
+2015-04-30 18:21:15,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 5
+2015-04-30 18:21:15,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 8
+2015-04-30 18:21:15,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 4
+2015-04-30 18:21:15,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 10
+2015-04-30 18:21:15,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:15,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:16 BST 2015
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 9
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 6
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 9
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 5
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 11
+2015-04-30 18:21:16,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:16,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:17,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:17,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:17 BST 2015
+2015-04-30 18:21:17,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 7
+2015-04-30 18:21:17,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 10
+2015-04-30 18:21:17,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 6
+2015-04-30 18:21:17,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 12
+2015-04-30 18:21:17,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:17,092 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:18,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 back in queue
+2015-04-30 18:21:18,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:18 BST 2015
+2015-04-30 18:21:18,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 10
+2015-04-30 18:21:18,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 8
+2015-04-30 18:21:18,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 11
+2015-04-30 18:21:18,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 7
+2015-04-30 18:21:18,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 13
+2015-04-30 18:21:18,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:18,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:19,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:19,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:19 BST 2015
+2015-04-30 18:21:19,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 11
+2015-04-30 18:21:19,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 9
+2015-04-30 18:21:19,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 12
+2015-04-30 18:21:19,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 8
+2015-04-30 18:21:19,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 14
+2015-04-30 18:21:19,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:19,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:20,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:20,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:20 BST 2015
+2015-04-30 18:21:20,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 12
+2015-04-30 18:21:20,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 10
+2015-04-30 18:21:20,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 13
+2015-04-30 18:21:20,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 9
+2015-04-30 18:21:20,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 15
+2015-04-30 18:21:20,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:20,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:21 BST 2015
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 13
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 11
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 14
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 10
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 16
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:21,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:22 BST 2015
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 14
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 12
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 15
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 11
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 17
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:22,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:23 BST 2015
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 13
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 16
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 12
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 18
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:23,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 back in queue
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:24 BST 2015
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 14
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 17
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 13
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 19
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:24,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 back in queue
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:25 BST 2015
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 15
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 15
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 18
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 14
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 20
+2015-04-30 18:21:25,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:25,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:26 BST 2015
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 16
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 16
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 19
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 15
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 21
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:26,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:27 BST 2015
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 17
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 20
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 16
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 22
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:27,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 back in queue
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:28 BST 2015
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 17
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 18
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 21
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 17
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 23
+2015-04-30 18:21:28,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:28,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:29 BST 2015
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 18
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 19
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 22
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 18
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 24
+2015-04-30 18:21:29,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:29,091 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:30 BST 2015
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 19
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 20
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 23
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 19
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : false : 25
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:30,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 	Queue Full
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:31 BST 2015
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 20
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 21
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 24
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 20
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : true : 26
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:31,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:32 BST 2015
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby5 : URGENT : true : 21
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 22
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : false : 25
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 21
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : true : 27
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:32,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:33 BST 2015
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby9 : URGENT : false : 23
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 26
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 22
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : true : 28
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:33,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:34,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:34 BST 2015
+2015-04-30 18:21:34,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 27
+2015-04-30 18:21:34,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 23
+2015-04-30 18:21:34,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : true : 29
+2015-04-30 18:21:34,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:34,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:35,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:35 BST 2015
+2015-04-30 18:21:35,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 28
+2015-04-30 18:21:35,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 24
+2015-04-30 18:21:35,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : true : 30
+2015-04-30 18:21:35,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:35,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:36,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:36 BST 2015
+2015-04-30 18:21:36,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby4 : NON_URGENT : true : 31
+2015-04-30 18:21:36,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 29
+2015-04-30 18:21:36,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : false : 25
+2015-04-30 18:21:36,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:36,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:37,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:37 BST 2015
+2015-04-30 18:21:37,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 30
+2015-04-30 18:21:37,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 26
+2015-04-30 18:21:37,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:37,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:38,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:38 BST 2015
+2015-04-30 18:21:38,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 31
+2015-04-30 18:21:38,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 27
+2015-04-30 18:21:38,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:38,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:39,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:39 BST 2015
+2015-04-30 18:21:39,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 32
+2015-04-30 18:21:39,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 28
+2015-04-30 18:21:39,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:39,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:40,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:40 BST 2015
+2015-04-30 18:21:40,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 33
+2015-04-30 18:21:40,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 29
+2015-04-30 18:21:40,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:40,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:41,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:41 BST 2015
+2015-04-30 18:21:41,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 34
+2015-04-30 18:21:41,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 30
+2015-04-30 18:21:41,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:41,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:42,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:42 BST 2015
+2015-04-30 18:21:42,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby6 : SEMI_URGENT : true : 35
+2015-04-30 18:21:42,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 31
+2015-04-30 18:21:42,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:42,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:43,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:43 BST 2015
+2015-04-30 18:21:43,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Bobby10 : SEMI_URGENT : true : 32
+2015-04-30 18:21:43,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:43,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:44,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:44 BST 2015
+2015-04-30 18:21:44,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:44,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete
+2015-04-30 18:21:45,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - CurrentTime: Thu Apr 30 18:21:45 BST 2015
+2015-04-30 18:21:45,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - 
+
+2015-04-30 18:21:45,090 DEBUG [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 656 - Update Complete

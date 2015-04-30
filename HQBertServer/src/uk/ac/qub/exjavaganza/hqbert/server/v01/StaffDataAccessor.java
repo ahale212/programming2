@@ -125,14 +125,17 @@ public class StaffDataAccessor {
 		List<Staff> staffList = new ArrayList<>();
 		// instantiate the String vars to that of the database entry
 		while (rs.next()) {
-			// Get the staff memeber details from the result set
-			String employeeNumber = rs.getString("Employee_Number");
-			String firstName = rs.getString("Employee_first_name");
-			String lastName = rs.getString("Employee_last_name");
-			String email = rs.getString("Employee_Email");
+			// Get the staff member details from the result set
+			String EmployeeNumber = rs.getString("Employee_Number");
+			 String FirstName = rs.getString("Employee_first_name");
+			 String LastName = rs.getString("Employee_last_name");
+			String Username = rs.getString("Employee_username");
+			String Password = rs.getString("Employee_Password");
+			 String Email = rs.getString("Employee_Email");
+			 String MobileNumber = rs.getString("mobile_number");
 
 			// Create a new staff member with the details from the database
-			Staff  staffMember = new Staff(employeeNumber, firstName, lastName, "", "", email);
+			Staff  staffMember = new Staff(EmployeeNumber, FirstName, LastName, Username, Password, Email, MobileNumber);
 			// Add the user to the staff list
 			staffList.add(staffMember);	
 			
