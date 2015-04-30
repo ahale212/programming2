@@ -115,7 +115,7 @@ public class HQueue implements Serializable {
 		}
 		
 		//If they are an emergency, skip the queue and attempt to send for treatment
-		if(urgency == Urgency.EMERGENCY){
+		if(urgency == Urgency.EMERGENCY || pq.size() == 0){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
