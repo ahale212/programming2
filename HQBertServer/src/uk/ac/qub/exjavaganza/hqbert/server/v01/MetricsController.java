@@ -21,6 +21,10 @@ public enum MetricsController {
 	FileOutputStream fout;
 	FileInputStream fin;
 	
+	private MetricsController(){
+		stats = new ArrayList<PatientMetrics>();
+	}
+	
 	public void AddMetric(PatientMetrics metrics){
 		stats.add(metrics);
 	}

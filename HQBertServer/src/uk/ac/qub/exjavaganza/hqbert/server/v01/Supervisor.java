@@ -120,6 +120,7 @@ public enum Supervisor {
 			e.printStackTrace();
 		}
 		
+		
 		waitTimesUnacceptable = false;
 
 		try {
