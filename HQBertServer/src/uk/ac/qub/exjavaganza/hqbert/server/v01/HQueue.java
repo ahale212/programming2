@@ -92,11 +92,10 @@ public class HQueue implements Serializable {
 	 * @param p : the patient who's urgency you wish to change
 	 * @param newUrgency : the required new level of urgency for the patient
 	 */
-	public void reAssignUrgency(Patient p, Urgency newUrgency){
+	public void reAssignTriage(Patient p, Urgency newUrgency){
 		allSubqueues[p.getUrgency().getValue()].remove(p);
 		p.setUrgency(newUrgency); 
-		allSubqueues[p.getUrgency().getValue()].add(p);
-		sortQueue(allSubqueues[p.getUrgency().getValue()]);
+		Supervisor.INSTANCE.admitPatient(p);
 	}
 	
 	/**Insert a patient in the appropriate sub-queue place and so, correct position in overall queue
@@ -106,11 +105,21 @@ public class HQueue implements Serializable {
 	 */
 	public boolean insert(Patient patient){
 		Urgency urgency = patient.getUrgency();
+		
+		//First : if queue full and all rooms full - anyone new is sent away,
+		//		even emergencies - as per Aidan's email.
+		
+		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE){
+			Supervisor.INSTANCE.log("\tQueue Full");
+			return false;
+		}
+		
 		//If they are an emergency, skip the queue and attempt to send for treatment
 		if(urgency == Urgency.EMERGENCY){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
+				Supervisor.INSTANCE.log("\tAt emergency capacity!!!\t"+patient.getPatientName()+" sent away.");
 				return false;
 			}
 		}
@@ -229,13 +238,13 @@ public class HQueue implements Serializable {
 	 * Show the details of the queue in the console 
 	 */
 	public void showQueueInConsole(){
-		System.out.println("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
+		Supervisor.INSTANCE.log("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
 		for(int patientNum = 0; patientNum < pq.size(); patientNum++){
 			Patient p = pq.get(patientNum);
 			String patientQueueDetails = p.getPerson().getFirstName() + " : "+p.getUrgency()+" : "+p.getPriority()+ " : " +p.getWaitTime();
-			System.out.println(patientQueueDetails);
+			Supervisor.INSTANCE.log(patientQueueDetails);
 		}
-		System.out.println("\n");
+		Supervisor.INSTANCE.log("\n");
 	}
 	
 	public void initDisplacable(){
@@ -282,7 +291,7 @@ public class HQueue implements Serializable {
 		try{
 			displacablePatient = displacable.removeLast();
 		}catch(Exception e){
-			System.out.println("No one displaceable");
+			Supervisor.INSTANCE.log("No one displaceable");
 		}
 		initDisplacable();
 		

@@ -29,6 +29,11 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 public class RMIClient extends UnicastRemoteObject implements ClientCallback, AutoCloseable {
 
 	/**
+	 * The interval in milliseconds between heartbeats
+	 */
+	private final int HEARTBEAR_INTERVAL = 2000;
+	
+	/**
 	 * A reference to the remote server
 	 */
 	private RemoteServer server;
@@ -58,6 +63,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 */
 	private String clientID;
 
+
 	/**
 	 * Constructor for RMIClient
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
@@ -74,6 +80,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			initConnection(username, password);
 			
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			// Change the connectionstate and inform the user
+			serverAccessible = ConnectionState.CONNECTION_ERROR;
+			controller.serverStatusChanged(serverAccessible);
+			
 			// End connection to server and remove the RMIClient from the RMI runtime
 			close();
 			
@@ -83,8 +93,8 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		
 		// Create a timer to handle pings
 		Timer timer = new Timer();
-		// Set the time to repeat every 5 seconds and run the timedPing Timer Tast each tick
-		timer.scheduleAtFixedRate(new timedPing(), 5000, 5000);
+		// Set the time to repeat every 5 seconds and run the timedPing Timer Task each tick
+		timer.scheduleAtFixedRate(new timedPing(), HEARTBEAR_INTERVAL, HEARTBEAR_INTERVAL);
 			
 
 	}
@@ -97,12 +107,24 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws AuthenticationException 	Thrown when the user login details are incorrect.
 	 */
 	public void initConnection(String username, String password) throws RemoteException, MalformedURLException, NotBoundException, AuthenticationException {
+		lookUpServer();
+		regsiterWithServer(username, password) ;
+	}
+	
+	public void lookUpServer() throws MalformedURLException, RemoteException, NotBoundException {
 		serverAccessible = ConnectionState.CONNECTING;
 		controller.serverStatusChanged(serverAccessible);
 		
 		// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
 		server = (RemoteServer)Naming.lookup("rmi://" + serverAddress + ":" + serverPort + "/HQBertServer");
-		
+	}
+	
+	/**
+	 * Register with the server
+	 * @throws RemoteException 
+	 * @throws AuthenticationException 
+	 */
+	public void regsiterWithServer(String username, String password) throws RemoteException, AuthenticationException {
 		// Register for the update callbacks. This passes a reference
 		// of the client to the server so the 'update' method can be called remotely.
 		clientID = server.register(username, password, this);
@@ -117,7 +139,6 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		serverAccessible = ConnectionState.CONNECTED;
 		controller.serverStatusChanged(serverAccessible);
 	}
-
 	/**
 	 * TimerTask that pings the server to ensure that it is still accessible
 	 */
@@ -127,25 +148,33 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			
 			// Boolean to hold whether or not the server is running
 			ConnectionState accessible;
-			// If the server is no null
-			if (server != null) {
-				try {
-					// Ping the server
-					boolean pingResult = server.heartbeat(clientID);
-					// If no error was thrown the server is connected
-					accessible = ConnectionState.CONNECTED;
-					// A result of false means that the client is not registered
-					if (pingResult == false) {
-						System.out.println("Server accessible but client not registered. Re-registering...");
-						// so re-register
-						// TODO: re-register
+			
+			// If the server is null can't continue so tell the user to login and return
+			if (server == null) {
+				controller.alertLoggedOff();
+				return;
+			}
+			
+			try {
+				// Ping the server
+				boolean pingResult = server.heartbeat(clientID);
+				// If no error was thrown the server is connected
+				accessible = ConnectionState.CONNECTED;
+				// A result of false means that the client is not registered
+				if (pingResult == false) {
+					System.out.println("Server accessible but client not registered.");
+					// Set the connection state to not connected
+					if (serverAccessible != ConnectionState.NOT_CONNECTED) {
+						serverAccessible = ConnectionState.NOT_CONNECTED;
+						controller.serverStatusChanged(serverAccessible);
+						// tell the user they are logged off
+						controller.alertLoggedOff();
 					}
-				} catch (RemoteException e) {
-					System.err.println("Server not accessible.");
-					// Communication with the server has failed, so set running to false;
-					accessible = ConnectionState.CONNECTION_ERROR;
+					return;
 				}
-			} else { // else if the server is null, set accessible to false
+			} catch (RemoteException e) {
+				System.err.println("Server not accessible.");
+				// Communication with the server has failed, so set running to false;
 				accessible = ConnectionState.CONNECTION_ERROR;
 			}
 			
@@ -156,16 +185,15 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			// update the value help in serverAccessible
 			serverAccessible = accessible;
 			
-			// I accessible is false, try to reconnect
-			if (accessible == ConnectionState.NOT_CONNECTED) {
-				//TODO: tell user to login
-				/*
+			// I accessible is false, try to look up the server again
+			if (accessible == ConnectionState.CONNECTION_ERROR) {
 				try {
-					// Attempt a re-connection
-					
-				} catch (RemoteException | MalformedURLException
-						| NotBoundException e1) {
-				}*/
+					lookUpServer();
+				} catch (MalformedURLException | RemoteException
+						| NotBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 

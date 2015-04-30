@@ -37,7 +37,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
-	public final float TIME_MULTI = 60;
+	public final float TIME_MULTI = 1;
 
 	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
 	
@@ -90,18 +90,15 @@ public enum Supervisor {
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
-
-
 		logger = Logger.getLogger(Supervisor.class);
 
 		treatmentFacilities = new ArrayList<TreatmentFacility>();
 		for (int i = 0; i < MAX_TREATMENT_ROOMS; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
 		}
-
-		
+	
 		//Testing
-		runBobbyTest();
+		//makeBobbies();
 		//superFakeOnCallTeam();
 
 		// set up connection to database
@@ -145,12 +142,12 @@ public enum Supervisor {
 		}
 	}
 	
-	public void runBobbyTest(){
+	public void makeBobbies(){
 		testPatientNo = 0;
 
 		testUrgencies = new Urgency[] { Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.NON_URGENT,
-				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
+				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.NON_URGENT,
 				Urgency.EMERGENCY, Urgency.URGENT, Urgency.SEMI_URGENT,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.SEMI_URGENT, Urgency.EMERGENCY, Urgency.EMERGENCY,
@@ -161,6 +158,35 @@ public enum Supervisor {
 				Urgency.EMERGENCY };
 
 		extensions = new int[] { 0, 1, 2 };
+	}
+	
+	public void runBobbyTest(){
+		// Testing
+		if (testPatientNo < testUrgencies.length) {
+			insertTestPatientBobby();
+		}
+		// automated extension tests
+		for (int i = 0; i < treatmentFacilities.size(); i++) {
+			TreatmentFacility tf = treatmentFacilities.get(i);
+			if (tf.getTimeToAvailable() == 1 && tf.getPatient() != null) {
+				if (i > 0 && i < 3) {
+					if (extensions[i] > 0) {
+						tf.extendTime();
+						extensions[i]--;
+					}
+				}
+			}
+		}
+		
+		if(testPatientNo == 9){
+			Patient sample;
+			for(int i = 0; i < hQueue.getPQ().size(); i++){
+				sample =  hQueue.getPQ().get(i);
+				if(sample.getPerson().getFirstName().equalsIgnoreCase("bobby7")){
+					reAssignTriage(sample, Urgency.EMERGENCY);
+				}
+			}
+		}
 	}
 
 	public void superFakeOnCallTeam(){
@@ -181,6 +207,22 @@ public enum Supervisor {
 		staffOnCall.add(drOctopus);
 		staffOnCall.add(nurseBetty);
 	}
+	
+	/**
+	 * Auto-generate simple test patients to push through the system
+	 */
+	private void insertTestPatientBobby() {
+		Person testPerson = new Person();
+		testPerson.setFirstName("Bobby" + testPatientNo);
+		testPerson.setLastName("Branson" + testPatientNo);
+
+		Patient test = new Patient();
+		test.setPerson(testPerson);
+		test.setUrgency(testUrgencies[testPatientNo]);
+
+		admitPatient(test);
+		testPatientNo++;
+	}	
 	
 	/**
 	 * Starts the RMI server so that clients can connect and communicate with
@@ -260,22 +302,8 @@ public enum Supervisor {
 	 *            : time (in milliseconds) since the last update
 	 */
 	public void update(int deltaTime) {
-		// Testing
-		if (testPatientNo < testUrgencies.length) {
-			insertTestPatient();
-		}
-		// automated extension tests
-		for (int i = 0; i < treatmentFacilities.size(); i++) {
-			TreatmentFacility tf = treatmentFacilities.get(i);
-			if (tf.getTimeToAvailable() == 1 && tf.getPatient() != null) {
-				if (i > 0 && i < 3) {
-					if (extensions[i] > 0) {
-						tf.extendTime();
-						extensions[i]--;
-					}
-				}
-			}
-		}
+		
+		//runBobbyTest();
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
 		manageOnCallAndAlerts();
@@ -311,21 +339,6 @@ public enum Supervisor {
 		// checkWaitingTime();
 	}
 
-	/**
-	 * Auto-generate simple test patients to push through the system
-	 */
-	private void insertTestPatient() {
-		Person testPerson = new Person();
-		testPerson.setFirstName("Bobby" + testPatientNo);
-		testPerson.setLastName("Branson" + testPatientNo);
-
-		Patient test = new Patient();
-		test.setPerson(testPerson);
-		test.setUrgency(testUrgencies[testPatientNo]);
-
-		admitPatient(test);
-		testPatientNo++;
-	}
 
 	/**
 	 * 
@@ -338,12 +351,10 @@ public enum Supervisor {
 				server.updateClients();
 				return true;
 			} else {
-				System.out.println("Queue at capacity : "
-						+ patient.getPerson().getFirstName() + " - "
-						+ patient.getUrgency() + " - sent away.");
+				if(patient.getUrgency() == Urgency.EMERGENCY){
+					//Alert the manager of the next hoapital
+				}
 				server.updateClients();
-				System.out.println("PATIENT REJECTED : "
-						+ patient.getPerson().getFirstName());
 				return false;
 			}
 		} catch (StackOverflowError so) {
@@ -416,7 +427,7 @@ public enum Supervisor {
 				}else{
 					if(onCallTeam != null){
 						//Log Stuff: Full of emergencies - send this emergency away
-						System.out.println("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
+						log("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
 					}
 				}					
 			}
@@ -444,6 +455,14 @@ public enum Supervisor {
 	}
 
 	/**
+	 * Change a patient's triage category
+	 */
+	public void reAssignTriage(Patient patient, Urgency newUrgency){
+		log("\tRE-ASSIGNING TRAGE PRIORITY FOR "+patient.getPatientName());
+		hQueue.reAssignTriage(patient, newUrgency);
+	}
+	
+	/**
 	 * 
 	 */
 	public void manageOnCallAndAlerts(){
@@ -454,7 +473,6 @@ public enum Supervisor {
 			// via the RMI server.
 			
 		}
-		
 		
 		if(checkWaitingTimes() == true && waitTimesUnacceptable == false){
 			waitTimesUnacceptable = false;
@@ -488,7 +506,7 @@ public enum Supervisor {
 			activeStaff.add(onCallTeam.getStaff().get(i));
 		}
 		treatmentFacilities.remove(onCallTeam);
-		System.out.println("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
+		log("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
 		onCallTeam = null;
 	}
 	
@@ -498,9 +516,9 @@ public enum Supervisor {
 	 */
 	public boolean assembleOnCall(ON_CALL_REASON reason){
 		if(reason == ON_CALL_REASON.QUEUE_FULL){
-			System.out.println("\tONCALL: full queue - ASSEMBLE!");
+			log("\tONCALL: full queue - ASSEMBLE!");
 		}else if(reason == ON_CALL_REASON.EXTRA_EMERGENCY){
-			System.out.println("\tONCALL: extra emergency - ASSEMBLE!");
+			log("\tONCALL: extra emergency - ASSEMBLE!");
 		}
 		
 		onCallTeam = new OnCallTeam();
@@ -516,7 +534,7 @@ public enum Supervisor {
 			}
 			if(onCallTeam.getStaff().size() < ONCALL_TEAM_DOCTORS){
 				//Log that insufficient doctors are available for an oncall team
-				System.out.println("Not enough doctors for oncall  !!!");
+				log("Not enough doctors for oncall  !!!");
 				return false;
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
@@ -530,7 +548,7 @@ public enum Supervisor {
 			}
 			if(onCallTeam.getStaff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
 				//Log that insufficient nurses are available for an oncall team
-				System.out.println("Not enough nurses for oncall  !!!");
+				log("Not enough nurses for oncall  !!!");
 				return false;
 			}
 		}
@@ -576,8 +594,27 @@ public enum Supervisor {
 
 	}
 
+	/**
+	 * Checks if all treatment rooms are full and the onCall team is engaged with a patient.
+	 * @return true : everything full
+	 * 			false : at least one space (including oncall not engaged) 
+	 */
+	public boolean checkAtTreatmentCapacity(){
+		boolean allFull = true;
+		
+		if(onCallTeam == null){
+			
+		}
+		
+		for(TreatmentFacility tf : treatmentFacilities){
+			
+		}
+		
+		return allFull;
+	}
+	
 	public void removeFromQueue(Patient patient) {
-		System.out.println("Removing "		 + patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
+		System.out.println("Removing "+ patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
 			// via the RMI server.
 			server.broadcastQueueFullAlert();
 
@@ -616,8 +653,9 @@ public enum Supervisor {
 	}
 
 	public void log(String message) {
-		logger.debug(message);
+		//logger.debug(message);
 		server.broadcastLog(message);
+		System.out.println(message);
 	}
 
 	/**
