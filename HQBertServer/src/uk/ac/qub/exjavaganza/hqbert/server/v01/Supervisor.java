@@ -26,9 +26,9 @@ public enum Supervisor {
 
 	INSTANCE;
 
-	public final int MAX_QUEUE_SIZE = 5;
-	public final int MAX_WAIT_TIME = 30;
-	public final int PRIORITY_WAIT_TIME = 25;
+	public final int MAX_QUEUE_SIZE = 10;
+	public final int MAX_WAIT_TIME = 10;
+	public final int PRIORITY_WAIT_TIME = 5;
 	public final int MAX_OVERDUE_PATIENTS = 2
 			;
 	public final int BASE_UPDATE_INTERVAL = 1;
@@ -41,7 +41,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
-	public final float TIME_MULTI = 1;
+	public final float TIME_MULTI = 60;
 
 	private Preferences prefs;
 	
@@ -65,7 +65,7 @@ public enum Supervisor {
 	private Logger logger;
 
 	//whether too many patients have been waiting too long
-	private boolean waitTimesUnacceptable;
+	private boolean excessiveWaitingAlertSent;
 	
 	// Test stuff
 	private int testPatientNo;
@@ -104,7 +104,7 @@ public enum Supervisor {
 		}
 	
 		//Testing
-		//makeBobbies();
+		makeBobbies();
 		//superFakeOnCallTeam();
 
 		// set up connection to database
@@ -134,7 +134,7 @@ public enum Supervisor {
 		getAvailableStaff();
 		getOnCallList();
 		
-		waitTimesUnacceptable = false;
+		excessiveWaitingAlertSent = false;
 		
 		// Start the server to allow clients to connect
 		startServer(useSSL);
@@ -309,7 +309,7 @@ public enum Supervisor {
 		try{
 		for(int i = availableStaff.size()-1; i >= 0; i--){
 			Staff member = availableStaff.get(i);
-			if(member.getJob() != Job.DOCTOR || member.getJob() == Job.NURSE){
+			if(member.getJob() == Job.DOCTOR || member.getJob() == Job.NURSE){
 				staffOnCall.add(member);
 				availableStaff.remove(member);
 			}
@@ -337,11 +337,10 @@ public enum Supervisor {
 	 */
 	public void update(int deltaTime) {
 		
-		//runBobbyTest();
+		runBobbyTest();
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
 		manageOnCallAndAlerts();
-		
 		
 		//update the treatment facilities (rooms and on-call if on-site)
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
@@ -508,12 +507,21 @@ public enum Supervisor {
 			
 		}
 		
-		if(checkWaitingTimes() == true && waitTimesUnacceptable == false){
-			waitTimesUnacceptable = false;
-			if(ALERTS_ACTIVE == true){
-				ManagerAlert.emailWaitingTimeAlert();
-				ManagerAlert.smsWaitingTimeAlert();
-			}
+		if(checkTooManyOverduePatients() == true && excessiveWaitingAlertSent == false){
+		//	if(ALERTS_ACTIVE == true){
+				Staff manager = null;
+				for(Staff member : availableStaff){
+					if(member.getJob() == Job.MANAGER){
+						manager = member;
+					}
+				}
+				if(manager != null){
+					ManagerAlert.emailWaitingTimeAlert(manager, ALERTS_ACTIVE);
+					ManagerAlert.smsWaitingTimeAlert(manager, ALERTS_ACTIVE);
+					log("Alerting Hospital Manager : Too many overdue patients." );
+					excessiveWaitingAlertSent = true;
+				}
+		//	}
 		}
 	}
 	
@@ -559,7 +567,7 @@ public enum Supervisor {
 		for(int count = 0; count < 2; count++){
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (/*staffMember.getJob() == Job.DOCTOR && */!(activeStaff.contains(staffMember))){
+				if (staffMember.getJob() == Job.DOCTOR && !(activeStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
 						activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
@@ -573,7 +581,7 @@ public enum Supervisor {
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (/*staffMember.getJob() == Job.NURSE && */!(activeStaff.contains(staffMember))){
+				if (staffMember.getJob() == Job.NURSE && !(activeStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
 						activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
@@ -591,13 +599,22 @@ public enum Supervisor {
 	}
 
 
+	/**
+	 * Extend the time a room is expected to be occupied by a pre-set amount, due to patient not finished.
+	 * @param roomIndex : which treatment Room to extend the time on.
+	 */
 	public void extendRoom(int roomIndex) {
 		treatmentFacilities.get(roomIndex).extendTime();
 	}
 
-	private boolean checkWaitingTimes() {
+	/**
+	 * check if more than the maximum allowed number of patients have been waiting longer than the 
+	 * maximum allowed time.
+	 * @return  true : too many patients waiting too long
+	 * 			false : not reached thresh-hold yet
+	 */
+	private boolean checkTooManyOverduePatients() {
 		int delayedCount = 0;
-
 		for (Patient p : hQueue.getPQ()) {
 			if (p.getWaitTime() >= MAX_WAIT_TIME) {
 				delayedCount++;
@@ -607,17 +624,16 @@ public enum Supervisor {
 		if (delayedCount > MAX_OVERDUE_PATIENTS) {
 			return true;
 		} else {
+			excessiveWaitingAlertSent = false;
 			return false;
 		}
-
-		/*
-		 * if (delayedCount>=2){
-		 * System.out.println("Sending wait time messages");
-		 * ManagerAlert.emailWaitingTimeAlert();
-		 * ManagerAlert.smsWaitingTimeAlert(); }
-		 */
 	}
 
+	/**
+	 * Check if the queue has reached its maximum allowed size
+	 * @return true : queue at max size
+ 	 * 			false : still room to add more people to the queue
+	 */
 	private boolean checkQueueFull() {
 		// If the patient queue is full
 		if (hQueue.getPQ().size() == Supervisor.INSTANCE.MAX_QUEUE_SIZE) {
@@ -741,7 +757,6 @@ public enum Supervisor {
 			// return false to inform the front end that the update failed.
 			return false;
 		}
-
 	}
 	
 	/**

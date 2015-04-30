@@ -18,7 +18,12 @@ public class ManagerAlert {
 	/**
 	 * Method to send the automated email when the A&E is at capacity.
 	 */
-	public static void emailCapacityAlert(Staff HospitalManager) {
+	public static void emailCapacityAlert(Staff HospitalManager, boolean alertsActive) {
+		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
 		
 		// Recipient's email ID needs to be mentioned.
 		String to = HospitalManager.getEmployeeEmail();
@@ -73,7 +78,12 @@ public class ManagerAlert {
 	 * Method to send the automated email when two people have been waiting more
 	 * than 30 minutes.
 	 */
-	public static void emailWaitingTimeAlert(Staff HoaspitalManager) {
+	public static void emailWaitingTimeAlert(Staff HoaspitalManager, boolean alertsActive) {
+		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
 		
 		// Recipient's email ID.
 		String to = HoaspitalManager.getEmployeeEmail();
@@ -129,7 +139,13 @@ public class ManagerAlert {
 	 * Method to send automated sms to the Hospital Manager when the hospital
 	 * list is at capacity.
 	 */
-	public static void smsCapacityAlert(Staff HospitalManager) {
+	public static void smsCapacityAlert(Staff HospitalManager, boolean alertsActive) {
+		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
+				
 		
 		String username = "awhitten02";
 		String password = "71Great7";
@@ -173,8 +189,13 @@ public class ManagerAlert {
 	 * Method to send automated sms to the Hospital Manager when two patients
 	 * have exceeded the waiting time.
 	 */
-	public static void smsWaitingTimeAlert(Staff HospitalManager) {
+	public static void smsWaitingTimeAlert(Staff HospitalManager, boolean alertsActive) {
 		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
+				
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
