@@ -38,7 +38,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -137,6 +136,7 @@ public class RevController implements Initializable, ClientCallback {
 	private final ObservableList allergy_list = FXCollections.observableArrayList();
 	private final ObservableList<String> search_patient_results = FXCollections.observableArrayList();
 	List<Person> matchingPeople, matchingPeople1;
+	private int theme;
 
 	/**
 	 * Data Lists:
@@ -184,7 +184,7 @@ public class RevController implements Initializable, ClientCallback {
 	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
-		colours();
+		colours(theme);
 		labelSliders();
 		loadArrayLists();
 		runValidSearch();
@@ -205,8 +205,14 @@ public class RevController implements Initializable, ClientCallback {
 	/**
 	 * Sets layout colours and patterns
 	 */
-	private void colours() {
-		// TODO Auto-generated method stub
+	private void colours(int theme) {
+		
+		switch(theme){
+			case 1: 
+				break;
+			case 2:
+				break;
+		}
 		
 	}
 
@@ -773,7 +779,7 @@ public class RevController implements Initializable, ClientCallback {
 		extend.setOnAction(e -> {
 			
 			try {
-				client.getServer().extendTreatmentTime(null);
+				client.getServer().extendTreatmentTime(null, null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -799,16 +805,7 @@ public class RevController implements Initializable, ClientCallback {
 			
 			});
 	}
-	
-	
-	/**
-<<<<<<< HEAD
-	 * Display a person in the patient triage tab.
-=======
-	 * 
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
-	 * @param displayedPerson
-	 */
+
 	public void displayPerson(Person displayedPerson) {
 
 		textfield_First_Name.setText(displayedPerson.getFirstName());
