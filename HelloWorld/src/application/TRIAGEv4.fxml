@@ -9,11 +9,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar BorderPane.alignment="CENTER"  >
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="File" >
             <items>
             <MenuItem mnemonicParsing="false" text="Open" />
             <SeparatorMenuItem />
@@ -47,7 +47,7 @@
         <tabs>
           <Tab fx:id="triage_tab" text="Patient Triage">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0">
+              <AnchorPane fx:id="triage_anchorpane" minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0" >
                      <children>
                         <Label layoutX="25.0" layoutY="14.0" text="Search By:" />
                         <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="1.0" maxWidth="100" promptText="NHS Number" />
@@ -66,7 +66,7 @@
                         <Label layoutX="27.0" layoutY="344.0" text="Allergies" />
                         <Label fx:id="blood_group" layoutX="27.0" layoutY="312.0" text="Blood Group" />
                         <Label fx:id="dob" layoutX="27.0" layoutY="184.0" text="Date of Birth" />
-                        <ChoiceBox fx:id="patient_finder" layoutX="115.0" layoutY="26.0" minWidth="600" />
+                        <ComboBox fx:id="patient_finder" layoutX="115.0" layoutY="26.0" minWidth="600" />
                         <TextField fx:id="textfield_NHS_Num" editable="false" layoutX="110.0" layoutY="52.0" />
                         <TextField fx:id="textfield_Title" editable="false" layoutX="110.0" layoutY="84.0" />
                         <TextField fx:id="textfield_First_Name" editable="false" layoutX="110.0" layoutY="116.0" />
@@ -74,7 +74,7 @@
                         <TextField fx:id="textfield_DOB" editable="false" layoutX="110.0" layoutY="180.0" />
                         <TextField fx:id="textfield_Address" editable="false" layoutX="110.0" layoutY="212.0" />
                         <TextField fx:id="textfield_Telephone" editable="false" layoutX="110.0" layoutY="276.0" />
-                        <ChoiceBox fx:id="allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
+                        <ComboBox fx:id="allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
                         <TextField fx:id="textfield_Blood_Group" editable="false" layoutX="110.0" layoutY="307.0" />
                         <TextField fx:id="textfield_Postcode" editable="false" layoutX="110.0" layoutY="244.0" />
                         <Label fx:id="triage" layoutX="315.0" layoutY="56.0" text="TRIAGE: Primary" />
@@ -105,7 +105,7 @@
                         <CheckBox fx:id="walk_no" layoutX="775.0" layoutY="128.0" mnemonicParsing="false" text="No" />
                         <ComboBox fx:id="conditions" layoutX="689.0" layoutY="244.0" prefHeight="25.0" prefWidth="160.0" />
                         <ComboBox fx:id="medication" layoutX="689.0" layoutY="274.0" prefHeight="25.0" prefWidth="160.0" />
-                        <ChoiceBox fx:id="breathing_yes" layoutX="689.0" layoutY="92.0" prefWidth="150.0" />
+                        <ComboBox fx:id="breathing_yes" layoutX="689.0" layoutY="92.0" prefWidth="150.0" />
                         <Slider fx:id="respiratory_rate" blockIncrement="50.0" layoutX="689.0" layoutY="162.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
                         <Slider fx:id="pulse_rate" blockIncrement="50.0" disable="true" layoutX="689.0" layoutY="206.0" majorTickUnit="50.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
                         <Button fx:id="search_database" disable="true" layoutX="813.0" layoutY="10.0" mnemonicParsing="false" text="Search" />
@@ -116,7 +116,27 @@
           <Tab fx:id="tr_tab" text="Treatment Room">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
+                     <children>                        
+                        <Label fx:id="NHS_No1" layoutX="27.0" layoutY="56.0" text="NHS Number" />
+                        <Label fx:id="Title1" layoutX="27.0" layoutY="88.0" text="Title" />
+                        <Label fx:id="first_name1" layoutX="27.0" layoutY="120.0" text="First Name" />
+                        <Label fx:id="surname1" layoutX="27.0" layoutY="152.0" text="Surname" />
+                        <Label fx:id="address1" layoutX="27.0" layoutY="216.0" text="Address" />
+                        <Label fx:id="postcode1" layoutX="27.0" layoutY="248.0" text="Postcode" />
+                        <Label fx:id="telephone1" layoutX="27.0" layoutY="280.0" text="Telephone " />
+                        <Label layoutX="27.0" layoutY="344.0" text="Allergies" />
+                        <Label fx:id="blood_group1" layoutX="27.0" layoutY="312.0" text="Blood Group" />
+                        <Label fx:id="dob1" layoutX="27.0" layoutY="184.0" text="Date of Birth" />
+                        <TextField fx:id="textfield_NHS_Num1" editable="false" layoutX="110.0" layoutY="52.0" />
+                        <TextField fx:id="textfield_Title1" editable="false" layoutX="110.0" layoutY="84.0" />
+                        <TextField fx:id="textfield_First_Name1" editable="false" layoutX="110.0" layoutY="116.0" />
+                        <TextField fx:id="textfield_Surname1" editable="false" layoutX="110.0" layoutY="148.0" />
+                        <TextField fx:id="textfield_DOB1" editable="false" layoutX="110.0" layoutY="180.0" />
+                        <TextField fx:id="textfield_Address1" editable="false" layoutX="110.0" layoutY="212.0" />
+                        <TextField fx:id="textfield_Telephone1" editable="false" layoutX="110.0" layoutY="276.0" />
+                        <ComboBox fx:id="allergy1" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
+                        <TextField fx:id="textfield_Blood_Group1" editable="false" layoutX="110.0" layoutY="307.0" />
+                        <TextField fx:id="textfield_Postcode1" editable="false" layoutX="110.0" layoutY="244.0" />
                         <ComboBox fx:id="select_tr" layoutX="222.0" layoutY="14.0" prefWidth="170.0" promptText="Select Treatment Room" />
                         <Button fx:id="extend" layoutX="844.0" layoutY="342.0" mnemonicParsing="false" text="Extend " />
                         <Button fx:id="cancel_extension" layoutX="912.0" layoutY="342.0" mnemonicParsing="false" text="Cancel" />
@@ -162,16 +182,16 @@
       <ToolBar fx:id="toolbar_left" orientation="VERTICAL" prefHeight="175.0" prefWidth="100.0" BorderPane.alignment="CENTER">
         <items>
         <Button fx:id="login" mnemonicParsing="false" prefWidth="98.0" text="Login" />
-          <Button fx:id="UPGRADE" mnemonicParsing="false" prefWidth="98.0" text="UPGRADE!" />
-          <Button fx:id="Q_view" mnemonicParsing="false" prefWidth="98.0" text="View Queue" />
-          <Button fx:id="TRooms_view" mnemonicParsing="false" prefWidth="98.0" text="View Treatment Rooms" />
+          <Button fx:id="re_assign" mnemonicParsing="false" prefWidth="98.0" alignment="CENTER" text="Re-Assign Priority" wrapText="true" />
+          <Button fx:id="Q_view" mnemonicParsing="false" prefWidth="98.0" text="Patients waiting" wrapText="true" />
+          <Button fx:id="TRooms_view" mnemonicParsing="false" prefWidth="98.0" text="Patients in Treatment" wrapText="true" />
         </items>
       </ToolBar>
    </left>
    <center>
       <SplitPane dividerPositions="0.38613861386138615" nodeOrientation="RIGHT_TO_LEFT" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
          <items>
-            <ListView fx:id="queue" fixedCellSize="61.0" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="queue" fixedCellSize="70.0" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
             <SplitPane dividerPositions="0.22627737226277372" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
