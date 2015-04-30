@@ -1,3 +1,4 @@
+
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class Staff implements Serializable {
 	private String employeeUsername;
 	private String employeePassword;
 	private String employeeEmail;
+	private String mobileNumber;
 	
 	private Job job;
 /**
@@ -209,6 +211,14 @@ public class Staff implements Serializable {
 	
 	public Job getJob(){
 		return this.job;
+	}
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 	
 
