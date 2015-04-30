@@ -37,6 +37,8 @@ public enum Supervisor {
 
 	public final float TIME_MULTI = 60;
 
+	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
+	
 	private int serverPort = 1099;
 
 	private HQueue hQueue;
@@ -116,6 +118,7 @@ public enum Supervisor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		
 		waitTimesUnacceptable = false;
 
@@ -272,6 +275,9 @@ public enum Supervisor {
 		// checkWaitingTime();
 	}
 
+	/**
+	 * Auto-generate simple test patients to push through the system
+	 */
 	private void insertTestPatient() {
 		Person testPerson = new Person();
 		testPerson.setFirstName("Bobby" + testPatientNo);
@@ -285,6 +291,11 @@ public enum Supervisor {
 		testPatientNo++;
 	}
 
+	/**
+	 * 
+	 * @param patient
+	 * @return
+	 */
 	public boolean admitPatient(Patient patient) {
 		try {
 			if (hQueue.insert(patient) == true) {
@@ -378,7 +389,7 @@ public enum Supervisor {
 			boolean onCallHere = false;
 			if(success == false){
 				if(onCallTeam == null){
-					if(assembleOnCall() == true){
+					if(assembleOnCall(ON_CALL_REASON.EXTRA_EMERGENCY) == true){
 						onCallHere = true;
 					}
 				}
@@ -392,15 +403,16 @@ public enum Supervisor {
 			
 			//if onCall was already here, they would have been checked for displacable patients already
 		}
-		
-		
-		
+
 		return success;
 	}
 
+	/**
+	 * 
+	 */
 	public void manageOnCallAndAlerts(){
 		if(checkQueueFull() == true && onCallTeam == null){
-			assembleOnCall();
+			assembleOnCall(ON_CALL_REASON.QUEUE_FULL);
 			System.out.println("\tONCALL: full queue - ASSEMBLE!");
 			// Alert the clients that the queue is full
 			// via the RMI server.
@@ -448,7 +460,7 @@ public enum Supervisor {
 	 * send messages to staff on the onCall list and assemble an onCall team
 	 * @return whether the onCall team was successfully assembled
 	 */
-	public boolean assembleOnCall(){
+	public boolean assembleOnCall(ON_CALL_REASON reason){
 		onCallTeam = new OnCallTeam();
 		for(int count = 0; count < 2; count++){
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
@@ -466,7 +478,7 @@ public enum Supervisor {
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (staffMember.getJob() == Job.TRIAGE_NURSE && !(activeOnCallStaff.contains(staffMember))){
+				if (staffMember.getJob() == Job.NURSE && !(activeOnCallStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
 						activeOnCallStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);

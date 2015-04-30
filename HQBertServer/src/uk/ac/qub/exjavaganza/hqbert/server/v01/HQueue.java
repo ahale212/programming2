@@ -111,26 +111,6 @@ public class HQueue implements Serializable {
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
-				//Check if the onCall team is on-site
-				if(Supervisor.INSTANCE.getOncallTeam() != null){
-					//on-call active already, send this patient away
-					//log details
-					return false;
-				}else{
-					//Alert the on-call team, "send" them this patient
-					if(Supervisor.INSTANCE.assembleOnCall()==true){
-						if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
-							//This call should snd the patient to the onCall team
-							
-							PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
-							MetricsController.INSTANCE.AddMetric(metrics);
-							return true;
-						}else{
-							//Something went wrong - log details
-							return false;
-						}
-					}
-				}
 				return false;
 			}
 		}
