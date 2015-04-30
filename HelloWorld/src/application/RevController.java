@@ -94,7 +94,7 @@ public class RevController implements Initializable, ClientCallback {
 	private Rectangle countdown;
 	
 	@FXML // comment
-	private TextArea outputTextArea;
+	private TextArea outputTextArea, tr_treatment_notes;
 	
 	@FXML
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6, server_check;
@@ -111,10 +111,10 @@ public class RevController implements Initializable, ClientCallback {
 	private Slider respiratory_rate, pulse_rate;
 
 	@FXML
-	private ComboBox conditions, medication, select_tr, breathing_yes, allergy;
+	private ComboBox conditions, medication, breathing_yes, allergy;
 
 	@FXML
-	private ComboBox<String> patient_finder;
+	private ComboBox<String> patient_finder, select_tr;
 	
 	@FXML
 	private CheckBox walk, walk_no;
@@ -131,7 +131,9 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_NHS_Num, textfield_Postcode, textfield_Title,
 			textfield_First_Name, textfield_Surname, textfield_DOB,
 			textfield_Address, textfield_Telephone, textfield_Blood_Group,
-			triage_nurse_on_duty, admin;
+			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details;
+
+			
 
 	PopOver login_pop = new PopOver();
 	PopOver q_pop = new PopOver();
@@ -264,10 +266,11 @@ public class RevController implements Initializable, ClientCallback {
 		
 		// When a user selects a patient from the matching patient list 
 		patient_finder.setOnAction( e-> {
-			
-			displayedPerson = matchingPeople.get(patient_finder.getSelectionModel().getSelectedIndex());
-			displayPerson(displayedPerson);
-			
+			int selectedIndex = patient_finder.getSelectionModel().getSelectedIndex();
+			if (selectedIndex > -1 && selectedIndex < matchingPeople.size()) {
+				displayedPerson = matchingPeople.get(selectedIndex);
+				displayPerson(displayedPerson);
+			}
 			enableTriage();
 			
 		});
@@ -401,10 +404,9 @@ public class RevController implements Initializable, ClientCallback {
 			waiting_room.add(patient);
 			
 		}
-		
 		queue.setItems(QList);
 		waitingRoomView(waiting_room);
-	
+
 	}
 	
 	/**
@@ -429,6 +431,7 @@ public class RevController implements Initializable, ClientCallback {
 			if (patient != null) {
 				patientName = patient.getPerson().getFirstName() + 
 						" " + patient.getPerson().getLastName();
+				emergency_room.add(patient);
 			}
 			
 			// If the current facility is the on call team, add their name to the on call team box on the UI
@@ -441,10 +444,15 @@ public class RevController implements Initializable, ClientCallback {
 				try {
 					// Add the patients name to the observable array in the correct position for the room they're in.
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
+				treatmentRoomsView(emergency_room);
+				
 				} catch (Exception ex) {
 					System.err.println("failed.");
 				}}
 		}
+		
+		trooms.setItems(trList);
+		on_call.setItems(onCallList);
 	}
 	
 	/**
@@ -868,14 +876,14 @@ public class RevController implements Initializable, ClientCallback {
 
 		emergency.setOnAction(e -> {
 			
-			Patient emergency_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.EMERGENCY);
+			/*Patient emergency_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.EMERGENCY);
 			emergency_room.add(emergency_patient);
 			treatmentRoomsView(emergency_room);
 			trList.add(emergency_patient.getPatientName());
 			trooms.setItems(trList);
 						
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
-									
+				*/					
 			try {
 				client.getServer().addPrimaryPatient(client.getClientID(), displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
 			} catch (Exception e1) {
@@ -888,13 +896,19 @@ public class RevController implements Initializable, ClientCallback {
 
 		urg.setOnAction(e -> {
 			
-			Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.URGENT);
+			/*Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.URGENT);
 			waiting_room.add(urgent_patient);
 			waitingRoomView(waiting_room);
 			QList.add(urgent_patient.getPatientName());
 			queue.setItems(QList);
-			
+			*/
 			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
+			
+			try {
+				client.getServer().addSecondaryPatient(client.getClientID(), displayedPerson, Urgency.URGENT, true, true, 0, 0, null, null);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			
 			clearTextFields();
 			resetTriage();
@@ -902,12 +916,18 @@ public class RevController implements Initializable, ClientCallback {
 
 		semi_urg.setOnAction(e -> {
 			
-			Patient semi_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.SEMI_URGENT);
+			/*Patient semi_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.SEMI_URGENT);
 			waiting_room.add(semi_urgent_patient);
 			waitingRoomView(waiting_room);
 			QList.add(semi_urgent_patient.getPatientName());
-			queue.setItems(QList);
+			queue.setItems(QList);*/
 			outputTextArea.appendText("Semi-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
+			
+			try {
+				client.getServer().addSecondaryPatient(client.getClientID(), displayedPerson, Urgency.SEMI_URGENT, true, true, 0, 0, null, null);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			
 			clearTextFields();
 			resetTriage();
@@ -915,12 +935,19 @@ public class RevController implements Initializable, ClientCallback {
 
 		non_urg.setOnAction(e -> {
 			
-			Patient non_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.NON_URGENT);
+			/*Patient non_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.NON_URGENT);
 			waiting_room.add(non_urgent_patient);
 			waitingRoomView(waiting_room);
 			QList.add(non_urgent_patient.getPatientName());
-			queue.setItems(QList);
-			outputTextArea.appendText(non_urgent_patient.getPatientName()+" has been added to the Queue!\n");
+			queue.setItems(QList);*/
+			//outputTextArea.appendText(non_urgent_patient.getPatientName()+" has been added to the Queue!\n");
+			outputTextArea.appendText("Non-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
+			
+			try {
+				client.getServer().addSecondaryPatient(client.getClientID(), displayedPerson, Urgency.NON_URGENT, true, true, 0, 0, null, null);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			
 			clearTextFields();
 			resetTriage();
@@ -977,6 +1004,44 @@ public class RevController implements Initializable, ClientCallback {
 			extension_pop.show(extend);
 			
 			});
+		
+		
+			// Set up the event when the user clicks the treatment room selection
+			// combobox on the treatment room tab
+			select_tr.setOnAction(e -> {
+				
+				// Get the selected room index
+				int selectedRoomIndex = select_tr.getSelectionModel().getSelectedIndex();
+				
+				// If the room is within bounds and the facility at the index is a treatment room
+				if (selectedRoomIndex < treatmentFacilities.size() 
+						&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
+					// Cast the selected facility to a treatment room
+					TreatmentRoom room = (TreatmentRoom)treatmentFacilities.get(selectedRoomIndex);
+					
+					// Init the detail strings to empty strings.
+					String urgency = "", doctorsNotes = "", incidentDetails = "";
+					
+					// If the room has a patient in it then get their details.
+					if (room.getPatient() != null)
+					{
+						urgency = room.getPatient().getUrgency().toString();
+						doctorsNotes = room.getPatient().getPerson().getDoctorsNotes();
+						incidentDetails = "Incident Details";
+					}
+					
+					// Display the details in the text fields, if there was no patient
+					// they will be empty.
+					tr_patient_urgency.setText(urgency);
+					tr_treatment_notes.setText(doctorsNotes);
+					tr_incident_details.setText(incidentDetails);
+						
+				}
+				
+			});
+		
+		
+		
 	}
 	
 	
