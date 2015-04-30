@@ -69,8 +69,18 @@ public class PersonDataAccessor {
 		}
 	}// end of shutdown method
 
-	// create a new list for person
-	List<Person> personList(String nhsNumber, String firstName,
+	/**
+	 * Search the database for a list of people matching the various criteria passed in.
+	 * @param nhsNumber
+	 * @param firstName
+	 * @param lastName
+	 * @param dateOfBirth
+	 * @param postCode
+	 * @param telephoneNumber
+	 * @return A list of Person objects that match the search criteria
+	 * @throws SQLException
+	 */
+	public List<Person> personList(String nhsNumber, String firstName,
 			String lastName, String dateOfBirth, String postCode,
 			String telephoneNumber) throws SQLException {
 
@@ -96,7 +106,38 @@ public class PersonDataAccessor {
 	
 	}
 
+	
+	/**
+	 * Update the patient notes for a given patient - identified by an NHS number
+	 * @param nhsNumber			The NHS number of the person to be updated
+	 * @param doctorsNotes		The doctors notes to be stored
+	 * @throws SQLException
+	 */
+	public boolean updateDoctorsNotes(String nhsNumber, String doctorsNotes) throws SQLException {
 
+		//start of try to initiate query statement
+		try (Statement findPatients = con.prepareStatement(findPatientsString)) {
+			// the number of rows affected by the query
+			int updatedRows = 0;
+			
+			// Execute update to store the new doctors' notes
+			updatedRows = findPatients.executeUpdate("UPDATE patients SET doctors_notes = " +  doctorsNotes
+													+ " WHERE NHS_number = '"
+													+ nhsNumber + "'");
+			
+			// Return whether the query affected rows in the db
+			return (updatedRows > 0);
+		}
+	
+	}
+
+	
+	/**
+	 * Parses the ResultSet of a query and returns a List of Person objects
+	 * @param rs	The RestultSet returend from the database
+	 * @return		An List of Person objects
+	 * @throws SQLException
+	 */
 	public List<Person> resultOfQuery(ResultSet rs) throws SQLException {
 		List<Person> personList = new ArrayList<>();
 		// instantiate the String vars to that of the database entry
@@ -115,6 +156,7 @@ public class PersonDataAccessor {
 			String bloodGroup = rs.getString("blood_group");
 			String doctorsNotes = rs.getString("doctors_notes");
 
+			// Build a person object from the values in the ResultSet
 			Person person = new Person(NHSNum, title, lfirstName, llastName,
 					DOB, address, city, country, postcode, telephone,
 					allergies, bloodGroup, doctorsNotes);
