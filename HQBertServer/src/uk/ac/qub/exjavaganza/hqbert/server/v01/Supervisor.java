@@ -195,12 +195,12 @@ public enum Supervisor {
 
 			// Instantiate the RMI server
 			if (useSSL) {
-				// If set to use SSL use pass the SSlRMISocketFactory into the constructor
+				// If SSL is to be used pass the SSlRMISocketFactory into the constructor
 				server = new RMIServer(serverPort, new SslRMIClientSocketFactory(),
 		                 new SslRMIServerSocketFactory(null, null, true));
 			} else {
-				// If not set to use SSL use the default constructor
-				server = new RMIServer();
+				// If SSL is not to be used, call the default with just port as args
+				server = new RMIServer(serverPort);
 			}
 			// Bind the server object to the name it will be accessible by on
 			// the client side.
