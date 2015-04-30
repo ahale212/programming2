@@ -47,10 +47,6 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		//PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
 		//MetricsController.INSTANCE.AddMetric(metrics);
 		
-		if(patient.getPerson().getFirstName().equalsIgnoreCase("Bobby7")){
-			System.out.println("Bobby7 recieved");
-		}
-		
 		setTimeToAvailable(this.getBaseOccupancyTime());
 
 		Supervisor.INSTANCE.removeFromQueue(patient);
@@ -83,7 +79,7 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		patient.setPriority(true);
 		//Log that patient leaves treatment room
 		if(Supervisor.INSTANCE.admitPatient(patient)){
-			System.out.println(patient.getPerson().getFirstName()+" back in queue");
+			Supervisor.INSTANCE.log(patient.getPerson().getFirstName()+" back in queue");
 		}else{
 			//remove least proority person from queues and send them home, re-attempt to readmit
 		}

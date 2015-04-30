@@ -37,7 +37,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
-	public final float TIME_MULTI = 60;
+	public final float TIME_MULTI = 1;
 
 	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
 	
@@ -98,7 +98,7 @@ public enum Supervisor {
 		}
 	
 		//Testing
-		makeBobbies();
+		//makeBobbies();
 		//superFakeOnCallTeam();
 
 		// set up connection to database
@@ -303,7 +303,7 @@ public enum Supervisor {
 	 */
 	public void update(int deltaTime) {
 		
-		runBobbyTest();
+		//runBobbyTest();
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
 		manageOnCallAndAlerts();
@@ -427,7 +427,7 @@ public enum Supervisor {
 				}else{
 					if(onCallTeam != null){
 						//Log Stuff: Full of emergencies - send this emergency away
-						System.out.println("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
+						log("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
 					}
 				}					
 			}
@@ -458,7 +458,7 @@ public enum Supervisor {
 	 * Change a patient's triage category
 	 */
 	public void reAssignTriage(Patient patient, Urgency newUrgency){
-		System.out.println("\tRE-ASSIGNING TRAGE PRIORITY FOR "+patient.getPatientName());
+		log("\tRE-ASSIGNING TRAGE PRIORITY FOR "+patient.getPatientName());
 		hQueue.reAssignTriage(patient, newUrgency);
 	}
 	
@@ -506,7 +506,7 @@ public enum Supervisor {
 			activeStaff.add(onCallTeam.getStaff().get(i));
 		}
 		treatmentFacilities.remove(onCallTeam);
-		System.out.println("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
+		log("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
 		onCallTeam = null;
 	}
 	
@@ -516,9 +516,9 @@ public enum Supervisor {
 	 */
 	public boolean assembleOnCall(ON_CALL_REASON reason){
 		if(reason == ON_CALL_REASON.QUEUE_FULL){
-			System.out.println("\tONCALL: full queue - ASSEMBLE!");
+			log("\tONCALL: full queue - ASSEMBLE!");
 		}else if(reason == ON_CALL_REASON.EXTRA_EMERGENCY){
-			System.out.println("\tONCALL: extra emergency - ASSEMBLE!");
+			log("\tONCALL: extra emergency - ASSEMBLE!");
 		}
 		
 		onCallTeam = new OnCallTeam();
@@ -534,7 +534,7 @@ public enum Supervisor {
 			}
 			if(onCallTeam.getStaff().size() < ONCALL_TEAM_DOCTORS){
 				//Log that insufficient doctors are available for an oncall team
-				System.out.println("Not enough doctors for oncall  !!!");
+				log("Not enough doctors for oncall  !!!");
 				return false;
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
@@ -548,7 +548,7 @@ public enum Supervisor {
 			}
 			if(onCallTeam.getStaff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
 				//Log that insufficient nurses are available for an oncall team
-				System.out.println("Not enough nurses for oncall  !!!");
+				log("Not enough nurses for oncall  !!!");
 				return false;
 			}
 		}
@@ -653,8 +653,9 @@ public enum Supervisor {
 	}
 
 	public void log(String message) {
-		logger.debug(message);
+		//logger.debug(message);
 		server.broadcastLog(message);
+		System.out.println(message);
 	}
 
 	/**
