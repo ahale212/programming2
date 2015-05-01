@@ -24,6 +24,4 @@ public class PatientMetrics implements Serializable{
 		this.NHS_number = NHS_number;
 		this.priority = priority;
 	}
-	
-	//Pascal caseing .that bit will be capital
 }
