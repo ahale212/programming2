@@ -1896,10 +1896,10 @@ public class RevController implements Initializable, ClientCallback {
 		
 	}
 
-	@Override
+	/*@Override
 	public void notifyNextPatientToRoom(String message) throws RemoteException {
 				
 		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
 		
-	}
+	}*/
 }
