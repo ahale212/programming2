@@ -81,7 +81,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 * Performs the callback that informs clients that the queue has been
 	 * updated
 	 */
-	public void updateClients() {
+	public synchronized void updateClients() {
 		System.out.println("Sending updated queue to clients");
 
 		// Get the key set from the list of clients
@@ -118,7 +118,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 	}
 
-	public void broadcastLog(String log) {
+	public synchronized void broadcastLog(String log) {
 
 		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
@@ -146,7 +146,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	/**
 	 * Inform the client that the next patient should be called to a room
 	 */
-	public void broadcastNextPatientCall(String message) {
+	public synchronized void broadcastNextPatientCall(String message) {
 
 		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
@@ -172,7 +172,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	/**
 	 * Inform the clients that the queue is full
 	 */
-	public void broadcastQueueFullAlert() {
+	public synchronized void broadcastQueueFullAlert() {
 
 		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
@@ -500,9 +500,12 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 
 
 	@Override
-	public void reAssignTriage(String clientID, Patient patient,
+	public void reAssignTriage(String clientID, int patientIndex,
 			Urgency newUrgency) throws RemoteException, AuthenticationException {
-		// TODO Auto-generated method stub
+		
+		Supervisor.INSTANCE.reAssignTriage(Supervisor.INSTANCE.getHQueue().getPQ().get(patientIndex), newUrgency);
+		// Send the updated data to the client
+		updateClients();
 		
 	}
 	
