@@ -93,7 +93,7 @@ public class StaffDataAccessor {
 		// start of try to initiate query statement
 		try (Statement findStaff = con.prepareStatement(findStaffString);
 			// execute query
-			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff WHERE Employee_username = '" + username + "'");) {
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email, mobile_number, job FROM staff WHERE Employee_username = '" + username + "'");) {
 			
 			// Get a list of staff objects based on the output from the database
 			List<Staff> staff = resultOfQuery(rs1);

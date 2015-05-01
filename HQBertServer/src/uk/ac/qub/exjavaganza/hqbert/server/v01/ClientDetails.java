@@ -12,11 +12,14 @@ public class ClientDetails {
 	/** The number of failed connection attempts */
 	private int failedConnectionAttempts;
 	
+	/** The username of the client */
+	private String username;
+	
 	/**
 	 * Constructor with args for ClientDetails object 
 	 * @param callback	The callback object to be set for the client
 	 */
-	public ClientDetails(ClientCallback callback) {
+	public ClientDetails(ClientCallback callback, String username) {
 		this.callback = callback;
 		// Intialise the number of connection attempts to 0
 		this.failedConnectionAttempts = 0;
@@ -59,6 +62,22 @@ public class ClientDetails {
 	 */
 	public void resetFailedConnectionAttempts() {
 		failedConnectionAttempts = 0;
+	}
+
+	/** 
+	 * Getter for the client username
+	 * @return	The client's username
+	 */
+	public String getUsername() {
+		return username;
+	}
+
+	/**
+	 * Setter for the client's username
+	 * @param username	The username to be set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 }

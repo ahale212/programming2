@@ -54,7 +54,7 @@
                         <Button fx:id="search_queue" disable="true" layoutX="813.0" layoutY="38.0" mnemonicParsing="false" text="Search Queue" />
                         <ComboBox fx:id="patient_finder" layoutX="90.0" layoutY="36.0" minWidth="720" />
                         <Label layoutX="933.0" layoutY="14.0" text="Server Status:" />
-                        <ToggleButton fx:id="server_check" layoutX="933.0" layoutY="36.0" selected="true" style="-fx-base: yellow;" text="Connecting..." />
+                        <ToggleButton fx:id="server_check" layoutX="933.0" layoutY="36.0" selected="true" style="-fx-base: blue" text="Not Connected" />
                         <Label layoutX="933.0" layoutY="72.0" text="Triage Nurse:" />
                         <TextField layoutX="933.0" layoutY="96.0" promptText="Nurse Name..." />
                         <Label layoutX="933.0" layoutY="130.0" text="Total in queue:" />
