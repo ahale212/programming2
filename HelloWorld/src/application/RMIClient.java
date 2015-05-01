@@ -233,6 +233,17 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	};
 	
 	/**
+	 * Display the next patient to be sent to a room
+	 */
+	@Override
+	public void notifyNextPatientToRoom(String message) throws RemoteException {
+		
+		// Pass on the message to the controller
+		controller.notifyNextPatientToRoom(message);
+		
+	}
+	
+	/**
 	 * Informs the server that the client no longer wished to receive updates and removes the client
 	 * from the RMI runtime.
 	 */
@@ -281,12 +292,6 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	/** Getter for the client ID */
 	public String getClientID() {
 		return clientID;
-	}
-
-	@Override
-	public void notifyNextPatientToRoom(String message) throws RemoteException {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

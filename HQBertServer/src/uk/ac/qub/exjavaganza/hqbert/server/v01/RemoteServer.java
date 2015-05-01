@@ -65,7 +65,7 @@ public interface RemoteServer extends Remote {
 	 * @return	The patient queue
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public LinkedList<Patient> getQeue(String clientID) throws RemoteException, AuthenticationException;
+	public LinkedList<Patient> getQueue(String clientID) throws RemoteException, AuthenticationException;
 	
 	/**
 	 * Gets the current state of the treatment rooms.
@@ -115,47 +115,58 @@ public interface RemoteServer extends Remote {
 	 * @throws AuthenticationException
 	 */
 	public void reAssignTriage(String clientID, Patient patient, Urgency newUrgency) throws RemoteException, AuthenticationException;
+
+	
+	/**
+	 * 
+	 * @param clientID			The Id of the client
+	 * @param numberOfRooms  	The number of rooms to be set
+	 * @return	Whether or not the change was made
+	 * @throws RemoteException	
+	 * @throws AuthenticationException
+	 */
+	public boolean setTreatmentRoomNumber(String clientID, int numberOfRooms) throws RemoteException, AuthenticationException;
 	
 	/**
 	 * Method to get the ques average wait time
 	 * @return time in seconds
 	 */
-	public long getAvTimeInQue();
+	public long getAvTimeInQue() throws RemoteException;
 	
 	/**
 	 * Method to get the average treatment time
 	 * @return time in seconds
 	 */
-	public long getAvTreatmentTime();
+	public long getAvTreatmentTime() throws RemoteException;
 	
 	/**
 	 * Method to get the average overall visit time
 	 * @return time in seconds
 	 */
-	public long getAvVisitTime();
+	public long getAvVisitTime() throws RemoteException;
 	
 	/**
 	 * Method to get an int[] array with the total counts of EMERGENCY,URGENT,SEMI_URGENT,NON_URGENT patients respectively
 	 * @return int[] urgency 'EMERGENCY,URGENT,SEMI_URGENT,NON_URGENT' respectively
 	 */
-	public int[] getUrgencies();
+	public int[] getUrgencies() throws RemoteException;
 	
 	/**
 	 * Method to get the current number of patients waiting in the queue
 	 * @return current number in the queue
 	 */
-	public int getCurrentNumberInQueue();
+	public int getCurrentNumberInQueue() throws RemoteException;
 	
 	/**
 	 * Method to get the current number of Extensions requested
 	 * @return number of extensions
 	 */
-	public int getNumberOfExtensions();
+	public int getNumberOfExtensions() throws RemoteException;
 	
 	/**
 	 * Method to get the total number of patients exceeding the waiting time 
 	 * @return number of patients over the wait time limit
 	 */
-	public int NumberOfPatientsOverWaitTime();
+	public int NumberOfPatientsOverWaitTime() throws RemoteException;
 }
 
