@@ -135,10 +135,9 @@ public enum Supervisor {
 		if (serverPort != 0) {
 			this.serverPort = serverPort;
 		}
-
+		
 		getPrefsFile();
 		getPreferences();
-
 		
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
@@ -437,51 +436,6 @@ public enum Supervisor {
 		return getStaffAccessor().getStaffList();
 	}
 
-	private List<Staff> getOnCallStaff() throws SQLException {
-		return getOnCallStaffAccessor().getOnCallList();
-	}
-	
-	/**
-	 * This populates staffOnCall with people from the availableStaff list:
-	 * in real-life they would come from a more robust rota system
-	 */
-//	public void getOnCallList(){
-//		try{
-//			
-//		int doctors = 0;
-//		for(int i = availableStaff.size()-1; i >= 0; i--){
-//			Staff member = availableStaff.get(i);
-//			if(member.getJob() == Job.DOCTOR){
-//				staffOnCall.add(member);
-//				availableStaff.remove(member);
-//				doctors++;
-//				if(doctors >= 2){
-//					break;
-//				}
-//			}
-//		}
-//		
-//		int nurses = 0;
-//		for(int i = availableStaff.size()-1; i >= 0; i--){
-//			Staff member = availableStaff.get(i);
-//			if(member.getJob() == Job.NURSE){
-//				staffOnCall.add(member);
-//				availableStaff.remove(member);
-//				nurses++;
-//				if(nurses >= 3){
-//					break;
-//				}
-//			}
-//		}
-//		}catch(IndexOutOfBoundsException iobE){
-//			
-//		}
-//	}
-	
-	
-	
-
-	
 	private List<Staff> getOnCallStaff() throws SQLException {
 		return getOnCallStaffAccessor().getOnCallList();
 	}

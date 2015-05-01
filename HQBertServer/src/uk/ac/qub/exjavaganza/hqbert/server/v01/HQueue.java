@@ -22,12 +22,20 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.LocatorEx.Snapshot;
  */
 public class HQueue implements Serializable {
 	
+	/**
+	 * Sub queues to hold each triage category of patients in the queue, 
+	 * plus a subqueue for patients with special priority due to waiting time or displacement
+	 */
 	private LinkedList<Patient> emergency;
 	private LinkedList<Patient> urgent;
 	private LinkedList<Patient> semiUrgent;
 	private LinkedList<Patient> nonUrgent;
 	private LinkedList<Patient> hiPriQueue;
+	
+	/**The main, combined queue that is shown to outside classes*/
 	private LinkedList<Patient> pq;
+	
+	/**An array of all the subQueues*/
 	private LinkedList<Patient>[] allSubqueues;
 
 	/*Similar set of lists for dealing with who gets replaced when all rooms are full and an emergency arrives*/
@@ -59,6 +67,10 @@ public class HQueue implements Serializable {
 		dPrority = new LinkedList<Patient>();   
 	}
 	
+	/**Update the waiting time for everyone in the queue.
+	 * Organize the queue: 1st sort the subqueues by time, then combine them according to triage priority, and special wait time priority
+	 * @param deltaTime
+	 */
 	public void update(int deltaTime) {
 		Patient p = null;
 		//Update all patients in any queue
@@ -262,6 +274,11 @@ public class HQueue implements Serializable {
 		dPrority.clear(); 
 	}
 	
+	/**
+	 * add a patient to the list of candidates to be displaced from treatment
+	 * to accomodate an emergency.
+	 * @param patient
+	 */
 	public void addToDisplacable(Patient patient){
 		boolean priority = patient.getPriority();
 		Urgency u = patient.getUrgency();
@@ -280,6 +297,9 @@ public class HQueue implements Serializable {
 		
 	}
 	
+	/**
+	 * Sort the displaceable list as if it was a queue to find the most suitable candidate to displace
+	 */
 	public void sortDisplacable(){
 		sortQueue(dNonUrgent);
 		sortQueue(dSemiUrgent);
@@ -291,6 +311,10 @@ public class HQueue implements Serializable {
 		displacable.addAll(dNonUrgent);
 	}
 	
+	/**
+	 * 
+	 * @return the most suitable patient to displace from a treatment room to accomodate an emergency
+	 */
 	public Patient findMostDisplacable(){
 		Patient displacablePatient = null;
 		
