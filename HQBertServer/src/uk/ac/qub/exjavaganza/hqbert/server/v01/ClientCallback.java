@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Interface for the callback methods that will be implemented by the client.
@@ -19,7 +20,7 @@ public interface ClientCallback extends Remote {
 	 * @param queue		The patient queue
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 */
-	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException;
+	public void udpate(List<Patient> queue, List<TreatmentFacility> treatmentFacilities, List<Staff> onCallStaff, List<Staff> onCallDoctors) throws RemoteException;
 	
 	/**
 	 * Sends log messages to the client

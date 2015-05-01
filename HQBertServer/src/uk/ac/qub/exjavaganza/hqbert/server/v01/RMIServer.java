@@ -101,7 +101,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 				// calls the update method with the current state of the
 				// patients queue
 				client.getCallback().udpate(Supervisor.INSTANCE.getHQueue().getPQ(),
-						Supervisor.INSTANCE.getTreatmentFacilities());
+						Supervisor.INSTANCE.getTreatmentFacilities(), Supervisor.INSTANCE.getOnCallStaffList(), Supervisor.INSTANCE.getActiveStaff(Job.DOCTOR));
 			} catch (RemoteException e) {
 				System.err
 						.println("RemoteException occurred while calling 'update' callback method. "

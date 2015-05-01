@@ -19,59 +19,67 @@ public class ManagerAlert {
 	 * Method to send the automated email when the A&E is at capacity.
 	 */
 	public static void emailCapacityAlert(Staff HospitalManager, boolean alertsActive) {
-		
-		//If alertsActive is false, we are testing - dont send message - just return that it was successful
-		if(alertsActive == false){
-			return;
-		}
-		
-		// Recipient's email ID needs to be mentioned.
-		String to = HospitalManager.getEmployeeEmail();
 
-		// Sender's email ID needs to be mentioned
-		String from = "pashospital2@gmail.com";
+		// If alertsActive is false, we are testing - dont send message
+				// - just return that it was successful
+				if (alertsActive == false) {
+					return;
+				}
+				
+		Thread tcapAlert = new Thread() {
+			public void run() {
 
-		// Get system properties
-		Properties properties = System.getProperties();
+				// Recipient's email ID needs to be mentioned.
+				String to = HospitalManager.getEmployeeEmail();
 
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
+				// Sender's email ID needs to be mentioned
+				String from = "pashospital2@gmail.com";
 
-		properties.put("mail.smtp.port", "587");
-		properties.put("mail.smtp.auth", "true");
-		Authenticator authenticator = new Authenticator() {
-			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("pashospital2@gmail.com",
-						"hospitalsystem");// userid and password for "from"
-											// email
-											// address
-			}
+				// Get system properties
+				Properties properties = System.getProperties();
+
+				properties.put("mail.smtp.starttls.enable", "true");
+				properties.put("mail.smtp.host", "smtp.gmail.com");
+
+				properties.put("mail.smtp.port", "587");
+				properties.put("mail.smtp.auth", "true");
+				Authenticator authenticator = new Authenticator() {
+					public PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(
+								"pashospital2@gmail.com", "hospitalsystem");// userid and password for "from" email address
+					}
+				};
+
+				Session session = Session
+						.getInstance(properties, authenticator);
+				try {
+					// Create a default MimeMessage object.
+					MimeMessage message = new MimeMessage(session);
+
+					// Set From
+					message.setFrom(new InternetAddress(from));
+
+					// Set To
+					message.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(to));
+
+					// Set Subject: header field
+					message.setSubject("A&E ALERT");
+
+					// Now set the actual message
+					message.setText("All treatment rooms are full and the on call team is engaged");
+
+					// Send message
+					Transport.send(message);
+					System.out.println("Sent message successfully....");
+				} catch (MessagingException e) {
+					throw new RuntimeException(e);
+				}
+				
+			};
+			
 		};
-
-		Session session = Session.getInstance(properties, authenticator);
-		try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-
-			// Set From
-			message.setFrom(new InternetAddress(from));
-
-			// Set To
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					to));
-
-			// Set Subject: header field
-			message.setSubject("A&E ALERT");
-
-			// Now set the actual message
-			message.setText("All treatment rooms are full and the on call team is engaged");
-
-			// Send message
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
+			tcapAlert.start();
 	}
 
 	/**
@@ -80,11 +88,17 @@ public class ManagerAlert {
 	 */
 	public static void emailWaitingTimeAlert(Staff HoaspitalManager, boolean alertsActive) {
 		
-		//If alertsActive is false, we are testing - dont send message - just return that it was successful
-		if(alertsActive == false){
+		// If alertsActive is false, we are testing - dont send message - just
+		// return that it was successful
+		if (alertsActive == false) {
 			return;
 		}
 		
+		Thread twaitTime = new Thread(){
+			
+			@Override
+			public void run() {
+				
 		// Recipient's email ID.
 		String to = HoaspitalManager.getEmployeeEmail();
 
@@ -132,7 +146,11 @@ public class ManagerAlert {
 			System.out.println("Sent message successfully....");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
-		} 
+		}
+				super.run();
+			}
+		};
+		twaitTime.start();
 	}
 
 	/**
@@ -141,18 +159,21 @@ public class ManagerAlert {
 	 */
 	public static void smsCapacityAlert(Staff HospitalManager, boolean alertsActive) {
 		
-		//If alertsActive is false, we are testing - dont send message - just return that it was successful
-		if(alertsActive == false){
+		// If alertsActive is false, we are testing - dont send message - just
+		// return that it was successful
+		if (alertsActive == false) {
 			return;
 		}
-				
 		
+		Thread tSMScap = new Thread() {
+			public void run() {
+				
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = HospitalManager.getMobileNumber()+"@sms.ipipi.com";
+		String to = HospitalManager.getMobileNumber() + "@sms.ipipi.com";
 		String body = "All treatment rooms are full and the on call team is engaged";
 		Transport tr = null;
 
@@ -160,7 +181,7 @@ public class ManagerAlert {
 			Properties props = System.getProperties();
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.port", "25");
-			
+
 			// Get a Session object
 			Session mailSession = Session.getInstance(props, null);
 
@@ -183,25 +204,34 @@ public class ManagerAlert {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+			};
+		};
+		tSMScap.start();
 	}
 
 	/**
 	 * Method to send automated sms to the Hospital Manager when two patients
-	 * have exceeded the waiting time.
+	 * have exceeded the waiting time. Method runs on its own thread.
 	 */
 	public static void smsWaitingTimeAlert(Staff HospitalManager, boolean alertsActive) {
 		
-		//If alertsActive is false, we are testing - dont send message - just return that it was successful
-		if(alertsActive == false){
+		// If alertsActive is false, we are testing - dont send message - just
+		// return that it was successful
+		if (alertsActive == false) {
 			return;
 		}
-				
+		
+		Thread tSMSwaitTime = new Thread (){
+			
+			@Override
+			public void run() {	
+
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = HospitalManager.getMobileNumber()+"@sms.ipipi.com";
+		String to = HospitalManager.getMobileNumber() + "@sms.ipipi.com";
 		String body = "Two patients have been waiting more than 30 minutes";
 		Transport tr = null;
 
@@ -232,6 +262,9 @@ public class ManagerAlert {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+				super.run();
+			}
+		};
+	tSMSwaitTime.start();
 	}
-
 }

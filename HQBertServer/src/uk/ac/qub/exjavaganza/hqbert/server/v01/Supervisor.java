@@ -233,7 +233,7 @@ public enum Supervisor {
 		}
 	}
 	
-	/**Generates a list of dummy patients to quickly test the queue under heavy load*/
+	/**Generates a list of  patients to quickly test the queue under heavy load*/
 	public void makeBobbies(){
 		testPatientNo = 0;
 
@@ -252,7 +252,7 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	/**Test method to run dummy patients through the queue*/
+	/**Test method to run  patients through the queue*/
 	public void runBobbyTest(){
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
@@ -579,7 +579,7 @@ public enum Supervisor {
 			// If a room is available send the patient
 			if (tf.getTimeToAvailable() <= 0 && tf.getPatient() == null) {
 				tf.receivePatient(patient);
-				targetRoomNum = i+1;
+				targetRoomNum = i;
 				success = true;
 				break;
 			}
@@ -596,7 +596,7 @@ public enum Supervisor {
 					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
 					success = true;
-					targetRoomNum = i+1;
+					targetRoomNum = i;
 					break;
 				/*
 				 * Another patient is in the room, check if they are an
@@ -621,7 +621,7 @@ public enum Supervisor {
 						if (roomCurrentPatient.equals(displacablePatient)) {
 							tf.emergencyInterruption(patient);
 							success = true;
-							targetRoomNum = i+1;
+							targetRoomNum = i;
 							break;
 						}
 					}
@@ -655,7 +655,7 @@ public enum Supervisor {
 
 		if(success == true){
 			if(targetRoomNum < TREATMENT_ROOMS_COUNT){
-				targetRoomName = String.format("Treatment room %2d",targetRoomNum);
+				targetRoomName = String.format("Treatment room %2d",targetRoomNum+1);
 			}else{
 				targetRoomName = "On-call team";
 			}
@@ -784,6 +784,29 @@ public enum Supervisor {
 		}
 		treatmentFacilities.add(onCallTeam);
 		return true;
+	}
+	
+	/**
+	 * Get active staff matching a passed in job
+	 * @para job 	The job to search for
+	 */
+	public List<Staff> getActiveStaff(Job job) {
+		List<Staff> staff = new ArrayList<Staff>();
+		
+		// Loop through each of the staff
+		try {
+			for(Staff staffMember : getStaff()) {
+
+				if (staffMember.getJob() == job) {
+						staff.add(staffMember);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return staff;
 	}
 
 

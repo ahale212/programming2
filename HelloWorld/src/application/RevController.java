@@ -109,6 +109,7 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML // various buttons to set on action events for event listening and handling
 	private Button login, re_assign, search_database, emergency, Q_view,
+
 			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
 
 	@FXML // sliders deployed in secondary triage
@@ -118,6 +119,7 @@ public class RevController implements Initializable, ClientCallback {
 	private ComboBox conditions, medication, breathing_yes, allergy, tr_allergy;
 
 	@FXML // comboboxes instantiated to type String
+
 	private PieChart chart;
 	 
 	@FXML // comboboxes instantiated to type String
