@@ -67,9 +67,9 @@
                         <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="10.0" maxWidth="100" promptText="NHS Number" />
                         <TextField fx:id="search_First_Name" layoutX="194.0" layoutY="10.0" promptText="First Name" />
                         <TextField fx:id="search_Surname" layoutX="347.0" layoutY="10.0" promptText="Surname" />
-                        <TextField fx:id="search_DOB"  layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
-                        <TextField fx:id="search_Postcode"  layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
-                        <TextField fx:id="search_Telephone_No"  layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
+                        <TextField fx:id="search_DOB" layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
+                        <TextField fx:id="search_Postcode" layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
+                        <TextField fx:id="search_Telephone_No" layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
                         <Label fx:id="NHS_No" layoutX="27.0" layoutY="68.0" text="NHS Number" />
                         <Label fx:id="Title" layoutX="27.0" layoutY="100.0" text="Title" />
                         <Label fx:id="first_name" layoutX="27.0" layoutY="132.0" text="First Name" />
@@ -174,32 +174,8 @@
                 <Label layoutX="200.0" layoutY="30.0" text="Treatment Room Doctors:" />
                 <ListView fx:id="doctor_on_duty" layoutX="200.0" layoutY="60.0" prefHeight="250.0"  />
                 <Label layoutX="500.0" layoutY="30.0" text="On Call Staff:" />
-                <TableView fx:id="on_call_table" layoutX="500.0" layoutY="60.0" prefHeight="250.0" >
-                <columns>
-           <TableColumn text="Staff Role">
-        <cellValueFactory><PropertyValueFactory property="job" />
-        </cellValueFactory>
-     </TableColumn>
-     <TableColumn text="First Name">
-        <cellValueFactory><PropertyValueFactory property="firstName" />
-        </cellValueFactory>
-        </TableColumn>
-     <TableColumn text="Last Name">
-        <cellValueFactory><PropertyValueFactory property="lastName" />
-        </cellValueFactory>
-     </TableColumn>
-          </columns>
-          <items>
-    <FXCollections fx:factory="observableArrayList">
-        <Staff job="DOCTOR" firstName="Will" lastName="Smith"/>
-        <Staff job="DOCTOR" firstName="Tommy" lastName="Johnson"/>
-        <Staff job="NURSE" firstName="Serena" lastName="Williams"/>
-        <Staff job="NURSE" firstName="Indie" lastName="Jones"/>
-        <Staff job="NURSE" firstName="Scott" lastName="Brown"/>
-    </FXCollections>
-</items>
-     </TableView>
-                <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
+                <TableView fx:id="onCallUnitStaff" layoutX="500.0" layoutY="60.0" prefHeight="250.0" />
+                 <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
                 <TextField fx:id="manager" layoutX="780.0" layoutY="60.0" text="Jock Stein" />
                 </children></AnchorPane>
               </content>
@@ -208,21 +184,17 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
                 <children>
-                <Label layoutX="20.0" layoutY="30.0" text="Current Stats:" />
-                <Label layoutX="20.0" layoutY="60.0" text="Total:" />
+                <Button fx:id="BTstat" layoutX="20.0" layoutY="30.0" text="Update Stats" />
                 
-                <Label layoutX="20.0" layoutY="90.0" text="Patients " />
-                <Label fx:id="current_total" layoutX="180.0" layoutY="90.0" text="x" />
                 <Label layoutX="20.0" layoutY="120.0" text="In Queue" />
                 <Label fx:id="current_in_queue" layoutX="180.0" layoutY="120.0" text="x" />
-                <Label layoutX="20.0" layoutY="150.0" text="Priority Emergency" />
-                <Label fx:id="current_emergencies" layoutX="180.0" layoutY="150.0" text="x" />
+                <Label layoutX="20.0" layoutY="150.0" text="av.Visit time" />
+                <Label fx:id="av_visit_time" layoutX="180.0" layoutY="150.0" text="x" />
                 
                 <Label layoutX="250.0" layoutY="30.0" text="Daily Stats:" />
-                <Label layoutX="250.0" layoutY="60.0" text="Total:" />
                 
-                <Label layoutX="250.0" layoutY="90.0" text="Patients " />
-                <Label fx:id="daily_total" layoutX="410.0" layoutY="90.0" text="x" />
+                <Label layoutX="250.0" layoutY="90.0" text="av.Treatment time " />
+                <Label fx:id="av_treatment_time" layoutX="410.0" layoutY="90.0" text="x" />
                 <Label layoutX="250.0" layoutY="120.0" text="Priority: Emergency" />
                 <Label fx:id="daily_emergencies" layoutX="410.0" layoutY="120.0" text="x" />
                 <Label layoutX="250.0" layoutY="150.0" text="Priority: Urgent" />
@@ -234,18 +206,16 @@
                 <Label layoutX="250.0" layoutY="240.0" text="Treatment Extended" />
                 <Label fx:id="daily_tr_extended" layoutX="410.0" layoutY="240.0" text="x" />
                 
-                <Label layoutX="480.0" layoutY="60.0" text="Average:" />
-                
                 <Label layoutX="480.0" layoutY="90.0" text="Wait Times " />
                 <Label fx:id="daily_avg_wait" layoutX="640.0" layoutY="90.0" text="x" />
-                <Label layoutX="480.0" layoutY="120.0" text="Priority: Emergency" />
-                <Label fx:id="daily_avg_emergencies" layoutX="640.0" layoutY="120.0" text="x" />
-                <Label layoutX="480.0" layoutY="150.0" text="Priority: Urgent" />
-                <Label fx:id="daily_avg_urgent" layoutX="640.0" layoutY="150.0" text="x" />
-                <Label layoutX="480.0" layoutY="180.0" text="Priority: Semi-Urgent" />
-                <Label fx:id="daily_avg_semi_urgent" layoutX="640.0" layoutY="180.0" text="x" />
-                <Label layoutX="480.0" layoutY="210.0" text="Priority: Non-Urgent" />
-                <Label fx:id="daily_avg_non_urgent" layoutX="640.0" layoutY="210.0" text="x" />
+                <Label layoutX="480.0" layoutY="120.0" text="Patients rejected" />
+                <Label fx:id="patients_rejected" layoutX="640.0" layoutY="120.0" text="x" />
+                <Label layoutX="480.0" layoutY="150.0" text="Max wait time exceeded" />
+                <Label fx:id="max_wait_time_exceeded" layoutX="640.0" layoutY="150.0" text="x" />
+                
+                <!-- 
+                <PieChart id="piechart" fx:id="chart" layoutX="700" layoutY="200" />
+                 -->
                 </children></AnchorPane>
               </content>
             </Tab>
