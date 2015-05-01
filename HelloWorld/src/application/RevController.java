@@ -866,7 +866,9 @@ public class RevController implements Initializable, ClientCallback {
 					Button CancelRequest = new Button("Cancel");
 					EmailRequest.setLayoutY(26);
 					ConfirmRequest.setLayoutY(60);
-					CancelRequest.setLayoutY(60); CancelRequest.setLayoutX(90);
+					CancelRequest.setLayoutY(60); 
+					CancelRequest.setLayoutX(90);
+
 					AnchorPane forgot = new AnchorPane();
 					forgot.setPrefSize(100,100);
 					forgot.getChildren().addAll(EmailRequest, ConfirmRequest, emailLabel, CancelRequest);
@@ -1281,9 +1283,9 @@ public class RevController implements Initializable, ClientCallback {
 					tr_treatment_notes.setText(doctorsNotes);
 					tr_incident_details.setText(incidentDetails);
 				}
-		});
-		}
-		
+			});
+	}
+
 
 	
 	/**

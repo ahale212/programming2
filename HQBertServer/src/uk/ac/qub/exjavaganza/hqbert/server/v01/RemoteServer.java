@@ -105,5 +105,15 @@ public interface RemoteServer extends Remote {
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
 	public void extendTreatmentTime(String clientID, TreatmentFacility facility, ExtensionReason reason) throws RemoteException, AuthenticationException;
+
+	/**
+	 * 
+	 * @param clientID
+	 * @param patient
+	 * @param newUrgency
+	 * @throws RemoteException
+	 * @throws AuthenticationException
+	 */
+	public void reAssignTriage(String clientID, Patient patient, Urgency newUrgency) throws RemoteException, AuthenticationException;
 }
 
