@@ -1529,7 +1529,7 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomTable.setItems(emergency_room);
 		ap3.getChildren().addAll(treatment_table, close_view1, treatmentRoomTable);
 		tr_pop.setContentNode(ap3);		
-		close_view1.setOnAction(e -> {tr_pop.hide();});
+		close_view1.setOnAction(e -> {tr_pop.hide();emergency_room.clear();});
 	}
 
 	private void waitingRoomView() {
@@ -1558,7 +1558,7 @@ public class RevController implements Initializable, ClientCallback {
 		waitingRoomTable.setItems(waiting_room);
 		ap2.getChildren().addAll(waitroom_table,close_view2, waitingRoomTable);
 		q_pop.setContentNode(ap2);
-		close_view2.setOnAction(e -> {q_pop.hide();});
+		close_view2.setOnAction(e -> {q_pop.hide();waiting_room.clear();});
 	}
 
 	/**
