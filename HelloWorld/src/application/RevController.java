@@ -542,9 +542,7 @@ public class RevController implements Initializable, ClientCallback {
 		trooms.setItems(trList);
 		on_call.setItems(onCallList);
 	}
-
 	
-
 	/**
 	 * Add tags to listviews
 	 */
@@ -654,7 +652,7 @@ public class RevController implements Initializable, ClientCallback {
 
 				@Override
 				public void handle(ActionEvent event) {
-					loadArrayLists();
+					
 					Integer i = (Integer.parseInt(set_no_trs.getText()
 							.toString()));
 					int a = i;
@@ -681,12 +679,11 @@ public class RevController implements Initializable, ClientCallback {
 							break;
 						default:
 							// set the default
-							setRoomCount(i);
+							setNewRoomCount(i);
 							// start the method to change the treatment rooms
 							newArrayList();
 						}// end of switch
 							// once clicking on submit, close the tab
-
 						settings_stage.close();
 					}
 				}
