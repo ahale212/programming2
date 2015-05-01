@@ -124,6 +124,8 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		serverAccessible = ConnectionState.CONNECTING;
 		controller.serverStatusChanged(serverAccessible);
 		
+		//System.setProperty("java.rmi.server.hostname","localhost");
+		
 		// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
 		server = (RemoteServer)Naming.lookup("rmi://" + serverAddress + ":" + serverPort + "/HQBertServer");
 	}

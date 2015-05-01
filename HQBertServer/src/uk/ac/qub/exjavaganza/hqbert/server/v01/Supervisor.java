@@ -114,10 +114,10 @@ public enum Supervisor {
 	private Connection con;
 	/** The data accessor for the person table. Allows for searching of the
 	 Person table in the database.*/
-	private PersonDataAccessor dataAccessor;
+	private PersonDataAccessorDummy dataAccessor;
 	/**The data accessor for the staff table. Allows for searching of the 
 	staff table in the database*/
-	private StaffDataAccessor staffAccessor;
+	private StaffDataAccessorDummy staffAccessor;
 	/**The data accessor for the on call staff table. Allows for searching of the 
 	staff table in the database*/
 	private OnCallDataAccessor onCallAccessor;
@@ -159,7 +159,7 @@ public enum Supervisor {
 		
 		// set up connection to database
 		try {
-			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
+			setDataAccessor(new PersonDataAccessorDummy(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -168,7 +168,7 @@ public enum Supervisor {
 
 		// set up connection to database
 		try {
-			setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
+			setStaffAccessor(new StaffDataAccessorDummy(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -537,9 +537,12 @@ public enum Supervisor {
 	public boolean admitPatient(Patient patient) {
 		try {
 			if (hQueue.insert(patient) == true) {
+				PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+				MetricsController.INSTANCE.AddMetric(metrics);
 				server.updateClients();
 				return true;
 			} else {
+				MetricsController.INSTANCE.addPatientsRejected();
 				if(patient.getUrgency() == Urgency.EMERGENCY){
 					//Alert the manager of the next hoapital
 				}
@@ -572,7 +575,7 @@ public enum Supervisor {
 			// If a room is available send the patient
 			if (tf.getTimeToAvailable() <= 0 && tf.getPatient() == null) {
 				tf.receivePatient(patient);
-				targetRoomNum = i+1;
+				targetRoomNum = i;
 				success = true;
 				break;
 			}
@@ -589,7 +592,7 @@ public enum Supervisor {
 					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
 					success = true;
-					targetRoomNum = i+1;
+					targetRoomNum = i;
 					break;
 				/*
 				 * Another patient is in the room, check if they are an
@@ -614,7 +617,7 @@ public enum Supervisor {
 						if (roomCurrentPatient.equals(displacablePatient)) {
 							tf.emergencyInterruption(patient);
 							success = true;
-							targetRoomNum = i+1;
+							targetRoomNum = i;
 							break;
 						}
 					}
@@ -648,7 +651,7 @@ public enum Supervisor {
 
 		if(success == true){
 			if(targetRoomNum < TREATMENT_ROOMS_COUNT){
-				targetRoomName = String.format("Treatment room %2d",targetRoomNum);
+				targetRoomName = String.format("Treatment room %2d",targetRoomNum+1);
 			}else{
 				targetRoomName = "On-call team";
 			}
@@ -856,7 +859,7 @@ public enum Supervisor {
 	 * 
 	 * @return
 	 */
-	public PersonDataAccessor getDataAccessor() {
+	public PersonDataAccessorDummy getDataAccessor() {
 		return dataAccessor;
 	}
 
@@ -865,7 +868,7 @@ public enum Supervisor {
 	 * 
 	 * @param dataAccessor
 	 */
-	public void setDataAccessor(PersonDataAccessor dataAccessor) {
+	public void setDataAccessor(PersonDataAccessorDummy dataAccessor) {
 		this.dataAccessor = dataAccessor;
 	}
 
@@ -893,7 +896,7 @@ public enum Supervisor {
 	 * 
 	 * @return
 	 */
-	public StaffDataAccessor getStaffAccessor() {
+	public StaffDataAccessorDummy getStaffAccessor() {
 		return staffAccessor;
 	}
 
@@ -911,7 +914,7 @@ public enum Supervisor {
 	 * 
 	 * @param staffAccessor
 	 */
-	public void setStaffAccessor(StaffDataAccessor staffAccessor) {
+	public void setStaffAccessor(StaffDataAccessorDummy staffAccessor) {
 		this.staffAccessor = staffAccessor;
 	}
 
