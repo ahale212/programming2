@@ -492,7 +492,7 @@ public enum Supervisor {
 			}
 			String message = patient.getPerson().getFirstName()+" "+patient.getPerson().getLastName()+" to "+targetRoomName;
 			log(message);
-			//server.broadcastNextPatientCall(message);
+			server.broadcastNextPatientCall(message);
 		}
 		
 		return success;
