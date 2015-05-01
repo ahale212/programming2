@@ -12,9 +12,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER"  >
+      <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File" >
+          <Menu mnemonicParsing="false" text="File">
             <items>
             <MenuItem mnemonicParsing="false" text="Open" />
             <SeparatorMenuItem />
@@ -48,7 +48,7 @@
         <tabs>
           <Tab fx:id="triage_tab" text="Patient Triage">
             <content>
-              <AnchorPane fx:id="triage_anchorpane" minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0" >
+              <AnchorPane fx:id="triage_anchorpane" minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="900.0">
                      <children>
                      <Button fx:id="search_database" disable="true" layoutX="813.0" layoutY="10.0" mnemonicParsing="false" text="Search NHS" />
                         <Button fx:id="search_queue" disable="true" layoutX="813.0" layoutY="38.0" mnemonicParsing="false" text="Search Queue" />
@@ -66,27 +66,27 @@
                         <TextField fx:id="search_DOB" disable="true" layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
                         <TextField fx:id="search_Postcode" disable="true" layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
                         <TextField fx:id="search_Telephone_No" disable="true" layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
-                        <Label fx:id="NHS_No" layoutX="27.0" layoutY="56.0" text="NHS Number" />
-                        <Label fx:id="Title" layoutX="27.0" layoutY="88.0" text="Title" />
-                        <Label fx:id="first_name" layoutX="27.0" layoutY="120.0" text="First Name" />
-                        <Label fx:id="surname" layoutX="27.0" layoutY="152.0" text="Surname" />
-                        <Label fx:id="address" layoutX="27.0" layoutY="216.0" text="Address" />
-                        <Label fx:id="postcode" layoutX="27.0" layoutY="248.0" text="Postcode" />
-                        <Label fx:id="telephone" layoutX="27.0" layoutY="280.0" text="Telephone " />
-                        <Label layoutX="27.0" layoutY="344.0" text="Allergies" />
-                        <Label fx:id="blood_group" layoutX="27.0" layoutY="312.0" text="Blood Group" />
-                        <Label fx:id="dob" layoutX="27.0" layoutY="184.0" text="Date of Birth" />
-                        <TextField fx:id="textfield_NHS_Num" editable="false" layoutX="110.0" layoutY="52.0" />
-                        <TextField fx:id="textfield_Title" editable="false" layoutX="110.0" layoutY="84.0" />
-                        <TextField fx:id="textfield_First_Name" editable="false" layoutX="110.0" layoutY="116.0" />
-                        <TextField fx:id="textfield_Surname" editable="false" layoutX="110.0" layoutY="148.0" />
-                        <TextField fx:id="textfield_DOB" editable="false" layoutX="110.0" layoutY="180.0" />
-                        <TextField fx:id="textfield_Address" editable="false" layoutX="110.0" layoutY="212.0" />
-                        <TextField fx:id="textfield_Telephone" editable="false" layoutX="110.0" layoutY="276.0" />
-                        <ComboBox fx:id="allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
-                        <TextField fx:id="textfield_Blood_Group" editable="false" layoutX="110.0" layoutY="307.0" />
-                        <TextField fx:id="textfield_Postcode" editable="false" layoutX="110.0" layoutY="244.0" />
-                        <Label fx:id="triage" layoutX="315.0" layoutY="56.0" text="TRIAGE: Primary" />
+                        <Label fx:id="NHS_No" layoutX="27.0" layoutY="68.0" text="NHS Number" />
+                        <Label fx:id="Title" layoutX="27.0" layoutY="100.0" text="Title" />
+                        <Label fx:id="first_name" layoutX="27.0" layoutY="132.0" text="First Name" />
+                        <Label fx:id="surname" layoutX="27.0" layoutY="164.0" text="Surname" />
+                        <Label fx:id="address" layoutX="27.0" layoutY="228.0" text="Address" />
+                        <Label fx:id="postcode" layoutX="27.0" layoutY="260.0" text="Postcode" />
+                        <Label fx:id="telephone" layoutX="27.0" layoutY="294.0" text="Telephone " />
+                        <Label layoutX="27.0" layoutY="356.0" text="Allergies" />
+                        <Label fx:id="blood_group" layoutX="27.0" layoutY="324.0" text="Blood Group" />
+                        <Label fx:id="dob" layoutX="27.0" layoutY="196.0" text="Date of Birth" />
+                        <TextField fx:id="textfield_NHS_Num" editable="false" layoutX="110.0" layoutY="64.0" />
+                        <TextField fx:id="textfield_Title" editable="false" layoutX="110.0" layoutY="96.0" />
+                        <TextField fx:id="textfield_First_Name" editable="false" layoutX="110.0" layoutY="128.0" />
+                        <TextField fx:id="textfield_Surname" editable="false" layoutX="110.0" layoutY="160.0" />
+                        <TextField fx:id="textfield_DOB" editable="false" layoutX="110.0" layoutY="192.0" />
+                        <TextField fx:id="textfield_Address" editable="false" layoutX="110.0" layoutY="224.0" />
+                        <TextField fx:id="textfield_Telephone" editable="false" layoutX="110.0" layoutY="290.0" />
+                        <ComboBox fx:id="allergy" layoutX="110.0" layoutY="352.0" prefWidth="150.0" />
+                        <TextField fx:id="textfield_Blood_Group" editable="false" layoutX="110.0" layoutY="320.0" />
+                        <TextField fx:id="textfield_Postcode" editable="false" layoutX="110.0" layoutY="256.0" />
+                        <Label fx:id="triage" layoutX="315.0" layoutY="66.0" text="TRIAGE: Primary" />
                         <Label fx:id="airway" layoutX="315.0" layoutY="96.0" text="Airway" />
                         <Label fx:id="breathing" layoutX="315.0" layoutY="128.0" text="Breathing" />
                         <Label fx:id="circulation" layoutX="315.0" layoutY="192.0" text="Circulation" />
@@ -100,7 +100,7 @@
                         <ToggleButton fx:id="tb5" disable="true" layoutX="400.0" layoutY="220.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" />
                         <ToggleButton fx:id="tb6" disable="true" layoutX="400.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="✓" />
                         <Button fx:id="emergency" disable="true" layoutX="314.0" layoutY="312.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Add as Emergency!" />
-                        <Label layoutX="482.0" layoutY="56.0" text="TRIAGE: Secondary" />
+                        <Label layoutX="482.0" layoutY="66.0" text="TRIAGE: Secondary" />
                         <Label layoutX="482.0" layoutY="128.0" text="Can the Patient Walk?" />
                         <Label layoutX="482.0" layoutY="96.0" text="Is the Patient Breathing?" />
                         <Label layoutX="482.0" layoutY="164.0" text="What is the Respiratory Rate?" />
@@ -150,14 +150,14 @@
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="300.0" layoutX="843.0" layoutY="23.0" stroke="BLACK" strokeType="INSIDE" width="129.0" /> 
                         <Rectangle fx:id="countdown" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="300.0" layoutX="843.0" layoutY="23.0" stroke="BLACK" strokeType="INSIDE" width="129.0" />
                         <Label layoutX="33.0" layoutY="18.0" text="Current Patient" />
-                        <TextField fx:id="tr_patient_urgency" layoutX="222.0"  layoutY="80.0" />
+                        <TextField fx:id="tr_patient_urgency" layoutX="222.0" layoutY="80.0" />
                         <Label layoutX="222.0" layoutY="50.0" text="Patient Urgency" />
-                        <TextField fx:id="tr_incident_details"  layoutX="390.0" layoutY="80.0" />
+                        <TextField fx:id="tr_incident_details" layoutX="390.0" layoutY="80.0" />
                         <Label layoutX="390.0" layoutY="50.0" text="Incident Details" />
                         <Button fx:id="sign" layoutX="553.0" layoutY="116.0" mnemonicParsing="false" text="Signature" />
-                        <TextArea fx:id="tr_treatment_notes" layoutX="222.0" text="" layoutY="150.0" prefHeight="200.0" prefWidth="398.0" />
+                        <TextArea fx:id="tr_treatment_notes" layoutX="222.0" layoutY="150.0" prefHeight="200.0" prefWidth="398.0" text="" />
                         <Label layoutX="222.0" layoutY="118.0" text="Treatment Notes:" />
-                        <Button layoutX="579.0" layoutY="350.0" mnemonicParsing="false" text="Save" />
+                        <Button fx:id="tr_button_save" layoutX="579.0" layoutY="350.0" mnemonicParsing="false" text="Save" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -170,9 +170,9 @@
                 <TextField fx:id="triage_nurse_on_duty" layoutX="14.0" layoutY="87.0" />
                 <Label layoutX="114.0" layoutY="30.0" text="Treatment Room Doctors:" />
                 <ListView fx:id="doctor_on_duty" layoutX="114.0" layoutY="87.0" />
-                <Label layoutX="314.0" layoutY="30.0" text="On Call Staff:" />
+                <Label layoutX="514.0" layoutY="30.0" text="On Call Staff:" />
                 <TableView layoutX="314.0" layoutY="87.0" />
-                <Label layoutX="514.0" layoutY="30.0" text="Administrator:" />
+                <Label layoutX="714.0" layoutY="30.0" text="Hospital Manager:" />
                 <TextField fx:id="admin" layoutX="514.0" layoutY="87.0" />
                 </children></AnchorPane>
               </content>
@@ -189,7 +189,7 @@
       <ToolBar fx:id="toolbar_left" orientation="VERTICAL" prefHeight="175.0" prefWidth="100.0" BorderPane.alignment="CENTER">
         <items>
         <Button fx:id="login" mnemonicParsing="false" prefWidth="98.0" text="Login" />
-          <Button fx:id="re_assign" mnemonicParsing="false" prefWidth="98.0" alignment="CENTER" text="Re-Assign Priority" wrapText="true" />
+          <Button fx:id="re_assign" alignment="CENTER" mnemonicParsing="false" prefWidth="98.0" text="Re-Assign Priority" wrapText="true" />
           <Button fx:id="Q_view" mnemonicParsing="false" prefWidth="98.0" text="Patients waiting" wrapText="true" />
           <Button fx:id="TRooms_view" mnemonicParsing="false" prefWidth="98.0" text="Patients in Treatment" wrapText="true" />
         </items>
@@ -203,7 +203,7 @@
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <SplitPane dividerPositions="0.6357947434292867" prefHeight="160.0" prefWidth="801.0">
+                        <SplitPane dividerPositions="0.7058823529411765" prefHeight="160.0" prefWidth="801.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
@@ -219,7 +219,7 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="801.0">
+                        <SplitPane dividerPositions="0.7058823529411765" prefHeight="160.0" prefWidth="801.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="200.0">
                                  <children>

@@ -141,7 +141,34 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 
 	}
+	
 
+	/**
+	 * Inform the client that the next patient should be called to a room
+	 */
+//	public void broadcastNextPatientCall(String message) {
+//
+//		// Get the key set from the list of clients
+//		Set<String> keys = clients.keySet();
+//
+//		// Loops through each of the clients in the clients list
+//		for (String key : keys) {
+//			ClientDetails client = clients.get(key);
+//			try {
+//				// Alert the client that the queue is full
+//				client.getCallback().notifyNextPatientToRoom(message);
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//				
+//				client.incrementFailedConnectionAttempts();
+//				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+//					// Remove the client from the list.
+//					deregister(key);
+//				}
+//			}
+//		}
+//	}
+	
 	/**
 	 * Inform the clients that the queue is full
 	 */
@@ -340,53 +367,18 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 * Adds a newly triaged emergency patient to the backend list along with the
 	 * details of their current state.
 	 * 
-	 * @throws RemoteException
-	 *             Exception thrown when an communication issue occurs during
-	 *             RMI
+	 * @param clientID		The id of the client calling the method
+	 * @throws RemoteException Exception thrown when an communication issue occurs duringRMI
 	 * @throws AuthenticationException 
 	 */
 	@Override
-	public boolean addPrimaryPatient(String clientID, Person person, boolean airway,
-			boolean breating, boolean spine, boolean circulation,
-			boolean disability, boolean exposure) throws RemoteException, AuthenticationException {
+	public boolean addPatient(String clientID, Patient patient) throws RemoteException, AuthenticationException {
 		
 		// If the client is not authenticated, thrown an authentication error
 		if (!authenticate(clientID)) {
 			throw new AuthenticationException("Client not registered");
 		}
-		
-		Patient patient = new Patient();
-		patient.setPerson(person);
-		patient.setUrgency(Urgency.EMERGENCY);
-		patient.setPriority(true);
-
-		return Supervisor.INSTANCE.admitPatient(patient);
-	}
-
-	/**
-	 * Adds a newly triaged non-emergency patient to the backend list along with
-	 * the details of their current state.
-	 * 
-	 * @throws RemoteException
-	 *             Exception thrown when an communication issue occurs during
-	 *             RMI
-	 */
-	@Override
-	public boolean addSecondaryPatient(String clientID, Person person, Urgency urgency,
-			boolean breathingWithoutResusitation, boolean canWalk,
-			int respirationRate, int pulseRate, String underlyingCondition,
-			String prescribedMedication) throws RemoteException, AuthenticationException {
-
-		// If the client is not authenticated, thrown an authentication error
-		if (!authenticate(clientID)) {
-			throw new AuthenticationException("Client not registered");
-		}
-		
-		Patient patient = new Patient();
-		patient.setPerson(person);
-		patient.setUrgency(urgency);
-		patient.setPriority(false);
-
+		// Admit the patient and return whethe it was successful
 		return Supervisor.INSTANCE.admitPatient(patient);
 	}
 
@@ -411,7 +403,6 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	@Override
 	public void extendTreatmentTime(String clientID, TreatmentFacility facility, ExtensionReason reason)
 			throws RemoteException, AuthenticationException {
-
 
 		// If the client is not authenticated, thrown an authentication error
 		if (!authenticate(clientID)) {

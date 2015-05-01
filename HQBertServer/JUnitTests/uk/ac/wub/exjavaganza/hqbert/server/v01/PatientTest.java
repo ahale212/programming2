@@ -58,7 +58,7 @@ public class PatientTest {
 	@Test
 	public void testPatientConstructorWithArgs() {
 
-		Patient patient = new Patient(person, urgency);
+		Patient patient = new Patient(person, urgency, "");
 		assertNotNull(patient);
 
 		assertEquals(person, patient.getPerson());
@@ -116,7 +116,7 @@ public class PatientTest {
 
 	@Test
 	public void testSetPatientName() {
-		Patient patient = new Patient(person, null);
+		Patient patient = new Patient(person, null, "");
 		patient.setPatientName(person);
 		assertEquals(patientName, patient.getPatientName());
 	}
