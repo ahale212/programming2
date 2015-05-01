@@ -1857,7 +1857,8 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 	/**
-	 * 
+	 * Method to send an email to the user that has forgotten his username or password.
+	 * A reset username and password would be sent by this method.
 	 */
 	public static void emailNewPassword(TextField emailRequest) {
 		// Recipient's email ID needs to be mentioned.
