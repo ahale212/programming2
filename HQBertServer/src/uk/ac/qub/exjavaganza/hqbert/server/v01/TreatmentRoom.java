@@ -1,7 +1,11 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.util.ArrayList;
-
+/**
+ * Extends TreatmentFacility - adds a room number for identification
+ * @author james_admin
+ *
+ */
 public class TreatmentRoom extends TreatmentFacility {
 
 	private int roomNumber;
