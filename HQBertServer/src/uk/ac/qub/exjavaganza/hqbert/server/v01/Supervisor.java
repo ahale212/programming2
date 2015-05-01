@@ -57,11 +57,14 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_DOCTORS = 2;
 	/**Number of nursees in an on call team*/
 	public final int ONCALL_TEAM_NURSES = 3;
-	/**Debug flag : whether emails and sms messages should actually be sent*/
+	
+	/**Debug flag : whether emails and sms messages should actually be sent
+	 * NOTE ;
+	 * */
 	public final boolean ALERTS_ACTIVE = false;
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
-	public final float TIME_MULTI = 60;
+	public final float TIME_MULTI = 6;
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
 	

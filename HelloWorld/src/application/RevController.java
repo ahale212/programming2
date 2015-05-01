@@ -266,26 +266,32 @@ public class RevController implements Initializable, ClientCallback {
 
 		// When the user enters text into the NHS text box
 		search_NHS_No.setOnKeyTyped(e -> {
-
-			// If the NHS number is 10 characters long
-				if (search_NHS_No.getText().length() == 10) {
-					// Show the people who match the criteria
-					displayMatchingPeople();
-				}
-			});
+			checkCanPerformAutoSearch();
+		});
 
 		// When the user enters text into the first name text box
 		search_First_Name.setOnKeyTyped(e -> {
-
-			// If the NHS number is 10 characters long
-			if (search_First_Name.getText().length() > 1) {
-				// Show the people who match the criteria
-				displayMatchingPeople();
-			} else {
-				// Close the patient finder combobox
-				patient_finder.hide();
-				search_patient_results.clear();
-			}
+			checkCanPerformAutoSearch();
+		});
+		
+		// When the user enters text into the last name text box
+		search_Surname.setOnKeyTyped(e -> {
+			checkCanPerformAutoSearch();
+		});
+		
+		// When the user enters text into date of birth text box
+		search_DOB.setOnKeyTyped(e -> {
+			checkCanPerformAutoSearch();
+		});
+		
+		// When the user enters text into postcode text box
+		search_Postcode.setOnKeyTyped(e -> {
+			checkCanPerformAutoSearch();
+		});
+		
+		// When the user enters text into search_Telephone_No text box
+		search_Telephone_No.setOnKeyTyped(e -> {
+			checkCanPerformAutoSearch();
 		});
 		
 		// When a user selects a patient from the matching patient list 
@@ -300,6 +306,26 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 	}
+	
+	/**
+	 * Check whether the input text will allow for auto search
+	 */
+	public void checkCanPerformAutoSearch() {
+		
+		if (search_NHS_No.getText().length() > 9 || 
+			search_First_Name.getText().length() > 1 || 
+			search_Surname.getText().length() > 1 ||
+			search_Postcode.getText().length() > 1 ||
+			search_Telephone_No.getText().length() > 1){
+	
+			displayMatchingPeople();
+		} else {
+			// Close the patient finder combobox
+			patient_finder.hide();
+			search_patient_results.clear();
+		}
+	}
+	
 
 	/**
 	 * Perform the search based on the user input
