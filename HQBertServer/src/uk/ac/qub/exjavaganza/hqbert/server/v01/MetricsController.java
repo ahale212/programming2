@@ -93,7 +93,10 @@ public enum MetricsController {
 	}
 	
 	private void makeSaveList(){
-		ArrayList<Object> saveList = new ArrayList<Object>();
+		
+		if(saveList==null){
+		saveList = new ArrayList<Object>();
+		}
 		saveList.add(stats);
 		saveList.add(exstentions);
 	}
