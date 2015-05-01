@@ -335,7 +335,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 *             RMI
 	 */
 	@Override
-	public LinkedList<Patient> getQeue(String clientID) throws RemoteException {
+	public LinkedList<Patient> getQueue(String clientID) throws RemoteException {
 
 		return null;
 	}
@@ -471,7 +471,9 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return Supervisor.INSTANCE.getHQueue().getPQ().size();
 	}
 	
-	//public long getNumberOfExtensions(){}
+	public int getNumberOfExtensions(){
+		return MetricsController.INSTANCE.exstentions.size();
+	}
 	
 	public int NumberOfPatientsOverWaitTime(){
 		int count = 0;
@@ -502,6 +504,29 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			Urgency newUrgency) throws RemoteException, AuthenticationException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	/**
+	 * 
+	 * @param clientID			The Id of the client
+	 * @param numberOfRooms  	The number of rooms to be set
+	 * @return	Whether or not the change was made
+	 * @throws RemoteException	
+	 * @throws AuthenticationException
+	 */
+	@Override
+	public boolean setTreatmentRoomNumber(String clientID, int numberOfRooms) throws RemoteException, AuthenticationException {
+		
+		// If the client is not authenticated, thrown an authentication error
+		if (!authenticate(clientID)) {
+			throw new AuthenticationException("Client not registered");
+		}
+		
+		// Attempt to change the number of 
+		Supervisor.INSTANCE.setCurrentNumberOfTreatmentRooms(numberOfRooms);
+		
+		return true;
 	}
 	
 

@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -27,10 +26,6 @@ import org.controlsfx.control.PopOver;
 
 import application.RMIClient;
 
-import com.sun.javafx.application.PlatformImpl.FinishListener;
-import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
-import com.sun.prism.paint.Color;
-
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ExtensionReason;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Job;
@@ -42,7 +37,6 @@ import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentRoom;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Urgency;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer.ConnectionState;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,18 +48,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -74,12 +64,8 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 public class RevController implements Initializable, ClientCallback {
@@ -138,6 +124,8 @@ public class RevController implements Initializable, ClientCallback {
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
 			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode;
 
+	@FXML
+	Label current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
 
 	PopOver login_pop = new PopOver();
 	PopOver q_pop = new PopOver();
@@ -558,7 +546,6 @@ public class RevController implements Initializable, ClientCallback {
 
 		treatment_room_list.setItems(trno);
 		select_tr.setItems(trno);
-
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
 		breathingList.addAll(breaths);
@@ -624,15 +611,6 @@ public class RevController implements Initializable, ClientCallback {
 			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
 		});
 		
-		sign.setOnAction(e -> {
-			String my_details = null;
-			
-			if (loggedInUser != null) {
-				my_details = loggedInUser.getLastName()+", "+loggedInUser.getLastName();
-			}
-			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
-		});
-		
 		// Action to be performed when the user clicks the save notes 
 		// button on the treatment room tab
 		tr_button_save.setOnAction( e -> {
@@ -653,49 +631,41 @@ public class RevController implements Initializable, ClientCallback {
 						client.getServer().updateDoctorsNotes(client.getClientID(), 
 								room.getPatient().getPerson().getNHSNum(), tr_treatment_notes.getText());
 					} catch (AuthenticationException e1) {
-						Notifications.create().title("Save failed").text("You are not logged in.").showConfirm();	
+						Notifications.create().title("Save failed").text("You are not logged in.").showWarning();	
 						log("Save failed: You are not logged in.");
 					} catch (RemoteException e1) {
-						Notifications.create().title("Update failed").text("Server communication error.").showConfirm();	
+						Notifications.create().title("Update failed").text("Server communication error.").showWarning();	
 						log("Save failed: Server communication error.");
 					}
 				}
 			}
-
 		});
 		
 		close_system.setOnAction( e -> {
 			
-			/*try {
-
-		close_system.setOnAction(e -> {
-
-			/*
-			 * try {
-			 * 
-			 * this.finalize();
-			 * 
-			 * } catch (Exception e1) { // TODO Auto-generated catch block
-			 * e1.printStackTrace(); }
-			 */
+			// If the RMI client exists, close it
+			if (client!=null) {
+				client.close();
+			}
+			
+			// Exit the application
 			Platform.exit();
 
-			// Stage test = (Stage)allergy.getScene().getWindow();
-
-				// View window = (View)this;*
-				// window.getScene();
-
-			});
+		});
 
 		settings.setOnAction(e -> {
 			Stage settings_stage = new Stage();
 			AnchorPane root = new AnchorPane();
-			Label plus_trs = new Label("Set Amount of Treatment Roooms");
+			Label plus_trs = new Label("Set Amount of Treatment Rooms");
 			TextField set_no_trs = new TextField();
 			set_no_trs.setPromptText("1-10");
 			Button save_no_trs = new Button("Set");
 			set_no_trs.setLayoutY(25.0);
 			save_no_trs.setLayoutY(52.0);
+			
+			// Set up the Ip and port textboxes
+			Label port = new Label("Set Amount of Treatment Rooms");
+			TextField set_port = new TextField();
 
 			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -716,6 +686,27 @@ public class RevController implements Initializable, ClientCallback {
 								.text("Please set a number between 1-10")
 								.darkStyle().showError();
 					} else {
+						
+						// Send the number of treatment rooms to the server
+						boolean success;
+						try {
+							// Send the updated number of rooms to the server
+							success = client.getServer().setTreatmentRoomNumber(client.getClientID(), i);
+						} catch (AuthenticationException e) {
+							success = false;
+						} catch (RemoteException e) {
+							success = false;
+						}
+						
+						// If the update fails show a message and return
+						if (!success) {
+							Notifications.create()
+								.title("Change Request Rejected")
+								.text("The number of treatment rooms could not be changed.")
+								.darkStyle().showError();
+							return;
+						}
+						
 						// switch statement on the user entry to set a new
 						// treatment room number
 						switch (i) {
@@ -732,7 +723,8 @@ public class RevController implements Initializable, ClientCallback {
 							// start the method to change the treatment rooms
 							newArrayList();
 						}// end of switch
-							// once clicking on submit, close the tab
+						
+						// once clicking on submit, close the tab
 						settings_stage.close();
 					}
 				}
@@ -777,33 +769,20 @@ public class RevController implements Initializable, ClientCallback {
 					String staff_FirstName;
 					List<Staff> matchingPeople1 = null;
 					
-	
-						/*matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
-						
-						if (matchingPeople1.size() > 0) {
-							logMeIn = true;
-						} else {
-							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
-						} else {
-							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
-						}*/
 						
 					try {
 						// Create the client
 						client = new RMIClient(RevController.this, _user, db_pass);
-
 						// Add a message to the log
 						log("Logged in as " + _user);
 
 						logMeIn = true;
-						
-						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
-						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER_LEFT).showConfirm();	
+						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER).showError();	
 						log("Login failed: Server communication error.");
 						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
-						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER_LEFT).showConfirm();	
+						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER).showError();	
 						log("Login failed: Invalid username or password.");
 						ex.printStackTrace();
 					} 
@@ -1219,7 +1198,7 @@ public class RevController implements Initializable, ClientCallback {
 			Label extension = new Label("Confirm Extension Request");
 			ComboBox extension_request = new ComboBox(); extension_request.setLayoutY(26);
 			ObservableList extending_time = FXCollections.observableArrayList();
-			extending_time.addAll();
+			extending_time.addAll(ExtensionReason.values());
 			extension_request.setItems(extending_time);
 			Button extension_confirm = new Button("Confirm"); extension_confirm.setLayoutY(52);
 
@@ -1230,13 +1209,14 @@ public class RevController implements Initializable, ClientCallback {
 					// Boolean to hold whether the udpate was successful or not
 					boolean updateSuccessful = false;
 					try {
-
+						// Get the Index of the selected reason so it can be passed to the server
+						int reasonIndex =extension_request.getSelectionModel().getSelectedIndex();
 						// Request the update via the server and get a result as a boolean
-						client.getServer().extendTreatmentTime(client.getClientID(), treatmentFacilities.indexOf(getSelectedTreatmentRoom()), ExtensionReason.SITUATION_UNRESOLVED);
+						client.getServer().extendTreatmentTime(client.getClientID(), treatmentFacilities.indexOf(getSelectedTreatmentRoom()), ExtensionReason.values()[reasonIndex]);
 						Notifications.create().title("Extension Granted").text("Extended for 5 minutes").darkStyle().showConfirm();
 						extension_pop.hide();
 					} catch (Exception e1) {
-						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showConfirm();
+						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showWarning();
 						extension_pop.hide();
 					}
 
@@ -1666,7 +1646,7 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	@Override
 	public void alertQueueFull() throws RemoteException {
-		Notifications.create().title("Queue full").text("").showConfirm();	
+		Notifications.create().title("Queue full").text("").showInformation();	
 		log("Queue full.");
 	}
 
@@ -1902,7 +1882,6 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		}
 		return output_incident_report;
-
 		
 	}
 
@@ -1910,8 +1889,10 @@ public class RevController implements Initializable, ClientCallback {
 	public void notifyNextPatientToRoom(String message) throws RemoteException {
 				
 		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
-
 		
 	}
-
+	
+	public void pasStats() {
+		//current_total, client.getServer().current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
+	}
 }
