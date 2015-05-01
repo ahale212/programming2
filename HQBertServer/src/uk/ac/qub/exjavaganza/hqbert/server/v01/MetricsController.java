@@ -33,6 +33,7 @@ public enum MetricsController {
 	int patientsAddedToQueue;
 	int patientsAddedToTreatmentRoom;
 	int PatientsDischarged;
+	int PatientsRejected;
 	
 	boolean emptyFile=true;
 	
@@ -75,6 +76,7 @@ public enum MetricsController {
 	private MetricsController(){
 		stats = new ArrayList<PatientMetrics>();
 		exstentions = new ArrayList<MetricTimeExtension>();
+		PatientsRejected=0;
 	}
 	
 	public void AddMetric(PatientMetrics metrics){
@@ -82,6 +84,14 @@ public enum MetricsController {
 		WriteToFile();
 	}
 	
+	public int getPatientsRejected() {
+		return PatientsRejected;
+	}
+
+	public void addPatientsRejected() {
+		PatientsRejected++;
+	}
+
 	public void RemoveMetric(PatientMetrics metrics){
 		stats.remove(metrics);
 	}
@@ -108,30 +118,37 @@ public enum MetricsController {
 	
 	public void WriteToFile(){
 		makeSaveList();
+		for(int i = 0; i<2;i++ ){
 		try{		
-		  fout = new FileOutputStream("src"+ File.separator + "systemoutFile.txt", true);
+		  fout = new FileOutputStream("src"+ File.separator + "systemoutFile"+i+".txt", true);
 		  oos = new ObjectOutputStream(fout);
-		  oos.writeObject(saveList);
+		  oos.writeObject(saveList.get(i));
 		} catch (Exception ex) {
-		        ex.printStackTrace();
+			ex.printStackTrace();
 		}finally {
-		        if(oos  != null){
-		            try {
-						oos.close();
-					} catch (IOException e) {
-						System.out.println("unable to close FileOutputStream");
-					}
-		         } 
+			if(oos  != null){
+				try {
+					oos.close();
+				} catch (IOException e) {
+					System.out.println("unable to close FileOutputStream");
+				}
+			} 
+		}
 		}
 	}
 	
 	public void readFromFile(){
 		
+		for(int i = 0; i<2;i++){
 		 try {
-		        fin = new FileInputStream("src"+ File.separator + "systemoutFile.txt");
+		        fin = new FileInputStream("src"+ File.separator + "systemoutFile"+i+".txt");
 		        ois = new ObjectInputStream(fin);
 		        try{
-		        	saveList =  (ArrayList<Object>) ois.readObject();
+		        	if(i==0){
+		        	saveList.add(i, (ArrayList<PatientMetrics>) ois.readObject());
+		        	} else {
+		        		saveList.add(i, (ArrayList<MetricTimeExtension>) ois.readObject());
+		        	}
 		        	loadSaveList();
 		        if(saveList!=null){
 		        	emptyFile=false;
@@ -152,8 +169,9 @@ public enum MetricsController {
 					} catch (IOException e) {
 						System.out.println("unable to close FileInputStream");
 					}
-		         } 
+		        }
 		 }
+		}
 	}
 	
 	private ArrayList<LocalDateTime[]> getQueWaitTime(){

@@ -152,6 +152,12 @@ public interface RemoteServer extends Remote {
 	public int[] getUrgencies() throws RemoteException;
 	
 	/**
+	 * Method to get the current number of rejected patients
+	 * @return number of patients rejected from queue
+	 * @throws RemoteException
+	 */
+	public int getPatientsRejected() throws RemoteException;
+	/**
 	 * Method to get the current number of patients waiting in the queue
 	 * @return current number in the queue
 	 */

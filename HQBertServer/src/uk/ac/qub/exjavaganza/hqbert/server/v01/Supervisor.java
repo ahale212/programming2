@@ -11,8 +11,10 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.Preferences;
 
@@ -25,7 +27,13 @@ import org.apache.log4j.Priority;
 
 public enum Supervisor {
 
-	INSTANCE;
+	I/**
+ * Class to handle interaction between the  queue, the treatment rooms,
+ * on-call team and the front end. Also manages sending of alerts and messages
+ * @author james thompson
+ *
+ */
+STANCE;
 
 	public final int MAX_QUEUE_SIZE = 10;
 	public final int MAX_WAIT_TIME = 10;
@@ -33,13 +41,16 @@ public enum Supervisor {
 	public final int MAX_OVERDUE_PATIENTS = 2
 			;
 	public final int BASE_UPDATE_INTERVAL = 1;
-	public final int BASE_ROOM_OCCUPANCY_TIME = 10;
+	publ	/**Upper limit of people allowed in the queue at one time before new admissions are sent away*/
+ic final int BASE_ROOM_OCCUPANCY_TIME = 10;
 	public final int ROOM_OCCUPANCY_EXTENSION_TIME = 5;
-	public final int ONCALL_ENGAGEMENT_TIME = 15;
+	public final int ONCALL_ENGAGEMENT_TIM	/**The longest waiting time considered acceptable by the trust*/
+E = 15;
 	
 	public int TREATMENT_ROOMS_COUNT = 2;
 	public final int ONCALL_TEAM_DOCTORS = 2;
-	public final int ONCALL_TEAM_NURSES = 3;
+	public fina	/**The waiting time threshold at which a patient will be given queue priority regardless of triage category*/
+l int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
 
@@ -47,7 +58,11 @@ public enum Supervisor {
 
 	private Preferences prefs;
 	
-	private enum ON_CALL_REASON {QUEUE_FULL,EXTRA_EMERGENCY};
+	private 	/**If more than this number of patients are waiting more than the acceptable time, the manager is alerted*/
+	public final int MAX_OVERDUE_PATIENTS = 1;
+	
+	/**How many minutes between automatic queue updates*/
+;
 	
 	private int serverPort = 1099;
 
@@ -56,33 +71,42 @@ public enum Supervisor {
 	private boolean exit;
 	private ArrayList<TreatmentFacility> treatmentFacilities;
 	
-	private ArrayList<Staff> availableStaff;
+	private ArrayList<Staff> availableStaf	/**How long a room is typically expected to be occupied to treat a patient*/
+f;
 	private ArrayList<Staff> loggedInStaff;
 	private OnCallTeam onCallTeam;
 	private ArrayList<Staff> staffOnCall;
-	private ArrayList<Staff> activeStaff;
+	private Arr	/**Length of time a room can be extended by in one go to continue treating a patient*/
+ayList<Staff> activeStaff;
 	
 	
 	private RMIServer server;
 	private Logger logger;
 
 	//whether too many patients have been waiting too long
-	private boolean excessiveWaitingAlertSent;
+	p	/** How long an onCall team is expected to spend treating a patient*/
+rivate boolean excessiveWaitingAlertSent;
 	
 	// Test stuff
 	private int testPatientNo;
-	private Urgency[] testUrgencies;
+	private Urgency[] testUrgencies;	/**How many treatment rooms are currently available in the hospital*/
+
 	private int[] extensions;
 
 	// URL for the database connection
-	private String url = "jdbc:mysql://web2.eeecs.qub.ac.uk/40058483";
+	private String url = "jdbc:mysql://web2.eeec	/**Number of doctors in the onCall team*/
+s.qub.ac.uk/40058483";
 	// Connection that holds the session with the database
-	private Connection con;
-	// The data accessor for the person table. Allows for searching of the
+	privat	/**Number of nursees in an on call team*/
+e Connection con;
+	// The data accessor for the person table. Allows for searching of	/**Debug flag : whether emails and sms messages should actually be sent*/
+ the
 	// Person table in the database.
 	private PersonDataAccessor dataAccessor;
-	//The data accessor for the staff table. Allows for searching of the 
-	//staff table in the database
+	//The data accessor for the staff table	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
+	public final float TIME_MULTI = 30;
+	/**saved preferences for editable values that should persist between launches*/
+f table in the database
 	private StaffDataAccessor staffAccessor;
 
 	private Supervisor() {
@@ -90,96 +114,104 @@ public enum Supervisor {
 
 	public void init(int serverPort, boolean useSSL) {
 		
-		// If server port has been passed in set it, else leave it as its default value
+		// If server port has been passed in set it, else lea	/**reason for summoning the oncall - used for metrics*/
+ve it as its default value
 		if (serverPort != 0) {
 			this.serverPort = serverPort;
 		}
 		
-		// Start the server to allow clients to connect
+		// Start the server to a	/**port on which the server listens for connections*/
+llow clients to connect
 		startServer(useSSL);
 		
 		getPrefsFile();
 		getPreferences();
+	/**Queue management object*/
 		
 		hQueue = new HQueue();
-		clock = new Clock(BASE_UPDATE_INTERVAL);
+		clock = new Clock(BASE_U	/**Time management object*/
+PDATE_INTERVAL);
 
-		logger = Logger.getLogger(Supervisor.class);
+		logger = Logger.getLogger(Super	/**whether the server application should exit*/
+visor.class);
 
-		treatmentFacilities = new ArrayList<TreatmentFacility>();
+		treatmentFacilities = new ArrayList<TreatmentFacility>(	
+	/**currently available treatment facilities (including on-call team if active*/
+);
 		for (int i = 0; i < TREATMENT_ROOMS_COUNT; i++) {
 			treatmentFacilities.add(i, new TreatmentRoom(i));
 		}
 	
 		//Testing
-		//makeBobbies();
+		//makeBobbies();	/**All staff available*/
+
 		//superFakeOnCallTeam();
 
 		// set up connection to database
-		try {
+		tr	/**All staff currently logged into the system*/
+y {
 			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
-		} catch (ClassNotFoundException e) {
+		} catch (Cla	/**on call team made up of staff who are listed as on-call at given time*/
+ssNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		// set up connection to database
+		/**the staff available for oncall at a given time*/
+	// set up connection to database
 		try {
-			setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
+			setStaffAccessor(new StaffDataAccessor(url, "40	/**Staff currently busy, so unavailable for new duties*/
+058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		} catch (SQLException e) {
+		} catch (SQL	/**The remote method invocation server*/
+ception e) {
 			e.printStackTrace();
 		}
 		
-		availableStaff = new ArrayList<Staff>();
+		availableStaff = new 	/**logs relevant queue related incidents as well as exceptions*/
+ArrayList<Staff>();
 		loggedInStaff = new ArrayList<Staff>();
-		staffOnCall = new ArrayList<Staff>();
-		activeStaff = new ArrayList<Staff>();
-		onCallTeam = null;
+		staffOnCall = new ArrayList	/**whether too many patients have been waiting too long*/
+allTeam = null;
 		
 		getAvailableStaff();
-		getOnCallList();
-		
+		getOn	//ad-hoc testing fields
 		excessiveWaitingAlertSent = false;
 		
 		exit = false;
 	}
 
 	public void getPrefsFile(){
-		prefs = Preferences.userRoot().node(this.getClass().getName());
+		prefs = P	/**URL for the database connection*/
+lass().getName());
 	}
 	
 	public void getPreferences(){
-		  String ID_Rooms = "treatment_rooms";
-		  TREATMENT_ROOMS_COUNT = prefs.getInt(ID_Rooms, 5);
-	}
-	
-	public void setPreferences(){
-		String ID_Rooms = "treatment_rooms";
-	    // now set the values
-	    prefs.putInt(ID_Rooms, TREATMENT_ROOMS_COUNT);
-	}
-	
-	public void startLoop() {
-		while (exit == false) {
-			clock.update();
-		}
-	}
-	
-	public void makeBobbies(){
+		  String ID_R	/**Connection that holds the session with the database*/
+efs.getInt(ID_Rooms, 5);
+	}	/** The data accessor for the person table. Allows for searching of the
+	 Person table in the database.*/
+refs.putInt(ID_Rooms, TREATMENT_ROOMS_COUNT	/**The data accessor for the staff table. Allows for searching of the 
+	staff table in the database*/
+makeBobbies(){
 		testPatientNo = 0;
 
-		testUrgencies = new Urgency[] { Urgency.EMERGENCY, Urgency.EMERGENCY,
-				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.NON_URGENT,
+		testU	/**
+	 * private constructor - default
+	 */
+rgencies = new Urgency[] { Urgency.EMERGENCY, Urgency.EMERGENCY,
+				Urg	/**Initializaion method - sets up all necessary elements of the system
+	 * @param serverPort
+	 * @param useSSL : whether to use ssl encryption
+	 */
+ency.EMERGENCY, Urgency.EMERGENCY, Urgency.NON_URGENT,
 				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.NON_URGENT,
 				Urgency.EMERGENCY, Urgency.URGENT, Urgency.SEMI_URGENT,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.SEMI_URGENT, Urgency.EMERGENCY, Urgency.EMERGENCY,
-				Urgency.NON_URGENT, Urgency.NON_URGENT, Urgency.NON_URGENT,
-				Urgency.URGENT, Urgency.SEMI_URGENT, Urgency.EMERGENCY,
-				Urgency.EMERGENCY, Urgency.URGENT, Urgency.EMERGENCY,
+				Urgency.NON_URGENT, Urgency.NON_URGENT, Urgency	Urgency.EMERGENCY, Urgency.URGENT, Urgency.EMERGENCY,
 				Urgency.EMERGENCY, Urgency.EMERGENCY, Urgency.EMERGENCY,
 				Urgency.EMERGENCY };
 
@@ -192,8 +224,9 @@ public enum Supervisor {
 	}
 	
 	public void runBobbyTest(){
-		// Testing
-		if (testPatientNo < testUrgencies.length) {
+				makeBobbies();
+		
+.length) {
 			insertTestPatientBobby();
 		}
 		// automated extension tests
@@ -220,21 +253,29 @@ public enum Supervisor {
 		}
 	}
 
-	public void superFakeOnCallTeam(){
+	public void		superFakeOnCallTeam();
+		//getOnCallList();
+		
+		// Start the server to allow clients to connect
+		startServer(useSSL);
+m(){
 		Staff drOctopus = new Staff("docOc", "8ArmsBaby");
 		drOctopus.setJob(Job.DOCTOR);
 		Staff drDoom = new Staff("drDoom", "hahaha");
-		drDoom.setJob(Job.DOCTOR);
+		drDoom.setJob(Job.DOCTOR);	/**load the prefs file and assign the instance var*/
+
 		Staff nurseBetty = new Staff("Betty","bettyPass");
 		nurseBetty.setJob(Job.NURSE);
 		Staff nurseJohn = new Staff("John","johnPass");
-		nurseJohn.setJob(Job.NURSE);
+		nurseJohn.setJob	/**assign relevant vars from the prefs*/
+(Job.NURSE);
 		Staff nurseJane = new Staff("Jane","janePass");
 		nurseJane.setJob(Job.NURSE);
 		
 		staffOnCall.add(nurseJane);
 		staffOnCall.add(drDoom);
-		staffOnCall.add(nurseJohn);
+		staffOnCall.add(nu	/**set values in the prefs according to current vars*/
+rseJohn);
 		staffOnCall.add(drOctopus);
 		staffOnCall.add(nurseBetty);
 	}
@@ -243,11 +284,13 @@ public enum Supervisor {
 	 * Auto-generate simple test patients to push through the system
 	 */
 	private void insertTestPatientBobby() {
-		Person testPerson = new Person();
+		Person testPers	/**Update the clock every tick to drive timed updates*/
+on = new Person();
 		testPerson.setFirstName("Bobby" + testPatientNo);
 		testPerson.setLastName("Branson" + testPatientNo);
 
-		Patient test = new Patient();
+		Patient tes	/**Generates a list of dummy patients to quickly test the queue under heavy load*/
+t = new Patient();
 		test.setPerson(testPerson);
 		test.setUrgency(testUrgencies[testPatientNo]);
 
@@ -273,9 +316,8 @@ public enum Supervisor {
 		                 new SslRMIServerSocketFactory(null, null, true));
 			} else {
 				// If SSL is not to be used, call the default with just port as args
-				server = new RMIServer(serverPort);
-			}
-			// Bind the server object to the name it will be accessible by on
+				server = new RMIServer(serv	/**Test method to run dummy patients through the queue*/
+name it will be accessible by on
 			// the client side.
 			Naming.rebind("HQBertServer", server);
 
@@ -304,7 +346,33 @@ public enum Supervisor {
 	 */
 	public void getOnCallList(){
 		try{
-		for(int i = availableStaff.size()-1; i >= 0; i--){
+		for(int i =		
+		if(testPatientNo == 3){
+		//	addTreatmentRooms(1);
+		}
+		
+		if(testPatientNo == 13){
+		//	removeTreatmentRooms(4);
+		}
+	}
+
+	
+	/**
+	 * add additional treatment rooms to the system
+	 */	
+	public void addTreatmentRooms(int numToAdd){
+		log("Adding room(s)");
+		if(onCallTeam != null){
+			treatmentFacilities.remove(onCallTeam);
+		}
+		for(int i = 0; i < numToAdd; i++){
+			TreatmentRoom tr = new TreatmentRoom(treatmentFacilities.size());
+			treatmentFacilities.add(tr);
+		}	
+		if(onCallTeam != null){
+			treatmentFacilities.add(onCallTeam);
+		}
+ availableStaff.size()-1; i >= 0; i--){
 			Staff member = availableStaff.get(i);
 			if(member.getJob() == Job.DOCTOR || member.getJob() == Job.NURSE){
 				staffOnCall.add(member);
@@ -329,7 +397,16 @@ public enum Supervisor {
 	 * Update the queue, its subQueues, all the patients in the system, and all
 	 * the treatment rooms.
 	 * 
-	 * @param deltaTime
+	 * @param del	/**
+	 * remove treatment rooms from the system
+	 */	
+	public boolean removeTreatmentRooms(int newNum){
+		log("removing room(s)");
+		int pqSize = hQueue.getPQ().size();
+		if(onCallTeam != null){
+			treatmentFacilities.remove(onCallTeam);
+		}
+taTime
 	 *            : time (in milliseconds) since the last update
 	 */
 	public void update(int deltaTime) {
@@ -337,7 +414,38 @@ public enum Supervisor {
 		//runBobbyTest();
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
-		manageOnCallAndAlerts();
+		manageOnCallAn		for(int i = treatmentFacilities.size()-1; i >= 0; i--){
+			TreatmentFacility tf = treatmentFacilities.get(i);
+			if(tf.getPatient()==null){
+				treatmentFacilities.remove(tf);
+				if(treatmentFacilities.size() <= newNum){
+					break;
+				}
+			}
+		}
+		
+		if(treatmentFacilities.size() > newNum){
+			if( (treatmentFacilities.size() - newNum) > (MAX_QUEUE_SIZE - pqSize) ){
+				//Not enough space in the queue for the patients in treatment to be displaced to 
+				return false;
+			}else{
+				for(int i = treatmentFacilities.size()-1; i >= newNum; i--){
+					TreatmentFacility tf = treatmentFacilities.get(i);
+					Patient p = tf.getPatient();
+					hQueue.reQueue(p);
+					treatmentFacilities.remove(tf);
+				}
+			}
+		}
+		
+		if(onCallTeam != null){
+			treatmentFacilities.add(onCallTeam);
+		}
+		
+		return true;
+	}
+	
+dAlerts();
 		
 		//update the treatment facilities (rooms and on-call if on-site)
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
@@ -378,9 +486,12 @@ public enum Supervisor {
 	public boolean admitPatient(Patient patient) {
 		try {
 			if (hQueue.insert(patient) == true) {
+				PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+				MetricsController.INSTANCE.AddMetric(metrics);
 				server.updateClients();
 				return true;
 			} else {
+				MetricsController.INSTANCE.addPatientsRejected();
 				if(patient.getUrgency() == Urgency.EMERGENCY){
 					//Alert the manager of the next hoapital
 				}
@@ -449,6 +560,21 @@ public enum Supervisor {
 				displacablePatient = hQueue.findMostDisplacable();
 				if (displacablePatient != null) {
 					for (int i = 0; i < treatmentFacilities.size(); i++) {
+			
+		int doctors = 0;
+		for(int i = availableStaff.size()-1; i >= 0; i--){
+			Staff member = availableStaff.get(i);
+			if(member.getJob() == Job.DOCTOR){
+				staffOnCall.add(member);
+				availableStaff.remove(member);
+				doctors++;
+				if(doctors >= 2){
+					break;
+				}
+			}
+		}
+		
+		int nurses = 0;
 						TreatmentFacility tf = treatmentFacilities.get(i);
 						Patient roomCurrentPatient = tf.getPatient();
 						if (roomCurrentPatient.equals(displacablePatient)) {
@@ -461,7 +587,12 @@ public enum Supervisor {
 				}else{
 					if(onCallTeam != null){
 						//Log Stuff: Full of emergencies - send this emergency away
-						log("No emergency treatment available: "+patient.getPerson().getFirstName()+" ("+patient.getUrgency()+") sent away");
+							if(member.getJob() == Job.NURSE){
+tName()+" ("+patient.getUrgency				nurses++;
+				if(nurses >= 3){
+					break;
+				}
+()+") sent away");
 					}
 				}					
 			}
@@ -483,7 +614,8 @@ public enum Supervisor {
 				
 			}
 			
-			//if onCall was already here, they would have been checked for displacable patients already
+			//if onCall was already here, they would have been checked for displ		runBobbyTest();
+ady
 		}
 
 		if(success == true){
@@ -570,7 +702,8 @@ public enum Supervisor {
 	 * send messages to staff on the onCall list and assemble an onCall team
 	 * @return whether the onCall team was successfully assembled
 	 */
-	public boolean assembleOnCall(ON_CALL_REASON reason){
+	public boolean as				targetRoomNum = i+1;
+sembleOnCall(ON_CALL_REASON reason){
 		if(reason == ON_CALL_REASON.QUEUE_FULL){
 			log("On-call team requested: full queue - On-call team ASSEMBLE!");
 		}else if(reason == ON_CALL_REASON.EXTRA_EMERGENCY){
@@ -581,8 +714,8 @@ public enum Supervisor {
 		for(int count = 0; count < 2; count++){
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
-				if (staffMember.getJob() == Job.DOCTOR && !(activeStaff.contains(staffMember))){
-					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
+				if (staffMember.getJob() == Job.DOCTOR && !(activeStaff.contains(staffMembe					targetRoomNum = i+1;
+Alert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
 						activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
 					}
@@ -600,9 +733,8 @@ public enum Supervisor {
 						activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
 					}
-				}
-			}
-			if(onCallTeam.getStaff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
+				}							targetRoomNum = i+1;
+Staff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
 				//Log that insufficient nurses are available for an oncall team
 				log("Not enough nurses for on-call");
 				return false;
