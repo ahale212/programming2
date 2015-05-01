@@ -144,20 +144,20 @@
                         <ComboBox fx:id="tr_allergy" layoutX="110.0" layoutY="340.0" prefWidth="150.0" />
                         <TextField fx:id="tr_textfield_Blood_Group" editable="false" layoutX="110.0" layoutY="307.0" />
                         <TextField fx:id="tr_textfield_Postcode" editable="false" layoutX="110.0" layoutY="244.0" />
-                        <ComboBox fx:id="select_tr" layoutX="222.0" layoutY="14.0" prefWidth="170.0" promptText="Select Treatment Room" />
+                        <ComboBox fx:id="select_tr" layoutX="300.0" layoutY="14.0" prefWidth="170.0" promptText="Select Treatment Room" />
                         <Button fx:id="extend" layoutX="844.0" layoutY="342.0" mnemonicParsing="false" text="Extend " />
                         <Button fx:id="cancel_extension" layoutX="912.0" layoutY="342.0" mnemonicParsing="false" text="Cancel" />
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="300.0" layoutX="843.0" layoutY="23.0" stroke="BLACK" strokeType="INSIDE" width="129.0" /> 
                         <Rectangle fx:id="countdown" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="300.0" layoutX="843.0" layoutY="23.0" stroke="BLACK" strokeType="INSIDE" width="129.0" />
                         <Label layoutX="33.0" layoutY="18.0" text="Current Patient" />
-                        <TextField fx:id="tr_patient_urgency" layoutX="222.0" layoutY="80.0" />
-                        <Label layoutX="222.0" layoutY="50.0" text="Patient Urgency" />
-                        <TextField fx:id="tr_incident_details" layoutX="390.0" layoutY="80.0" />
-                        <Label layoutX="390.0" layoutY="50.0" text="Incident Details" />
-                        <Button fx:id="sign" layoutX="553.0" layoutY="116.0" mnemonicParsing="false" text="Signature" />
-                        <TextArea fx:id="tr_treatment_notes" layoutX="222.0" layoutY="150.0" prefHeight="200.0" prefWidth="398.0" text="" />
-                        <Label layoutX="222.0" layoutY="118.0" text="Treatment Notes:" />
-                        <Button fx:id="tr_button_save" layoutX="579.0" layoutY="350.0" mnemonicParsing="false" text="Save" />
+                        <TextField fx:id="tr_patient_urgency" layoutX="450.0" layoutY="50.0" />
+                        <Label layoutX="300.0" layoutY="50.0" text="Patient Urgency" />
+                        <TextField fx:id="tr_incident_details" layoutX="450.0" layoutY="80.0" prefWidth="288.0" />
+                        <Label layoutX="300.0" layoutY="80.0" text="Incident Details" />
+                        <Button fx:id="sign" layoutX="620.0" layoutY="116.0" mnemonicParsing="false" text="Signature" />
+                        <TextArea fx:id="tr_treatment_notes" layoutX="300.0" layoutY="150.0" prefHeight="200.0" prefWidth="448.0" />
+                        <Label layoutX="300.0" layoutY="118.0" text="Treatment Notes:" />
+                        <Button fx:id="tr_button_save" layoutX="700.0" layoutY="116.0" mnemonicParsing="false" text="Save" />
                      </children></AnchorPane>
             </content>
           </Tab>

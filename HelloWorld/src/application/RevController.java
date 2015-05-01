@@ -624,6 +624,15 @@ public class RevController implements Initializable, ClientCallback {
 			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
 		});
 		
+		sign.setOnAction(e -> {
+			String my_details = null;
+			
+			if (loggedInUser != null) {
+				my_details = loggedInUser.getLastName()+", "+loggedInUser.getLastName();
+			}
+			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
+		});
+		
 		// Action to be performed when the user clicks the save notes 
 		// button on the treatment room tab
 		tr_button_save.setOnAction( e -> {
@@ -1893,13 +1902,16 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		}
 		return output_incident_report;
+
 		
 	}
 
-	/*@Override
+	@Override
 	public void notifyNextPatientToRoom(String message) throws RemoteException {
 				
 		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
+
 		
-	}*/
+	}
+
 }

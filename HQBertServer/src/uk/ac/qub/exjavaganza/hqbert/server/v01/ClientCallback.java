@@ -38,5 +38,5 @@ public interface ClientCallback extends Remote {
 	 * Informs the client the next patient should be sent to the next available room
 	 * @param message : contains the patient name and where they should be.
 	 */
-	//public void notifyNextPatientToRoom(String message) throws RemoteException;
+	public void notifyNextPatientToRoom(String message) throws RemoteException;
 }

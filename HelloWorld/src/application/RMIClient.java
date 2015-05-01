@@ -282,5 +282,11 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	public String getClientID() {
 		return clientID;
 	}
+
+	@Override
+	public void notifyNextPatientToRoom(String message) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
