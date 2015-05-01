@@ -494,7 +494,7 @@ public enum Supervisor {
 			}
 			String message = patient.getPerson().getFirstName()+" "+patient.getPerson().getLastName()+" to "+targetRoomName;
 			log(message);
-			//server.broadcastNextPatientCall(message);
+			server.broadcastNextPatientCall(message);
 		}
 		
 		return success;
@@ -617,7 +617,7 @@ public enum Supervisor {
 	 * Extend the time a room is expected to be occupied by a pre-set amount, due to patient not finished.
 	 * @param roomIndex : which treatment Room to extend the time on.
 	 */
-	public void extendRoom(int roomIndex) {
+	public void extendRoom(int roomIndex, ExtensionReason reason) {
 		treatmentFacilities.get(roomIndex).extendTime();
 	}
 
@@ -781,32 +781,7 @@ public enum Supervisor {
 			return false;
 		}
 	}
-	
-	/**
-	 * Extends the treatment time for a given facility
-	 * @param facility		The facility to be updated
-	 */
-	public void extendTreatmentRoom(TreatmentFacility facility) {
-		for (TreatmentFacility loopedFacility : treatmentFacilities) {
-			// If the passed in room is an OnCallTeam
-			if (facility instanceof OnCallTeam) {
-				// If the looped room is also an on call team, then the room has been found
-				if (loopedFacility instanceof OnCallTeam){
-					loopedFacility.extendTime();
-				}
-			
-			} else { // else the room is a treatment room
-				// if the looped room is also a treatment room and the casted rooms have the same number, the room has been found
-				if (loopedFacility instanceof TreatmentRoom) {
-						TreatmentRoom room1 = (TreatmentRoom)facility;
-						TreatmentRoom room2 = (TreatmentRoom)loopedFacility;
-					if (room1.getRoomNumber() == room2.getRoomNumber()) {
-						loopedFacility.extendTime();
-					}
-				}
-			}
-		}
-	}
+
 
 	public int getCurrentNumberOfTreatmentRooms(){
 		return this.TREATMENT_ROOMS_COUNT;

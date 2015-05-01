@@ -104,7 +104,7 @@ public interface RemoteServer extends Remote {
 	 * Method to extend the treatment time for a given treatment room.
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public void extendTreatmentTime(String clientID, TreatmentFacility facility, ExtensionReason reason) throws RemoteException, AuthenticationException;
+	public void extendTreatmentTime(String clientID, int facilityIndex, ExtensionReason reason) throws RemoteException, AuthenticationException;
 
 	/**
 	 * 
