@@ -398,7 +398,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 
 	@Override
-	public void extendTreatmentTime(String clientID, TreatmentFacility facility, ExtensionReason reason)
+	public void extendTreatmentTime(String clientID, int facilityIndex, ExtensionReason reason)
 			throws RemoteException, AuthenticationException {
 
 		// If the client is not authenticated, thrown an authentication error
@@ -407,7 +407,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 		
 		// Call the extend treatment room method on the supervisor.
-		Supervisor.INSTANCE.extendTreatmentRoom(facility);
+		Supervisor.INSTANCE.extendRoom(facilityIndex, reason);
 
 	}
 
@@ -471,7 +471,9 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return Supervisor.INSTANCE.getHQueue().getPQ().size();
 	}
 	
-	//public long getNumberOfExtensions(){}
+	public int getNumberOfExtensions(){
+		return MetricsController.INSTANCE.exstentions.size();
+	}
 	
 	public int NumberOfPatientsOverWaitTime(){
 		int count = 0;

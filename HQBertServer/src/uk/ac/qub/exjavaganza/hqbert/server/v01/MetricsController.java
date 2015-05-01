@@ -106,7 +106,7 @@ public enum MetricsController {
 	public void WriteToFile(){
 		makeSaveList();
 		try{		
-		  fout = new FileOutputStream("src"+ File.separator + "systemoutFile.txt", false);
+		  fout = new FileOutputStream("src"+ File.separator + "systemoutFile.txt", true);
 		  oos = new ObjectOutputStream(fout);
 		  oos.writeObject(saveList);
 		} catch (Exception ex) {
@@ -129,9 +129,10 @@ public enum MetricsController {
 		        ois = new ObjectInputStream(fin);
 		        try{
 		        	saveList =  (ArrayList<Object>) ois.readObject();
-		        	//loadSaveList();
+		        	loadSaveList();
 		        if(saveList!=null){
 		        	emptyFile=false;
+		        	
 		        }
 		        } catch (Exception e){
 		        	System.out.println(" error in retrieving array list");
