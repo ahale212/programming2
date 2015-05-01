@@ -21,6 +21,7 @@ import javax.rmi.ssl.SslRMIServerSocketFactory;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 public enum Supervisor {
 
@@ -41,7 +42,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
-	public final float TIME_MULTI = 60;
+	public final float TIME_MULTI = 6;
 
 	private Preferences prefs;
 	
@@ -93,6 +94,9 @@ public enum Supervisor {
 			this.serverPort = serverPort;
 		}
 		
+		getPrefsFile();
+		getPreferences();
+		
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
@@ -104,7 +108,7 @@ public enum Supervisor {
 		}
 	
 		//Testing
-		makeBobbies();
+		//makeBobbies();
 		//superFakeOnCallTeam();
 
 		// set up connection to database
@@ -142,6 +146,21 @@ public enum Supervisor {
 		exit = false;
 	}
 
+	public void getPrefsFile(){
+		prefs = Preferences.userRoot().node(this.getClass().getName());
+	}
+	
+	public void getPreferences(){
+		  String ID_Rooms = "treatment_rooms";
+		  TREATMENT_ROOMS_COUNT = prefs.getInt(ID_Rooms, 5);
+	}
+	
+	public void setPreferences(){
+		String ID_Rooms = "treatment_rooms";
+	    // now set the values
+	    prefs.putInt(ID_Rooms, TREATMENT_ROOMS_COUNT);
+	}
+	
 	public void startLoop() {
 		while (exit == false) {
 			clock.update();
@@ -166,29 +185,6 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	public void setPreferences(){
-		// This will define a node in which the preferences can be stored
-	    prefs = Preferences.userRoot().node(this.getClass().getName());
-	    String ID_Rooms = "rooms";
-	    String ID_Port = "port";
-
-	    // First we will get the values
-	    // Define a boolean value
-	    System.out.println(prefs.getBoolean(ID_Rooms, true));
-	    // Define a string with default "Hello World
-	    System.out.println(prefs.get(ID_Port, "Hello World"));
-	    // Define a integer with default 50
-	  //  System.out.println(prefs.getInt(ID3, 50));
-
-	    // now set the values
-	    prefs.putBoolean(ID_Rooms, false);
-	    prefs.put(ID_Port, "Hello Europa");
-	    //prefs.putInt(ID3, 45);
-
-	    // Delete the preference settings for the first value
-	   // prefs.remove(ID1);
-
-	}
 	
 	public void updateMaxTreatmentRooms(){
 		
@@ -337,7 +333,7 @@ public enum Supervisor {
 	 */
 	public void update(int deltaTime) {
 		
-		runBobbyTest();
+		//runBobbyTest();
 		
 		//Check if the oncall team is needed: Do this first so emergencies get assigned to them
 		manageOnCallAndAlerts();
@@ -407,6 +403,8 @@ public enum Supervisor {
 	 */
 	public boolean sendToTreatment(Patient patient) {
 		boolean success = false;
+		int targetRoomNum = 0;
+		String targetRoomName = "";
 		
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
@@ -430,6 +428,7 @@ public enum Supervisor {
 					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
 					success = true;
+					targetRoomNum = i;
 					break;
 				/*
 				 * Another patient is in the room, check if they are an
@@ -454,6 +453,7 @@ public enum Supervisor {
 						if (roomCurrentPatient.equals(displacablePatient)) {
 							tf.emergencyInterruption(patient);
 							success = true;
+							targetRoomNum = i;
 							break;
 						}
 					}
@@ -476,6 +476,7 @@ public enum Supervisor {
 				
 				if(onCallHere == true){
 					onCallTeam.receivePatient(patient);
+					targetRoomNum = TREATMENT_ROOMS_COUNT;
 					success = true;
 				}
 				
@@ -484,6 +485,17 @@ public enum Supervisor {
 			//if onCall was already here, they would have been checked for displacable patients already
 		}
 
+		if(success == true){
+			if(targetRoomNum < TREATMENT_ROOMS_COUNT){
+				targetRoomName = String.format("Treatment room %2d",targetRoomNum);
+			}else{
+				targetRoomName = "On-call team";
+			}
+			String message = patient.getPerson().getFirstName()+" "+patient.getPerson().getLastName()+" to "+targetRoomName;
+			log(message);
+			//server.broadcastNextPatientCall(message);
+		}
+		
 		return success;
 	}
 
@@ -491,7 +503,7 @@ public enum Supervisor {
 	 * Change a patient's triage category
 	 */
 	public void reAssignTriage(Patient patient, Urgency newUrgency){
-		log("\tRE-ASSIGNING TRAGE PRIORITY FOR "+patient.getPatientName());
+		log("\tRe-assigning triage priority for "+patient.getPatientName());
 		hQueue.reAssignTriage(patient, newUrgency);
 	}
 	
@@ -549,7 +561,7 @@ public enum Supervisor {
 			activeStaff.add(onCallTeam.getStaff().get(i));
 		}
 		treatmentFacilities.remove(onCallTeam);
-		log("\n\nOnCALL REMOVED!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
+		log("On call team disengaged.");
 		onCallTeam = null;
 	}
 	
@@ -559,9 +571,9 @@ public enum Supervisor {
 	 */
 	public boolean assembleOnCall(ON_CALL_REASON reason){
 		if(reason == ON_CALL_REASON.QUEUE_FULL){
-			log("\tONCALL: full queue - ASSEMBLE!");
+			log("On-call team requested: full queue - On-call team ASSEMBLE!");
 		}else if(reason == ON_CALL_REASON.EXTRA_EMERGENCY){
-			log("\tONCALL: extra emergency - ASSEMBLE!");
+			log("On-call team requested: too many emergency - On-call team ASSEMBLE!");
 		}
 		
 		onCallTeam = new OnCallTeam();
@@ -577,7 +589,7 @@ public enum Supervisor {
 			}
 			if(onCallTeam.getStaff().size() < ONCALL_TEAM_DOCTORS){
 				//Log that insufficient doctors are available for an oncall team
-				log("Not enough doctors for oncall  !!!");
+				log("Not enough doctors for on-call");
 				return false;
 			}
 			for(int staffMemberIndex = 0; staffMemberIndex < staffOnCall.size(); staffMemberIndex++){
@@ -591,7 +603,7 @@ public enum Supervisor {
 			}
 			if(onCallTeam.getStaff().size() < (ONCALL_TEAM_DOCTORS + ONCALL_TEAM_NURSES)){
 				//Log that insufficient nurses are available for an oncall team
-				log("Not enough nurses for oncall  !!!");
+				log("Not enough nurses for on-call");
 				return false;
 			}
 		}
@@ -665,9 +677,7 @@ public enum Supervisor {
 	}
 	
 	public void removeFromQueue(Patient patient) {
-		System.out.println("Removing "+ patient.getPerson().getFirstName() + " from the queue.");	// Alert the clients that the queue is full
-			// via the RMI server.
-			server.broadcastQueueFullAlert();
+		System.out.println("Removing "+ patient.getPerson().getFirstName() + " from the queue.");	
 
 		hQueue.removePatient(patient);
 	}
@@ -703,10 +713,21 @@ public enum Supervisor {
 		this.dataAccessor = dataAccessor;
 	}
 
+	/**
+	 * Log a message to file and send it to the front end.
+	 * @param message
+	 */
 	public void log(String message) {
-		//logger.debug(message);
+		logger.log(Priority.INFO, message);
 		server.broadcastLog(message);
-		System.out.println(message);
+	}
+	
+	/**
+	 * Log a message to file
+	 * @param message
+	 */
+	public void logToFile(String message) {
+		logger.log(Priority.INFO, message);
 	}
 
 	/**
@@ -789,5 +810,12 @@ public enum Supervisor {
 	public int getCurrentNumberOfTreatmentRooms(){
 		return this.TREATMENT_ROOMS_COUNT;
 	}
+	
+	public void setCurrentNumberOfTreatmentRooms(int numRooms){
+		TREATMENT_ROOMS_COUNT = numRooms;
+	}
+	
+	
+
 
 }
