@@ -46,6 +46,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -145,7 +146,7 @@ public class RevController implements Initializable, ClientCallback {
 			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
 
 	@FXML // labels set to demonstrate statistics
-	private Label current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
+	private Label current_total, current_in_queue, av_visit_time, av_treatment_time, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, patients_rejected, max_wait_time_exceeded, daily_avg_semi_urgent, daily_avg_non_urgent;
 
 	// PopOver custom javafx controls to seamlessly bring the user to a new window
 	PopOver login_pop = new PopOver();
