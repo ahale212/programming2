@@ -28,7 +28,7 @@ public interface RemoteServer extends Remote {
 	
 	/**
 	 * Registers clients for callbacks. This allows the server to communicate with clients
-	 * that with to register for the times updates.
+	 * that register for the timed updates.
 	 * @param userName	The username of the client connecting to the server
 	 * @param password	The encrypted password of the user
 	 * @param client	The client that wishes to receive the update.
@@ -80,15 +80,7 @@ public interface RemoteServer extends Remote {
 	 * @return Whether the patient was successfully added or not.
 	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
 	 */
-	public boolean addPrimaryPatient(String clientID, Person person, boolean airway, boolean breating, boolean spine, boolean circulation, boolean disability, boolean exposure) throws RemoteException, AuthenticationException;
-	
-	/**
-	 * Adds a newly triaged non-emergency patient to the backend list along with the details of their current state. If they 
-	 * are added, true is returned. If they cannot be added (e.g. the queue is full), false is returned.
-	 * @return Whether the patient was successfully added or not.
-	 * @throws RemoteException	Exception thrown when a communication issue occurs during RMI
-	 */
-	public boolean addSecondaryPatient(String clientID, Person person, Urgency urgency, boolean breathingWithoutResusitation, boolean canWalk, int respirationRate, int pulseRate, String underlyingCondition, String prescribedMedication) throws RemoteException, AuthenticationException;
+	public boolean addPatient(String clientID, Patient patien) throws RemoteException, AuthenticationException;
 
 	/**
 	 * Logs a user into the system

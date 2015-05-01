@@ -30,7 +30,9 @@ import com.sun.javafx.application.PlatformImpl.FinishListener;
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 import com.sun.prism.paint.Color;
 
+
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.ExtensionReason;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Job;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.OnCallTeam;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
@@ -81,21 +83,22 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 public class RevController implements Initializable, ClientCallback {
-	
+
 	private RMIClient client;
-	
+
 	@FXML
 	private ToolBar toolbar_left;
-	
+
 	@FXML
 	private MenuItem settings, close_system;
-	
+
 	@FXML
 	private Rectangle countdown;
-	
-	@FXML // comment
+
+	@FXML
+	// comment
 	private TextArea outputTextArea, tr_treatment_notes;
-	
+
 	@FXML
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6, server_check;
 
@@ -105,23 +108,23 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private Button login, re_assign, search_database, emergency, Q_view,
-			TRooms_view, urg, semi_urg, non_urg, extend;
+			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension;
 
 	@FXML
 	private Slider respiratory_rate, pulse_rate;
 
 	@FXML
-	private ComboBox conditions, medication, breathing_yes, allergy;
+	private ComboBox conditions, medication, breathing_yes, allergy, tr_allergy;
 
 	@FXML
 	private ComboBox<String> patient_finder, select_tr;
-	
+
 	@FXML
 	private CheckBox walk, walk_no;
-	
+
 	@FXML
 	private Tab triage_tab, tr_tab, stats_tab;
-	
+
 	@FXML
 	private AnchorPane triage_anchorpane;
 
@@ -131,71 +134,88 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_NHS_Num, textfield_Postcode, textfield_Title,
 			textfield_First_Name, textfield_Surname, textfield_DOB,
 			textfield_Address, textfield_Telephone, textfield_Blood_Group,
-			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details;
-
-			
+			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details, tr_textfield_NHS_Num,
+			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
+			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode;
 
 	PopOver login_pop = new PopOver();
 	PopOver q_pop = new PopOver();
 	PopOver tr_pop = new PopOver();
 	PopOver extension_pop = new PopOver();
-	
+
 	Staff staff = new Staff();
-	
-	private final ObservableList<Patient> emergency_room = FXCollections.observableArrayList();
-	private final ObservableList<Patient> waiting_room = FXCollections.observableArrayList();
-	private final ObservableList<String> QList = FXCollections.observableArrayList();
-	private final ObservableList<String> trList = FXCollections.observableArrayList();
+
+	private final ObservableList<Patient> emergency_room = FXCollections
+			.observableArrayList();
+	private final ObservableList<Patient> waiting_room = FXCollections
+			.observableArrayList();
+	private final ObservableList<String> QList = FXCollections
+			.observableArrayList();
+	private final ObservableList<String> trList = FXCollections
+			.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
 	private final ObservableList ocu = FXCollections.observableArrayList();
-	private final ObservableList<String> onCallList = FXCollections.observableArrayList();
-	private final ObservableList breathingList = FXCollections.observableArrayList();
-	private final ObservableList medi_condition = FXCollections.observableArrayList();
+	private final ObservableList<String> onCallList = FXCollections
+			.observableArrayList();
+	private final ObservableList breathingList = FXCollections
+			.observableArrayList();
+	private final ObservableList medi_condition = FXCollections
+			.observableArrayList();
 	private final ObservableList meds = FXCollections.observableArrayList();
-	private final ObservableList allergy_list = FXCollections.observableArrayList();
-	private final ObservableList<String> search_patient_results = FXCollections.observableArrayList();
+	private final ObservableList allergy_list = FXCollections
+			.observableArrayList();
+	private final ObservableList<String> search_patient_results = FXCollections
+			.observableArrayList();
 	List<Person> matchingPeople, matchingPeople1;
 
 	/**
 	 * Data Lists:
 	 */
-	
+
 	/**
 	 * The list that holds the Patients in the queue
 	 */
 	List<Patient> queueList = new LinkedList<Patient>();
-	
+
 	/**
 	 * The list of Treatment Rooms / On call team
 	 */
 	List<TreatmentFacility> treatmentFacilities = new ArrayList<TreatmentFacility>();
-	
+	/**
+	 * private Integer for the original treatment room count by the spec
+	 */
+	private Integer treatmentRoomCount = 5;
+	/**
+	 * private Integer for the newly desired room count specified by the user
+	 */
+	private Integer newTreatmentRoomCount = 0;
 	private String[] array = new String[10];
 	private String[] array1 = new String[5];
 	private String[] onCall = new String[1];
-	private String[] treatmentRoomNum = new String[5];
+	List<String> treatmentRoomNum = new ArrayList<String>();
+	// private String[] treatmentRoomNum = new String[5];
 	private String[] breaths = new String[2];
-	
+
 	private String[] condition = { "Neurological", "Respiratory",
-			"Dermatological", "Endrocrinal", "Circulatory", "Auto-Immune", "Viral" };
-	
+			"Dermatological", "Endrocrinal", "Circulatory", "Auto-Immune",
+			"Viral" };
+
 	private String[] medicine = { "Pain Killers", "Antibiotics", "Steroids",
 			"Beta-Blockers", "Anti-Depressants", "Anticoagulants" };
-	
+
 	private String[] allergic = { "None", "Nuts", "Penicillin", "Stings",
 			"Seafood", "Hayfever", "Animals", "Latex" };
 
 	private Person displayedPerson;
 	private List<Person> search_results;
-	
 
 	@Override
 	protected void finalize() throws Throwable {
-		
+
 		if (client != null) {
 			client.close();
 		}
-		
+
 		super.finalize();
 	}
 
@@ -208,47 +228,50 @@ public class RevController implements Initializable, ClientCallback {
 		runValidSearch();
 		updateQueue();
 		buttonFunction();
-		treatmentRoomEggTimer();
-		toolTime();		
-				
+		toolTime();
+
 	}
 
 	/**
 	 * Sets layout colours and patterns
 	 */
 	private void colours() {
-		
+
 		triage_tab.setStyle("-fx-base: skyblue;");
 		tr_tab.setStyle("-fx-base: lightpink;");
 		stats_tab.setStyle("-fx-base: pink;");
 		toolbar_left.setStyle("-fx-base: black;");
 		login.setStyle("-fx-base: darkblue;");
-		
+
 	}
 
 	/**
 	 * performs actions to conduct valid searches
 	 */
 	private void runValidSearch() {
-		
+
 		// When the user enters text into the NHS text box
-		search_NHS_No.setOnKeyTyped( e -> {
-			
+		search_NHS_No.setOnKeyTyped(e -> {
+
 			// If the NHS number is 10 characters long
-			if (search_NHS_No.getText().length() == 10) {
-				// Show the people who match the criteria
-				displayMatchingPeople();
-			} 
-		});
-		
+				if (search_NHS_No.getText().length() == 10) {
+					// Show the people who match the criteria
+					displayMatchingPeople();
+				}
+			});
+
 		// When the user enters text into the first name text box
-		search_First_Name.setOnKeyTyped( e -> {
-			
+		search_First_Name.setOnKeyTyped(e -> {
+
 			// If the NHS number is 10 characters long
 			if (search_First_Name.getText().length() > 1) {
 				// Show the people who match the criteria
 				displayMatchingPeople();
-			} 
+			} else {
+				// Close the patient finder combobox
+				patient_finder.hide();
+				search_patient_results.clear();
+			}
 		});
 		
 		// When a user selects a patient from the matching patient list 
@@ -256,16 +279,14 @@ public class RevController implements Initializable, ClientCallback {
 			int selectedIndex = patient_finder.getSelectionModel().getSelectedIndex();
 			if (selectedIndex > -1 && selectedIndex < matchingPeople.size()) {
 				displayedPerson = matchingPeople.get(selectedIndex);
-				displayPerson(displayedPerson);
+				displayTriagePerson(displayedPerson);
 			}
 			enableTriage();
-			
+
 		});
-		
-		
+
 	}
-	
-	
+
 	/**
 	 * Perform the searcg based on the user input
 	 */
@@ -274,61 +295,84 @@ public class RevController implements Initializable, ClientCallback {
 		search_database.setDisable(false);
 		// Get a list of people who match the search criteria
 		matchingPeople = searchForPerson();
-		
+
 		// If results have been returned display them
 		if (matchingPeople.size() > 0) {
 			populateMatchingPatientList();
 			patient_finder.show();
 		}
 	}
-	
+
 	/**
 	 * sets graphical timer in treatment room view
 	 */
-	private void treatmentRoomEggTimer() {
-		TreatmentFacility treatment = new TreatmentFacility() {			
-			@Override
-			public void showFacilityInConsole() {
-				// TODO Auto-generated method stub
-				}};
+	private void treatmentRoomEggTimer(TreatmentRoom room) {
 		
-		int eggtimer = 1;
-		switch(treatment.getTimeToAvailable()) {
-		
-		case 9: countdown.setHeight(270.0); countdown.setLayoutY(53.0); break;
-		case 8: countdown.setHeight(240.0); countdown.setLayoutY(83.0); break;
-		case 7: countdown.setHeight(210.0); countdown.setLayoutY(113.0); break;
-		case 6: countdown.setHeight(180.0); countdown.setLayoutY(143.0); break;
-		case 5: countdown.setHeight(150.0); countdown.setLayoutY(173.0); break;
-		case 4: countdown.setHeight(120.0); countdown.setLayoutY(203.0); break;
-		case 3: countdown.setHeight(90.0); countdown.setLayoutY(233.0); break;
-		case 2: countdown.setHeight(60.0); countdown.setLayoutY(263.0); break;
-		case 1: countdown.setHeight(30.0); countdown.setLayoutY(293.0); break;
-		default: countdown.setHeight(300.0); countdown.setLayoutY(23.0); break;
-		}		
+		switch (room.getTimeToAvailable()) {
+
+		case 9:
+			countdown.setHeight(270.0);
+			countdown.setLayoutY(53.0);
+			break;
+		case 8:
+			countdown.setHeight(240.0);
+			countdown.setLayoutY(83.0);
+			break;
+		case 7:
+			countdown.setHeight(210.0);
+			countdown.setLayoutY(113.0);
+			break;
+		case 6:
+			countdown.setHeight(180.0);
+			countdown.setLayoutY(143.0);
+			break;
+		case 5:
+			countdown.setHeight(150.0);
+			countdown.setLayoutY(173.0);
+			break;
+		case 4:
+			countdown.setHeight(120.0);
+			countdown.setLayoutY(203.0);
+			break;
+		case 3:
+			countdown.setHeight(90.0);
+			countdown.setLayoutY(233.0);
+			break;
+		case 2:
+			countdown.setHeight(60.0);
+			countdown.setLayoutY(263.0);
+			break;
+		case 1:
+			countdown.setHeight(30.0);
+			countdown.setLayoutY(293.0);
+			break;
+		default:
+			countdown.setHeight(300.0);
+			countdown.setLayoutY(23.0);
+			break;
+		}
 	}
-	
+
 	/**
 	 * Adds the matching patients to a combo box
 	 */
 	public void populateMatchingPatientList() {
-		
+
 		// Clear the patient results array, ready to be refilled
 		search_patient_results.clear();
-		
+
 		// Loop through each person in the results
 		for (Person person : matchingPeople) {
 			// Concatenate a string of the person's details
-			String personDetails = String.format("%-12s %s, %-10s %-25s %-10s %-10s %-11s", person.getNHSNum(), person.getLastName(), 
-														person.getFirstName(), 
-														person.getAddress(),
-														person.getPostcode(),
-														person.getCity(),
-														person.getDOB());
+			String personDetails = String.format(
+					"%-12s %s, %-10s %-25s %-10s %-10s %-11s",
+					person.getNHSNum(), person.getLastName(),
+					person.getFirstName(), person.getAddress(),
+					person.getPostcode(), person.getCity(), person.getDOB());
 			// Add the patient details to the results
-			search_patient_results.add(personDetails);				
+			search_patient_results.add(personDetails);
 		}
-		
+
 		// Display the results on screen
 		patient_finder.setItems(search_patient_results);
 	}
@@ -341,57 +385,80 @@ public class RevController implements Initializable, ClientCallback {
 		respiratory_rate.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
-				if (n < 0.5) { return "<10pm"; 	}
-				if (n < 50.5) { return "10-30pm"; } 
-				else { return ">30pm";	}
+				if (n < 0.5) {
+					return "<10pm";
 				}
+				if (n < 50.5) {
+					return "10-30pm";
+				} else {
+					return ">30pm";
+				}
+			}
 
 			@Override
 			public Double fromString(String s) {
 				switch (s) {
-				case "<10pm": return 0d;
-				case "10-30pm":	return 1d;
-				case ">30pm": return 2d;
-				default: return 1d;
+				case "<10pm":
+					return 0d;
+				case "10-30pm":
+					return 1d;
+				case ">30pm":
+					return 2d;
+				default:
+					return 1d;
 				}
 			}
 		});
 
 		respiratory_rate.setOnMouseClicked(e -> {
-			
-			if (respiratory_rate.getValue() < 0.5 || respiratory_rate.getValue() > 50.5  ) {
-			urg.setDisable(false);
-			urg.setStyle("-fx-base: orange;");
-			semi_urg.setDisable(true); semi_urg.setStyle(null);
-			non_urg.setDisable(true); non_urg.setStyle(null);
-			}});
+
+			if (respiratory_rate.getValue() < 0.5
+					|| respiratory_rate.getValue() > 50.5) {
+				urg.setDisable(false);
+				urg.setStyle("-fx-base: orange;");
+				semi_urg.setDisable(true);
+				semi_urg.setStyle(null);
+				non_urg.setDisable(true);
+				non_urg.setStyle(null);
+			}
+		});
 
 		pulse_rate.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
-				if (n < 0.5) return "<40bpm";
-				if (n < 50.5) return "40-120bpm";
+				if (n < 0.5)
+					return "<40bpm";
+				if (n < 50.5)
+					return "40-120bpm";
 				return ">120bpm";
 			}
 
 			@Override
 			public Double fromString(String s) {
 				switch (s) {
-				case "<40bpm": return 0d;
-				case "40-120bpm": return 1d;
-				case ">120bpm": return 2d;
-				default: return 1d;
+				case "<40bpm":
+					return 0d;
+				case "40-120bpm":
+					return 1d;
+				case ">120bpm":
+					return 2d;
+				default:
+					return 1d;
 				}
-			}});
+			}
+		});
 
 		pulse_rate.setOnMouseClicked(e -> {
-			
-			if (pulse_rate.getValue() < 0.5 || pulse_rate.getValue() > 50.5  ) {
-			urg.setDisable(false);
-			urg.setStyle("-fx-base: orange;");
-			semi_urg.setDisable(true); semi_urg.setStyle(null);
-			non_urg.setDisable(true); non_urg.setStyle(null);
-			}});
+
+			if (pulse_rate.getValue() < 0.5 || pulse_rate.getValue() > 50.5) {
+				urg.setDisable(false);
+				urg.setStyle("-fx-base: orange;");
+				semi_urg.setDisable(true);
+				semi_urg.setStyle(null);
+				non_urg.setDisable(true);
+				non_urg.setStyle(null);
+			}
+		});
 	}
 
 	/**
@@ -406,13 +473,13 @@ public class RevController implements Initializable, ClientCallback {
 			// Concatenate the patients first and second name and add them to the observable queue.
 			QList.add(patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName());
 			waiting_room.add(patient);
-			
+
 		}
 		queue.setItems(QList);
 		waitingRoomView(waiting_room);
 
 	}
-	
+
 	/**
 	 * Update the UI to display the current state of the treatment rooms
 	 */
@@ -448,34 +515,76 @@ public class RevController implements Initializable, ClientCallback {
 				try {
 					// Add the patients name to the observable array in the correct position for the room they're in.
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
-				treatmentRoomsView(emergency_room);
+					treatmentRoomsView(emergency_room);
 				
 				} catch (Exception ex) {
 					System.err.println("failed.");
-				}}
+				}
+			}
 		}
 		
 		trooms.setItems(trList);
 		on_call.setItems(onCallList);
+		
+		// Ensure that the updated details are being shown in the treatment room tab
+		displaySelectedTreatmentRoom();
 	}
-	
+
+	/**
+	 * new method to change the amount of treatment rooms - this is done through
+	 * the front end using config - settings - then typing in a valid number
+	 */
+	private void newArrayList() {
+		// remove the current treatment rooms
+		trno.removeAll(treatmentRoomNum);
+		// declare a difference var between old and new treatment room counts
+		Integer difference = (newTreatmentRoomCount - treatmentRoomCount);
+		// if the difference is greater than 0
+		if (difference > 0) {
+			// loop through until it reaches the new treatment room count
+			for (int loop = treatmentRoomCount; loop < newTreatmentRoomCount; loop++) {
+				// add the new treatment rooms to the array list
+				treatmentRoomNum.add("Treatment Room" + (loop + 1));
+				// make the new room count equal to the original one so this can
+				// be changed the exact same way at any time
+				treatmentRoomCount = newTreatmentRoomCount;
+			}// end of loop
+		}// end of if
+			// if the difference is less than 0
+		if (difference < 0) {
+			// loop through until it reaches the new treatment room count
+			for (int loop = treatmentRoomCount; loop > newTreatmentRoomCount; loop--) {
+				// remove the unwanted treatment rooms from the array list
+				treatmentRoomNum.remove("Treatment Room" + (loop));
+				// make the new room count equal to the original one so this can
+				// be changed the exact same way at any time
+				treatmentRoomCount = newTreatmentRoomCount;
+			}// end of loop
+		}// end of if
+			// add all the treatment rooms to the arraylist
+		trno.addAll(treatmentRoomNum);
+	}// end of method
+
 	/**
 	 * Add tags to listviews
 	 */
 	private void loadArrayLists() {
-			
+
 		ocu.add("On Call Unit");
 		on_call_list.setItems(ocu);
 		on_call_list.setTooltip(new Tooltip("On Call Unit"));
-		
-		for (int i = 0; i < treatmentRoomNum.length; i++) {
-			treatmentRoomNum[i] = "Treatment Room "+(i+1);
-		}		
+
+		// for loop iterates through and creates the treatment rooms
+		for (int loop = 0; loop < treatmentRoomCount; loop++) {
+			// adds the treatment room
+			treatmentRoomNum.add("Treatment Room" + (loop + 1));
+		}
+		// adds all the treatment rooms to the array list
 		trno.addAll(treatmentRoomNum);
+
 		treatment_room_list.setItems(trno);
-		trno.add("On Call Unit");
 		select_tr.setItems(trno);
-		
+
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
 		breathingList.addAll(breaths);
@@ -496,6 +605,37 @@ public class RevController implements Initializable, ClientCallback {
 	 * uses lambda expression to handle events (e->)
 	 */
 	private void buttonFunction() {	
+		
+		// Action to be performed when the user clicks the save notes 
+		// button on the treatment room tab
+		tr_button_save.setOnAction( e -> {
+			// Get the index of the currently shown treatment room
+			int selectedRoomIndex = select_tr.getSelectionModel().getSelectedIndex();
+			
+			// If the room is within bounds and the facility at the index is a treatment room
+			if (selectedRoomIndex < treatmentFacilities.size() 
+					&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
+				// Cast the selected facility to a treatment room
+				TreatmentRoom room = (TreatmentRoom)treatmentFacilities.get(selectedRoomIndex);
+				
+				// If the room has a patient in it then get their details.
+				if (room.getPatient() != null)
+				{
+					// Update the doctors notes of the patient in the current room
+					try {
+						client.getServer().updateDoctorsNotes(client.getClientID(), 
+								room.getPatient().getPerson().getNHSNum(), tr_treatment_notes.getText());
+					} catch (AuthenticationException e1) {
+						Notifications.create().title("Save failed").text("You are not logged in.").showConfirm();	
+						log("Save failed: You are not logged in.");
+					} catch (RemoteException e1) {
+						Notifications.create().title("Update failed").text("Server communication error.").showConfirm();	
+						log("Save failed: Server communication error.");
+					}
+				}
+			}
+
+		});
 		
 		close_system.setOnAction( e -> {
 			
@@ -519,47 +659,70 @@ public class RevController implements Initializable, ClientCallback {
 		
 		settings.setOnAction(e -> {
 			Stage settings_stage = new Stage();
-			AnchorPane root = new AnchorPane();			
-			//VBox configurations_settings = new VBox();
+			AnchorPane root = new AnchorPane();
+			// VBox configurations_settings = new VBox();
 			Label plus_trs = new Label("Set Amount of Treatment Roooms");
 			TextField set_no_trs = new TextField();
 			set_no_trs.setPromptText("1-10");
 			Button save_no_trs = new Button("Set");
-			set_no_trs.setLayoutY(25.0);	
+			set_no_trs.setLayoutY(25.0);
 			save_no_trs.setLayoutY(52.0);
-			
+
 			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					Integer i = (Integer.parseInt(set_no_trs.getText().toString()));
+					Integer i = (Integer.parseInt(set_no_trs.getText()
+							.toString()));
 					int a = i;
-				if (i < 0)  {
-					Notifications.create().title("Not Enough Treatment Rooms added").text("Please set a number between 1-10").darkStyle().showError();
-				} else if (i > 10) {
-					Notifications.create().title("Too Many Treatment Rooms added").text("Please set a number between 1-10").darkStyle().showError();
-				} else {
-					settings_stage.close();
+					if (i < 0) {
+						Notifications.create()
+								.title("Not Enough Treatment Rooms added")
+								.text("Please set a number between 1-10")
+								.darkStyle().showError();
+					} else if (i > 10) {
+						Notifications.create()
+								.title("Too Many Treatment Rooms added")
+								.text("Please set a number between 1-10")
+								.darkStyle().showError();
+					} else {
+						// switch statement on the user entry to set a new
+						// treatment room number
+						switch (i) {
+						// for a case, set the new treatment room count as the
+						// same as the number entered in the text field
+						case 1:
+							setNewTreatmentRoomCount(i);
+							// start the method to change the treatment rooms
+							newArrayList();
+							break;
+						default:
+							// set the default
+							setNewTreatmentRoomCount(i);
+							// start the method to change the treatment rooms
+							newArrayList();
+						}// end of switch
+							// once clicking on submit, close the tab
+
+						settings_stage.close();
+					}
 				}
-				}});
-			
-			root.getChildren().addAll(plus_trs,set_no_trs, save_no_trs);
+			});
+
+			root.getChildren().addAll(plus_trs, set_no_trs, save_no_trs);
 			Scene s = new Scene(root, 200, 200);
 			settings_stage.setScene(s);
-			settings_stage.show();	
-			
-			
+			settings_stage.show();
+
 		});
-		
-		
-		
+
 		login.setOnAction(e -> {
 
 			Label l1 = new Label("Welcome to Triage!");
 			TextField tf1 = new TextField();
 			PasswordField tf2 = new PasswordField();
 			AnchorPane ap1 = new AnchorPane();
-			ap1.setPrefSize(190,190);
+			ap1.setPrefSize(190, 190);
 			Button bt1 = new Button();
 			Button bt2 = new Button();
 			Button bt3 = new Button();
@@ -575,14 +738,14 @@ public class RevController implements Initializable, ClientCallback {
 			bt2.setLayoutX(50);
 			bt3.setText("Forgot Username or Password");
 			bt3.setLayoutY(80);
-			
+
 			bt1.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					
-					Staff s1 = new Staff();					
-					boolean logMeIn = false;					
+
+					Staff s1 = new Staff();
+					boolean logMeIn = false;
 					String _user = tf1.getText();
 					String _pass = tf2.getText();
 					String db_pass = s1.setEmployeePassword(_pass);
@@ -603,36 +766,40 @@ public class RevController implements Initializable, ClientCallback {
 						
 					try {
 						// Create the client
-						client = new RMIClient(RevController.this, _user, db_pass);
-						log("Connected to server and registered for updates.");
-						
+						client = new RMIClient(RevController.this, _user,
+								db_pass);
+						// Add a message to the log
+						log("Logged in as " + _user);
+
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
-						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER_LEFT).showConfirm();	
+						Notifications.create().title("Login failed").text("Server communication error.").showConfirm();	
 						log("Login failed: Server communication error.");
 						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
-						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER_LEFT).showConfirm();	
+						Notifications.create().title("Login failed").text("Invalid username or password.").showConfirm();	
 						log("Login failed: Invalid username or password.");
 						ex.printStackTrace();
 					} 
 					
 					if (logMeIn == true){
 					login_pop.hide();			
-					Notifications.create().title("Logged in").text("F2D!").position(Pos.CENTER_LEFT).showConfirm();		
+					Notifications.create().title("Logged in").text("F2D!").showConfirm();		
 
 						Staff loggedInUser = null;
 						try {
-							loggedInUser = client.getServer().searchStaffByUsername(client.getClientID(), _user);
+							loggedInUser = client.getServer()
+									.searchStaffByUsername(
+											client.getClientID(), _user);
 						} catch (AuthenticationException | RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						} 
-					
+						}
+
 						if (loggedInUser == null) {
 							return;
 						}
-						
+
 						staff_LastName = loggedInUser.getLastName();
 						staff_FirstName = loggedInUser.getFirstName();
 
@@ -662,51 +829,54 @@ public class RevController implements Initializable, ClientCallback {
 					}
 				}
 			});
-			
+
 			bt2.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					
+
+					client.close();
 					resetTriage();
-					
+
 				}
 			});
-			
+
 			bt3.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					
+
 					PopOver userNameRequest = new PopOver();
 					Label emailLabel = new Label("Enter Email");
 					TextField EmailRequest = new TextField();
-					Button ConfirmRequest = new Button();
-					
+					Button ConfirmRequest = new Button("Send Request");
+					Button CancelRequest = new Button("Cancel");
 					EmailRequest.setLayoutY(26);
-					ConfirmRequest.setText("Send Request");
 					ConfirmRequest.setLayoutY(60);
-					
+					CancelRequest.setLayoutY(60);
+					CancelRequest.setLayoutX(90);
 					AnchorPane forgot = new AnchorPane();
-					forgot.setPrefSize(100,100);
-					forgot.getChildren().add(EmailRequest);
-					forgot.getChildren().add(ConfirmRequest);
-					forgot.getChildren().add(emailLabel);
+					forgot.setPrefSize(100, 100);
+					forgot.getChildren().addAll(EmailRequest, ConfirmRequest,
+							emailLabel, CancelRequest);
 					userNameRequest.setContentNode(forgot);
-					
 					userNameRequest.show(bt3);
-					
+
 					ConfirmRequest.setOnAction(new EventHandler<ActionEvent>() {
 
 						@Override
 						public void handle(ActionEvent event) {
-							
 							emailNewPassword(EmailRequest);
 							userNameRequest.hide();
 							login_pop.hide();
-							
 						}
-						
+					});
+					CancelRequest.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent event) {
+							login_pop.hide();
+						}
 					});
 				}
 			});
@@ -724,90 +894,108 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		re_assign.setOnAction(e -> {
-			
+
 			PopOver reassign_priority = new PopOver();
-			CheckBox set_e = new CheckBox("EMERGENCY"); set_e.setStyle("-fx-base: salmon;"); set_e.setLayoutY(26); set_e.setLayoutX(14);
-			CheckBox set_u = new CheckBox("Urgent"); set_u.setStyle("-fx-base: orange;"); set_u.setLayoutY(52); set_u.setLayoutX(14);
-			CheckBox set_semi_u = new CheckBox("Semi-Urgent"); set_semi_u.setStyle("-fx-base: yellow;"); set_semi_u.setLayoutY(78); set_semi_u.setLayoutX(14);
-			CheckBox set_non_u = new CheckBox("Non-Urgent"); set_non_u.setStyle("-fx-base: lightgreen;"); set_non_u.setLayoutY(104); set_non_u.setLayoutX(14);
-			Button confirm_new_priority = new Button("Confirm"); confirm_new_priority.setLayoutY(132); confirm_new_priority.setLayoutX(14);
-			Label select_new_urgency = new Label("Please Select the appropriate Priority Level:"); select_new_urgency.setLayoutX(14);
+			CheckBox set_e = new CheckBox("EMERGENCY");
+			set_e.setStyle("-fx-base: salmon;");
+			set_e.setLayoutY(26);
+			set_e.setLayoutX(14);
+			CheckBox set_u = new CheckBox("Urgent");
+			set_u.setStyle("-fx-base: orange;");
+			set_u.setLayoutY(52);
+			set_u.setLayoutX(14);
+			CheckBox set_semi_u = new CheckBox("Semi-Urgent");
+			set_semi_u.setStyle("-fx-base: yellow;");
+			set_semi_u.setLayoutY(78);
+			set_semi_u.setLayoutX(14);
+			CheckBox set_non_u = new CheckBox("Non-Urgent");
+			set_non_u.setStyle("-fx-base: lightgreen;");
+			set_non_u.setLayoutY(104);
+			set_non_u.setLayoutX(14);
+			Button confirm_new_priority = new Button("Confirm");
+			confirm_new_priority.setLayoutY(132);
+			confirm_new_priority.setLayoutX(14);
+			Label select_new_urgency = new Label(
+					"Please Select the appropriate Priority Level:");
+			select_new_urgency.setLayoutX(14);
 			AnchorPane re_assign_pane = new AnchorPane();
-			re_assign_pane.setPrefSize(280,190);
-			re_assign_pane.getChildren().addAll(select_new_urgency, set_e, set_u, set_semi_u, set_non_u, confirm_new_priority);
+			re_assign_pane.setPrefSize(280, 190);
+			re_assign_pane.getChildren().addAll(select_new_urgency, set_e,
+					set_u, set_semi_u, set_non_u, confirm_new_priority);
 			reassign_priority.setContentNode(re_assign_pane);
 			reassign_priority.show(re_assign);
-			
+
 			confirm_new_priority.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent event){
-					
-					String potential = (String) queue.getSelectionModel().getSelectedItem();
+				public void handle(ActionEvent event) {
+
+					String potential = (String) queue.getSelectionModel()
+							.getSelectedItem();
 					if (potential != null) {
-						//queue.getSelectionModel().clearSelection();
-						//QList.remove(potential);
-						//trList.remove(0);
-						//trList.add(3, "");
-						//trList.add(3, potential);				
-						outputTextArea.appendText(potential+" is now !\n");
+						// queue.getSelectionModel().clearSelection();
+						// QList.remove(potential);
+						// trList.remove(0);
+						// trList.add(3, "");
+						// trList.add(3, potential);
+						outputTextArea.appendText(potential + " is now !\n");
 						reassign_priority.hide();
 					}
-					
+
 				}
 			});
-			
+
 			set_e.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent event){
-					
+				public void handle(ActionEvent event) {
+
 					set_u.setSelected(false);
 					set_semi_u.setSelected(false);
 					set_non_u.setSelected(false);
-				
+
 				}
 			});
-			
+
 			set_u.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent event){
+				public void handle(ActionEvent event) {
 					set_e.setSelected(false);
 					set_semi_u.setSelected(false);
 					set_non_u.setSelected(false);
 				}
 			});
-			
+
 			set_semi_u.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent event){
+				public void handle(ActionEvent event) {
 					set_e.setSelected(false);
 					set_u.setSelected(false);
 					set_non_u.setSelected(false);
 				}
 			});
-			
+
 			set_non_u.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent event){
-					
+				public void handle(ActionEvent event) {
+
 					set_e.setSelected(false);
 					set_u.setSelected(false);
 					set_semi_u.setSelected(false);
 				}
 			});
-						
+
 		});
-				
-		Q_view.setOnAction(e -> {			
-			q_pop.show(Q_view);				
+
+		Q_view.setOnAction(e -> {
+			q_pop.show(Q_view);
 		});
-		
-		TRooms_view.setOnAction(e -> {			
-			tr_pop.show(TRooms_view);						
+
+		TRooms_view.setOnAction(e -> {
+			tr_pop.show(TRooms_view);
 		});
 
 		search_database.setOnAction(e -> {
@@ -818,7 +1006,7 @@ public class RevController implements Initializable, ClientCallback {
 			if (matchingPeople.size() == 1) {
 				displayedPerson = matchingPeople.get(0);
 				// display the matching person
-				displayPerson(displayedPerson);
+				displayTriagePerson(displayedPerson);
 				// Enable triage as there is a patient being displayed.
 				enableTriage();
 				
@@ -831,7 +1019,9 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb1.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has a blocked airway!\n");
+			outputTextArea.appendText(textfield_Surname.getText() + ", "
+					+ textfield_First_Name.getText()
+					+ " has a blocked airway!\n");
 			tb1.setText("!");
 			tb1.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -839,7 +1029,9 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb2.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has difficulty breathing!\n");
+			outputTextArea.appendText(textfield_Surname.getText() + ", "
+					+ textfield_First_Name.getText()
+					+ " has difficulty breathing!\n");
 			tb2.setText("!");
 			tb2.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -847,7 +1039,9 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb3.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has suspected cervia spine trauma!\n");
+			outputTextArea.appendText(textfield_Surname.getText() + ", "
+					+ textfield_First_Name.getText()
+					+ " has suspected cervia spine trauma!\n");
 			tb3.setText("!");
 			tb3.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -855,7 +1049,9 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb4.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has circulation difficulties!\n");
+			outputTextArea.appendText(textfield_Surname.getText() + ", "
+					+ textfield_First_Name.getText()
+					+ " has circulation difficulties!\n");
 			tb4.setText("!");
 			tb4.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -863,7 +1059,8 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb5.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" is incapacitated!\n");
+			outputTextArea.appendText(textfield_Surname.getText() + ", "
+					+ textfield_First_Name.getText() + " is incapacitated!\n");
 			tb5.setText("!");
 			tb5.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -871,7 +1068,9 @@ public class RevController implements Initializable, ClientCallback {
 		});
 
 		tb6.setOnAction(e -> {
-			outputTextArea.appendText(textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been exposed to extreme conditions!\n");
+			outputTextArea.appendText(textfield_Surname.getText() + ", "
+					+ textfield_First_Name.getText()
+					+ " has been exposed to extreme conditions!\n");
 			tb6.setText("!");
 			tb6.setStyle("-fx-base: salmon;");
 			emergency.setDisable(false);
@@ -880,88 +1079,77 @@ public class RevController implements Initializable, ClientCallback {
 
 		emergency.setOnAction(e -> {
 			
-			/*Patient emergency_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.EMERGENCY);
-			emergency_room.add(emergency_patient);
-			treatmentRoomsView(emergency_room);
-			trList.add(emergency_patient.getPatientName());
-			trooms.setItems(trList);
-						
+			// Create an emergency patient based on the displayed person
+			Patient emergency_patient = new Patient(displayedPerson, Urgency.EMERGENCY, "");
+			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
-				*/					
+								
 			try {
-				client.getServer().addPrimaryPatient(client.getClientID(), displayedPerson, tb1.isSelected(), tb2.isSelected(), tb3.isSelected(), tb4.isSelected(), tb5.isSelected(), tb6.isSelected());
+				// Add the emergency patient to the back end
+				client.getServer().addPatient(client.getClientID(), emergency_patient);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			
-			clearTextFields();
+			clearTriageTextFields();
 			resetTriage();
 		});
 
 		urg.setOnAction(e -> {
-			
-			/*Patient urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.URGENT);
-			waiting_room.add(urgent_patient);
-			waitingRoomView(waiting_room);
-			QList.add(urgent_patient.getPatientName());
-			queue.setItems(QList);
-			*/
+			// Create an urgent patient based on the displayed person
+			Patient urgent_patient = new Patient(displayedPerson, Urgency.URGENT, "");
 			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			
 			try {
-				client.getServer().addSecondaryPatient(client.getClientID(), displayedPerson, Urgency.URGENT, true, true, 0, 0, null, null);
+				// Add the urgent patient to the back end
+				client.getServer().addPatient(client.getClientID(), urgent_patient);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			
-			clearTextFields();
+			clearTriageTextFields();
 			resetTriage();
 		});
 
 		semi_urg.setOnAction(e -> {
-			
-			/*Patient semi_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.SEMI_URGENT);
-			waiting_room.add(semi_urgent_patient);
-			waitingRoomView(waiting_room);
-			QList.add(semi_urgent_patient.getPatientName());
-			queue.setItems(QList);*/
+			// Create a semi-urgent patient based on the displayed person
+			Patient semi_urgent_patient = new Patient(displayedPerson, Urgency.SEMI_URGENT, "");
+
 			outputTextArea.appendText("Semi-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			
 			try {
-				client.getServer().addSecondaryPatient(client.getClientID(), displayedPerson, Urgency.SEMI_URGENT, true, true, 0, 0, null, null);
+				// Add the semi-urgent patient to the back end
+				client.getServer().addPatient(client.getClientID(), semi_urgent_patient);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			
-			clearTextFields();
+			clearTriageTextFields();
 			resetTriage();
 		});
 
 		non_urg.setOnAction(e -> {
-			
-			/*Patient non_urgent_patient = new Patient(new Person(textfield_NHS_Num.getText(), textfield_Title.getText(), textfield_First_Name.getText(), textfield_Surname.getText(), textfield_DOB.getText(), textfield_Address.getText(), textfield_Postcode.getText(), textfield_Telephone.getText(), textfield_Blood_Group.getText(), null, null, null, null), Urgency.NON_URGENT);
-			waiting_room.add(non_urgent_patient);
-			waitingRoomView(waiting_room);
-			QList.add(non_urgent_patient.getPatientName());
-			queue.setItems(QList);*/
-			//outputTextArea.appendText(non_urgent_patient.getPatientName()+" has been added to the Queue!\n");
+			// Create a non-urgent patient based on the displayed person
+			Patient non_urgent_patient = new Patient(displayedPerson, Urgency.NON_URGENT, "");
+
 			outputTextArea.appendText("Non-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			
 			try {
-				client.getServer().addSecondaryPatient(client.getClientID(), displayedPerson, Urgency.NON_URGENT, true, true, 0, 0, null, null);
+				// Add the non-urgent patient to the back end
+				client.getServer().addPatient(client.getClientID(), non_urgent_patient);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			
-			clearTextFields();
+
+			clearTriageTextFields();
 			resetTriage();
 		});
-		
+
 		walk.setOnAction(e -> {
 			walk_no.setSelected(false);
 			if (breathing_yes.getSelectionModel().getSelectedIndex() == 0) {
-			non_urg.setDisable(false);
-			non_urg.setStyle("-fx-base: green;");
+				non_urg.setDisable(false);
+				non_urg.setStyle("-fx-base: green;");
 			} else if (breathing_yes.getSelectionModel().getSelectedIndex() == 1) {
 				urg.setDisable(false);
 				urg.setStyle("-fx-base: orange;");
@@ -973,33 +1161,38 @@ public class RevController implements Initializable, ClientCallback {
 			if (breathing_yes.getSelectionModel().getSelectedIndex() == 0) {
 				semi_urg.setDisable(false);
 				semi_urg.setStyle("-fx-base: yellow;");
-				} else if (breathing_yes.getSelectionModel().getSelectedIndex() == 1) {
-					emergency.setDisable(false);
-					emergency.setStyle("-fx-base: red;");
-				}
-		});
-		
-		extend.setOnAction(e -> {
-			
-			try {
-				//client.getServer().extendTreatmentTime(null, null);
-				//client.getServer().extendTreatmentTime(null);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} else if (breathing_yes.getSelectionModel().getSelectedIndex() == 1) {
+				emergency.setDisable(false);
+				emergency.setStyle("-fx-base: red;");
 			}
+		});
+
+		extend.setOnAction(e -> {
 			
 			AnchorPane ap_ext = new AnchorPane();
 			Label extension = new Label("Confirm Extension Request");
-			TextField extension_request = new TextField(); extension_request.setLayoutY(26);
-			Button extension_confirm = new Button("Confirm"); extension_confirm.setLayoutY(52);
-			
+			TextField extension_request = new TextField();
+			extension_request.setLayoutY(26);
+			Button extension_confirm = new Button("Confirm");
+			extension_confirm.setLayoutY(52);
+
 			extension_confirm.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					Notifications.create().title("Extension Granted").text("Extended for 5 minutes").darkStyle().showConfirm();
-					extension_pop.hide();
+					// Boolean to hold whether the udpate was successful or not
+					boolean updateSuccessful = false;
+					try {
+
+						// Request the update via the server and get a result as a boolean
+						client.getServer().extendTreatmentTime(client.getClientID(), getSelectedTreatmentRoom(), ExtensionReason.SITUATION_UNRESOLVED);
+						Notifications.create().title("Extension Granted").text("Extended for 5 minutes").darkStyle().showConfirm();
+						extension_pop.hide();
+					} catch (Exception e1) {
+						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showConfirm();
+						extension_pop.hide();
+					}
+
 				}
 				});
 			
@@ -1012,49 +1205,72 @@ public class RevController implements Initializable, ClientCallback {
 		
 			// Set up the event when the user clicks the treatment room selection
 			// combobox on the treatment room tab
-			select_tr.setOnAction(e -> {
-				
-				// Get the selected room index
-				int selectedRoomIndex = select_tr.getSelectionModel().getSelectedIndex();
-				
-				// If the room is within bounds and the facility at the index is a treatment room
-				if (selectedRoomIndex < treatmentFacilities.size() 
-						&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
-					// Cast the selected facility to a treatment room
-					TreatmentRoom room = (TreatmentRoom)treatmentFacilities.get(selectedRoomIndex);
-					
-					// Init the detail strings to empty strings.
-					String urgency = "", doctorsNotes = "", incidentDetails = "";
-					
-					// If the room has a patient in it then get their details.
-					if (room.getPatient() != null)
-					{
-						urgency = room.getPatient().getUrgency().toString();
-						doctorsNotes = room.getPatient().getPerson().getDoctorsNotes();
-						incidentDetails = "Incident Details";
-					}
-					
-					// Display the details in the text fields, if there was no patient
-					// they will be empty.
-					tr_patient_urgency.setText(urgency);
-					tr_treatment_notes.setText(doctorsNotes);
-					tr_incident_details.setText(incidentDetails);
-						
-				}
-				
+			select_tr.getSelectionModel().selectedItemProperty().addListener(e -> {
+				// Display the treatment room based on the selected room in select_tr
+				displaySelectedTreatmentRoom();
 			});
+			
+			
 		
 		
 		
 	}
 	
+	/**
+	 * Display the details of a treatment room based on the selected room in select_tr
+	 */
+	public void displaySelectedTreatmentRoom() {
+
+		TreatmentRoom room = getSelectedTreatmentRoom();
+		// If there is a room selected and it contains a patient
+		if (room != null && room.getPatient() != null) {
+			// Enable the button
+			tr_button_save.setDisable(false);
+			extend.setDisable(false);
+			// Display the room
+			tr_patient_urgency.setText(room.getPatient().getUrgency().toString());
+			tr_incident_details.setText("Incident Details");
+			displayTreatmentRoomPerson(room.getPatient().getPerson());
+			
+			treatmentRoomEggTimer(room);
+		} else { // else clear the text boxes and disable the buttons
+			// Disable the save notes button
+			tr_button_save.setDisable(true);
+			extend.setDisable(true);
+			// Clear out the text fields
+			clearTreatmentRoomTextFields();
+		}
+		// ensure cancel button is disabled at first
+		cancel_extension.setDisable(true);
+		
+
+	}
+	
+	/**
+	 * Gets the current selected treatment room on the treatment room tab
+	 */
+	public TreatmentRoom getSelectedTreatmentRoom(){
+		
+		// Get the selected room index
+		int selectedRoomIndex = select_tr.getSelectionModel().getSelectedIndex();
+		
+		// If the selected index is within bounds and the facility at that index is a treatment room
+		if (selectedRoomIndex < treatmentFacilities.size() 
+		&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
+			// return the treatment room at the selected index
+			return (TreatmentRoom)treatmentFacilities.get(selectedRoomIndex);
+		} else {
+			// else return null
+			return null;
+		}
+	}
 	
 	/**
 	 * Display a person in the patient triage tab.
 	 *
 	 * @param displayedPerson
 	 */
-	public void displayPerson(Person displayedPerson) {
+	public void displayTriagePerson(Person displayedPerson) {
 
 		textfield_First_Name.setText(displayedPerson.getFirstName());
 		textfield_Surname.setText(displayedPerson.getLastName());
@@ -1075,57 +1291,101 @@ public class RevController implements Initializable, ClientCallback {
 			allergy.setValue(displayedPerson.getAllergies());
 		}
 	}
+	
+	/**
+	 * Display a person in the patient treatment room tab.
+	 *
+	 * @param displayedPerson
+	 */
+	public void displayTreatmentRoomPerson(Person displayedPerson) {
+
+		tr_textfield_First_Name.setText(displayedPerson.getFirstName());
+		tr_textfield_Surname.setText(displayedPerson.getLastName());
+		tr_textfield_NHS_Num.setText(displayedPerson.getNHSNum());
+		tr_textfield_Title.setText(displayedPerson.getTitle());
+		tr_textfield_DOB.setText(displayedPerson.getDOB());
+		tr_textfield_Address.setText(displayedPerson.getAddress());
+		tr_textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
+		tr_textfield_Postcode.setText(displayedPerson.getPostcode());
+		tr_textfield_Telephone.setText(displayedPerson.getTelephone());
+		tr_treatment_notes.setText(displayedPerson.getDoctorsNotes());
+		
+		// If the returned allergy is "null" set the allergy
+		// box to display "None".
+		if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
+			allergy.setValue(allergic[0]);
+		} else {
+			// Else set the allergy box value to the returned alergy
+			allergy.setValue(displayedPerson.getAllergies());
+		}
+	}
 
 	/**
 	 * View patient details in... de...tail.......
-	 * @param ObservableList<Patient> oL
+	 * 
+	 * @param ObservableList
+	 *            <Patient> oL
 	 */
-	private void treatmentRoomsView(ObservableList<Patient> o ) {
-				
-		AnchorPane ap3 = new AnchorPane();			
-		Button close_view1 = new Button("x"); close_view1.setStyle("-fx-base: red;");
-		TableView<Patient>  treatmentRoomTable = new TableView<Patient>(); treatmentRoomTable.setLayoutY(26);
-		
-		TableColumn patName = new TableColumn("Patient");			
-		patName.setCellValueFactory(new PropertyValueFactory<Object, String>("patientName"));
-		
-		TableColumn Urgency = new TableColumn("Urgency");			
-		Urgency.setCellValueFactory(new PropertyValueFactory<Object, String>("urgency"));
-		
-		TableColumn WaitingTime = new TableColumn("Wait Time");			
-		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
-		
+	private void treatmentRoomsView(ObservableList<Patient> o) {
+
+		AnchorPane ap3 = new AnchorPane();
+		Button close_view1 = new Button("x");
+		close_view1.setStyle("-fx-base: red;");
+		TableView<Patient> treatmentRoomTable = new TableView<Patient>();
+		treatmentRoomTable.setLayoutY(26);
+
+		TableColumn patName = new TableColumn("Patient");
+		patName.setCellValueFactory(new PropertyValueFactory<Object, String>(
+				"patientName"));
+
+		TableColumn Urgency = new TableColumn("Urgency");
+		Urgency.setCellValueFactory(new PropertyValueFactory<Object, String>(
+				"urgency"));
+
+		TableColumn WaitingTime = new TableColumn("Wait Time");
+		WaitingTime
+				.setCellValueFactory(new PropertyValueFactory<Object, String>(
+						"waitTime"));
+
 		treatmentRoomTable.setItems(o);
 		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
 		ap3.getChildren().addAll(treatmentRoomTable, close_view1);
 		tr_pop.setContentNode(ap3);
-		
+
 	}
-	
+
 	/**
 	 * View patient details in... de...tail.......
-	 * @param ObservableList<Patient> oL
+	 * 
+	 * @param ObservableList
+	 *            <Patient> oL
 	 */
-	private void waitingRoomView(ObservableList<Patient> oL ) {
-		
-		AnchorPane ap2 = new AnchorPane();	
-		Button close_view2 = new Button("x"); close_view2.setStyle("-fx-base: red;");
-		TableView<Patient>  waitingRoomTable = new TableView<Patient>(); waitingRoomTable.setLayoutY(26);
-		
-		TableColumn patName1 = new TableColumn("Patient");			
-		patName1.setCellValueFactory(new PropertyValueFactory<Object, String>("patientName"));
-		
-		TableColumn Urgency1 = new TableColumn("Urgency");			
-		Urgency1.setCellValueFactory(new PropertyValueFactory<Object, String>("urgency"));
-		
-		TableColumn WaitingTime1 = new TableColumn("Wait Time");			
-		WaitingTime1.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
-		
+	private void waitingRoomView(ObservableList<Patient> oL) {
+
+		AnchorPane ap2 = new AnchorPane();
+		Button close_view2 = new Button("x");
+		close_view2.setStyle("-fx-base: red;");
+		TableView<Patient> waitingRoomTable = new TableView<Patient>();
+		waitingRoomTable.setLayoutY(26);
+
+		TableColumn patName1 = new TableColumn("Patient");
+		patName1.setCellValueFactory(new PropertyValueFactory<Object, String>(
+				"patientName"));
+
+		TableColumn Urgency1 = new TableColumn("Urgency");
+		Urgency1.setCellValueFactory(new PropertyValueFactory<Object, String>(
+				"urgency"));
+
+		TableColumn WaitingTime1 = new TableColumn("Wait Time");
+		WaitingTime1
+				.setCellValueFactory(new PropertyValueFactory<Object, String>(
+						"waitTime"));
+
 		waitingRoomTable.setItems(oL);
 		waitingRoomTable.getColumns().addAll(patName1, Urgency1, WaitingTime1);
 		ap2.getChildren().addAll(waitingRoomTable, close_view2);
 		q_pop.setContentNode(ap2);
-		
+
 	}
 
 	/**
@@ -1144,7 +1404,7 @@ public class RevController implements Initializable, ClientCallback {
 	/**
 	 * clear patient details after priority set
 	 */
-	private void clearTextFields() {
+	private void clearTriageTextFields() {
 
 		textfield_First_Name.clear();
 		textfield_Surname.clear();
@@ -1156,6 +1416,26 @@ public class RevController implements Initializable, ClientCallback {
 		textfield_Postcode.clear();
 		textfield_Telephone.clear();
 		allergy.setValue(null);
+	}
+	
+	/**
+	 * clear patient details after priority set
+	 */
+	private void clearTreatmentRoomTextFields() {
+
+		tr_textfield_First_Name.clear();
+		tr_textfield_Surname.clear();
+		tr_textfield_NHS_Num.clear();
+		tr_textfield_Title.clear();
+		tr_textfield_DOB.clear();
+		tr_textfield_Address.clear();
+		tr_textfield_Blood_Group.clear();
+		tr_textfield_Postcode.clear();
+		tr_textfield_Telephone.clear();
+		tr_allergy.setValue(null);
+		tr_treatment_notes.clear();
+		tr_patient_urgency.clear();
+		tr_incident_details.clear();
 	}
 
 	/**
@@ -1212,7 +1492,7 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 	/**
-	 * enable controls to elicit triage 
+	 * enable controls to elicit triage
 	 */
 	private void enableTriage() {
 
@@ -1237,15 +1517,16 @@ public class RevController implements Initializable, ClientCallback {
 		// Store the passed in queue and treatment facilities
 		this.queueList = queue;
 		this.treatmentFacilities = treatmentFacilities;
-		
+
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// Update the queue on the UI with the updated data
 				updateQueue();
-				// Update the treatment room list on the UI with the updated data
+				// Update the treatment room list on the UI with the updated
+				// data
 				updateTreatmentRooms();
 			}
 		});
@@ -1255,10 +1536,10 @@ public class RevController implements Initializable, ClientCallback {
 	public void log(String log) {
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
-					outputTextArea.appendText(log + "\n");
+				outputTextArea.appendText(log + "\n");
 			}
 		});
 	}
@@ -1267,58 +1548,75 @@ public class RevController implements Initializable, ClientCallback {
 	 * Set tooltips for UI controls
 	 */
 	private void toolTime() {
-		
-		triage_tab.setTooltip(new Tooltip("Search Patient Database and commence triage"));
+
+		triage_tab.setTooltip(new Tooltip(
+				"Search Patient Database and commence triage"));
 		tr_tab.setTooltip(new Tooltip("Display Treatment Room details"));
-		stats_tab.setTooltip(new Tooltip("Display Management System Statistics"));
+		stats_tab
+				.setTooltip(new Tooltip("Display Management System Statistics"));
 		login.setTooltip(new Tooltip("Log in here"));
-		re_assign.setTooltip(new Tooltip("Select a Patient in the Queue to Upgrade to EMERGENCY!"));		
+		re_assign.setTooltip(new Tooltip(
+				"Select a Patient in the Queue to Upgrade to EMERGENCY!"));
 		Q_view.setTooltip(new Tooltip("View Queued Patient Details"));
-		TRooms_view.setTooltip(new Tooltip("View Treatment Room Patient Details"));
+		TRooms_view.setTooltip(new Tooltip(
+				"View Treatment Room Patient Details"));
 		search_database.setTooltip(new Tooltip("Search NHS DBMS"));
 		tb1.setTooltip(new Tooltip("Patient has BLOCKED AIRWAY!"));
 		tb2.setTooltip(new Tooltip("Patient is NOT BREATHING!"));
 		tb3.setTooltip(new Tooltip("Patient has suspected SPINAL TRAUMA!"));
 		tb4.setTooltip(new Tooltip("Patient is LOSING BLOOD!"));
 		tb5.setTooltip(new Tooltip("Patient is INCAPACITATED!"));
-		tb6.setTooltip(new Tooltip("Patient has been EXPOSED TO EXTREME CONDITIONS!"));
-		emergency.setTooltip(new Tooltip("Send Patiently directly to Treatment Room"));
-		urg.setTooltip(new Tooltip("Send Patient to Waiting Room with URGENT priority"));
-		semi_urg.setTooltip(new Tooltip("Send Patient to Waiting Room with SEMI-URGENT priority"));
+		tb6.setTooltip(new Tooltip(
+				"Patient has been EXPOSED TO EXTREME CONDITIONS!"));
+		emergency.setTooltip(new Tooltip(
+				"Send Patiently directly to Treatment Room"));
+		urg.setTooltip(new Tooltip(
+				"Send Patient to Waiting Room with URGENT priority"));
+		semi_urg.setTooltip(new Tooltip(
+				"Send Patient to Waiting Room with SEMI-URGENT priority"));
 		non_urg.setTooltip(new Tooltip("Send Patient to Waiting Room"));
 		extend.setTooltip(new Tooltip("Extend Patient Treatment time"));
-		search_DOB.setTooltip(new Tooltip("Enter D.o.B. in the Format DD/MM/YYYY"));
+		search_DOB.setTooltip(new Tooltip(
+				"Enter D.o.B. in the Format DD/MM/YYYY"));
 		search_First_Name.setTooltip(new Tooltip("Search by Name"));
 		search_NHS_No.setTooltip(new Tooltip("Search by Patient NHS Number"));
 		search_Postcode.setTooltip(new Tooltip("Enter Postcode"));
 		search_Surname.setTooltip(new Tooltip("Search by Name"));
-		search_Telephone_No.setTooltip(new Tooltip("Enter Telephone Number"));	
+		search_Telephone_No.setTooltip(new Tooltip("Enter Telephone Number"));
 		respiratory_rate.setTooltip(new Tooltip("Breaths taken per minute"));
 		pulse_rate.setTooltip(new Tooltip("Heart beats taken per minute"));
 		breathing_yes.setTooltip(new Tooltip("Select option"));
 		walk.setTooltip(new Tooltip("The patient is mobile and stable"));
-		walk_no.setTooltip(new Tooltip("The patient is immobile and requires assistence"));
+		walk_no.setTooltip(new Tooltip(
+				"The patient is immobile and requires assistence"));
 		conditions.setTooltip(new Tooltip("Select option"));
 		medication.setTooltip(new Tooltip("Select option"));
 		server_check.setTooltip(new Tooltip("Server Status"));
 	}
 
-
-	/** Method called by RMIClient when the remote server reports that the queue is full */
+	/**
+	 * Method called by RMIClient when the remote server reports that the queue
+	 * is full
+	 */
 	@Override
 	public void alertQueueFull() throws RemoteException {
-		
+		Notifications.create().title("Queue full").text("").showConfirm();	
+		log("Queue full.");
+
 	}
-	
-	/** Called by RMI client when the server status changes (whether its accessible or not) */
+
+	/**
+	 * Called by RMI client when the server status changes (whether its
+	 * accessible or not)
+	 */
 	public void serverStatusChanged(ConnectionState accessible) {
 
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				switch(accessible) {
+				switch (accessible) {
 				case CONNECTED:
 					outputTextArea.appendText("Server accessible\n");
 					server_check.setText("Server Connected");
@@ -1329,14 +1627,18 @@ public class RevController implements Initializable, ClientCallback {
 					server_check.setText("Connection Error");
 					server_check.setStyle("-fx-base: red;");
 					server_check.setSelected(false);
-					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
+					server_check
+							.setTooltip(new Tooltip(
+									"Please check connection to Server and re-connect"));
 					break;
 				case NOT_CONNECTED:
 					outputTextArea.appendText("Not connected to server.\n");
 					server_check.setText("Not Connected");
-					server_check.setStyle("-fx-base: red;");
+					server_check.setStyle("-fx-base: blue;");
 					server_check.setSelected(false);
-					server_check.setTooltip(new Tooltip("Please check connection to Server and re-connect"));
+					server_check
+							.setTooltip(new Tooltip(
+									"Please check connection to Server and re-connect"));
 					break;
 				case CONNECTING:
 					outputTextArea.appendText("Connecting to server...\n");
@@ -1347,30 +1649,37 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		});
 	}
-	
+
 	/**
 	 * Calls server method to find people
-	 * @return A list of people who match the details input into the search fields
+	 * 
+	 * @return A list of people who match the details input into the search
+	 *         fields
 	 */
 	public List<Person> searchForPerson() {
 		// Init a list to hold the results
 		List<Person> foundPeople = null;
-		
+
 		try {
-			// Call the searchPersonByDetails method on the server to get the details from the database
-			foundPeople = client.getServer().searchPersonByDetails(client.getClientID(), search_NHS_No.getText() ,search_First_Name.getText(), search_Surname.getText(), search_DOB.getText(), search_Postcode.getText(), search_Telephone_No.getText());
+			// Call the searchPersonByDetails method on the server to get the
+			// details from the database
+			foundPeople = client.getServer().searchPersonByDetails(
+					client.getClientID(), search_NHS_No.getText(),
+					search_First_Name.getText(), search_Surname.getText(),
+					search_DOB.getText(), search_Postcode.getText(),
+					search_Telephone_No.getText());
 		} catch (RemoteException ex) {
 			System.err.println("Server communication error.");
 			ex.printStackTrace();
 		} catch (AuthenticationException ex) {
 			System.err.println("not authenticated to the server, please login");
 			ex.printStackTrace();
-		}	
-		
+		}
+
 		// return the results.
 		return foundPeople;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -1414,7 +1723,7 @@ public class RevController implements Initializable, ClientCallback {
 			message.setSubject("PAS username and password retrival");
 
 			// Now set the actual message
-			message.setText("Your new Password is xxxxxxxx");
+			message.setText("Your new Username is xxxxxx. Your new Password is xxxxxxxx.");
 
 			// Send message
 			Transport.send(message);
@@ -1423,26 +1732,60 @@ public class RevController implements Initializable, ClientCallback {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
 	/**
 	 * Alert the user that they are logged off.
 	 */
 	public void alertLoggedOff() {
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				
-				Notifications.create().title("You have been logged off").text("Please reconnect.").position(Pos.CENTER_LEFT).showConfirm();	
+				// Show a notification informing the user they have been logged off.
+				Notifications.create().title("You have been logged off").text("Please reconnect.").showConfirm();	
+				// Leave a message in the log
 				log("Login failed: Server communication error.");
 				// Show the login popup
 				login_pop.show(login);
-				
+
 			}
 		});
 	}
-	
-	
+
+	/**
+	 * getter for the original room count
+	 * 
+	 * @return
+	 */
+	public Integer getTreatmentRoomCount() {
+		return treatmentRoomCount;
+	}
+
+	/**
+	 * setter for the original room count
+	 * 
+	 * @param roomCount
+	 */
+	public void setTreatmentRoomCount(Integer roomCount) {
+		this.treatmentRoomCount = roomCount;
+	}
+
+	/**
+	 * getter for the new room count
+	 * 
+	 * @return
+	 */
+	public Integer getNewTreatmentRoomCount() {
+		return newTreatmentRoomCount;
+	}
+
+	/**
+	 * setter for the new room count
+	 * 
+	 * @param newRoomCount
+	 */
+	public void setNewTreatmentRoomCount(Integer newRoomCount) {
+		this.newTreatmentRoomCount = newRoomCount;
+	}
 }
