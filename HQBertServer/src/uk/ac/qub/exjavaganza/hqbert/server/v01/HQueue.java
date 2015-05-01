@@ -168,13 +168,19 @@ public class HQueue implements Serializable {
 	 * @param patient
 	 */
 	public void reQueue(Patient patient){
-		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE){
-			//Someone has to be sent home
-			pq.removeLast();
-		}
+//		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE){
+//			//Someone has to be sent home
+//			pq.removeLast();
+//		}
 		patient.setPriority(true);
-		hiPriQueue.add(patient);
-		sortQueue(hiPriQueue);
+		if(patient.getUrgency() == Urgency.EMERGENCY){
+			emergency.add(patient);
+			sortQueue(emergency);
+
+		}else{
+			hiPriQueue.add(patient);
+			sortQueue(hiPriQueue);
+		}
 		buildPQ();
 	}
 	

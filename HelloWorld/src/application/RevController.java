@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -25,7 +26,6 @@ import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 
 import application.RMIClient;
-
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ExtensionReason;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Job;
@@ -114,6 +114,9 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private AnchorPane triage_anchorpane;
+	
+	@FXML
+	private TableView on_call_table;
 
 	@FXML
 	private TextField search_NHS_No, search_First_Name, search_Surname,
@@ -123,7 +126,7 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group,
 			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details, tr_textfield_NHS_Num,
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
-			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode;
+			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
 
 	@FXML
 	Label current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
@@ -156,6 +159,8 @@ public class RevController implements Initializable, ClientCallback {
 	private final ObservableList allergy_list = FXCollections
 			.observableArrayList();
 	private final ObservableList<String> search_patient_results = FXCollections
+			.observableArrayList();
+	private final ObservableList<String> oncallunit = FXCollections
 			.observableArrayList();
 	List<Person> matchingPeople, matchingPeople1;
 
@@ -203,6 +208,11 @@ public class RevController implements Initializable, ClientCallback {
 	private Person displayedPerson;
 	private List<Person> search_results;
 
+	/**saved preferences for editable values that should persist between launches*/
+	private Preferences prefs;
+	private final String PORT_PREF_NAME = "PORT_PREF";
+	private final String ADDRESS_PREF_NAME = "ADDRESS_PREF";
+	
 	@Override
 	protected void finalize() throws Throwable {
 
@@ -223,6 +233,8 @@ public class RevController implements Initializable, ClientCallback {
 		updateQueue();
 		buttonFunction();
 		toolTime();
+		
+		getPrefsFile();
 
 	}
 
@@ -239,6 +251,14 @@ public class RevController implements Initializable, ClientCallback {
 
 	}
 
+	
+	/**
+	 * load the prefs file and assign the instance var
+	 */
+	public void getPrefsFile(){
+		prefs = Preferences.userRoot().node(this.getClass().getName());
+	}
+	
 	/**
 	 * performs actions to conduct valid searches
 	 */
@@ -282,7 +302,7 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 	/**
-	 * Perform the searcg based on the user input
+	 * Perform the search based on the user input
 	 */
 	public void displayMatchingPeople() {
 		// Enable the search button
@@ -563,6 +583,9 @@ public class RevController implements Initializable, ClientCallback {
 
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
+		
+		oncallunit.addAll("Doctor 1","Doctor 2","Nurse 1","Nurse 2","Nurse 3");
+		on_call_table.setItems(oncallunit);
 	}
 	
 	/**
@@ -667,9 +690,74 @@ public class RevController implements Initializable, ClientCallback {
 			set_no_trs.setLayoutY(25.0);
 			save_no_trs.setLayoutY(52.0);
 			
-			// Set up the Ip and port textboxes
-			Label port = new Label("Set Amount of Treatment Rooms");
+			// Set up the server address label and textbox
+			Label server_address_label = new Label("Set the server address");
+			TextField set_server_address = new TextField();
+			Button save_server_address = new Button("Set");
+			server_address_label.setLayoutY(85.0);
+			set_server_address.setLayoutY(105.0);
+			save_server_address.setLayoutY(132.0);
+			
+			// Set up the server port label and textbox
+			Label port_label = new Label("Set the server port");
 			TextField set_port = new TextField();
+			Button save_port = new Button("Set");
+			port_label.setLayoutY(165.0);
+			set_port.setLayoutY(190.0);
+			save_port.setLayoutY(215.0);
+			
+			// On set address button pressed
+			save_server_address.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					// The server address
+					String address = set_server_address.getText();
+					// Whether or not
+					if (!address.equals("")) {
+						// Store in preferences
+						prefs.put(ADDRESS_PREF_NAME, address);
+						Notifications.create()
+							.title("Server Address Updated")
+							.text("The server address has been changed to " + address + ". "
+									+ "\nLog in again to to connect using the new settings.")
+							.showConfirm();
+					} else {
+						Notifications.create().title("Invalid Address").text("Address not changed.").showError();
+					}
+				}
+			});
+			// On set port button pressed
+			save_port.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					// The server port to parse
+					int port;
+				
+					try {
+						port = Integer.parseInt(set_port.getText());
+					} catch (NumberFormatException ex) {
+						port = -1;
+					}
+					
+					// Check whether the port is in a reasonable range
+					if (port >= 0 && port <= 65535) {
+					
+						// Store in preferences
+						prefs.putInt(PORT_PREF_NAME, port);
+						Notifications.create()
+							.title("Server Port Updated").text("The server port has been changed to " + port + ". "
+									+ "\nLog in again to to connect using the new settings.").showConfirm();
+					} else {
+						Notifications.create().title("Invalid Port").text("Port not changed.").showError();
+					}
+				}
+			});
+			
+			
+		    
+
 
 			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -734,8 +822,10 @@ public class RevController implements Initializable, ClientCallback {
 				}
 			});
 
-			root.getChildren().addAll(plus_trs, set_no_trs, save_no_trs);
-			Scene s = new Scene(root, 200, 200);
+			root.getChildren().addAll(plus_trs, set_no_trs, save_no_trs, port_label, 
+					set_port, server_address_label, set_server_address,
+					save_server_address, save_port);
+			Scene s = new Scene(root, 200, 250);
 			settings_stage.setScene(s);
 			settings_stage.show();
 
@@ -775,8 +865,10 @@ public class RevController implements Initializable, ClientCallback {
 					
 						
 					try {
+						int port = prefs.getInt(PORT_PREF_NAME, 1099);
+						String address = prefs.get(ADDRESS_PREF_NAME, "localhost");
 						// Create the client
-						client = new RMIClient(RevController.this, _user, db_pass);
+						client = new RMIClient(RevController.this, address, port, _user, db_pass);
 						// Add a message to the log
 						log("Logged in as " + _user);
 
@@ -813,6 +905,9 @@ public class RevController implements Initializable, ClientCallback {
 						case TRIAGE_NURSE:
 							triage_nurse_on_duty.setText(staff_LastName + ","
 									+ staff_FirstName);
+
+							triagePane_triageNurse.setText(staff_LastName + ","
+									+ staff_FirstName);
 							break;
 						case DOCTOR:
 							;
@@ -840,6 +935,7 @@ public class RevController implements Initializable, ClientCallback {
 				@Override
 				public void handle(ActionEvent event) {
 					
+					client.close();
 					resetTriage();
 					
 				}
@@ -1409,12 +1505,16 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime = new TableColumn("Wait Time");			
 		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
+		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
 		treatmentRoomTable.setItems(emergency_room);
+		ap3.getChildren().addAll(treatment_table, close_view1, treatmentRoomTable);
+		tr_pop.setContentNode(ap3);
 	}
 
 	private void waitingRoomView() {
 		
 		AnchorPane ap2 = new AnchorPane();	
+		Label waitroom_table = new Label("Current Patients in Waiting"); waitroom_table.setLayoutX(10);
 		Button close_view2 = new Button("x"); close_view2.setStyle("-fx-base: red;");		
 		waiting_room.clear();
 		// Loop through each of the patients in queueList
@@ -1432,8 +1532,11 @@ public class RevController implements Initializable, ClientCallback {
 		
 		TableColumn WaitingTime1 = new TableColumn("Wait Time");			
 		WaitingTime1.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
-				
+			
+		waitingRoomTable.getColumns().addAll(patName1, Urgency1, WaitingTime1);
 		waitingRoomTable.setItems(waiting_room);
+		ap2.getChildren().addAll(waitroom_table,close_view2, waitingRoomTable);
+		q_pop.setContentNode(ap2);
 	}
 
 	/**
@@ -1900,6 +2003,7 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	public void pasStats() {
+
 		try{
 		int[] urgencies = client.getServer().getUrgencies();
 		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
@@ -1929,6 +2033,6 @@ public class RevController implements Initializable, ClientCallback {
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
-		
+
 	}
 }
