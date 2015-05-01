@@ -255,16 +255,18 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			// Cancel the heartbeat timer
 			heartBeatTimer.cancel();
 		}
-		
-		serverAccessible = ConnectionState.NOT_CONNECTED;
-		controller.serverStatusChanged(serverAccessible);
+	
 
 		if (server != null) {
 			try {
 				// Unregister for updates
 				server.deregister(clientID);
+				serverAccessible = ConnectionState.NOT_CONNECTED;
+				controller.serverStatusChanged(serverAccessible);
 			} catch (RemoteException e) {
 				System.err.println("Failed to unregister from server updates.");
+				serverAccessible = ConnectionState.CONNECTION_ERROR;
+				controller.serverStatusChanged(serverAccessible);
 			}
 		}
 		
