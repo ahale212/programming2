@@ -115,6 +115,9 @@ public enum Supervisor {
 	/**The data accessor for the staff table. Allows for searching of the 
 	staff table in the database*/
 	private StaffDataAccessor staffAccessor;
+	/**The data accessor for the on call staff table. Allows for searching of the 
+	staff table in the database*/
+	private OnCallDataAccessor onCallAccessor;
 
 	/**
 	 * private constructor - default
@@ -152,7 +155,8 @@ public enum Supervisor {
 		//Testing
 		makeBobbies();
 		
-
+		log("Connecting to database");
+		
 		// set up connection to database
 		try {
 			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
@@ -171,6 +175,17 @@ public enum Supervisor {
 			e.printStackTrace();
 		}
 		
+		// set up connection to database
+		try {
+			setOnCallStaffAccessor(new OnCallDataAccessor(url, "40058483", "VPK7789"));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		log("done fetching dataBase accessors");
+		
 		availableStaff = new ArrayList<Staff>();
 		loggedInStaff = new ArrayList<Staff>();
 		staffOnCall = new ArrayList<Staff>();
@@ -180,6 +195,9 @@ public enum Supervisor {
 		getAvailableStaff();
 		superFakeOnCallTeam();
 		//getOnCallList();
+		
+		// Start the server to allow clients to connect
+		startServer(useSSL);
 		
 		excessiveWaitingAlertSent = false;
 		
@@ -403,44 +421,15 @@ public enum Supervisor {
 		}
 	}
 	
-	
-	/**
-	 * This populates staffOnCall with people from the availableStaff list:
-	 * in real-life they would come from a more robust rota system
-	 */
-	public void getOnCallList(){
-		try{
-			
-		int doctors = 0;
-		for(int i = availableStaff.size()-1; i >= 0; i--){
-			Staff member = availableStaff.get(i);
-			if(member.getJob() == Job.DOCTOR){
-				staffOnCall.add(member);
-				availableStaff.remove(member);
-				doctors++;
-				if(doctors >= 2){
-					break;
-				}
-			}
-		}
-		
-		int nurses = 0;
-		for(int i = availableStaff.size()-1; i >= 0; i--){
-			Staff member = availableStaff.get(i);
-			if(member.getJob() == Job.NURSE){
-				staffOnCall.add(member);
-				availableStaff.remove(member);
-				nurses++;
-				if(nurses >= 3){
-					break;
-				}
-			}
-		}
-		}catch(IndexOutOfBoundsException iobE){
-			
+	public void getAvailableOnCall(){
+		try {
+			staffOnCall = (ArrayList<Staff>)getOnCallStaff();
+			System.out.println(staffOnCall);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	
 	
 	/**
 	 * @throws SQLException 
@@ -450,6 +439,51 @@ public enum Supervisor {
 		return getStaffAccessor().getStaffList();
 	}
 
+	private List<Staff> getOnCallStaff() throws SQLException {
+		return getOnCallStaffAccessor().getOnCallList();
+	}
+	
+	/**
+	 * This populates staffOnCall with people from the availableStaff list:
+	 * in real-life they would come from a more robust rota system
+	 */
+//	public void getOnCallList(){
+//		try{
+//			
+//		int doctors = 0;
+//		for(int i = availableStaff.size()-1; i >= 0; i--){
+//			Staff member = availableStaff.get(i);
+//			if(member.getJob() == Job.DOCTOR){
+//				staffOnCall.add(member);
+//				availableStaff.remove(member);
+//				doctors++;
+//				if(doctors >= 2){
+//					break;
+//				}
+//			}
+//		}
+//		
+//		int nurses = 0;
+//		for(int i = availableStaff.size()-1; i >= 0; i--){
+//			Staff member = availableStaff.get(i);
+//			if(member.getJob() == Job.NURSE){
+//				staffOnCall.add(member);
+//				availableStaff.remove(member);
+//				nurses++;
+//				if(nurses >= 3){
+//					break;
+//				}
+//			}
+//		}
+//		}catch(IndexOutOfBoundsException iobE){
+//			
+//		}
+//	}
+	
+	
+	
+
+	
 	/**
 	 * Update the queue, its subQueues, all the patients in the system, and all
 	 * the treatment rooms.
@@ -538,6 +572,7 @@ public enum Supervisor {
 			// If a room is available send the patient
 			if (tf.getTimeToAvailable() <= 0 && tf.getPatient() == null) {
 				tf.receivePatient(patient);
+				targetRoomNum = i+1;
 				success = true;
 				break;
 			}
@@ -554,7 +589,7 @@ public enum Supervisor {
 					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
 					success = true;
-					targetRoomNum = i;
+					targetRoomNum = i+1;
 					break;
 				/*
 				 * Another patient is in the room, check if they are an
@@ -579,7 +614,7 @@ public enum Supervisor {
 						if (roomCurrentPatient.equals(displacablePatient)) {
 							tf.emergencyInterruption(patient);
 							success = true;
-							targetRoomNum = i;
+							targetRoomNum = i+1;
 							break;
 						}
 					}
@@ -664,6 +699,10 @@ public enum Supervisor {
 		}
 	}
 	
+	/**
+	 * Checks if the conditions are acceptable for the onCall team to go offline.
+	 * If ok, the oncall team leaves.
+	 */
 	public void onCallTryLeave(){
 		boolean canLeave = false;
 		if(checkQueueFull() == false){
@@ -682,9 +721,12 @@ public enum Supervisor {
 		}
 	}
 	
+	/**The on call team leaves and its members become available 
+	 * to be called again in future
+	 */
 	public void onCallGoAway(){
 		for(int i = 0; i < onCallTeam.getStaff().size(); i++){
-			activeStaff.add(onCallTeam.getStaff().get(i));
+			//activeStaff.add(onCallTeam.getStaff().get(i));
 		}
 		treatmentFacilities.remove(onCallTeam);
 		log("On call team disengaged.");
@@ -708,7 +750,7 @@ public enum Supervisor {
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
 				if (staffMember.getJob() == Job.DOCTOR && !(activeStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
-						activeStaff.add(staffMember);
+						//activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
 					}
 				}
@@ -722,7 +764,7 @@ public enum Supervisor {
 				Staff staffMember = staffOnCall.get(staffMemberIndex);
 				if (staffMember.getJob() == Job.NURSE && !(activeStaff.contains(staffMember))){
 					if(OnCallTeamAlert.onCallEmergencyPriority(staffMember, ALERTS_ACTIVE) == true){
-						activeStaff.add(staffMember);
+						//activeStaff.add(staffMember);
 						onCallTeam.assignStaff(staffMember);
 					}
 				}
@@ -782,25 +824,6 @@ public enum Supervisor {
 		}
 
 	}
-
-	/**
-	 * Checks if all treatment rooms are full and the onCall team is engaged with a patient.
-	 * @return true : everything full
-	 * 			false : at least one space (including oncall not engaged) 
-	 */
-	public boolean checkAtTreatmentCapacity(){
-		boolean allFull = true;
-		
-		if(onCallTeam == null){
-			
-		}
-		
-		for(TreatmentFacility tf : treatmentFacilities){
-			
-		}
-		
-		return allFull;
-	}
 	
 	public void removeFromQueue(Patient patient) {
 		System.out.println("Removing "+ patient.getPerson().getFirstName() + " from the queue.");	
@@ -809,6 +832,12 @@ public enum Supervisor {
 	}
 
 	/* Getters and setters */
+	
+	/**
+	 * Get the queue management object, which contains getters for the actual queue
+	 * and manipulation methods
+	 * @return
+	 */
 	public HQueue getHQueue() {
 		return hQueue;
 	}
@@ -817,6 +846,7 @@ public enum Supervisor {
 		return clock.getCurrentTime();
 	}
 
+	/**Get the treatment facilities - including onCall team if its not null*/
 	public ArrayList<TreatmentFacility> getTreatmentFacilities() {
 		return treatmentFacilities;
 	}
@@ -845,7 +875,9 @@ public enum Supervisor {
 	 */
 	public void log(String message) {
 		logger.log(Priority.INFO, message);
-		server.broadcastLog(message);
+		if (server != null) {
+			server.broadcastLog(message);
+		}
 	}
 	
 	/**
@@ -866,6 +898,15 @@ public enum Supervisor {
 	}
 
 	/**
+	 * getter for on call staff data accessor
+	 * 
+	 * @return
+	 */
+	public OnCallDataAccessor getOnCallStaffAccessor() {
+		return onCallAccessor;
+	}
+
+	/**
 	 * setter for staff data accessor
 	 * 
 	 * @param staffAccessor
@@ -874,6 +915,9 @@ public enum Supervisor {
 		this.staffAccessor = staffAccessor;
 	}
 
+	public void setOnCallStaffAccessor(OnCallDataAccessor onCallStaffAccessor){
+		this.onCallAccessor = onCallStaffAccessor;
+	}
 	
 	public OnCallTeam getOncallTeam(){
 		return this.onCallTeam;
