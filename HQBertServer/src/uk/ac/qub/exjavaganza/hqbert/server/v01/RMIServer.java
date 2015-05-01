@@ -146,28 +146,28 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	/**
 	 * Inform the client that the next patient should be called to a room
 	 */
-//	public void broadcastNextPatientCall(String message) {
-//
-//		// Get the key set from the list of clients
-//		Set<String> keys = clients.keySet();
-//
-//		// Loops through each of the clients in the clients list
-//		for (String key : keys) {
-//			ClientDetails client = clients.get(key);
-//			try {
-//				// Alert the client that the queue is full
-//				client.getCallback().notifyNextPatientToRoom(message);
-//			} catch (RemoteException e) {
-//				e.printStackTrace();
-//				
-//				client.incrementFailedConnectionAttempts();
-//				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
-//					// Remove the client from the list.
-//					deregister(key);
-//				}
-//			}
-//		}
-//	}
+	public void broadcastNextPatientCall(String message) {
+
+		// Get the key set from the list of clients
+		Set<String> keys = clients.keySet();
+
+		// Loops through each of the clients in the clients list
+		for (String key : keys) {
+			ClientDetails client = clients.get(key);
+			try {
+				// Alert the client that the queue is full
+				client.getCallback().notifyNextPatientToRoom(message);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				
+				client.incrementFailedConnectionAttempts();
+				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Remove the client from the list.
+					deregister(key);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Inform the clients that the queue is full
@@ -497,6 +497,9 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 
 
+	/**
+	 * Change the urgency of a patient in the queue
+	 */
 	@Override
 	public void reAssignTriage(String clientID, Patient patient,
 			Urgency newUrgency) throws RemoteException, AuthenticationException {
@@ -504,5 +507,19 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		
 	}
 	
-
+	/**
+	 * Set the number of treatment rooms in the hospital
+	 * @param numRooms : the requested new number of rooms
+	 */
+	public void setNumberOfTreatmentRooms(int numRooms){
+		Supervisor.INSTANCE.setCurrentNumberOfTreatmentRooms(numRooms);
+	}
+	
+	/**
+	 * Get the number of treatment rooms currently in the hospital
+	 * @return 
+	 */
+	public int getNumberOfTreatmentRooms(){
+		return Supervisor.INSTANCE.getCurrentNumberOfTreatmentRooms();
+	}
 }

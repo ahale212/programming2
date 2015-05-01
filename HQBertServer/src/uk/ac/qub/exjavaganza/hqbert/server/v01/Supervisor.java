@@ -186,7 +186,9 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	
+	/**
+	 * update the system to a new number of treatment rooms
+	 */
 	public void updateMaxTreatmentRooms(){
 		
 	}
