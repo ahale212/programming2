@@ -133,9 +133,6 @@ public enum Supervisor {
 			this.serverPort = serverPort;
 		}
 		
-		// Start the server to allow clients to connect
-		startServer(useSSL);
-		
 		getPrefsFile();
 		getPreferences();
 		
@@ -180,6 +177,9 @@ public enum Supervisor {
 		getAvailableStaff();
 		superFakeOnCallTeam();
 		//getOnCallList();
+		
+		// Start the server to allow clients to connect
+		startServer(useSSL);
 		
 		excessiveWaitingAlertSent = false;
 		
@@ -538,6 +538,7 @@ public enum Supervisor {
 			// If a room is available send the patient
 			if (tf.getTimeToAvailable() <= 0 && tf.getPatient() == null) {
 				tf.receivePatient(patient);
+				targetRoomNum = i+1;
 				success = true;
 				break;
 			}
@@ -554,7 +555,7 @@ public enum Supervisor {
 					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
 					success = true;
-					targetRoomNum = i;
+					targetRoomNum = i+1;
 					break;
 				/*
 				 * Another patient is in the room, check if they are an
@@ -579,7 +580,7 @@ public enum Supervisor {
 						if (roomCurrentPatient.equals(displacablePatient)) {
 							tf.emergencyInterruption(patient);
 							success = true;
-							targetRoomNum = i;
+							targetRoomNum = i+1;
 							break;
 						}
 					}
@@ -845,7 +846,9 @@ public enum Supervisor {
 	 */
 	public void log(String message) {
 		logger.log(Priority.INFO, message);
-		server.broadcastLog(message);
+		if (server != null) {
+			server.broadcastLog(message);
+		}
 	}
 	
 	/**
