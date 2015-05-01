@@ -114,6 +114,9 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private AnchorPane triage_anchorpane;
+	
+	@FXML
+	private TableView on_call_table;
 
 	@FXML
 	private TextField search_NHS_No, search_First_Name, search_Surname,
