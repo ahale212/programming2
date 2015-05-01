@@ -905,6 +905,7 @@ public class RevController implements Initializable, ClientCallback {
 						case TRIAGE_NURSE:
 							triage_nurse_on_duty.setText(staff_LastName + ","
 									+ staff_FirstName);
+
 							triagePane_triageNurse.setText(staff_LastName + ","
 									+ staff_FirstName);
 							break;
@@ -2032,6 +2033,6 @@ public class RevController implements Initializable, ClientCallback {
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
-		
+
 	}
 }

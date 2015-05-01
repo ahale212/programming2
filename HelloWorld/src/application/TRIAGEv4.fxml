@@ -57,7 +57,7 @@
                         <Label layoutX="933.0" layoutY="14.0" text="Server Status:" />
                         <ToggleButton fx:id="server_check" layoutX="933.0" layoutY="36.0" selected="true" style="-fx-base: blue" text="Not Connected" />
                         <Label layoutX="933.0" layoutY="72.0" text="Triage Nurse:" />
-                        <TextField layoutX="933.0" layoutY="96.0" promptText="Nurse Name..." />
+                        <TextField fx:id="triagePane_triageNurse" layoutX="933.0" layoutY="96.0" promptText="Nurse Name..." />
                         <Label layoutX="933.0" layoutY="130.0" text="Total in queue:" />
                         <TextField layoutX="933.0" layoutY="154.0" promptText="Queue..." />
                         <Label layoutX="25.0" layoutY="14.0" text="Search By:" />
@@ -171,7 +171,14 @@
                 <Label layoutX="200.0" layoutY="30.0" text="Treatment Room Doctors:" />
                 <ListView fx:id="doctor_on_duty" layoutX="200.0" layoutY="60.0" prefHeight="250.0"  />
                 <Label layoutX="500.0" layoutY="30.0" text="On Call Staff:" />
-                <TableView layoutX="500.0" layoutY="60.0" prefHeight="250.0" />
+                <TableView fx:id="on_call_table" layoutX="500.0" layoutY="60.0" prefHeight="250.0" >
+                <columns>
+          <TableColumn text="Staff:" prefWidth="100.0" >
+          </TableColumn>
+          <TableColumn text="Name:" prefWidth="160.0">
+          </TableColumn>
+     </columns>
+     </TableView>
                 <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
                 <TextField fx:id="admin" layoutX="780.0" layoutY="60.0" />
                 </children></AnchorPane>
