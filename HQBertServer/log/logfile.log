@@ -235,3 +235,927 @@
 2015-05-01 05:50:04,491  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 722 - 
 
 2015-05-01 05:50:04,493  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 722 - Update Complete
+2015-05-01 08:15:37,385  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby0 Branson0 to Treatment room  0
+2015-05-01 08:15:59,726  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:15:37 BST 2015
+2015-05-01 08:15:59,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:15:59,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:15:59,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby1 Branson1 to Treatment room  0
+2015-05-01 08:15:59,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby0 Branson0 has left Treatment Room 1
+2015-05-01 08:15:59,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby1 Branson1 has left Treatment Room 2
+2015-05-01 08:15:59,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:15:59 BST 2015
+2015-05-01 08:15:59,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:15:59,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:01,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby2 Branson2 to Treatment room  0
+2015-05-01 08:16:01,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:01 BST 2015
+2015-05-01 08:16:01,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:01,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:03,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby3 Branson3 to Treatment room  0
+2015-05-01 08:16:03,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:03 BST 2015
+2015-05-01 08:16:03,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:03,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:05,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:16:05,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:05 BST 2015
+2015-05-01 08:16:05,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:05,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:07,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:16:07,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:07 BST 2015
+2015-05-01 08:16:07,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:07,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:09,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 Branson6 to Treatment room  0
+2015-05-01 08:16:09,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:09 BST 2015
+2015-05-01 08:16:09,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:09,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:11,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:11 BST 2015
+2015-05-01 08:16:11,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby7 : NON_URGENT : false : 1
+2015-05-01 08:16:11,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:11,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:13,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 back in queue
+2015-05-01 08:16:13,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby8 Branson8 to Treatment room  2
+2015-05-01 08:16:13,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 	Re-assigning triage priority for null
+2015-05-01 08:16:13,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 back in queue
+2015-05-01 08:16:13,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby7 Branson7 to Treatment room  4
+2015-05-01 08:16:13,729  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:13 BST 2015
+2015-05-01 08:16:13,730  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 1
+2015-05-01 08:16:13,730  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 1
+2015-05-01 08:16:13,730  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:13,730  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:15,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:15 BST 2015
+2015-05-01 08:16:15,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 2
+2015-05-01 08:16:15,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 2
+2015-05-01 08:16:15,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 1
+2015-05-01 08:16:15,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:15,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:17,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:17 BST 2015
+2015-05-01 08:16:17,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 3
+2015-05-01 08:16:17,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 3
+2015-05-01 08:16:17,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 2
+2015-05-01 08:16:17,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 1
+2015-05-01 08:16:17,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:17,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:19,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 back in queue
+2015-05-01 08:16:19,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby11 Branson11 to Treatment room  3
+2015-05-01 08:16:19,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby2 Branson2 has left Treatment Room 1
+2015-05-01 08:16:19,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:16:19,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:19 BST 2015
+2015-05-01 08:16:19,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 4
+2015-05-01 08:16:19,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 1
+2015-05-01 08:16:19,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 3
+2015-05-01 08:16:19,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 2
+2015-05-01 08:16:19,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:19,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 back in queue
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby12 Branson12 to Treatment room  0
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:21 BST 2015
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 5
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 2
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 4
+2015-05-01 08:16:21,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 4
+2015-05-01 08:16:21,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 3
+2015-05-01 08:16:21,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:21,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:23,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - No one displaceable
+2015-05-01 08:16:23,730  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - On-call team requested: too many emergency - On-call team ASSEMBLE!
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Not enough nurses for on-call
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:23 BST 2015
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 6
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 3
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 5
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 5
+2015-05-01 08:16:23,736  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 4
+2015-05-01 08:16:23,737  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:23,737  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:16:25 BST 2015
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 7
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 4
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 6
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : true : 6
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 5
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby14 : SEMI_URGENT : false : 1
+2015-05-01 08:16:25,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:16:25,728  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:16:27,727  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - No one displaceable
+2015-05-01 08:17:59,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby0 Branson0 to Treatment room  0
+2015-05-01 08:17:59,165  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:17:59 BST 2015
+2015-05-01 08:17:59,166  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:17:59,166  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:01,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby1 Branson1 to Treatment room  0
+2015-05-01 08:18:01,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:01 BST 2015
+2015-05-01 08:18:01,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:01,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:03,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby2 Branson2 to Treatment room  0
+2015-05-01 08:18:03,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:03 BST 2015
+2015-05-01 08:18:03,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:03,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:05,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby3 Branson3 to Treatment room  0
+2015-05-01 08:18:05,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:05 BST 2015
+2015-05-01 08:18:05,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:05,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:07,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:18:07,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:07 BST 2015
+2015-05-01 08:18:07,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:07,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:09,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:09 BST 2015
+2015-05-01 08:18:09,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : false : 1
+2015-05-01 08:18:09,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:09,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:11,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby0 Branson0 has left Treatment Room 1
+2015-05-01 08:18:11,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:18:11,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:11 BST 2015
+2015-05-01 08:18:11,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 1
+2015-05-01 08:18:11,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:11,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:13,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:13 BST 2015
+2015-05-01 08:18:13,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 2
+2015-05-01 08:18:13,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby7 : NON_URGENT : false : 1
+2015-05-01 08:18:13,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:13,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:15,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 back in queue
+2015-05-01 08:18:15,162  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby8 Branson8 to Treatment room  4
+2015-05-01 08:18:15,162  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 	Re-assigning triage priority for null
+2015-05-01 08:18:15,162  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 back in queue
+2015-05-01 08:18:15,162  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby7 Branson7 to Treatment room  0
+2015-05-01 08:18:15,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:15 BST 2015
+2015-05-01 08:18:15,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 1
+2015-05-01 08:18:15,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 2
+2015-05-01 08:18:15,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 3
+2015-05-01 08:18:15,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:15,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:17,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:17 BST 2015
+2015-05-01 08:18:17,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 2
+2015-05-01 08:18:17,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 3
+2015-05-01 08:18:17,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 1
+2015-05-01 08:18:17,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 4
+2015-05-01 08:18:17,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:17,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:19 BST 2015
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 3
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 4
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 2
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 5
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 1
+2015-05-01 08:18:19,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:19,161  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:21,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - No one displaceable
+2015-05-01 08:18:21,163  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - On-call team requested: too many emergency - On-call team ASSEMBLE!
+2015-05-01 08:18:21,168  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Not enough nurses for on-call
+2015-05-01 08:18:21,168  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:18:21 BST 2015
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 4
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 5
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : true : 6
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 3
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 2
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:18:21,169  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:18:23,160  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - No one displaceable
+2015-05-01 08:20:16,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby0 Branson0 to Treatment room  0
+2015-05-01 08:20:16,610  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:16 BST 2015
+2015-05-01 08:20:16,611  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:16,611  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:18,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby1 Branson1 to Treatment room  0
+2015-05-01 08:20:18,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:18 BST 2015
+2015-05-01 08:20:18,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:18,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:20,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby2 Branson2 to Treatment room  0
+2015-05-01 08:20:20,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:20 BST 2015
+2015-05-01 08:20:20,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:20,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:22,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby3 Branson3 to Treatment room  0
+2015-05-01 08:20:22,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:22 BST 2015
+2015-05-01 08:20:22,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:22,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:24,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:20:24,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:24 BST 2015
+2015-05-01 08:20:24,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:24,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:26,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:26 BST 2015
+2015-05-01 08:20:26,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : false : 1
+2015-05-01 08:20:26,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:26,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:28,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby0 Branson0 has left Treatment Room 1
+2015-05-01 08:20:28,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:20:28,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:28 BST 2015
+2015-05-01 08:20:28,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 1
+2015-05-01 08:20:28,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:28,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:30,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:30 BST 2015
+2015-05-01 08:20:30,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 2
+2015-05-01 08:20:30,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby7 : NON_URGENT : false : 1
+2015-05-01 08:20:30,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:30,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:32,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 back in queue
+2015-05-01 08:20:32,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby8 Branson8 to Treatment room  4
+2015-05-01 08:20:32,607  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 	Re-assigning triage priority for null
+2015-05-01 08:20:32,607  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 back in queue
+2015-05-01 08:20:32,607  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby7 Branson7 to Treatment room  0
+2015-05-01 08:20:32,608  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:32 BST 2015
+2015-05-01 08:20:32,608  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 1
+2015-05-01 08:20:32,608  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 2
+2015-05-01 08:20:32,608  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 3
+2015-05-01 08:20:32,608  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:32,608  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:34,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:34 BST 2015
+2015-05-01 08:20:34,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 2
+2015-05-01 08:20:34,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 3
+2015-05-01 08:20:34,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 1
+2015-05-01 08:20:34,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 4
+2015-05-01 08:20:34,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:34,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - CurrentTime: Fri May 01 08:20:36 BST 2015
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby4 : NON_URGENT : true : 3
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby5 : URGENT : true : 4
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby9 : URGENT : false : 2
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby6 : SEMI_URGENT : false : 5
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Bobby10 : SEMI_URGENT : false : 1
+2015-05-01 08:20:36,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - 
+
+2015-05-01 08:20:36,606  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - Update Complete
+2015-05-01 08:20:38,605  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - No one displaceable
+2015-05-01 08:20:58,388  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 827 - On-call team requested: too many emergency - On-call team ASSEMBLE!
+2015-05-01 08:31:43,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby0 Branson0 to Treatment room  0
+2015-05-01 08:31:43,676  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:43 BST 2015
+2015-05-01 08:31:43,677  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:43,677  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:45,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby1 Branson1 to Treatment room  0
+2015-05-01 08:31:45,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:45 BST 2015
+2015-05-01 08:31:45,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:45,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:47,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby2 Branson2 to Treatment room  0
+2015-05-01 08:31:47,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:47 BST 2015
+2015-05-01 08:31:47,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:47,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:49,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby3 Branson3 to Treatment room  0
+2015-05-01 08:31:49,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:49 BST 2015
+2015-05-01 08:31:49,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:49,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:51,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:31:51,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:51 BST 2015
+2015-05-01 08:31:51,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:51,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:53,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:53 BST 2015
+2015-05-01 08:31:53,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : false : 1
+2015-05-01 08:31:53,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:53,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:55,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby0 Branson0 has left Treatment Room 1
+2015-05-01 08:31:55,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:31:55,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:55 BST 2015
+2015-05-01 08:31:55,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 1
+2015-05-01 08:31:55,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:55,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:57,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:57 BST 2015
+2015-05-01 08:31:57,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 2
+2015-05-01 08:31:57,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby7 : NON_URGENT : false : 1
+2015-05-01 08:31:57,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:57,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:31:59,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 back in queue
+2015-05-01 08:31:59,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby8 Branson8 to Treatment room  4
+2015-05-01 08:31:59,673  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	Re-assigning triage priority for null
+2015-05-01 08:31:59,673  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 back in queue
+2015-05-01 08:31:59,673  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby7 Branson7 to Treatment room  0
+2015-05-01 08:31:59,673  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:31:59 BST 2015
+2015-05-01 08:31:59,673  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 1
+2015-05-01 08:31:59,673  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 2
+2015-05-01 08:31:59,674  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 3
+2015-05-01 08:31:59,674  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:31:59,674  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:01,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:01 BST 2015
+2015-05-01 08:32:01,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 2
+2015-05-01 08:32:01,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 3
+2015-05-01 08:32:01,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 1
+2015-05-01 08:32:01,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 4
+2015-05-01 08:32:01,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:01,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:03 BST 2015
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 3
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 4
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 2
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 5
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 1
+2015-05-01 08:32:03,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:03,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:05,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No one displaceable
+2015-05-01 08:32:05,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - On-call team requested: too many emergency - On-call team ASSEMBLE!
+2015-05-01 08:32:05,677  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Not enough nurses for on-call
+2015-05-01 08:32:05,677  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:05 BST 2015
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 4
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 5
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 6
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 3
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 2
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:05,678  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:07,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No one displaceable
+2015-05-01 08:32:07,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No emergency treatment available: Bobby12 (EMERGENCY) sent away
+2015-05-01 08:32:07,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:32:07,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby3 Branson3 has left Treatment Room 4
+2015-05-01 08:32:07,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:07 BST 2015
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 6
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 7
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 4
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 3
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:07,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:09,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 back in queue
+2015-05-01 08:32:09,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby13 Branson13 to Treatment room  3
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:09 BST 2015
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 7
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 8
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 5
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 5
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 4
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:09,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:11 BST 2015
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 8
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 9
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 6
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 6
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 5
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 1
+2015-05-01 08:32:11,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:11,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:13,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No one displaceable
+2015-05-01 08:32:13,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No emergency treatment available: Bobby15 (EMERGENCY) sent away
+2015-05-01 08:32:13,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:32:13,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby1 Branson1 has left Treatment Room 2
+2015-05-01 08:32:13,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:32:13,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:13 BST 2015
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 10
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 7
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 7
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 6
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 2
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:13,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:32:15,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 back in queue
+2015-05-01 08:32:15,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby16 Branson16 to Treatment room  1
+2015-05-01 08:32:15,671  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:32:15 BST 2015
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 11
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 8
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 8
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 7
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 9
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 3
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:32:15,672  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby0 Branson0 to Treatment room  0
+2015-05-01 08:38:18,424  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:18 BST 2015
+2015-05-01 08:38:18,424  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:18,424  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby1 Branson1 to Treatment room  0
+2015-05-01 08:38:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:20 BST 2015
+2015-05-01 08:38:20,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:20,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby2 Branson2 to Treatment room  0
+2015-05-01 08:38:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:22 BST 2015
+2015-05-01 08:38:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby3 Branson3 to Treatment room  0
+2015-05-01 08:38:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:24 BST 2015
+2015-05-01 08:38:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:38:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby0 Branson0 has left Treatment Room 1
+2015-05-01 08:38:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:26 BST 2015
+2015-05-01 08:38:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:26,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:38:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:28 BST 2015
+2015-05-01 08:38:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:30 BST 2015
+2015-05-01 08:38:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 1
+2015-05-01 08:38:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:32 BST 2015
+2015-05-01 08:38:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 2
+2015-05-01 08:38:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby7 : NON_URGENT : false : 1
+2015-05-01 08:38:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 back in queue
+2015-05-01 08:38:34,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby8 Branson8 to Treatment room  4
+2015-05-01 08:38:34,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	Re-assigning triage priority for null
+2015-05-01 08:38:34,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 back in queue
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby7 Branson7 to Treatment room  0
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:34 BST 2015
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 1
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 1
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 3
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:34,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:36 BST 2015
+2015-05-01 08:38:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 2
+2015-05-01 08:38:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 2
+2015-05-01 08:38:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 1
+2015-05-01 08:38:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 4
+2015-05-01 08:38:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:36,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:38 BST 2015
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 3
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 3
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 2
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : false : 5
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 1
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No one displaceable
+2015-05-01 08:38:40,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - On-call team requested: too many emergency - On-call team ASSEMBLE!
+2015-05-01 08:38:40,425  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby11 Branson11 to On-call team
+2015-05-01 08:38:40,425  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:40 BST 2015
+2015-05-01 08:38:40,425  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 4
+2015-05-01 08:38:40,425  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 4
+2015-05-01 08:38:40,426  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 6
+2015-05-01 08:38:40,426  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 3
+2015-05-01 08:38:40,426  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 2
+2015-05-01 08:38:40,426  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:40,426  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No one displaceable
+2015-05-01 08:38:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No emergency treatment available: Bobby12 (EMERGENCY) sent away
+2015-05-01 08:38:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby3 Branson3 has left Treatment Room 4
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:42 BST 2015
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 5
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 7
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 4
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 3
+2015-05-01 08:38:42,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:42,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 back in queue
+2015-05-01 08:38:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby13 Branson13 to Treatment room  3
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:44 BST 2015
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 6
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 8
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 5
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : false : 5
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 4
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:44,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:46 BST 2015
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 7
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 9
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 6
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 6
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : false : 5
+2015-05-01 08:38:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 1
+2015-05-01 08:38:46,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:46,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No one displaceable
+2015-05-01 08:38:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - No emergency treatment available: Bobby15 (EMERGENCY) sent away
+2015-05-01 08:38:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	At emergency capacity!!!	null sent away.
+2015-05-01 08:38:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby1 Branson1 has left Treatment Room 2
+2015-05-01 08:38:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:48 BST 2015
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 10
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 7
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 7
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 6
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 2
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:50,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 back in queue
+2015-05-01 08:38:50,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby16 Branson16 to Treatment room  1
+2015-05-01 08:38:50,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:50 BST 2015
+2015-05-01 08:38:50,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 : SEMI_URGENT : true : 11
+2015-05-01 08:38:50,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 8
+2015-05-01 08:38:50,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 8
+2015-05-01 08:38:50,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 7
+2015-05-01 08:38:50,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 8
+2015-05-01 08:38:50,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 3
+2015-05-01 08:38:50,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:50,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:52,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby7 Branson7 has left Treatment Room 1
+2015-05-01 08:38:52,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 Branson6 to Treatment room  0
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby8 Branson8 has left Treatment Room 5
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:52 BST 2015
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 9
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 8
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 9
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 4
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : false : 1
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:52,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:54 BST 2015
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 10
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 9
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 10
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : false : 5
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : false : 2
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : false : 1
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:54,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:56,421  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Alerting Hospital Manager : Too many overdue patients.
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:56 BST 2015
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 11
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 10
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 11
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 6
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : false : 3
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : false : 2
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : false : 1
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:56,422  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:38:58 BST 2015
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 12
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 11
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 12
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 7
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : false : 1
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : false : 4
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : false : 3
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : false : 2
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:38:58,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:00,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby2 Branson2 has left Treatment Room 3
+2015-05-01 08:39:00,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 Branson9 to Treatment room  0
+2015-05-01 08:39:00,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:00 BST 2015
+2015-05-01 08:39:00,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 12
+2015-05-01 08:39:00,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 13
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 8
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : false : 2
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : false : 1
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : false : 5
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : false : 4
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : false : 3
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:00,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:02,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 back in queue
+2015-05-01 08:39:02,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby22 Branson22 to Treatment room  4
+2015-05-01 08:39:02,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby13 Branson13 has left Treatment Room 4
+2015-05-01 08:39:02,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 Branson10 to Treatment room  0
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:02 BST 2015
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 14
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 9
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 9
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 6
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : false : 3
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : false : 2
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : false : 5
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : false : 4
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:02,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 back in queue
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby23 Branson23 to Treatment room  3
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:04 BST 2015
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 15
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 10
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 10
+2015-05-01 08:39:04,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 7
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 13
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 6
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : false : 4
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : false : 3
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : false : 5
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:04,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:06 BST 2015
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 16
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 11
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 11
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 8
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 14
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 7
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 6
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : false : 5
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : false : 1
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : false : 4
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:06,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:08,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	Queue Full
+2015-05-01 08:39:08,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby16 Branson16 has left Treatment Room 2
+2015-05-01 08:39:08,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 Branson5 to Treatment room  0
+2015-05-01 08:39:08,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby11 Branson11 has left the on-call team
+2015-05-01 08:39:08,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - On call team disengaged.
+2015-05-01 08:39:08,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:08 BST 2015
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 11
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 12
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 9
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 15
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 8
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 7
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 6
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : false : 2
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : false : 5
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:08,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 back in queue
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby26 Branson26 to Treatment room  2
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - On-call team requested: full queue - On-call team ASSEMBLE!
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Not enough doctors for on-call
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:10 BST 2015
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 : SEMI_URGENT : true : 12
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 13
+2015-05-01 08:39:10,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 10
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 16
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 9
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 8
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 7
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 13
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 6
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : false : 3
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:10,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:12,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	Queue Full
+2015-05-01 08:39:12,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby6 Branson6 has left Treatment Room 1
+2015-05-01 08:39:12,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 Branson14 to Treatment room  0
+2015-05-01 08:39:12,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:12 BST 2015
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 14
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 11
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 17
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 10
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 9
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 8
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 14
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 7
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : false : 4
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:12,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 back in queue
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby28 Branson28 to Treatment room  1
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:14 BST 2015
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 15
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 12
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 18
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 11
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 10
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 9
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 15
+2015-05-01 08:39:14,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 8
+2015-05-01 08:39:14,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 17
+2015-05-01 08:39:14,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : false : 5
+2015-05-01 08:39:14,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:14,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 	Queue Full
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:16 BST 2015
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 16
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 13
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 19
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 12
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 11
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 10
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 16
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 9
+2015-05-01 08:39:16,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 18
+2015-05-01 08:39:16,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 6
+2015-05-01 08:39:16,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:16,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:18 BST 2015
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 : NON_URGENT : true : 17
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 14
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 20
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 13
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 12
+2015-05-01 08:39:18,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 11
+2015-05-01 08:39:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 17
+2015-05-01 08:39:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 10
+2015-05-01 08:39:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 19
+2015-05-01 08:39:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 7
+2015-05-01 08:39:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:18,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby22 Branson22 has left Treatment Room 5
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 to Treatment room  0
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:20 BST 2015
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 : NON_URGENT : true : 15
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 21
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 14
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 13
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 12
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 18
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 11
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 20
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 8
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:20,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby23 Branson23 has left Treatment Room 4
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 Branson17 to Treatment room  0
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:22 BST 2015
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 22
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 15
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 14
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 13
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 19
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 12
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 21
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 9
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:22,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:24 BST 2015
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 23
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 16
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 15
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 14
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 20
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 13
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 22
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 10
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:24,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:26 BST 2015
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 : SEMI_URGENT : true : 24
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 17
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 16
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 15
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 21
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 14
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 23
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 11
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:26,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby26 Branson26 has left Treatment Room 3
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 Branson10 to Treatment room  0
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:28 BST 2015
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 18
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 17
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 16
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 22
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 15
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 24
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 12
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:28,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:30 BST 2015
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 : NON_URGENT : true : 19
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 : NON_URGENT : true : 18
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 17
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 23
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 16
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 25
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 13
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:30,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby14 Branson14 has left Treatment Room 1
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby18 Branson18 to Treatment room  0
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby28 Branson28 has left Treatment Room 2
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby19 Branson19 to Treatment room  0
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:32 BST 2015
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 18
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 24
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 17
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 26
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 14
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:32,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:34 BST 2015
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 19
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 25
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 18
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 27
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 15
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:34,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:36 BST 2015
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 20
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 26
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 19
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 28
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 16
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:36,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:38 BST 2015
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 : URGENT : true : 21
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 27
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 20
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 29
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 17
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:38,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby4 Branson4 has left Treatment Room 5
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby20 Branson20 to Treatment room  0
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:40 BST 2015
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 : URGENT : true : 28
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 21
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 30
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 18
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:40,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby17 Branson17 has left Treatment Room 4
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby9 Branson9 to Treatment room  0
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:42 BST 2015
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 22
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 31
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 19
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:42,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:44 BST 2015
+2015-05-01 08:39:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 23
+2015-05-01 08:39:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 32
+2015-05-01 08:39:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 20
+2015-05-01 08:39:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:44,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:46 BST 2015
+2015-05-01 08:39:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 : SEMI_URGENT : true : 24
+2015-05-01 08:39:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 33
+2015-05-01 08:39:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 21
+2015-05-01 08:39:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:46,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete
+2015-05-01 08:39:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby10 Branson10 has left Treatment Room 3
+2015-05-01 08:39:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby21 Branson21 to Treatment room  0
+2015-05-01 08:39:48,419  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - CurrentTime: Fri May 01 08:39:48 BST 2015
+2015-05-01 08:39:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby5 : URGENT : true : 34
+2015-05-01 08:39:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Bobby24 : URGENT : true : 22
+2015-05-01 08:39:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - 
+
+2015-05-01 08:39:48,420  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 847 - Update Complete

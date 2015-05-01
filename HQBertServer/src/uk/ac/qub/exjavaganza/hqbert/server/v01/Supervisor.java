@@ -151,7 +151,7 @@ public enum Supervisor {
 	
 		//Testing
 		makeBobbies();
-		//superFakeOnCallTeam();
+		
 
 		// set up connection to database
 		try {
@@ -178,7 +178,8 @@ public enum Supervisor {
 		onCallTeam = null;
 		
 		getAvailableStaff();
-		getOnCallList();
+		superFakeOnCallTeam();
+		//getOnCallList();
 		
 		excessiveWaitingAlertSent = false;
 		
@@ -409,11 +410,30 @@ public enum Supervisor {
 	 */
 	public void getOnCallList(){
 		try{
+			
+		int doctors = 0;
 		for(int i = availableStaff.size()-1; i >= 0; i--){
 			Staff member = availableStaff.get(i);
-			if(member.getJob() == Job.DOCTOR || member.getJob() == Job.NURSE){
+			if(member.getJob() == Job.DOCTOR){
 				staffOnCall.add(member);
 				availableStaff.remove(member);
+				doctors++;
+				if(doctors >= 2){
+					break;
+				}
+			}
+		}
+		
+		int nurses = 0;
+		for(int i = availableStaff.size()-1; i >= 0; i--){
+			Staff member = availableStaff.get(i);
+			if(member.getJob() == Job.NURSE){
+				staffOnCall.add(member);
+				availableStaff.remove(member);
+				nurses++;
+				if(nurses >= 3){
+					break;
+				}
 			}
 		}
 		}catch(IndexOutOfBoundsException iobE){
