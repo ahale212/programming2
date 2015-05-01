@@ -32,16 +32,20 @@ public class Patient implements Comparable<Patient>, Serializable {
 	
 	/** the concatenated name of the patient */
 	private String patientName;
-		
+	
+	/** The details of the patients incident */
+	private String incidentDetails;
+
 	public Patient(){
 		waitTime = 0;
 		//symptoms = new ArrayList<String>();
 	}
 	
-	public Patient(Person person, Urgency urgency){
+	public Patient(Person person, Urgency urgency, String incidentDetails){
 		this.setPerson(person);
 		this.setPatientName(person);
 		this.setUrgency(urgency);
+		this.setIncidentDetails(incidentDetails);
 		waitTime = 0;
 		//symptoms = new ArrayList<String>();
 	}
@@ -105,6 +109,20 @@ public class Patient implements Comparable<Patient>, Serializable {
 
 	public void setEntryDate(Date entryDate) {
 		this.entryDate = entryDate;
+	}
+	
+	/** Getter for incident details
+	 * @return the incident details
+	 */
+	public String getIncidentDetails() {
+		return incidentDetails;
+	}
+	
+	/** Setter for incident details 
+	 * @param incidentDetails 	The incident details to be set
+	 */
+	public void setIncidentDetails(String incidentDetails) {
+		this.incidentDetails = incidentDetails;
 	}
 
 }

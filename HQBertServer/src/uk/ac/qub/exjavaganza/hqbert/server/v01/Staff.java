@@ -1,3 +1,4 @@
+
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class Staff implements Serializable {
 	private String employeeUsername;
 	private String employeePassword;
 	private String employeeEmail;
+	private String mobileNumber;
 	
 	private Job job;
 /**
@@ -59,7 +61,7 @@ public class Staff implements Serializable {
 	 */
 	public Staff(String employeeNumber, String firstName, String lastName,
 			String employeeUsername, String employeePassword,
-			String employeeEmail) {
+			String employeeEmail, String mobileNumber) {
 
 		setEmployeeNumber(employeeNumber);
 		setFirstName(firstName);
@@ -67,6 +69,7 @@ public class Staff implements Serializable {
 		setEmployeeUsername(employeeUsername);
 		setEmployeePassword(employeePassword);
 		setEmployeeEmail(employeeEmail);
+		setMobileNumber(mobileNumber);
 
 	}// end of constructor
 
@@ -209,6 +212,14 @@ public class Staff implements Serializable {
 	
 	public Job getJob(){
 		return this.job;
+	}
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 	
 

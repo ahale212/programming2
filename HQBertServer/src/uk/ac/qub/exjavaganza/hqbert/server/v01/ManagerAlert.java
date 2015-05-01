@@ -18,9 +18,15 @@ public class ManagerAlert {
 	/**
 	 * Method to send the automated email when the A&E is at capacity.
 	 */
-	public static void emailCapacityAlert() {
+	public static void emailCapacityAlert(Staff HospitalManager, boolean alertsActive) {
+		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
+		
 		// Recipient's email ID needs to be mentioned.
-		String to = "hospitalmanager10@gmail.com";
+		String to = HospitalManager.getEmployeeEmail();
 
 		// Sender's email ID needs to be mentioned
 		String from = "pashospital2@gmail.com";
@@ -72,10 +78,15 @@ public class ManagerAlert {
 	 * Method to send the automated email when two people have been waiting more
 	 * than 30 minutes.
 	 */
-	public static void emailWaitingTimeAlert() {
+	public static void emailWaitingTimeAlert(Staff HoaspitalManager, boolean alertsActive) {
+		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
 		
 		// Recipient's email ID.
-		String to = "hospitalmanager10@gmail.com";
+		String to = HoaspitalManager.getEmployeeEmail();
 
 		// Sender's email ID.
 		String from = "pashospital2@gmail.com";
@@ -128,14 +139,20 @@ public class ManagerAlert {
 	 * Method to send automated sms to the Hospital Manager when the hospital
 	 * list is at capacity.
 	 */
-	public static void smsCapacityAlert() {
+	public static void smsCapacityAlert(Staff HospitalManager, boolean alertsActive) {
+		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
+				
 		
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = "+447821063144@sms.ipipi.com";
+		String to = HospitalManager.getMobileNumber()+"@sms.ipipi.com";
 		String body = "All treatment rooms are full and the on call team is engaged";
 		Transport tr = null;
 
@@ -172,14 +189,19 @@ public class ManagerAlert {
 	 * Method to send automated sms to the Hospital Manager when two patients
 	 * have exceeded the waiting time.
 	 */
-	public static void smsWaitingTimeAlert() {
+	public static void smsWaitingTimeAlert(Staff HospitalManager, boolean alertsActive) {
 		
+		//If alertsActive is false, we are testing - dont send message - just return that it was successful
+		if(alertsActive == false){
+			return;
+		}
+				
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = "+447821063144@sms.ipipi.com";
+		String to = HospitalManager.getMobileNumber()+"@sms.ipipi.com";
 		String body = "Two patients have been waiting more than 30 minutes";
 		Transport tr = null;
 

@@ -61,7 +61,6 @@ public class HQueue implements Serializable {
 	
 	public void update(int deltaTime) {
 		Patient p = null;
-		int maxWait = Supervisor.INSTANCE.MAX_WAIT_TIME;
 		//Update all patients in any queue
 		for(int i = 0; i < pq.size(); i++){
 			p = pq.get(i);
@@ -74,7 +73,7 @@ public class HQueue implements Serializable {
 			LinkedList<Patient> queue = allSubqueues[npqNum];
 			for(int patientIndex = 0; patientIndex < queue.size(); patientIndex++){
 				p = queue.get(patientIndex);
-				if(p.getWaitTime() > maxWait){
+				if(p.getPriority() == true){
 					queue.remove(p);
 					hiPriQueue.add(p);
 					break;
@@ -92,11 +91,10 @@ public class HQueue implements Serializable {
 	 * @param p : the patient who's urgency you wish to change
 	 * @param newUrgency : the required new level of urgency for the patient
 	 */
-	public void reAssignUrgency(Patient p, Urgency newUrgency){
+	public void reAssignTriage(Patient p, Urgency newUrgency){
 		allSubqueues[p.getUrgency().getValue()].remove(p);
 		p.setUrgency(newUrgency); 
-		allSubqueues[p.getUrgency().getValue()].add(p);
-		sortQueue(allSubqueues[p.getUrgency().getValue()]);
+		Supervisor.INSTANCE.admitPatient(p);
 	}
 	
 	/**Insert a patient in the appropriate sub-queue place and so, correct position in overall queue
@@ -106,32 +104,24 @@ public class HQueue implements Serializable {
 	 */
 	public boolean insert(Patient patient){
 		Urgency urgency = patient.getUrgency();
+		
+		//First : if queue full and all rooms full - anyone new is sent away,
+		//		even emergencies - as per Aidan's email.
+		
+		if(pq.size() >= Supervisor.INSTANCE.MAX_QUEUE_SIZE){
+			Supervisor.INSTANCE.log("\tQueue Full");
+			return false;
+		}
+		
 		//If they are an emergency, skip the queue and attempt to send for treatment
-		if(urgency == Urgency.EMERGENCY){
+		if(urgency == Urgency.EMERGENCY || pq.size() == 0){
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
-				//Check if the onCall team is on-site
-				if(Supervisor.INSTANCE.getOncallTeam() != null){
-					//on-call active already, send this patient away
-					//log details
+				if(urgency == Urgency.EMERGENCY){
+					Supervisor.INSTANCE.log("\tAt emergency capacity!!!\t"+patient.getPatientName()+" sent away.");
 					return false;
-				}else{
-					//Alert the on-call team, "send" them this patient
-					if(Supervisor.INSTANCE.assembleOnCall()==true){
-						if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
-							//This call should snd the patient to the onCall team
-							
-							PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
-							MetricsController.INSTANCE.AddMetric(metrics);
-							return true;
-						}else{
-							//Something went wrong - log details
-							return false;
-						}
-					}
 				}
-				return false;
 			}
 		}
 		
@@ -249,13 +239,13 @@ public class HQueue implements Serializable {
 	 * Show the details of the queue in the console 
 	 */
 	public void showQueueInConsole(){
-		System.out.println("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
+		Supervisor.INSTANCE.log("CurrentTime: "+Supervisor.INSTANCE.getCurrentTime() );
 		for(int patientNum = 0; patientNum < pq.size(); patientNum++){
 			Patient p = pq.get(patientNum);
 			String patientQueueDetails = p.getPerson().getFirstName() + " : "+p.getUrgency()+" : "+p.getPriority()+ " : " +p.getWaitTime();
-			System.out.println(patientQueueDetails);
+			Supervisor.INSTANCE.log(patientQueueDetails);
 		}
-		System.out.println("\n");
+		Supervisor.INSTANCE.log("\n");
 	}
 	
 	public void initDisplacable(){
@@ -302,7 +292,7 @@ public class HQueue implements Serializable {
 		try{
 			displacablePatient = displacable.removeLast();
 		}catch(Exception e){
-			System.out.println("No one displaceable");
+			Supervisor.INSTANCE.log("No one displaceable");
 		}
 		initDisplacable();
 		

@@ -448,6 +448,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return new BigInteger(130, random).toString(32);
 	}
 	
+	
 	public long getAvTimeInQue(){
 		
 		return MetricsController.INSTANCE.getAvTimeInQue();
@@ -485,4 +486,16 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return count;
 	}
 
+	
+	/**
+	 * Authenticates the clientID by checking it exists in the clients list.
+	 * If it does the ClientCallback object is returned, else null is returned if the
+	 * clientID is not valid
+	 * @param clientID		The clientId of the client
+	 * @return				Whether or not the clientID is valid
+	 */
+	private boolean authenticate(String clientID) {
+		// If the clients list contains the clientID as a key then the 
+		return clients.containsKey(clientID);
+	}
 }

@@ -26,6 +26,12 @@ public class TreatmentRoom extends TreatmentFacility {
 		System.out.println("Room no. : "+roomNumber+"\tPatient : "+patientName+"\tUrgency : "+patientUrgency+"\tTime to available : "+timeToAvailable+"\tPatientWaitTime : "+patientWaitTime);
 	}
 	
+	@Override
+	public void logDischarge(){
+		String message = patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName() + " has left Treatment Room "+ (roomNumber+1);
+		Supervisor.INSTANCE.log(message);
+	}
+	
 	/**
 	 * Getter for the TreatmentRoom's room number
 	 * @return	The room number of the TreatmentRoom

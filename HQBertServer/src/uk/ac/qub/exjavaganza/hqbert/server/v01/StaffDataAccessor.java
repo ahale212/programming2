@@ -87,31 +87,67 @@ public class StaffDataAccessor {
 		}
 	}
 	
+	
+	// create a new list for staff
+	Staff getStaffMemeberByUsername(String username) throws SQLException {
+		// start of try to initiate query statement
+		try (Statement findStaff = con.prepareStatement(findStaffString);
+			// execute query
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff WHERE Employee_username = '" + username + "'");) {
+			
+			// Get a list of staff objects based on the output from the database
+			List<Staff> staff = resultOfQuery(rs1);
+			
+			// If a staff member was found
+			if (staff.size() > 0) {
+				// return the first staff member in the list
+				return staff.get(0);
+			} else {
+				// else return null
+				return null;
+			}
+		}
+	}
+	
 	// create a new list for staff
 	List<Staff> getStaffList() throws SQLException {
 		// start of try to initiate query statement
 		try (Statement findStaff = con.prepareStatement(findStaffString);
 			// execute query
-			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff");) {
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email, mobile_number, job FROM staff");) {
 			
 			// return the staff list
 			return resultOfQuery(rs1);
 		}
 	}
 	
-	
 	public List<Staff> resultOfQuery(ResultSet rs) throws SQLException {
 		List<Staff> staffList = new ArrayList<>();
 		// instantiate the String vars to that of the database entry
 		while (rs.next()) {
-			// Get the staff memeber details from the result set
-			String employeeNumber = rs.getString("Employee_Number");
-			String firstName = rs.getString("Employee_first_name");
-			String lastName = rs.getString("Employee_last_name");
-			String email = rs.getString("Employee_Email");
+			// Get the staff member details from the result set
+			String EmployeeNumber = rs.getString("Employee_Number");
+			String FirstName = rs.getString("Employee_first_name");
+			String LastName = rs.getString("Employee_last_name");
+			String Username = ""; //rs.getString("Employee_username");
+			String Password = ""; //rs.getString("Employee_Password");
+			String Email = rs.getString("Employee_Email");
+			String MobileNumber = rs.getString("mobile_number");
+			String employeeJob = rs.getString("job");
 
 			// Create a new staff member with the details from the database
-			Staff  staffMember = new Staff(employeeNumber, firstName, lastName, "", "", email);
+			Staff  staffMember = new Staff(EmployeeNumber, FirstName, LastName, Username, Password, Email, MobileNumber);
+			if(employeeJob.equalsIgnoreCase("doctor")){
+				staffMember.setJob(Job.DOCTOR);
+			}else if(employeeJob.equalsIgnoreCase("nurse")){
+				staffMember.setJob(Job.NURSE);
+			}else if(employeeJob.equalsIgnoreCase("admin")){
+				staffMember.setJob(Job.ADMIN);
+			}else if(employeeJob.equalsIgnoreCase("manager")){
+				staffMember.setJob(Job.MANAGER);
+			}else if(employeeJob.equalsIgnoreCase("triage Nurse")){
+				staffMember.setJob(Job.TRIAGE_NURSE);
+			}
 			// Add the user to the staff list
 			staffList.add(staffMember);	
 			
