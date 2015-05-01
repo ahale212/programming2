@@ -497,9 +497,6 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 
 
-	/**
-	 * Change the urgency of a patient in the queue
-	 */
 	@Override
 	public void reAssignTriage(String clientID, Patient patient,
 			Urgency newUrgency) throws RemoteException, AuthenticationException {
@@ -507,19 +504,5 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		
 	}
 	
-	/**
-	 * Set the number of treatment rooms in the hospital
-	 * @param numRooms : the requested new number of rooms
-	 */
-	public void setNumberOfTreatmentRooms(int numRooms){
-		Supervisor.INSTANCE.setCurrentNumberOfTreatmentRooms(numRooms);
-	}
-	
-	/**
-	 * Get the number of treatment rooms currently in the hospital
-	 * @return 
-	 */
-	public int getNumberOfTreatmentRooms(){
-		return Supervisor.INSTANCE.getCurrentNumberOfTreatmentRooms();
-	}
+
 }

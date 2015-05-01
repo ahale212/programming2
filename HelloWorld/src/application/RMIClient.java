@@ -233,6 +233,17 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	};
 	
 	/**
+	 * Display the next patient to be sent to a room
+	 */
+	@Override
+	public void notifyNextPatientToRoom(String message) throws RemoteException {
+		
+		// Pass on the message to the controller
+		controller.notifyNextPatientToRoom(message);
+		
+	}
+	
+	/**
 	 * Informs the server that the client no longer wished to receive updates and removes the client
 	 * from the RMI runtime.
 	 */
@@ -244,16 +255,18 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			// Cancel the heartbeat timer
 			heartBeatTimer.cancel();
 		}
-		
-		serverAccessible = ConnectionState.NOT_CONNECTED;
-		controller.serverStatusChanged(serverAccessible);
+	
 
 		if (server != null) {
 			try {
 				// Unregister for updates
 				server.deregister(clientID);
+				serverAccessible = ConnectionState.NOT_CONNECTED;
+				controller.serverStatusChanged(serverAccessible);
 			} catch (RemoteException e) {
 				System.err.println("Failed to unregister from server updates.");
+				serverAccessible = ConnectionState.CONNECTION_ERROR;
+				controller.serverStatusChanged(serverAccessible);
 			}
 		}
 		
@@ -281,12 +294,6 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	/** Getter for the client ID */
 	public String getClientID() {
 		return clientID;
-	}
-
-	@Override
-	public void notifyNextPatientToRoom(String message) throws RemoteException {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
