@@ -79,10 +79,6 @@ public enum MetricsController {
 	private MetricsController(){
 		stats = new ArrayList<PatientMetrics>();
 		exstentions = new ArrayList<MetricTimeExtension>();
-
-	private MetricsController(){
-		stats = new ArrayList<PatientMetrics>();
-
 	}
 	
 	public void AddMetric(PatientMetrics metrics){
