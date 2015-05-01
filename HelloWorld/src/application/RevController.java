@@ -968,7 +968,7 @@ public class RevController implements Initializable, ClientCallback {
 							emailNewPassword(EmailRequest);
 							userNameRequest.hide();
 							login_pop.hide();	
-						
+							Notifications.create().title("Username & Password Request").text("Email sent").show();
 						}});
 					CancelRequest.setOnAction(new EventHandler<ActionEvent>() {
 
