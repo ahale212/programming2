@@ -1897,6 +1897,7 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	public void pasStats() {
+		try{
 		int[] urgencies = client.getServer().getUrgencies();
 		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
 		current_emergencies.setText(""+urgencies[0]);
@@ -1922,6 +1923,9 @@ public class RevController implements Initializable, ClientCallback {
 		
 		client.getServer().getUrgencies();
 		client.getServer().NumberOfPatientsOverWaitTime();
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
 		
 	}
 }
