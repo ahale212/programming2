@@ -181,11 +181,12 @@ public class RevController implements Initializable, ClientCallback {
 	/**
 	 * private Integer for the original treatment room count by the spec
 	 */
-	private Integer treatmentRoomCount = 5;
+	private Integer roomCount = 5;
+	
 	/**
 	 * private Integer for the newly desired room count specified by the user
 	 */
-	private Integer newTreatmentRoomCount = 0;
+	private Integer newRoomCount = 0;
 	private String[] array = new String[10];
 	private String[] array1 = new String[5];
 	private String[] onCall = new String[1];
@@ -542,40 +543,7 @@ public class RevController implements Initializable, ClientCallback {
 		on_call.setItems(onCallList);
 	}
 
-	/**
-	 * new method to change the amount of treatment rooms - this is done through
-	 * the front end using config - settings - then typing in a valid number
-	 */
-	private void newArrayList() {
-		// remove the current treatment rooms
-		trno.removeAll(treatmentRoomNum);
-		// declare a difference var between old and new treatment room counts
-		Integer difference = (newTreatmentRoomCount - treatmentRoomCount);
-		// if the difference is greater than 0
-		if (difference > 0) {
-			// loop through until it reaches the new treatment room count
-			for (int loop = treatmentRoomCount; loop < newTreatmentRoomCount; loop++) {
-				// add the new treatment rooms to the array list
-				treatmentRoomNum.add("Treatment Room" + (loop + 1));
-				// make the new room count equal to the original one so this can
-				// be changed the exact same way at any time
-				treatmentRoomCount = newTreatmentRoomCount;
-			}// end of loop
-		}// end of if
-			// if the difference is less than 0
-		if (difference < 0) {
-			// loop through until it reaches the new treatment room count
-			for (int loop = treatmentRoomCount; loop > newTreatmentRoomCount; loop--) {
-				// remove the unwanted treatment rooms from the array list
-				treatmentRoomNum.remove("Treatment Room" + (loop));
-				// make the new room count equal to the original one so this can
-				// be changed the exact same way at any time
-				treatmentRoomCount = newTreatmentRoomCount;
-			}// end of loop
-		}// end of if
-			// add all the treatment rooms to the arraylist
-		trno.addAll(treatmentRoomNum);
-	}// end of method
+	
 
 	/**
 	 * Add tags to listviews
@@ -587,12 +555,11 @@ public class RevController implements Initializable, ClientCallback {
 		on_call_list.setTooltip(new Tooltip("On Call Unit"));
 
 		// for loop iterates through and creates the treatment rooms
-		for (int loop = 0; loop < treatmentRoomCount; loop++) {
+		for (int loop = 0; loop < roomCount; loop++) {
 			// adds the treatment room
 			treatmentRoomNum.add("Treatment Room" + (loop + 1));
 		}
 		// adds all the treatment rooms to the array list
-		trno.addAll(treatmentRoomNum);
 		trno.addAll(treatmentRoomNum);
 		treatment_room_list.setItems(trno);
 		select_tr.setItems(trno);
@@ -611,6 +578,41 @@ public class RevController implements Initializable, ClientCallback {
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
 	}
+	
+	/**
+	 * new method to change the amount of treatment rooms - this is done through
+	 * the front end using config - settings - then typing in a valid number
+	 */
+	private void newArrayList() {
+		// remove the current treatment rooms
+		trno.removeAll(treatmentRoomNum);
+		// declare a difference var between old and new treatment room counts
+		Integer difference = (newRoomCount - roomCount);
+		// if the difference is greater than 0
+		if (difference > 0) {
+			// loop through until it reaches the new treatment room count
+			for (int loop = roomCount; loop < newRoomCount; loop++) {
+				// add the new treatment rooms to the array list
+				treatmentRoomNum.add("Treatment Room" + (loop + 1));
+				// make the new room count equal to the original one so this can
+				// be changed the exact same way at any time
+				roomCount = newRoomCount;
+			}// end of loop
+		}// end of if
+			// if the difference is less than 0
+		if (difference < 0) {
+			// loop through until it reaches the new treatment room count
+			for (int loop = roomCount; loop > newRoomCount; loop--) {
+				// remove the unwanted treatment rooms from the array list
+				treatmentRoomNum.remove("Treatment Room" + (loop));
+				// make the new room count equal to the original one so this can
+				// be changed the exact same way at any time
+				roomCount = newRoomCount;
+			}// end of loop
+		}// end of if
+			// add all the treatment rooms to the arraylist
+		trno.addAll(treatmentRoomNum);
+	}// end of method
 
 	/**
 	 * Controller method to set button functionality uses lambda expression to
@@ -652,6 +654,7 @@ public class RevController implements Initializable, ClientCallback {
 
 				@Override
 				public void handle(ActionEvent event) {
+					loadArrayLists();
 					Integer i = (Integer.parseInt(set_no_trs.getText()
 							.toString()));
 					int a = i;
@@ -672,13 +675,13 @@ public class RevController implements Initializable, ClientCallback {
 						// for a case, set the new treatment room count as the
 						// same as the number entered in the text field
 						case 1:
-							setNewTreatmentRoomCount(i);
+							setNewRoomCount(i);
 							// start the method to change the treatment rooms
 							newArrayList();
 							break;
 						default:
 							// set the default
-							setNewTreatmentRoomCount(i);
+							setRoomCount(i);
 							// start the method to change the treatment rooms
 							newArrayList();
 						}// end of switch
@@ -1724,39 +1727,22 @@ public class RevController implements Initializable, ClientCallback {
 		});
 	}
 
-	/**
-	 * getter for the original room count
-	 * 
-	 * @return
-	 */
-	public Integer getTreatmentRoomCount() {
-		return treatmentRoomCount;
+	public Integer getRoomCount() {
+		return roomCount;
 	}
 
-	/**
-	 * setter for the original room count
-	 * 
-	 * @param roomCount
-	 */
-	public void setTreatmentRoomCount(Integer roomCount) {
-		this.treatmentRoomCount = roomCount;
+	public void setRoomCount(Integer roomCount) {
+		this.roomCount = roomCount;
 	}
 
-	/**
-	 * getter for the new room count
-	 * 
-	 * @return
-	 */
-	public Integer getNewTreatmentRoomCount() {
-		return newTreatmentRoomCount;
+	public Integer getNewRoomCount() {
+		return newRoomCount;
 	}
 
-	/**
-	 * setter for the new room count
-	 * 
-	 * @param newRoomCount
-	 */
-	public void setNewTreatmentRoomCount(Integer newRoomCount) {
-		this.newTreatmentRoomCount = newRoomCount;
+	public void setNewRoomCount(Integer newRoomCount) {
+		this.newRoomCount = newRoomCount;
 	}
+
+	
+	
 }
