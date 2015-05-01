@@ -21,6 +21,10 @@ public class Clock {
 	
 	long difference;
 	
+	/**
+	 * Constructor with params
+	 * @param baseInterval : The rate at which the queue should update
+	 */
 	public Clock(int baseInterval) {
 		try{
 			interval = baseInterval * 1000 * 60;
@@ -36,6 +40,10 @@ public class Clock {
 		lastTriggerTime = startTime;
 	}
 	
+	/**
+	 * get the time since the last update, if its at the predefined update rate,
+	 * update the queue system
+	 */
 	public void update(){
 		
 		currentTime = Calendar.getInstance().getTime();

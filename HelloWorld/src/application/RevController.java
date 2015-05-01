@@ -127,7 +127,7 @@ public class RevController implements Initializable, ClientCallback {
 	private Tab triage_tab, tr_tab, stats_tab;
 	
 	@FXML // TableView of on call staff
-	private TableView<Staff> on_call_table;
+	private TableView<Staff> onCallUnitStaff;
 
 	@FXML // various textFields for user input or displaying patient details
 	private TextField search_NHS_No, search_First_Name, search_Surname,
@@ -157,6 +157,7 @@ public class RevController implements Initializable, ClientCallback {
 	 * JavaFX Collections Framework provides ObservableList to show lists of data on screen
 	 */
 	private final ObservableList<Staff> on_call_unit_staff = FXCollections.observableArrayList();
+	private final ObservableList<Staff> on_call_unit_docs = FXCollections.observableArrayList();
 	private final ObservableList<Patient> emergency_room = FXCollections.observableArrayList();
 	private final ObservableList<Patient> waiting_room = FXCollections.observableArrayList();
 	private final ObservableList<String> QList = FXCollections.observableArrayList();
@@ -174,6 +175,12 @@ public class RevController implements Initializable, ClientCallback {
 	 * The list that holds the Patients in the queue
 	 */
 	List<Patient> queueList = new LinkedList<Patient>();
+	
+	/**
+	 * The list that holds the staff on duty
+	 */
+	List<Staff> onCallStaff = new LinkedList<Staff>();
+	List<Staff> onCallDoctors = new LinkedList<Staff>();
 
 	/**
 	 * The list of Treatment Rooms / On call team
@@ -216,6 +223,7 @@ public class RevController implements Initializable, ClientCallback {
 	private Preferences prefs;
 	private final String PORT_PREF_NAME = "PORT_PREF";
 	private final String ADDRESS_PREF_NAME = "ADDRESS_PREF";
+	private final String  LOCAL_HOST_PREF_NAME = "LOCAL_HOST_PREF";
 	
 	/**
 	 * @Override implemented method. Interface initialise. 
@@ -226,7 +234,6 @@ public class RevController implements Initializable, ClientCallback {
 		if (client != null) {
 			client.close();
 		}
-
 		super.finalize();
 	}
 
@@ -234,7 +241,7 @@ public class RevController implements Initializable, ClientCallback {
 	 * The main utility method for initialising the controls and the behaviour of 
 	 * our view class.
 	 */
-	@Override // 
+	@Override
 	public void initialize(URL fxmlFilelocation, ResourceBundle resources) {
 
 		labelSliders();
@@ -242,14 +249,14 @@ public class RevController implements Initializable, ClientCallback {
 		runValidSearch();
 		updateQueue();
 		buttonFunction();
-		toolTime();
-		
+		toolTime();		
 		getPrefsFile();
 
 	}
 
 	/**
 	 * Sets layout colours and patterns
+	 * unimplemented method to allow for future customisation
 	 */
 	private void colours() {
 
@@ -261,7 +268,6 @@ public class RevController implements Initializable, ClientCallback {
 
 	}
 
-	
 	/**
 	 * load the prefs file and assign the instance var
 	 */
@@ -602,6 +608,30 @@ public class RevController implements Initializable, ClientCallback {
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
 		
+
+		onCallUnitStaff = new TableView<Staff>(); 
+		
+		TableColumn role = new TableColumn("Role");			
+		role.setCellValueFactory(new PropertyValueFactory<Object, String>("job"));
+		
+		TableColumn firstName_ocu = new TableColumn("Name");			
+		firstName_ocu.setCellValueFactory(new PropertyValueFactory<Object, String>("firstName"));
+		
+		TableColumn lastName_ocu = new TableColumn("Surname");			
+		lastName_ocu.setCellValueFactory(new PropertyValueFactory<Object, String>("lastName"));
+			
+		onCallUnitStaff.getColumns().addAll(role, firstName_ocu, lastName_ocu);
+		
+		for (Staff s : onCallStaff) {			
+			// Check if there is a patient in the facility
+			on_call_unit_staff.add(s);
+		}		
+		onCallUnitStaff.setItems(on_call_unit_staff);
+
+		for (Staff docs : onCallDoctors) {
+			on_call_unit_docs.add(docs);
+		}
+		doctor_on_duty.setItems(on_call_unit_docs);
 	}
 	
 	/**
@@ -644,9 +674,8 @@ public class RevController implements Initializable, ClientCallback {
 	 * handle events (e->)
 	 */
 	private void buttonFunction() {	
-		// Sign refers to the "signature" button in the Treatment Room pane.
-		// Sets the time stamp for recording new patient input or treatment
-		// notes. 
+		
+		// use search fields to search through queue
 		search_queue.setOnAction(e -> {
 			
 			for (Patient pat: queueList) {
@@ -699,6 +728,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		});
 		
+		// Sign refers to the "signature" button in the Treatment Room pane.
+				// Sets the time stamp for recording new patient input or treatment
+				// notes. 
 		sign.setOnAction(e -> {
 			String my_details = null;
 			
@@ -768,6 +800,8 @@ public class RevController implements Initializable, ClientCallback {
 			// Set up the server address label and textbox
 			Label server_address_label = new Label("Set the server address");
 			TextField set_server_address = new TextField();
+			set_server_address.setText(prefs.get(ADDRESS_PREF_NAME, "localhost"));
+			
 			Button save_server_address = new Button("Set");
 			server_address_label.setLayoutY(85.0);
 			set_server_address.setLayoutY(105.0);
@@ -776,10 +810,22 @@ public class RevController implements Initializable, ClientCallback {
 			// Set up the server port label and textbox
 			Label port_label = new Label("Set the server port");
 			TextField set_port = new TextField();
+			set_port.setText(String.valueOf(prefs.getInt(PORT_PREF_NAME, 1099)));
+			
 			Button save_port = new Button("Set");
 			port_label.setLayoutY(165.0);
 			set_port.setLayoutY(190.0);
 			save_port.setLayoutY(215.0);
+			
+			// Set up the server port label and textbox
+			Label local_host_name_label = new Label("Set the host name");
+			TextField set_local_host_name = new TextField();
+			set_local_host_name.setText(prefs.get(LOCAL_HOST_PREF_NAME, "localhost"));
+			
+			Button save_local_host_name = new Button("Set");
+			local_host_name_label.setLayoutY(255.0);
+			set_local_host_name.setLayoutY(275.0);
+			save_local_host_name.setLayoutY(300.0);
 			
 			// On set address button pressed
 			save_server_address.setOnAction(new EventHandler<ActionEvent>() {
@@ -802,6 +848,7 @@ public class RevController implements Initializable, ClientCallback {
 					}
 				}
 			});
+			
 			// On set port button pressed
 			save_port.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -826,6 +873,28 @@ public class RevController implements Initializable, ClientCallback {
 									+ "\nLog in again to to connect using the new settings.").showConfirm();
 					} else {
 						Notifications.create().title("Invalid Port").text("Port not changed.").showError();
+					}
+				}
+			});
+
+			// On set localhost address button pressed
+			save_local_host_name.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					// The server address
+					String localHostName = set_local_host_name.getText();
+					// Whether or not
+					if (!localHostName.equals("")) {
+						// Store in preferences
+						prefs.put(LOCAL_HOST_PREF_NAME, localHostName);
+						Notifications.create()
+							.title("Server Address Updated")
+							.text("The localhost has been changed to " + localHostName + ". "
+									+ "\nLog in again to to connect using the new settings.")
+							.showConfirm();
+					} else {
+						Notifications.create().title("Invalid localhost address").text("Localhost address not changed.").showError();
 					}
 				}
 			});
@@ -897,8 +966,9 @@ public class RevController implements Initializable, ClientCallback {
 			// controls for the settings pane, which itself is a pop-over control.
 			root.getChildren().addAll(plus_trs, set_no_trs, save_no_trs, port_label, 
 					set_port, server_address_label, set_server_address,
-					save_server_address, save_port);
-			Scene s = new Scene(root, 200, 250);
+					save_server_address, save_port, local_host_name_label, set_local_host_name,
+					save_local_host_name);
+			Scene s = new Scene(root, 200, 340);
 			settings_stage.setScene(s);
 			settings_stage.show();
 
@@ -943,8 +1013,9 @@ public class RevController implements Initializable, ClientCallback {
 					try {
 						int port = prefs.getInt(PORT_PREF_NAME, 1099);
 						String address = prefs.get(ADDRESS_PREF_NAME, "localhost");
+						String localhost = prefs.get(LOCAL_HOST_PREF_NAME, "localhost");
 						// Create the client
-						client = new RMIClient(RevController.this, address, port, _user, db_pass);
+						client = new RMIClient(RevController.this, address, port, localhost, _user, db_pass);
 						// Add a message to the log
 						log("Logged in as " + _user);
 
@@ -1342,7 +1413,7 @@ public class RevController implements Initializable, ClientCallback {
 			}
 			clearSearchFields();
 			clearTriageTextFields();
-
+			
 			resetTriage();
 		});
 
@@ -1359,14 +1430,19 @@ public class RevController implements Initializable, ClientCallback {
 			
 			try {
 				// Add the urgent patient to the back end
-				client.getServer().addPatient(client.getClientID(), urgent_patient);
-
+				boolean added = client.getServer().addPatient(client.getClientID(), urgent_patient);
+				if (added) {
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+				} else {
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
 
 			clearSearchFields();
 			clearTriageTextFields();
+			
 			resetTriage();
 		});
 
@@ -1384,14 +1460,19 @@ public class RevController implements Initializable, ClientCallback {
 			
 			try {
 				// Add the semi-urgent patient to the back end
-				client.getServer().addPatient(client.getClientID(), semi_urgent_patient);
-
+				boolean added = client.getServer().addPatient(client.getClientID(), semi_urgent_patient);
+				if (added) {
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+				} else {
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
+			
 			clearSearchFields();
 			clearTriageTextFields();
-
+			
 			resetTriage();
 		});
 
@@ -1409,14 +1490,19 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 
 				// Add the non-urgent patient to the back end
-				client.getServer().addPatient(client.getClientID(), non_urgent_patient);
-
+				boolean added = client.getServer().addPatient(client.getClientID(), non_urgent_patient);
+				if (added) {
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+				} else {
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
 			
 			clearSearchFields();
 			clearTriageTextFields();
+			
 			resetTriage();
 		});
 		
@@ -1846,12 +1932,12 @@ public class RevController implements Initializable, ClientCallback {
 	 * listview and tableview controls. 
 	 */
 	@Override
-	public void udpate(LinkedList<Patient> queue,
-			ArrayList<TreatmentFacility> treatmentFacilities) {
+	public void udpate(List<Patient> queue, List<TreatmentFacility> treatmentFacilities, List<Staff> onCallStaff, List<Staff> onCallDoctors) {
 		// Store the passed in queue and treatment facilities
 		this.queueList = queue;
 		this.treatmentFacilities = treatmentFacilities;
-
+		this.onCallStaff = onCallStaff;
+		this.onCallDoctors = onCallDoctors;
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
 
@@ -2231,5 +2317,13 @@ public class RevController implements Initializable, ClientCallback {
 			ex.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void udpate(LinkedList<Patient> queue,
+			ArrayList<TreatmentFacility> treatmentFacilities)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 }
