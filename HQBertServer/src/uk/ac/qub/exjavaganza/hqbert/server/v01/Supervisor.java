@@ -61,7 +61,7 @@ public enum Supervisor {
 	public final boolean ALERTS_ACTIVE = false;
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
-	public final float TIME_MULTI = 30;
+	public final float TIME_MULTI = 6;
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
 	
@@ -132,9 +132,10 @@ public enum Supervisor {
 		if (serverPort != 0) {
 			this.serverPort = serverPort;
 		}
-		
+
 		getPrefsFile();
 		getPreferences();
+
 		
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);

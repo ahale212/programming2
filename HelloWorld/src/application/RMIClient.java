@@ -202,8 +202,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 					lookUpServer();
 				} catch (MalformedURLException | RemoteException
 						| NotBoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
 				}
 			}
 		}

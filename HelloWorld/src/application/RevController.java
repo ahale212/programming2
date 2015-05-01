@@ -116,7 +116,7 @@ public class RevController implements Initializable, ClientCallback {
 	private AnchorPane triage_anchorpane;
 	
 	@FXML
-	private TableView on_call_table;
+	private TableView<Staff> on_call_table;
 
 	@FXML
 	private TextField search_NHS_No, search_First_Name, search_Surname,
@@ -139,6 +139,8 @@ public class RevController implements Initializable, ClientCallback {
 	Staff staff = new Staff();
 	Staff loggedInUser = null;
 
+	private final ObservableList<Staff> on_call_unit_staff = FXCollections
+			.observableArrayList();
 	private final ObservableList<Patient> emergency_room = FXCollections
 			.observableArrayList();
 	private final ObservableList<Patient> waiting_room = FXCollections
@@ -159,8 +161,6 @@ public class RevController implements Initializable, ClientCallback {
 	private final ObservableList allergy_list = FXCollections
 			.observableArrayList();
 	private final ObservableList<String> search_patient_results = FXCollections
-			.observableArrayList();
-	private final ObservableList<String> oncallunit = FXCollections
 			.observableArrayList();
 	List<Person> matchingPeople, matchingPeople1;
 
@@ -584,8 +584,7 @@ public class RevController implements Initializable, ClientCallback {
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
 		
-		oncallunit.addAll("Doctor 1","Doctor 2","Nurse 1","Nurse 2","Nurse 3");
-		on_call_table.setItems(oncallunit);
+		
 	}
 	
 	/**
@@ -968,7 +967,8 @@ public class RevController implements Initializable, ClientCallback {
 						public void handle(ActionEvent event) {							
 							emailNewPassword(EmailRequest);
 							userNameRequest.hide();
-							login_pop.hide();							
+							login_pop.hide();	
+							Notifications.create().title("Username & Password Request").text("Email sent").show();
 						}});
 					CancelRequest.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -1012,13 +1012,16 @@ public class RevController implements Initializable, ClientCallback {
 			Button confirm_new_priority = new Button("Confirm");
 			confirm_new_priority.setLayoutY(132);
 			confirm_new_priority.setLayoutX(14);
+			Button cancel_new_priority = new Button("Cancel");
+			cancel_new_priority.setLayoutY(132);
+			cancel_new_priority.setLayoutX(74);
 			Label select_new_urgency = new Label(
 					"Please Select the appropriate Priority Level:");
 			select_new_urgency.setLayoutX(14);
 			AnchorPane re_assign_pane = new AnchorPane();
 			re_assign_pane.setPrefSize(280, 190);
 			re_assign_pane.getChildren().addAll(select_new_urgency, set_e,
-					set_u, set_semi_u, set_non_u, confirm_new_priority);
+					set_u, set_semi_u, set_non_u, confirm_new_priority, cancel_new_priority);
 			reassign_priority.setContentNode(re_assign_pane);
 			reassign_priority.show(re_assign);
 
@@ -1056,6 +1059,14 @@ public class RevController implements Initializable, ClientCallback {
 						reassign_priority.hide();
 					}
 
+				}
+			});
+			
+			cancel_new_priority.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event){
+					reassign_priority.hide();
 				}
 			});
 
@@ -1201,14 +1212,17 @@ public class RevController implements Initializable, ClientCallback {
 			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 								
-
+			
 			try {
-
 				// Add the emergency patient to the back end
-				client.getServer().addPatient(client.getClientID(), emergency_patient);
-
+				boolean added = client.getServer().addPatient(client.getClientID(), emergency_patient);
+				if (added) {
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+				} else {
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
 			clearSearchFields();
 			clearTriageTextFields();
@@ -1517,14 +1531,15 @@ public class RevController implements Initializable, ClientCallback {
 		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
 		treatmentRoomTable.setItems(emergency_room);
 		ap3.getChildren().addAll(treatment_table, close_view1, treatmentRoomTable);
-		tr_pop.setContentNode(ap3);
+		tr_pop.setContentNode(ap3);		
+		close_view1.setOnAction(e -> {tr_pop.hide();emergency_room.clear();});
 	}
 
 	private void waitingRoomView() {
 		
 		AnchorPane ap2 = new AnchorPane();	
 		Label waitroom_table = new Label("Current Patients in Waiting"); waitroom_table.setLayoutX(10);
-		Button close_view2 = new Button("x"); close_view2.setStyle("-fx-base: red;");		
+		Button close_view2 = new Button("x"); close_view2.setStyle("-fx-base: red;"); close_view2.setLayoutX(224);		
 		waiting_room.clear();
 		// Loop through each of the patients in queueList
 				for (Patient patient : queueList) {
@@ -1546,6 +1561,7 @@ public class RevController implements Initializable, ClientCallback {
 		waitingRoomTable.setItems(waiting_room);
 		ap2.getChildren().addAll(waitroom_table,close_view2, waitingRoomTable);
 		q_pop.setContentNode(ap2);
+		close_view2.setOnAction(e -> {q_pop.hide();waiting_room.clear();});
 	}
 
 	/**
