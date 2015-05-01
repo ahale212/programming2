@@ -992,6 +992,11 @@ public class RevController implements Initializable, ClientCallback {
 
 		re_assign.setOnAction(e -> {
 
+			int selectedIndex = queue.getSelectionModel().getSelectedIndex();
+			if (selectedIndex == -1) {
+				Notifications.create().title("No patient selected").text("Select a patient in the queue to change their priority.").show();
+			}
+			
 			PopOver reassign_priority = new PopOver();
 			CheckBox set_e = new CheckBox("EMERGENCY");
 			set_e.setStyle("-fx-base: salmon;");
@@ -1031,12 +1036,24 @@ public class RevController implements Initializable, ClientCallback {
 				@Override
 				public void handle(ActionEvent event){
 					
-					// Get the seleceted patient
-					Patient patient = (Patient)queue.getSelectionModel().getSelectedItem();
+					int index = queue.getSelectionModel().getSelectedIndex();
 					
-					// If a patient is selected, determine the new urgency based on the value
+					// If no patient has been selected
+					if (index == -1 && selectedIndex == -1) {
+						// show a message
+						Notifications.create().title("No patient selected").text("Select a patient in the queue to change their priority.").show();
+						return;
+					} 
+
+					// Use whichever index is not -1
+					if (index == -1 && selectedIndex > -1){
+						index = selectedIndex;
+					}
+					
+
+					// If the index is valid, determine the new urgency based on the value
 					// selected in the reassign priority pane
-					if (patient != null) {
+					if (index < queueList.size()) {
 						Urgency reassigned_urgency = null;
 						if (set_e.isSelected()) {
 							reassigned_urgency = Urgency.EMERGENCY;
@@ -1048,14 +1065,16 @@ public class RevController implements Initializable, ClientCallback {
 							reassigned_urgency = Urgency.NON_URGENT;
 						}
 						
+						Patient patient = queueList.get(index);
+						
 						try {
-							client.getServer().reAssignTriage(client.getClientID(), patient, reassigned_urgency);
-							Notifications.create().title("Updated Successful").text("Priority of patient " + patient + " has been changed to " + reassigned_urgency).showInformation();
+							client.getServer().reAssignTriage(client.getClientID(), index, reassigned_urgency);
+							Notifications.create().title("Updated Successful").text("Priority of patient " + patient.getPatientName() + " has been changed to " + reassigned_urgency).showInformation();
 						} catch (AuthenticationException | RemoteException e) {
-							Notifications.create().title("Updated Unsuccessful").text("Priority of patient " + patient + " has not been changed").showInformation();
+							Notifications.create().title("Updated Unsuccessful").text("Priority of patient " + patient.getPatientName() + " has not been changed").showInformation();
 						}
 						
-						outputTextArea.appendText(patient +" is now !\n");
+						outputTextArea.appendText(patient.getPatientName() +" is now !\n");
 						reassign_priority.hide();
 					}
 
@@ -1212,14 +1231,17 @@ public class RevController implements Initializable, ClientCallback {
 			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 								
-
+			
 			try {
-
 				// Add the emergency patient to the back end
-				client.getServer().addPatient(client.getClientID(), emergency_patient);
-
+				boolean added = client.getServer().addPatient(client.getClientID(), emergency_patient);
+				if (added) {
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+				} else {
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
 			clearSearchFields();
 			clearTriageTextFields();
