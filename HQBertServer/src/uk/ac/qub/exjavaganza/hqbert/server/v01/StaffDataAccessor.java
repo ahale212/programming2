@@ -93,7 +93,7 @@ public class StaffDataAccessor {
 		// start of try to initiate query statement
 		try (Statement findStaff = con.prepareStatement(findStaffString);
 			// execute query
-			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff WHERE Employee_username = " + username);) {
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email FROM staff WHERE Employee_username = '" + username + "'");) {
 			
 			// Get a list of staff objects based on the output from the database
 			List<Staff> staff = resultOfQuery(rs1);
@@ -114,7 +114,7 @@ public class StaffDataAccessor {
 		// start of try to initiate query statement
 		try (Statement findStaff = con.prepareStatement(findStaffString);
 			// execute query
-			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email, mobile_number FROM staff");) {
+			ResultSet rs1 = findStaff.executeQuery("SELECT Employee_Number, Employee_first_name, Employee_last_name, Employee_Email, mobile_number, job FROM staff");) {
 			
 			// return the staff list
 			return resultOfQuery(rs1);
@@ -133,9 +133,21 @@ public class StaffDataAccessor {
 			String Password = ""; //rs.getString("Employee_Password");
 			String Email = rs.getString("Employee_Email");
 			String MobileNumber = rs.getString("mobile_number");
+			String employeeJob = rs.getString("job");
 
 			// Create a new staff member with the details from the database
 			Staff  staffMember = new Staff(EmployeeNumber, FirstName, LastName, Username, Password, Email, MobileNumber);
+			if(employeeJob.equalsIgnoreCase("doctor")){
+				staffMember.setJob(Job.DOCTOR);
+			}else if(employeeJob.equalsIgnoreCase("nurse")){
+				staffMember.setJob(Job.NURSE);
+			}else if(employeeJob.equalsIgnoreCase("admin")){
+				staffMember.setJob(Job.ADMIN);
+			}else if(employeeJob.equalsIgnoreCase("manager")){
+				staffMember.setJob(Job.MANAGER);
+			}else if(employeeJob.equalsIgnoreCase("triage Nurse")){
+				staffMember.setJob(Job.TRIAGE_NURSE);
+			}
 			// Add the user to the staff list
 			staffList.add(staffMember);	
 			
