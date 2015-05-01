@@ -68,8 +68,8 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		//and log patient leaving the system
 		//PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
 		//MetricsController.INSTANCE.AddMetric(metrics);
-		patient = null;
 		logDischarge();
+		patient = null;
 	}
 	
 	public void logDischarge(){
