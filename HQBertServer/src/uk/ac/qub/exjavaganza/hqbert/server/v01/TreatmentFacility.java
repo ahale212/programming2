@@ -3,7 +3,13 @@ package uk.ac.qub.exjavaganza.hqbert.server.v01;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
+/**
+ * Supertype for TreatmentRoom and OnCallTeam
+ * Takes in, discharges, replaces patients etc. 
+ * Time until available can be extended if needed
+ * @author james_admin
+ *
+ */
 public abstract class TreatmentFacility implements ITreatmentFacility, Serializable {
 	
 	protected ArrayList<Staff> staff;
@@ -29,6 +35,10 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		timeToAvailable = tta;
 	}
 	
+	/**
+	 * reduce the time until the room is available for the next patient
+	 * discharge the current patient if timeToAvailable is 0
+	 */
 	public void update(int deltaTime){
 		timeToAvailable = Math.max(0, timeToAvailable - deltaTime);
 		
@@ -40,6 +50,11 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		}
 	}
 	
+	/**
+	 * Take in a new patient, remove them from the queue, 
+	 * record that they went to a treatment facility, set the facility's timeToAvailable to its max
+	 * @param patient
+	 */
 	public void receivePatient(Patient patient){
 		//Log the patient's arrival in the room and the staff present at the time
 		this.patient = patient;
@@ -52,17 +67,18 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 		Supervisor.INSTANCE.removeFromQueue(patient);
 	}
 	
+	/**
+	 * Remove a current non-emergency patient
+	 * @param emergencyPatient
+	 */
 	public void emergencyInterruption(Patient emergencyPatient){
 		returnPatientToQueue();
 		receivePatient(emergencyPatient);
 	}
 	
-	public void patientFailedToArrive(){
-		//log that assigned patient not here
-		//return that patient to queue / possibly a special holding list / discharge them
-		//set time to available to ???
-	}
-	
+	/**
+	 * Discharge patient - from the hospital
+	 */
 	public void DischargePatient(){
 		//Make appropriate calls to whatever admin class
 		//and log patient leaving the system

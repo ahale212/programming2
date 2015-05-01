@@ -114,7 +114,7 @@ public interface RemoteServer extends Remote {
 	 * @throws RemoteException
 	 * @throws AuthenticationException
 	 */
-	public void reAssignTriage(String clientID, Patient patient, Urgency newUrgency) throws RemoteException, AuthenticationException;
+	public void reAssignTriage(String clientID, int patientIndex, Urgency newUrgency) throws RemoteException, AuthenticationException;
 
 	
 	/**

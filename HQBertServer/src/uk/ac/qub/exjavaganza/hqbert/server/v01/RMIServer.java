@@ -118,8 +118,10 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 	}
 
-	public void broadcastLog(	public synchronized void broadcastLog(String log) {
- the list of clients
+
+	public synchronized void broadcastLog(String log) {
+
+		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
 
 		// Loops through each of the clients in the clients list

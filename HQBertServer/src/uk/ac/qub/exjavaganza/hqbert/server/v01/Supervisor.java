@@ -59,6 +59,10 @@ public enum Supervisor {
 	/**Number of nursees in an on call team*/
 	public final int ONCALL_TEAM_NURSES = 3;
 	/**Debug flag : whether emails and sms messages should actually be sent*/
+	
+	/**Debug flag : whether emails and sms messages should actually be sent
+	 * NOTE ;
+	 * */
 	public final boolean ALERTS_ACTIVE = false;
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
