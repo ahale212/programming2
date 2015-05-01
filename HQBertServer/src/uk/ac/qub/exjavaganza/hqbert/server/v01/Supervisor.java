@@ -136,9 +136,6 @@ public enum Supervisor {
 			this.serverPort = serverPort;
 		}
 		
-		// Start the server to allow clients to connect
-		startServer(useSSL);
-		
 		getPrefsFile();
 		getPreferences();
 		

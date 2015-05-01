@@ -9,7 +9,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.cell.*?> 
+<?import javafx.collections.*?> 
+<?import fxmltableview.*?> 
+<?import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
@@ -167,20 +170,37 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                 <children>
                 <Label layoutX="20.0" layoutY="30.0" text="Triage Nurse:" />
-                <TextField fx:id="triage_nurse_on_duty" layoutX="20.0" layoutY="60.0" />
+                <TextField fx:id="triage_nurse_on_duty" layoutX="20.0" layoutY="60.0" text="Penelope Cruz" />
                 <Label layoutX="200.0" layoutY="30.0" text="Treatment Room Doctors:" />
                 <ListView fx:id="doctor_on_duty" layoutX="200.0" layoutY="60.0" prefHeight="250.0"  />
                 <Label layoutX="500.0" layoutY="30.0" text="On Call Staff:" />
                 <TableView fx:id="on_call_table" layoutX="500.0" layoutY="60.0" prefHeight="250.0" >
                 <columns>
-          <TableColumn text="Staff:" prefWidth="100.0" >
-          </TableColumn>
-          <TableColumn text="Name:" prefWidth="160.0">
-          </TableColumn>
-     </columns>
+           <TableColumn text="Staff Role">
+        <cellValueFactory><PropertyValueFactory property="job" />
+        </cellValueFactory>
+     </TableColumn>
+     <TableColumn text="First Name">
+        <cellValueFactory><PropertyValueFactory property="firstName" />
+        </cellValueFactory>
+        </TableColumn>
+     <TableColumn text="Last Name">
+        <cellValueFactory><PropertyValueFactory property="lastName" />
+        </cellValueFactory>
+     </TableColumn>
+          </columns>
+          <items>
+    <FXCollections fx:factory="observableArrayList">
+        <Staff job="DOCTOR" firstName="Will" lastName="Smith"/>
+        <Staff job="DOCTOR" firstName="Tommy" lastName="Johnson"/>
+        <Staff job="NURSE" firstName="Serena" lastName="Williams"/>
+        <Staff job="NURSE" firstName="Indie" lastName="Jones"/>
+        <Staff job="NURSE" firstName="Scott" lastName="Brown"/>
+    </FXCollections>
+</items>
      </TableView>
                 <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
-                <TextField fx:id="admin" layoutX="780.0" layoutY="60.0" />
+                <TextField fx:id="manager" layoutX="780.0" layoutY="60.0" text="Jock Stein" />
                 </children></AnchorPane>
               </content>
             </Tab>
