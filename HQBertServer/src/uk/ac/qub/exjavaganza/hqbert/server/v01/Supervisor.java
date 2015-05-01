@@ -61,7 +61,7 @@ public enum Supervisor {
 	public final boolean ALERTS_ACTIVE = false;
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
-	public final float TIME_MULTI = 6;
+	public final float TIME_MULTI = 60;
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
 	
@@ -437,6 +437,51 @@ public enum Supervisor {
 		return getStaffAccessor().getStaffList();
 	}
 
+	private List<Staff> getOnCallStaff() throws SQLException {
+		return getOnCallStaffAccessor().getOnCallList();
+	}
+	
+	/**
+	 * This populates staffOnCall with people from the availableStaff list:
+	 * in real-life they would come from a more robust rota system
+	 */
+//	public void getOnCallList(){
+//		try{
+//			
+//		int doctors = 0;
+//		for(int i = availableStaff.size()-1; i >= 0; i--){
+//			Staff member = availableStaff.get(i);
+//			if(member.getJob() == Job.DOCTOR){
+//				staffOnCall.add(member);
+//				availableStaff.remove(member);
+//				doctors++;
+//				if(doctors >= 2){
+//					break;
+//				}
+//			}
+//		}
+//		
+//		int nurses = 0;
+//		for(int i = availableStaff.size()-1; i >= 0; i--){
+//			Staff member = availableStaff.get(i);
+//			if(member.getJob() == Job.NURSE){
+//				staffOnCall.add(member);
+//				availableStaff.remove(member);
+//				nurses++;
+//				if(nurses >= 3){
+//					break;
+//				}
+//			}
+//		}
+//		}catch(IndexOutOfBoundsException iobE){
+//			
+//		}
+//	}
+	
+	
+	
+
+	
 	private List<Staff> getOnCallStaff() throws SQLException {
 		return getOnCallStaffAccessor().getOnCallList();
 	}
