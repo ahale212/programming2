@@ -92,7 +92,7 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 	}
 	
 	public void extendTime(){
-		setTimeToAvailable(extensionTime + 1);
+		setTimeToAvailable(timeToAvailable + extensionTime);
 	}
 	
 	public abstract void showFacilityInConsole();
