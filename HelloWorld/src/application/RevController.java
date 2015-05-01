@@ -803,6 +803,7 @@ public class RevController implements Initializable, ClientCallback {
 					}
 				}
 			});
+
 			// On set localhost address button pressed
 			save_local_host_name.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -826,8 +827,6 @@ public class RevController implements Initializable, ClientCallback {
 			});
 			
 		    
-
-
 			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
