@@ -138,6 +138,7 @@ public class RevController implements Initializable, ClientCallback {
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
 			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode;
 
+
 	PopOver login_pop = new PopOver();
 	PopOver q_pop = new PopOver();
 	PopOver tr_pop = new PopOver();
@@ -184,11 +185,14 @@ public class RevController implements Initializable, ClientCallback {
 	/**
 	 * private Integer for the original treatment room count by the spec
 	 */
-	private Integer treatmentRoomCount = 5;
+
+	private Integer roomCount = 5;
+	
 	/**
 	 * private Integer for the newly desired room count specified by the user
 	 */
-	private Integer newTreatmentRoomCount = 0;
+	private Integer newRoomCount = 0;
+
 	private String[] array = new String[10];
 	private String[] array1 = new String[5];
 	private String[] onCall = new String[1];
@@ -309,7 +313,6 @@ public class RevController implements Initializable, ClientCallback {
 	private void treatmentRoomEggTimer(TreatmentRoom room) {
 		
 		switch (room.getTimeToAvailable()) {
-
 		case 9:
 			countdown.setHeight(270.0);
 			countdown.setLayoutY(53.0);
@@ -465,13 +468,16 @@ public class RevController implements Initializable, ClientCallback {
 	 * Update the UI to display the current state of the queue List
 	 */
 	private synchronized void updateQueue() {
-		// Clear the observable list that contains the patients displayed on the UI
+		// Clear the observable list that contains the patients displayed on the
+		// UI
 		QList.clear();
-		
+
 		// Loop through each of the patients in queueList
 		for (Patient patient : queueList) {
-			// Concatenate the patients first and second name and add them to the observable queue.
-			QList.add(patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName());
+			// Concatenate the patients first and second name and add them to
+			// the observable queue.
+			QList.add(patient.getPerson().getFirstName() + " "
+					+ patient.getPerson().getLastName());
 			waiting_room.add(patient);
 
 		}
@@ -484,86 +490,58 @@ public class RevController implements Initializable, ClientCallback {
 	 * Update the UI to display the current state of the treatment rooms
 	 */
 	public synchronized void updateTreatmentRooms() {
-		
-		// Clear the observable lists that hold the names of patients in the treatment rooms
+
+		// Clear the observable lists that hold the names of patients in the
+		// treatment rooms
 		// and the patient being treated by the on call team
 		trList.clear();
 		onCallList.clear();
-		
-		// Loop through the various facilities help in the treatmentFacilities list
+
+		// Loop through the various facilities help in the treatmentFacilities
+		// list
 		for (TreatmentFacility facility : treatmentFacilities) {
-			
+
 			// Check if there is a patient in the facility
 			Patient patient = facility.getPatient();
-			
+
 			// Declare a string to hold the patient name
 			String patientName = "";
-			// If there is a patient concatenate their first and last name, else leave first name as a blank string
+			// If there is a patient concatenate their first and last name, else
+			// leave first name as a blank string
 			if (patient != null) {
-				patientName = patient.getPerson().getFirstName() + 
-						" " + patient.getPerson().getLastName();
+				patientName = patient.getPerson().getFirstName() + " "
+						+ patient.getPerson().getLastName();
 				emergency_room.add(patient);
 			}
-			
-			// If the current facility is the on call team, add their name to the on call team box on the UI
+
+			// If the current facility is the on call team, add their name to
+			// the on call team box on the UI
 			if (facility instanceof OnCallTeam) {
 				onCallList.add(patientName);
-			} else if (facility instanceof TreatmentRoom) { // if the facility is a treatment room 
+			} else if (facility instanceof TreatmentRoom) { // if the facility
+															// is a treatment
+															// room
 
-				// Cast the facility to a treament room so the room number can be accessed
-				TreatmentRoom room = (TreatmentRoom)facility;
+				// Cast the facility to a treament room so the room number can
+				// be accessed
+				TreatmentRoom room = (TreatmentRoom) facility;
 				try {
 					// Add the patients name to the observable array in the correct position for the room they're in.
 					trList.add(room.getRoomNumber(), patientName);  //array1[room.getRoomNumber()] = patientName;
 					treatmentRoomsView(emergency_room);
-				
+
 				} catch (Exception ex) {
 					System.err.println("failed.");
 				}
 			}
 		}
-		
+
 		trooms.setItems(trList);
 		on_call.setItems(onCallList);
 		
 		// Ensure that the updated details are being shown in the treatment room tab
 		displaySelectedTreatmentRoom();
 	}
-
-	/**
-	 * new method to change the amount of treatment rooms - this is done through
-	 * the front end using config - settings - then typing in a valid number
-	 */
-	private void newArrayList() {
-		// remove the current treatment rooms
-		trno.removeAll(treatmentRoomNum);
-		// declare a difference var between old and new treatment room counts
-		Integer difference = (newTreatmentRoomCount - treatmentRoomCount);
-		// if the difference is greater than 0
-		if (difference > 0) {
-			// loop through until it reaches the new treatment room count
-			for (int loop = treatmentRoomCount; loop < newTreatmentRoomCount; loop++) {
-				// add the new treatment rooms to the array list
-				treatmentRoomNum.add("Treatment Room" + (loop + 1));
-				// make the new room count equal to the original one so this can
-				// be changed the exact same way at any time
-				treatmentRoomCount = newTreatmentRoomCount;
-			}// end of loop
-		}// end of if
-			// if the difference is less than 0
-		if (difference < 0) {
-			// loop through until it reaches the new treatment room count
-			for (int loop = treatmentRoomCount; loop > newTreatmentRoomCount; loop--) {
-				// remove the unwanted treatment rooms from the array list
-				treatmentRoomNum.remove("Treatment Room" + (loop));
-				// make the new room count equal to the original one so this can
-				// be changed the exact same way at any time
-				treatmentRoomCount = newTreatmentRoomCount;
-			}// end of loop
-		}// end of if
-			// add all the treatment rooms to the arraylist
-		trno.addAll(treatmentRoomNum);
-	}// end of method
 
 	/**
 	 * Add tags to listviews
@@ -575,7 +553,7 @@ public class RevController implements Initializable, ClientCallback {
 		on_call_list.setTooltip(new Tooltip("On Call Unit"));
 
 		// for loop iterates through and creates the treatment rooms
-		for (int loop = 0; loop < treatmentRoomCount; loop++) {
+		for (int loop = 0; loop < roomCount; loop++) {
 			// adds the treatment room
 			treatmentRoomNum.add("Treatment Room" + (loop + 1));
 		}
@@ -599,10 +577,45 @@ public class RevController implements Initializable, ClientCallback {
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
 	}
+	
+	/**
+	 * new method to change the amount of treatment rooms - this is done through
+	 * the front end using config - settings - then typing in a valid number
+	 */
+	private void newArrayList() {
+		// remove the current treatment rooms
+		trno.removeAll(treatmentRoomNum);
+		// declare a difference var between old and new treatment room counts
+		Integer difference = (newRoomCount - roomCount);
+		// if the difference is greater than 0
+		if (difference > 0) {
+			// loop through until it reaches the new treatment room count
+			for (int loop = roomCount; loop < newRoomCount; loop++) {
+				// add the new treatment rooms to the array list
+				treatmentRoomNum.add("Treatment Room" + (loop + 1));
+				// make the new room count equal to the original one so this can
+				// be changed the exact same way at any time
+				roomCount = newRoomCount;
+			}// end of loop
+		}// end of if
+			// if the difference is less than 0
+		if (difference < 0) {
+			// loop through until it reaches the new treatment room count
+			for (int loop = roomCount; loop > newRoomCount; loop--) {
+				// remove the unwanted treatment rooms from the array list
+				treatmentRoomNum.remove("Treatment Room" + (loop));
+				// make the new room count equal to the original one so this can
+				// be changed the exact same way at any time
+				roomCount = newRoomCount;
+			}// end of loop
+		}// end of if
+			// add all the treatment rooms to the arraylist
+		trno.addAll(treatmentRoomNum);
+	}// end of method
 
 	/**
-	 * Controller method to set button functionality
-	 * uses lambda expression to handle events (e->)
+	 * Controller method to set button functionality uses lambda expression to
+	 * handle events (e->)
 	 */
 	private void buttonFunction() {	
 		
@@ -641,22 +654,25 @@ public class RevController implements Initializable, ClientCallback {
 			
 			/*try {
 
-					this.finalize();
+		close_system.setOnAction(e -> {
 
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}*/
+			/*
+			 * try {
+			 * 
+			 * this.finalize();
+			 * 
+			 * } catch (Exception e1) { // TODO Auto-generated catch block
+			 * e1.printStackTrace(); }
+			 */
 			Platform.exit();
-			
-			
-			//Stage test = (Stage)allergy.getScene().getWindow();
-			
-			//View window = (View)this;*
-			//window.getScene();
-			
-		});
-		
+
+			// Stage test = (Stage)allergy.getScene().getWindow();
+
+				// View window = (View)this;*
+				// window.getScene();
+
+			});
+
 		settings.setOnAction(e -> {
 			Stage settings_stage = new Stage();
 			AnchorPane root = new AnchorPane();
@@ -672,6 +688,7 @@ public class RevController implements Initializable, ClientCallback {
 
 				@Override
 				public void handle(ActionEvent event) {
+
 					Integer i = (Integer.parseInt(set_no_trs.getText()
 							.toString()));
 					int a = i;
@@ -692,18 +709,17 @@ public class RevController implements Initializable, ClientCallback {
 						// for a case, set the new treatment room count as the
 						// same as the number entered in the text field
 						case 1:
-							setNewTreatmentRoomCount(i);
+							setNewRoomCount(i);
 							// start the method to change the treatment rooms
 							newArrayList();
 							break;
 						default:
 							// set the default
-							setNewTreatmentRoomCount(i);
+							setNewRoomCount(i);
 							// start the method to change the treatment rooms
 							newArrayList();
 						}// end of switch
 							// once clicking on submit, close the tab
-
 						settings_stage.close();
 					}
 				}
@@ -752,18 +768,20 @@ public class RevController implements Initializable, ClientCallback {
 					String staff_LastName;
 					String staff_FirstName;
 					List<Staff> matchingPeople1 = null;
-					
-	
-						/*matchingPeople1 = client.getServer().searchStaffByDetails(_user, db_pass);
-						
-						if (matchingPeople1.size() > 0) {
-							logMeIn = true;
-						} else {
-							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
-						} else {
-							Notifications.create().title("Error Logging in").text("Incorrect Username or Password entered. Please try again.").position(Pos.CENTER_LEFT).showError();
-						}*/
-						
+
+					/*
+					 * matchingPeople1 =
+					 * client.getServer().searchStaffByDetails(_user, db_pass);
+					 * 
+					 * if (matchingPeople1.size() > 0) { logMeIn = true; } else
+					 * { Notifications.create().title("Error Logging in").text(
+					 * "Incorrect Username or Password entered. Please try again."
+					 * ).position(Pos.CENTER_LEFT).showError(); } else {
+					 * Notifications.create().title("Error Logging in").text(
+					 * "Incorrect Username or Password entered. Please try again."
+					 * ).position(Pos.CENTER_LEFT).showError(); }
+					 */
+
 					try {
 						// Create the client
 						client = new RMIClient(RevController.this, _user,
@@ -772,12 +790,14 @@ public class RevController implements Initializable, ClientCallback {
 						log("Logged in as " + _user);
 
 						logMeIn = true;
+						
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
 						Notifications.create().title("Login failed").text("Server communication error.").showConfirm();	
 						log("Login failed: Server communication error.");
 						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
 						Notifications.create().title("Login failed").text("Invalid username or password.").showConfirm();	
+
 						log("Login failed: Invalid username or password.");
 						ex.printStackTrace();
 					} 
@@ -1018,6 +1038,7 @@ public class RevController implements Initializable, ClientCallback {
 			clearSearchFields();
 		});
 
+
 		tb1.setOnAction(e -> {
 			outputTextArea.appendText(textfield_Surname.getText() + ", "
 					+ textfield_First_Name.getText()
@@ -1084,18 +1105,23 @@ public class RevController implements Initializable, ClientCallback {
 			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 								
+
 			try {
+
 				// Add the emergency patient to the back end
 				client.getServer().addPatient(client.getClientID(), emergency_patient);
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			
 			clearTriageTextFields();
+
 			resetTriage();
 		});
 
 		urg.setOnAction(e -> {
+
 			// Create an urgent patient based on the displayed person
 			Patient urgent_patient = new Patient(displayedPerson, Urgency.URGENT, "");
 			outputTextArea.appendText("URGENT!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
@@ -1103,15 +1129,19 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 				// Add the urgent patient to the back end
 				client.getServer().addPatient(client.getClientID(), urgent_patient);
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
+
 			
 			clearTriageTextFields();
+
 			resetTriage();
 		});
 
 		semi_urg.setOnAction(e -> {
+
 			// Create a semi-urgent patient based on the displayed person
 			Patient semi_urgent_patient = new Patient(displayedPerson, Urgency.SEMI_URGENT, "");
 
@@ -1120,11 +1150,13 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 				// Add the semi-urgent patient to the back end
 				client.getServer().addPatient(client.getClientID(), semi_urgent_patient);
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			
 			clearTriageTextFields();
+
 			resetTriage();
 		});
 
@@ -1135,13 +1167,17 @@ public class RevController implements Initializable, ClientCallback {
 			outputTextArea.appendText("Non-Urgent:\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" has been added to the Queue!\n");
 			
 			try {
+
 				// Add the non-urgent patient to the back end
 				client.getServer().addPatient(client.getClientID(), non_urgent_patient);
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 
+
 			clearTriageTextFields();
+
 			resetTriage();
 		});
 
@@ -1164,8 +1200,10 @@ public class RevController implements Initializable, ClientCallback {
 			} else if (breathing_yes.getSelectionModel().getSelectedIndex() == 1) {
 				emergency.setDisable(false);
 				emergency.setStyle("-fx-base: red;");
+
 			}
 		});
+
 
 		extend.setOnAction(e -> {
 			
@@ -1194,9 +1232,10 @@ public class RevController implements Initializable, ClientCallback {
 					}
 
 				}
-				});
-			
-			ap_ext.getChildren().addAll(extension, extension_request, extension_confirm);
+			});
+
+			ap_ext.getChildren().addAll(extension, extension_request,
+					extension_confirm);
 			extension_pop.setContentNode(ap_ext);
 			extension_pop.show(extend);
 			
@@ -1208,13 +1247,51 @@ public class RevController implements Initializable, ClientCallback {
 			select_tr.getSelectionModel().selectedItemProperty().addListener(e -> {
 				// Display the treatment room based on the selected room in select_tr
 				displaySelectedTreatmentRoom();
+
 			});
+
+		// Set up the event when the user clicks the treatment room selection
+		// combobox on the treatment room tab
+		select_tr.setOnAction(e -> {
+
+			// Get the selected room index
+				int selectedRoomIndex = select_tr.getSelectionModel()
+						.getSelectedIndex();
+
+				// If the room is within bounds and the facility at the index is
+				// a treatment room
+				if (selectedRoomIndex < treatmentFacilities.size()
+						&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
+					// Cast the selected facility to a treatment room
+					TreatmentRoom room = (TreatmentRoom) treatmentFacilities
+							.get(selectedRoomIndex);
+
+					// Init the detail strings to empty strings.
+					String urgency = "", doctorsNotes = "", incidentDetails = "";
+
+					// If the room has a patient in it then get their details.
+					if (room.getPatient() != null) {
+						urgency = room.getPatient().getUrgency().toString();
+						doctorsNotes = room.getPatient().getPerson()
+								.getDoctorsNotes();
+						incidentDetails = "Incident Details";
+					}
+
+					// Display the details in the text fields, if there was no
+					// patient
+					// they will be empty.
+					tr_patient_urgency.setText(urgency);
+					tr_treatment_notes.setText(doctorsNotes);
+					tr_incident_details.setText(incidentDetails);
+
+				}
+
+
+			});
+
 			
-			
-		
-		
-		
 	}
+
 	
 	/**
 	 * Display the details of a treatment room based on the selected room in select_tr
@@ -1281,7 +1358,7 @@ public class RevController implements Initializable, ClientCallback {
 		textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
 		textfield_Postcode.setText(displayedPerson.getPostcode());
 		textfield_Telephone.setText(displayedPerson.getTelephone());
-		
+
 		// If the returned allergy is "null" set the allergy
 		// box to display "None".
 		if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
@@ -1602,7 +1679,6 @@ public class RevController implements Initializable, ClientCallback {
 	public void alertQueueFull() throws RemoteException {
 		Notifications.create().title("Queue full").text("").showConfirm();	
 		log("Queue full.");
-
 	}
 
 	/**
@@ -1742,9 +1818,11 @@ public class RevController implements Initializable, ClientCallback {
 
 			@Override
 			public void run() {
+
 				// Show a notification informing the user they have been logged off.
 				Notifications.create().title("You have been logged off").text("Please reconnect.").showConfirm();	
 				// Leave a message in the log
+
 				log("Login failed: Server communication error.");
 				// Show the login popup
 				login_pop.show(login);
@@ -1753,13 +1831,14 @@ public class RevController implements Initializable, ClientCallback {
 		});
 	}
 
+
 	/**
 	 * getter for the original room count
 	 * 
 	 * @return
 	 */
-	public Integer getTreatmentRoomCount() {
-		return treatmentRoomCount;
+	public Integer getRoomCount() {
+		return roomCount;
 	}
 
 	/**
@@ -1767,17 +1846,18 @@ public class RevController implements Initializable, ClientCallback {
 	 * 
 	 * @param roomCount
 	 */
-	public void setTreatmentRoomCount(Integer roomCount) {
-		this.treatmentRoomCount = roomCount;
+	public void setRoomCount(Integer roomCount) {
+		this.roomCount = roomCount;
 	}
 
+	
 	/**
 	 * getter for the new room count
 	 * 
 	 * @return
 	 */
-	public Integer getNewTreatmentRoomCount() {
-		return newTreatmentRoomCount;
+	public Integer getNewRoomCount() {
+		return newRoomCount;
 	}
 
 	/**
@@ -1785,7 +1865,9 @@ public class RevController implements Initializable, ClientCallback {
 	 * 
 	 * @param newRoomCount
 	 */
-	public void setNewTreatmentRoomCount(Integer newRoomCount) {
-		this.newTreatmentRoomCount = newRoomCount;
+	public void setNewRoomCount(Integer newRoomCount) {
+		this.newRoomCount = newRoomCount;
 	}
+
+	
 }

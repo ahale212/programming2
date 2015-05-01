@@ -79,8 +79,23 @@ public class OnCallDataAccessor {
 				String Password = rs1.getString("Employee_Password");
 				 String Email = rs1.getString("Employee_Email");
 				 String MobileNumber = rs1.getString("mobile_number");
+				 String employeeJob = rs1.getString("job");
 
+				 
 				Staff staff = new Staff(EmployeeNumber, FirstName, LastName, Username, Password, Email, MobileNumber);
+				
+				if(employeeJob.equalsIgnoreCase("doctor")){
+					staff.setJob(Job.DOCTOR);
+				}else if(employeeJob.equalsIgnoreCase("nurse")){
+					staff.setJob(Job.NURSE);
+				}else if(employeeJob.equalsIgnoreCase("admin")){
+					staff.setJob(Job.ADMIN);
+				}else if(employeeJob.equalsIgnoreCase("manager")){
+					staff.setJob(Job.MANAGER);
+				}else if(employeeJob.equalsIgnoreCase("triage Nurse")){
+					staff.setJob(Job.TRIAGE_NURSE);
+				}
+				
 				onCallList.add(staff);
 			}
 			// return the stafflist

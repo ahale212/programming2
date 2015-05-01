@@ -61,7 +61,6 @@ public class HQueue implements Serializable {
 	
 	public void update(int deltaTime) {
 		Patient p = null;
-		int maxWait = Supervisor.INSTANCE.MAX_WAIT_TIME;
 		//Update all patients in any queue
 		for(int i = 0; i < pq.size(); i++){
 			p = pq.get(i);
@@ -74,7 +73,7 @@ public class HQueue implements Serializable {
 			LinkedList<Patient> queue = allSubqueues[npqNum];
 			for(int patientIndex = 0; patientIndex < queue.size(); patientIndex++){
 				p = queue.get(patientIndex);
-				if(p.getWaitTime() > maxWait){
+				if(p.getPriority() == true){
 					queue.remove(p);
 					hiPriQueue.add(p);
 					break;
@@ -119,8 +118,10 @@ public class HQueue implements Serializable {
 			if(Supervisor.INSTANCE.sendToTreatment(patient) == true){
 				return true;
 			}else{ //Full of emergencies
-				Supervisor.INSTANCE.log("\tAt emergency capacity!!!\t"+patient.getPatientName()+" sent away.");
-				return false;
+				if(urgency == Urgency.EMERGENCY){
+					Supervisor.INSTANCE.log("\tAt emergency capacity!!!\t"+patient.getPatientName()+" sent away.");
+					return false;
+				}
 			}
 		}
 		

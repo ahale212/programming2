@@ -516,8 +516,9 @@ public enum Supervisor {
 					}
 				}
 				if(manager != null){
-					//ManagerAlert.emailWaitingTimeAlert(manager, ALERTS_ACTIVE);
-					//ManagerAlert.smsWaitingTimeAlert(manager, ALERTS_ACTIVE);
+					ManagerAlert.emailWaitingTimeAlert(manager, ALERTS_ACTIVE);
+					ManagerAlert.smsWaitingTimeAlert(manager, ALERTS_ACTIVE);
+
 					log("Alerting Hospital Manager : Too many overdue patients." );
 					excessiveWaitingAlertSent = true;
 				}
