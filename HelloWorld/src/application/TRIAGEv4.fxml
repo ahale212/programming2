@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.chart.PieChart?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
@@ -165,21 +166,60 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                 <children>
-                <Label layoutX="14.0" layoutY="10.0" text="Staff on Duty" />
-                <Label layoutX="14.0" layoutY="30.0" text="Triage Nurse:" />
-                <TextField fx:id="triage_nurse_on_duty" layoutX="14.0" layoutY="87.0" />
-                <Label layoutX="114.0" layoutY="30.0" text="Treatment Room Doctors:" />
-                <ListView fx:id="doctor_on_duty" layoutX="114.0" layoutY="87.0" />
-                <Label layoutX="514.0" layoutY="30.0" text="On Call Staff:" />
-                <TableView layoutX="314.0" layoutY="87.0" />
-                <Label layoutX="714.0" layoutY="30.0" text="Hospital Manager:" />
-                <TextField fx:id="admin" layoutX="514.0" layoutY="87.0" />
+                <Label layoutX="20.0" layoutY="30.0" text="Triage Nurse:" />
+                <TextField fx:id="triage_nurse_on_duty" layoutX="20.0" layoutY="60.0" />
+                <Label layoutX="200.0" layoutY="30.0" text="Treatment Room Doctors:" />
+                <ListView fx:id="doctor_on_duty" layoutX="200.0" layoutY="60.0" prefHeight="250.0"  />
+                <Label layoutX="500.0" layoutY="30.0" text="On Call Staff:" />
+                <TableView layoutX="500.0" layoutY="60.0" prefHeight="250.0" />
+                <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
+                <TextField fx:id="admin" layoutX="780.0" layoutY="60.0" />
                 </children></AnchorPane>
               </content>
             </Tab>
             <Tab fx:id="stats_tab" text="Statistics">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                <children>
+                <Label layoutX="20.0" layoutY="30.0" text="Current Stats:" />
+                <Label layoutX="20.0" layoutY="60.0" text="Total:" />
+                
+                <Label layoutX="20.0" layoutY="90.0" text="Patients " />
+                <Label fx:id="current_total" layoutX="180.0" layoutY="90.0" text="x" />
+                <Label layoutX="20.0" layoutY="120.0" text="In Queue" />
+                <Label fx:id="current_in_queue" layoutX="180.0" layoutY="120.0" text="x" />
+                <Label layoutX="20.0" layoutY="150.0" text="Priority Emergency" />
+                <Label fx:id="current_emergencies" layoutX="180.0" layoutY="150.0" text="x" />
+                
+                <Label layoutX="250.0" layoutY="30.0" text="Daily Stats:" />
+                <Label layoutX="250.0" layoutY="60.0" text="Total:" />
+                
+                <Label layoutX="250.0" layoutY="90.0" text="Patients " />
+                <Label fx:id="daily_total" layoutX="410.0" layoutY="90.0" text="x" />
+                <Label layoutX="250.0" layoutY="120.0" text="Priority: Emergency" />
+                <Label fx:id="daily_emergencies" layoutX="410.0" layoutY="120.0" text="x" />
+                <Label layoutX="250.0" layoutY="150.0" text="Priority: Urgent" />
+                <Label fx:id="daily_urgent" layoutX="410.0" layoutY="150.0" text="x" />
+                <Label layoutX="250.0" layoutY="180.0" text="Priority: Semi-Urgent" />
+                <Label fx:id="daily_semi_urgent" layoutX="410.0" layoutY="180.0" text="x" />
+                <Label layoutX="250.0" layoutY="210.0" text="Priority: Non-Urgent" />
+                <Label fx:id="daily_non_urgent" layoutX="410.0" layoutY="210.0" text="x" />
+                <Label layoutX="250.0" layoutY="240.0" text="Treatment Extended" />
+                <Label fx:id="daily_tr_extended" layoutX="410.0" layoutY="240.0" text="x" />
+                
+                <Label layoutX="480.0" layoutY="60.0" text="Average:" />
+                
+                <Label layoutX="480.0" layoutY="90.0" text="Wait Times " />
+                <Label fx:id="daily_avg_wait" layoutX="640.0" layoutY="90.0" text="x" />
+                <Label layoutX="480.0" layoutY="120.0" text="Priority: Emergency" />
+                <Label fx:id="daily_avg_emergencies" layoutX="640.0" layoutY="120.0" text="x" />
+                <Label layoutX="480.0" layoutY="150.0" text="Priority: Urgent" />
+                <Label fx:id="daily_avg_urgent" layoutX="640.0" layoutY="150.0" text="x" />
+                <Label layoutX="480.0" layoutY="180.0" text="Priority: Semi-Urgent" />
+                <Label fx:id="daily_avg_semi_urgent" layoutX="640.0" layoutY="180.0" text="x" />
+                <Label layoutX="480.0" layoutY="210.0" text="Priority: Non-Urgent" />
+                <Label fx:id="daily_avg_non_urgent" layoutX="640.0" layoutY="210.0" text="x" />
+                </children></AnchorPane>
               </content>
             </Tab>
         </tabs>

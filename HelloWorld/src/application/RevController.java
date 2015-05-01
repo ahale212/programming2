@@ -46,6 +46,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -373,6 +374,9 @@ public class RevController implements Initializable, ClientCallback {
 	 * adds tags to slider controls
 	 */
 	private void labelSliders() {
+		
+		
+		
 
 		respiratory_rate.setLabelFormatter(new StringConverter<Double>() {
 			@Override
@@ -1098,7 +1102,7 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 
 				// Add the emergency patient to the back end
-				client.getServer().addPatient(client.getClientID(), emergency_patient);
+				//client.getServer().addPatient(client.getClientID(), emergency_patient);
 
 			} catch (Exception e1) {
 				e1.printStackTrace();
