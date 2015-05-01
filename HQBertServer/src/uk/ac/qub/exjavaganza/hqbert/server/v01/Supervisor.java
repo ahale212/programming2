@@ -527,6 +527,7 @@ public enum Supervisor {
 				if(manager != null){
 					ManagerAlert.emailWaitingTimeAlert(manager, ALERTS_ACTIVE);
 					ManagerAlert.smsWaitingTimeAlert(manager, ALERTS_ACTIVE);
+
 					log("Alerting Hospital Manager : Too many overdue patients." );
 					excessiveWaitingAlertSent = true;
 				}
@@ -774,8 +775,22 @@ public enum Supervisor {
 	 */
 	public void extendTreatmentRoom(TreatmentFacility facility) {
 		for (TreatmentFacility loopedFacility : treatmentFacilities) {
-			if (facility instanceof OnCallTeam && loopedFacility instanceof OnCallTeam) {
-				loopedFacility.extendTime();
+			// If the passed in room is an OnCallTeam
+			if (facility instanceof OnCallTeam) {
+				// If the looped room is also an on call team, then the room has been found
+				if (loopedFacility instanceof OnCallTeam){
+					loopedFacility.extendTime();
+				}
+			
+			} else { // else the room is a treatment room
+				// if the looped room is also a treatment room and the casted rooms have the same number, the room has been found
+				if (loopedFacility instanceof TreatmentRoom) {
+						TreatmentRoom room1 = (TreatmentRoom)facility;
+						TreatmentRoom room2 = (TreatmentRoom)loopedFacility;
+					if (room1.getRoomNumber() == room2.getRoomNumber()) {
+						loopedFacility.extendTime();
+					}
+				}
 			}
 		}
 	}

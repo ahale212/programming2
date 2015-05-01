@@ -65,6 +65,11 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 
 
 	/**
+	 * Timer that calls the heartbeat messages to ensure the server is running
+	 */
+	Timer heartBeatTimer; 
+	
+	/**
 	 * Constructor for RMIClient
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 * @throws AuthenticationException 
@@ -92,9 +97,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		}
 		
 		// Create a timer to handle pings
-		Timer timer = new Timer();
+		heartBeatTimer = new Timer();
+
 		// Set the time to repeat every 5 seconds and run the timedPing Timer Task each tick
-		timer.scheduleAtFixedRate(new timedPing(), HEARTBEAR_INTERVAL, HEARTBEAR_INTERVAL);
+		heartBeatTimer.scheduleAtFixedRate(new timedPing(), HEARTBEAR_INTERVAL, HEARTBEAR_INTERVAL);
 			
 
 	}
@@ -169,6 +175,8 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 						controller.serverStatusChanged(serverAccessible);
 						// tell the user they are logged off
 						controller.alertLoggedOff();
+						
+						heartBeatTimer.cancel();
 					}
 					return;
 				}
@@ -230,6 +238,12 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 */
 	@Override
 	public void close() {
+		
+		// Cancel the heartbeat timer
+		heartBeatTimer.cancel();
+		
+		serverAccessible = ConnectionState.NOT_CONNECTED;
+		controller.serverStatusChanged(serverAccessible);
 
 		if (server != null) {
 			try {
