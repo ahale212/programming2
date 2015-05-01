@@ -41,7 +41,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
-	public final float TIME_MULTI = 60;
+	public final float TIME_MULTI = 30;
 
 	private Preferences prefs;
 	
@@ -93,6 +93,9 @@ public enum Supervisor {
 			this.serverPort = serverPort;
 		}
 		
+		getPrefsFile();
+		getPreferences();
+		
 		hQueue = new HQueue();
 		clock = new Clock(BASE_UPDATE_INTERVAL);
 
@@ -142,6 +145,21 @@ public enum Supervisor {
 		exit = false;
 	}
 
+	public void getPrefsFile(){
+		prefs = Preferences.userRoot().node(this.getClass().getName());
+	}
+	
+	public void getPreferences(){
+		  String ID_Rooms = "treatment_rooms";
+		  TREATMENT_ROOMS_COUNT = prefs.getInt(ID_Rooms, 5);
+	}
+	
+	public void setPreferences(){
+		String ID_Rooms = "treatment_rooms";
+	    // now set the values
+	    prefs.putInt(ID_Rooms, TREATMENT_ROOMS_COUNT);
+	}
+	
 	public void startLoop() {
 		while (exit == false) {
 			clock.update();
@@ -166,29 +184,6 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	public void setPreferences(){
-		// This will define a node in which the preferences can be stored
-	    prefs = Preferences.userRoot().node(this.getClass().getName());
-	    String ID_Rooms = "rooms";
-	    String ID_Port = "port";
-
-	    // First we will get the values
-	    // Define a boolean value
-	    System.out.println(prefs.getBoolean(ID_Rooms, true));
-	    // Define a string with default "Hello World
-	    System.out.println(prefs.get(ID_Port, "Hello World"));
-	    // Define a integer with default 50
-	  //  System.out.println(prefs.getInt(ID3, 50));
-
-	    // now set the values
-	    prefs.putBoolean(ID_Rooms, false);
-	    prefs.put(ID_Port, "Hello Europa");
-	    //prefs.putInt(ID3, 45);
-
-	    // Delete the preference settings for the first value
-	   // prefs.remove(ID1);
-
-	}
 	
 	public void updateMaxTreatmentRooms(){
 		
@@ -407,6 +402,8 @@ public enum Supervisor {
 	 */
 	public boolean sendToTreatment(Patient patient) {
 		boolean success = false;
+		int targetRoomNum = 0;
+		String targetRoomName = "";
 		
 		for (int i = 0; i < treatmentFacilities.size(); i++) {
 			TreatmentFacility tf = treatmentFacilities.get(i);
@@ -430,6 +427,7 @@ public enum Supervisor {
 					 * This should never actually fire as rooms are occupied until unlocked*/
 					tf.receivePatient(patient);
 					success = true;
+					targetRoomNum = i;
 					break;
 				/*
 				 * Another patient is in the room, check if they are an
@@ -454,6 +452,7 @@ public enum Supervisor {
 						if (roomCurrentPatient.equals(displacablePatient)) {
 							tf.emergencyInterruption(patient);
 							success = true;
+							targetRoomNum = i;
 							break;
 						}
 					}
@@ -476,6 +475,7 @@ public enum Supervisor {
 				
 				if(onCallHere == true){
 					onCallTeam.receivePatient(patient);
+					targetRoomNum = TREATMENT_ROOMS_COUNT;
 					success = true;
 				}
 				
@@ -484,6 +484,15 @@ public enum Supervisor {
 			//if onCall was already here, they would have been checked for displacable patients already
 		}
 
+		if(success == true){
+			if(targetRoomNum < TREATMENT_ROOMS_COUNT){
+				targetRoomName = String.format("Treatment room %2d",targetRoomNum);
+			}else{
+				targetRoomName = "On-call team";
+			}
+			log(patient.getPerson().getFirstName()+" "+patient.getPerson().getLastName()+" to "+targetRoomName);
+		}
+		
 		return success;
 	}
 
@@ -773,6 +782,10 @@ public enum Supervisor {
 
 	public int getCurrentNumberOfTreatmentRooms(){
 		return this.TREATMENT_ROOMS_COUNT;
+	}
+	
+	public void setCurrentNumberOfTreatmentRooms(int numRooms){
+		TREATMENT_ROOMS_COUNT = numRooms;
 	}
 
 }
