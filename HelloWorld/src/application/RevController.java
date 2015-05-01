@@ -1022,14 +1022,18 @@ public class RevController implements Initializable, ClientCallback {
 			reassign_priority.setContentNode(re_assign_pane);
 			reassign_priority.show(re_assign);
 
+			// Set a new Urgency level for a patient selected in the queue
 			confirm_new_priority.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event){
 					
-					Patient potential = (Patient) queue.getSelectionModel().getSelectedItem();
-
-					if (potential != null) {
+					// Get the seleceted patient
+					Patient patient = (Patient)queue.getSelectionModel().getSelectedItem();
+					
+					// If a patient is selected, determine the new urgency based on the value
+					// selected in the reassign priority pane
+					if (patient != null) {
 						Urgency reassigned_urgency = null;
 						if (set_e.isSelected()) {
 							reassigned_urgency = Urgency.EMERGENCY;
@@ -1041,9 +1045,14 @@ public class RevController implements Initializable, ClientCallback {
 							reassigned_urgency = Urgency.NON_URGENT;
 						}
 						
-					//	potential = client.getServer().reAssignTriage(potential, reassigned_urgency);
+						try {
+							client.getServer().reAssignTriage(client.getClientID(), patient, reassigned_urgency);
+							Notifications.create().title("Updated Successful").text("Priority of patient " + patient + " has been changed to " + reassigned_urgency).showInformation();
+						} catch (AuthenticationException | RemoteException e) {
+							Notifications.create().title("Updated Unsuccessful").text("Priority of patient " + patient + " has not been changed").showInformation();
+						}
 						
-						outputTextArea.appendText(potential+" is now !\n");
+						outputTextArea.appendText(patient +" is now !\n");
 						reassign_priority.hide();
 					}
 
@@ -1997,7 +2006,7 @@ public class RevController implements Initializable, ClientCallback {
 
 			@Override
 			public void run() {
-					Notifications.create().title("Next Patient to Treatment Room").text(message).showInformation();
+					Notifications.create().title("Next Patient to Treatment Room ").text(message).showInformation();
 			}	
 		});
 	}
