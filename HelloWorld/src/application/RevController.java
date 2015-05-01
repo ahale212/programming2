@@ -784,11 +784,9 @@ public class RevController implements Initializable, ClientCallback {
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
 						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER).showError();	
 						log("Login failed: Server communication error.");
-						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
 						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER).showError();	
 						log("Login failed: Invalid username or password.");
-						ex.printStackTrace();
 					} 
 					
 					if (logMeIn == true){
@@ -1102,7 +1100,7 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 
 				// Add the emergency patient to the back end
-				//client.getServer().addPatient(client.getClientID(), emergency_patient);
+				client.getServer().addPatient(client.getClientID(), emergency_patient);
 
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -1795,8 +1793,7 @@ public class RevController implements Initializable, ClientCallback {
 				// Show a notification informing the user they have been logged off.
 				Notifications.create().title("You have been logged off").text("Please reconnect.").showConfirm();	
 				// Leave a message in the log
-
-				log("Login failed: Server communication error.");
+				log("You have been logged off - please reconnect.");
 				// Show the login popup
 				login_pop.show(login);
 
@@ -1889,14 +1886,49 @@ public class RevController implements Initializable, ClientCallback {
 		
 	}
 
+	/** Show the next patient to be added to a room */
 	@Override
 	public void notifyNextPatientToRoom(String message) throws RemoteException {
-				
-		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
-		
+		// Call run later to run updates to the UI on the JavaFX thread
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+					Notifications.create().title("Next Patient to Treatment Room").text(message).showInformation();
+			}	
+		});
 	}
 	
 	public void pasStats() {
-		//current_total, client.getServer().current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
+		try{
+		int[] urgencies = client.getServer().getUrgencies();
+		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
+		current_emergencies.setText(""+urgencies[0]);
+		
+		daily_urgent.setText(""+urgencies[1]);
+		daily_semi_urgent.setText(""+urgencies[2]);
+		daily_non_urgent.setText(""+urgencies[3]);
+		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
+		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
+		
+		int count=0;
+		for(int totals:urgencies){
+			count+=totals;
+		}
+		
+		int Emergency = (100/count)*urgencies[0];
+		int Urgent = (100/count)*urgencies[1];
+		int Semi_Urgent = (100/count)*urgencies[2];
+		int Non_Urgent = (100/count)*urgencies[3];
+		
+		client.getServer().getAvTreatmentTime();
+		client.getServer().getAvVisitTime();
+		
+		client.getServer().getUrgencies();
+		client.getServer().NumberOfPatientsOverWaitTime();
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
 	}
 }
