@@ -171,7 +171,14 @@
                 <Label layoutX="200.0" layoutY="30.0" text="Treatment Room Doctors:" />
                 <ListView fx:id="doctor_on_duty" layoutX="200.0" layoutY="60.0" prefHeight="250.0"  />
                 <Label layoutX="500.0" layoutY="30.0" text="On Call Staff:" />
-                <TableView layoutX="500.0" layoutY="60.0" prefHeight="250.0" />
+                <TableView fx:id="on_call_table" layoutX="500.0" layoutY="60.0" prefHeight="250.0" >
+                <columns>
+          <TableColumn text="Staff:" prefWidth="100.0" >
+          </TableColumn>
+          <TableColumn text="Name:" prefWidth="160.0">
+          </TableColumn>
+     </columns>
+     </TableView>
                 <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
                 <TextField fx:id="admin" layoutX="780.0" layoutY="60.0" />
                 </children></AnchorPane>

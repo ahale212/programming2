@@ -114,6 +114,9 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private AnchorPane triage_anchorpane;
+	
+	@FXML
+	private TableView on_call_table;
 
 	@FXML
 	private TextField search_NHS_No, search_First_Name, search_Surname,
@@ -156,6 +159,8 @@ public class RevController implements Initializable, ClientCallback {
 	private final ObservableList allergy_list = FXCollections
 			.observableArrayList();
 	private final ObservableList<String> search_patient_results = FXCollections
+			.observableArrayList();
+	private final ObservableList<String> oncallunit = FXCollections
 			.observableArrayList();
 	List<Person> matchingPeople, matchingPeople1;
 
@@ -563,6 +568,9 @@ public class RevController implements Initializable, ClientCallback {
 
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
+		
+		oncallunit.addAll("Doctor 1","Doctor 2","Nurse 1","Nurse 2","Nurse 3");
+		on_call_table.setItems(oncallunit);
 	}
 	
 	/**
