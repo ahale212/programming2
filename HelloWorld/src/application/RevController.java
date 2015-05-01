@@ -1419,12 +1419,16 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn WaitingTime = new TableColumn("Wait Time");			
 		WaitingTime.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
 		
+		treatmentRoomTable.getColumns().addAll(patName, Urgency, WaitingTime);
 		treatmentRoomTable.setItems(emergency_room);
+		ap3.getChildren().addAll(treatment_table, close_view1, treatmentRoomTable);
+		tr_pop.setContentNode(ap3);
 	}
 
 	private void waitingRoomView() {
 		
 		AnchorPane ap2 = new AnchorPane();	
+		Label waitroom_table = new Label("Current Patients in Waiting"); waitroom_table.setLayoutX(10);
 		Button close_view2 = new Button("x"); close_view2.setStyle("-fx-base: red;");		
 		waiting_room.clear();
 		// Loop through each of the patients in queueList
@@ -1442,8 +1446,11 @@ public class RevController implements Initializable, ClientCallback {
 		
 		TableColumn WaitingTime1 = new TableColumn("Wait Time");			
 		WaitingTime1.setCellValueFactory(new PropertyValueFactory<Object, String>("waitTime"));
-				
+			
+		waitingRoomTable.getColumns().addAll(patName1, Urgency1, WaitingTime1);
 		waitingRoomTable.setItems(waiting_room);
+		ap2.getChildren().addAll(waitroom_table,close_view2, waitingRoomTable);
+		q_pop.setContentNode(ap2);
 	}
 
 	/**
@@ -1910,9 +1917,7 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	public void pasStats() {
-<<<<<<< HEAD
-		//current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
-=======
+
 		try{
 		int[] urgencies = client.getServer().getUrgencies();
 		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
@@ -1942,37 +1947,6 @@ public class RevController implements Initializable, ClientCallback {
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
-		
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
-		try{
-		int[] urgencies = client.getServer().getUrgencies();
-		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
-		current_emergencies.setText(""+urgencies[0]);
-		
-		daily_urgent.setText(""+urgencies[1]);
-		daily_semi_urgent.setText(""+urgencies[2]);
-		daily_non_urgent.setText(""+urgencies[3]);
-		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
-		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
-		
-		int count=0;
-		for(int totals:urgencies){
-			count+=totals;
-		}
-		
-		int Emergency = (100/count)*urgencies[0];
-		int Urgent = (100/count)*urgencies[1];
-		int Semi_Urgent = (100/count)*urgencies[2];
-		int Non_Urgent = (100/count)*urgencies[3];
-		
-		client.getServer().getAvTreatmentTime();
-		client.getServer().getAvVisitTime();
-		
-		client.getServer().getUrgencies();
-		client.getServer().NumberOfPatientsOverWaitTime();
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
-		
+
 	}
 }
