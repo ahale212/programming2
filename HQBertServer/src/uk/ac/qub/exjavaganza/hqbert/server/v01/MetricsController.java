@@ -26,10 +26,6 @@ public enum MetricsController {
 	ArrayList<Long> queTime;
 	ArrayList<Long> treatmentTime;
 	ArrayList<Long> visitTime;
-	//long urgentCases;
-	//long nonUrgentCases;
-	//long semiUrgentCases;
-	//long emergencyCases;
 	int EMERGENCY;
 	int URGENT;
 	int SEMI_URGENT;
@@ -133,7 +129,7 @@ public enum MetricsController {
 		        ois = new ObjectInputStream(fin);
 		        try{
 		        	saveList =  (ArrayList<Object>) ois.readObject();
-		        	loadSaveList();
+		        	//loadSaveList();
 		        if(saveList!=null){
 		        	emptyFile=false;
 		        }
