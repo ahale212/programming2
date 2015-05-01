@@ -771,7 +771,10 @@ public class RevController implements Initializable, ClientCallback {
 					try {
 						// Create the client
 						client = new RMIClient(RevController.this, _user, db_pass);
-						log("Connected to server and registered for updates.");
+						// Add a message to the log
+						log("Logged in as " + _user);
+
+						logMeIn = true;
 						
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
@@ -852,7 +855,9 @@ public class RevController implements Initializable, ClientCallback {
 					Button CancelRequest = new Button("Cancel");
 					EmailRequest.setLayoutY(26);
 					ConfirmRequest.setLayoutY(60);
-					CancelRequest.setLayoutY(60); CancelRequest.setLayoutX(90);
+					CancelRequest.setLayoutY(60); 
+					CancelRequest.setLayoutX(90);
+
 					AnchorPane forgot = new AnchorPane();
 					forgot.setPrefSize(100,100);
 					forgot.getChildren().addAll(EmailRequest, ConfirmRequest, emailLabel, CancelRequest);
@@ -1085,7 +1090,7 @@ public class RevController implements Initializable, ClientCallback {
 		emergency.setOnAction(e -> {
 			
 			// Create an emergency patient based on the displayed person
-			Patient emergency_patient = new Patient(displayedPerson, Urgency.EMERGENCY);
+			Patient emergency_patient = new Patient(displayedPerson, Urgency.EMERGENCY, "");
 			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 								
@@ -1267,9 +1272,9 @@ public class RevController implements Initializable, ClientCallback {
 					tr_treatment_notes.setText(doctorsNotes);
 					tr_incident_details.setText(incidentDetails);
 				}
-		});
-		}
-		
+			});
+	}
+
 
 	
 	/**
@@ -1312,7 +1317,9 @@ public class RevController implements Initializable, ClientCallback {
 		
 		// If the selected index is within bounds and the facility at that index is a treatment room
 		if (selectedRoomIndex < treatmentFacilities.size() 
-		&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
+				&& treatmentFacilities.size() > 0
+				&& selectedRoomIndex > -1
+				&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
 			// return the treatment room at the selected index
 			return (TreatmentRoom)treatmentFacilities.get(selectedRoomIndex);
 		} else {

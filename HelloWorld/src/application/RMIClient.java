@@ -31,7 +31,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	/**
 	 * The interval in milliseconds between heartbeats
 	 */
-	private final int HEARTBEAR_INTERVAL = 2000;
+	private final int HEARTBEAT_INTERVAL = 2000;
 	
 	/**
 	 * A reference to the remote server
@@ -100,7 +100,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		heartBeatTimer = new Timer();
 
 		// Set the time to repeat every 5 seconds and run the timedPing Timer Task each tick
-		heartBeatTimer.scheduleAtFixedRate(new timedPing(), HEARTBEAR_INTERVAL, HEARTBEAR_INTERVAL);
+		heartBeatTimer.scheduleAtFixedRate(new timedPing(), HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL);
 			
 
 	}
@@ -239,8 +239,11 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	@Override
 	public void close() {
 		
-		// Cancel the heartbeat timer
-		heartBeatTimer.cancel();
+		// If the heartbeat timer has been instantiated
+		if (heartBeatTimer != null) {
+			// Cancel the heartbeat timer
+			heartBeatTimer.cancel();
+		}
 		
 		serverAccessible = ConnectionState.NOT_CONNECTED;
 		controller.serverStatusChanged(serverAccessible);
