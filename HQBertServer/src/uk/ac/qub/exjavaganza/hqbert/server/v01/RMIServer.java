@@ -466,6 +466,10 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return MetricsController.INSTANCE.getUrgencies();
 	}
 	
+	public int getPatientsRejected(){
+		return MetricsController.INSTANCE.getPatientsRejected();
+	}
+	
 	public int getCurrentNumberInQueue(){
 
 		return Supervisor.INSTANCE.getHQueue().getPQ().size();

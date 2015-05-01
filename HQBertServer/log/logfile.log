@@ -13124,3 +13124,71 @@
 2015-05-01 16:35:06,537  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - 
 
 2015-05-01 16:35:06,538  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Update Complete
+2015-05-01 16:35:16,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby8 Branson8 has left Treatment Room 5
+2015-05-01 16:35:16,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby4 Branson4 to Treatment room  5
+2015-05-01 16:35:16,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - CurrentTime: Fri May 01 16:35:16 BST 2015
+2015-05-01 16:35:16,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby5 : URGENT : false : 13
+2015-05-01 16:35:16,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby9 : URGENT : false : 9
+2015-05-01 16:35:16,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby6 : SEMI_URGENT : false : 12
+2015-05-01 16:35:16,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby10 : SEMI_URGENT : false : 8
+2015-05-01 16:35:16,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby14 : SEMI_URGENT : false : 4
+2015-05-01 16:35:16,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby7 : NON_URGENT : false : 11
+2015-05-01 16:35:16,535  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby17 : NON_URGENT : false : 1
+2015-05-01 16:35:16,535  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - 
+
+2015-05-01 16:35:16,536  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Update Complete
+2015-05-01 16:35:26,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - CurrentTime: Fri May 01 16:35:26 BST 2015
+2015-05-01 16:35:26,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby5 : URGENT : false : 14
+2015-05-01 16:35:26,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby9 : URGENT : false : 10
+2015-05-01 16:35:26,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby6 : SEMI_URGENT : false : 13
+2015-05-01 16:35:26,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby10 : SEMI_URGENT : false : 9
+2015-05-01 16:35:26,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby14 : SEMI_URGENT : false : 5
+2015-05-01 16:35:26,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby7 : NON_URGENT : false : 12
+2015-05-01 16:35:26,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby17 : NON_URGENT : false : 2
+2015-05-01 16:35:26,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby18 : NON_URGENT : false : 1
+2015-05-01 16:35:26,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - 
+
+2015-05-01 16:35:26,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Update Complete
+2015-05-01 16:35:36,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - CurrentTime: Fri May 01 16:35:36 BST 2015
+2015-05-01 16:35:36,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby5 : URGENT : false : 15
+2015-05-01 16:35:36,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby9 : URGENT : false : 11
+2015-05-01 16:35:36,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby6 : SEMI_URGENT : false : 14
+2015-05-01 16:35:36,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby10 : SEMI_URGENT : false : 10
+2015-05-01 16:35:36,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby14 : SEMI_URGENT : false : 6
+2015-05-01 16:35:36,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby7 : NON_URGENT : false : 13
+2015-05-01 16:35:36,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby17 : NON_URGENT : false : 3
+2015-05-01 16:35:36,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby18 : NON_URGENT : false : 2
+2015-05-01 16:35:36,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby19 : NON_URGENT : false : 1
+2015-05-01 16:35:36,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - 
+
+2015-05-01 16:35:36,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Update Complete
+2015-05-01 16:35:46,529  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby11 Branson11 has left Treatment Room 1
+2015-05-01 16:35:46,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby5 Branson5 to Treatment room  1
+2015-05-01 16:35:46,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - CurrentTime: Fri May 01 16:35:46 BST 2015
+2015-05-01 16:35:46,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby9 : URGENT : false : 12
+2015-05-01 16:35:46,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby20 : URGENT : false : 1
+2015-05-01 16:35:46,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby6 : SEMI_URGENT : false : 15
+2015-05-01 16:35:46,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby10 : SEMI_URGENT : false : 11
+2015-05-01 16:35:46,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby14 : SEMI_URGENT : false : 7
+2015-05-01 16:35:46,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby7 : NON_URGENT : false : 14
+2015-05-01 16:35:46,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby17 : NON_URGENT : false : 4
+2015-05-01 16:35:46,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby18 : NON_URGENT : false : 3
+2015-05-01 16:35:46,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby19 : NON_URGENT : false : 2
+2015-05-01 16:35:46,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - 
+
+2015-05-01 16:35:46,536  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Update Complete
+2015-05-01 16:35:56,529  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby2 Branson2 has left Treatment Room 3
+2015-05-01 16:35:56,530  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby9 Branson9 to Treatment room  3
+2015-05-01 16:35:56,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - CurrentTime: Fri May 01 16:35:56 BST 2015
+2015-05-01 16:35:56,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby6 : SEMI_URGENT : true : 16
+2015-05-01 16:35:56,531  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby20 : URGENT : false : 2
+2015-05-01 16:35:56,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby10 : SEMI_URGENT : false : 12
+2015-05-01 16:35:56,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby14 : SEMI_URGENT : false : 8
+2015-05-01 16:35:56,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby21 : SEMI_URGENT : false : 1
+2015-05-01 16:35:56,532  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby7 : NON_URGENT : false : 15
+2015-05-01 16:35:56,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby17 : NON_URGENT : false : 5
+2015-05-01 16:35:56,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby18 : NON_URGENT : false : 4
+2015-05-01 16:35:56,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Bobby19 : NON_URGENT : false : 3
+2015-05-01 16:35:56,533  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - 
+
+2015-05-01 16:35:56,534  INFO [main] - uk.ac.qub.exjavaganza.hqbert.server.v01.Supervisor.log 877 - Update Complete

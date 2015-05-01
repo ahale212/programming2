@@ -80,6 +80,12 @@ public abstract class TreatmentFacility implements ITreatmentFacility, Serializa
 	 * Discharge patient - from the hospital
 	 */
 	public void DischargePatient(){
+
+		//Make appropriate calls to whatever admin class
+		//and log patient leaving the system
+		PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+		MetricsController.INSTANCE.AddMetric(metrics);
+
 		logDischarge();
 		patient = null;
 	}
