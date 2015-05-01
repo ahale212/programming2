@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -107,7 +108,7 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML
 	private Button login, re_assign, search_database, emergency, Q_view,
-			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension;
+			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign;
 
 	@FXML
 	private Slider respiratory_rate, pulse_rate;
@@ -144,6 +145,7 @@ public class RevController implements Initializable, ClientCallback {
 	PopOver extension_pop = new PopOver();
 
 	Staff staff = new Staff();
+	Staff loggedInUser = null;
 
 	private final ObservableList<Patient> emergency_room = FXCollections
 			.observableArrayList();
@@ -613,6 +615,15 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	private void buttonFunction() {	
 		
+		sign.setOnAction(e -> {
+			String my_details = null;
+			
+			if (loggedInUser != null) {
+				my_details = loggedInUser.getLastName()+", "+loggedInUser.getLastName();
+			}
+			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
+		});
+		
 		// Action to be performed when the user clicks the save notes 
 		// button on the treatment room tab
 		tr_button_save.setOnAction( e -> {
@@ -771,7 +782,10 @@ public class RevController implements Initializable, ClientCallback {
 					try {
 						// Create the client
 						client = new RMIClient(RevController.this, _user, db_pass);
-						log("Connected to server and registered for updates.");
+						// Add a message to the log
+						log("Logged in as " + _user);
+
+						logMeIn = true;
 						
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
@@ -852,7 +866,9 @@ public class RevController implements Initializable, ClientCallback {
 					Button CancelRequest = new Button("Cancel");
 					EmailRequest.setLayoutY(26);
 					ConfirmRequest.setLayoutY(60);
-					CancelRequest.setLayoutY(60); CancelRequest.setLayoutX(90);
+					CancelRequest.setLayoutY(60); 
+					CancelRequest.setLayoutX(90);
+
 					AnchorPane forgot = new AnchorPane();
 					forgot.setPrefSize(100,100);
 					forgot.getChildren().addAll(EmailRequest, ConfirmRequest, emailLabel, CancelRequest);
@@ -1085,7 +1101,7 @@ public class RevController implements Initializable, ClientCallback {
 		emergency.setOnAction(e -> {
 			
 			// Create an emergency patient based on the displayed person
-			Patient emergency_patient = new Patient(displayedPerson, Urgency.EMERGENCY);
+			Patient emergency_patient = new Patient(displayedPerson, Urgency.EMERGENCY,"");
 			
 			outputTextArea.appendText("EMERGENCY!\n"+textfield_Surname.getText()+", "+textfield_First_Name.getText()+" sent to the Treatment room!\n");
 								
@@ -1267,9 +1283,9 @@ public class RevController implements Initializable, ClientCallback {
 					tr_treatment_notes.setText(doctorsNotes);
 					tr_incident_details.setText(incidentDetails);
 				}
-		});
-		}
-		
+			});
+	}
+
 
 	
 	/**
@@ -1312,7 +1328,9 @@ public class RevController implements Initializable, ClientCallback {
 		
 		// If the selected index is within bounds and the facility at that index is a treatment room
 		if (selectedRoomIndex < treatmentFacilities.size() 
-		&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
+				&& treatmentFacilities.size() > 0
+				&& selectedRoomIndex > -1
+				&& treatmentFacilities.get(selectedRoomIndex) instanceof TreatmentRoom) {
 			// return the treatment room at the selected index
 			return (TreatmentRoom)treatmentFacilities.get(selectedRoomIndex);
 		} else {
@@ -1831,11 +1849,56 @@ public class RevController implements Initializable, ClientCallback {
 	}
 	
 	public String incidentDomain() {
-		String breathing, walking, shallow_breathing, gasping, low_pulse, rapid_pulse, any_medical_conditions, any_prescribed_medicines;
+		
+		String breathing = null;
+		String walking= null;
+		String shallow_breathing= null;
+		String gasping= null;
+		String low_pulse= null;
+		String rapid_pulse= null;
+		String any_medical_conditions= null;
+		String any_prescribed_medicines= null;
+		String output_incident_report = null;
+		
 		if (breathing_yes.getSelectionModel().getSelectedIndex() == 1) {
-			breathing = "Required Resuscitation";
+			breathing = "Resuscitation Required";
 		}
-		return null;
+		if (walk_no.isSelected()) {
+			walking = "Patient is incapacitated and immobile";
+		}
+		if (respiratory_rate.getValue() > 50.5) {
+			shallow_breathing = "Patient has shallow breathing";
+		}
+		if (respiratory_rate.getValue() < 0.5) {
+			gasping = "Patient has trouble breathing";
+		}
+		if (pulse_rate.getValue() > 50.5) {
+			rapid_pulse = "Pulse High";
+		}
+		if (pulse_rate.getValue() < 0.5) {
+			low_pulse = "Pulse Low";
+		}
+		if (conditions.getSelectionModel().getSelectedIndex() > 0) {
+			any_medical_conditions = "Patient is receiving treatment for medical conditions";
+		}
+		if (medication.getSelectionModel().getSelectedIndex() > 0) {
+			any_prescribed_medicines = "Patient is taking prescribed medication";
+		}
+		
+		String[] incident_report = {breathing,walking,shallow_breathing,gasping,rapid_pulse,low_pulse,any_medical_conditions,any_medical_conditions};
+		for (String string : incident_report) {
+			if (string!=null){
+				output_incident_report = output_incident_report+string+"; ";
+			}
+		}
+		return output_incident_report;
+		
+	}
+
+	@Override
+	public void notifyNextPatientToRoom(String message) throws RemoteException {
+				
+		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
 		
 	}
 }
