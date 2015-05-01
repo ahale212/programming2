@@ -42,6 +42,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_NURSES = 3;
 	public final boolean ALERTS_ACTIVE = false;
 
+
 	public final float TIME_MULTI = 6;
 
 	private Preferences prefs;
@@ -814,8 +815,6 @@ public enum Supervisor {
 	public void setCurrentNumberOfTreatmentRooms(int numRooms){
 		TREATMENT_ROOMS_COUNT = numRooms;
 	}
-	
-	
 
 
 }

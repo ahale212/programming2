@@ -29,6 +29,7 @@ import application.RMIClient;
 import com.sun.javafx.application.PlatformImpl.FinishListener;
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 import com.sun.prism.paint.Color;
+
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ExtensionReason;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Job;
@@ -775,13 +776,13 @@ public class RevController implements Initializable, ClientCallback {
 
 						logMeIn = true;
 						
+						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
-						Notifications.create().title("Login failed").text("Server communication error.").showConfirm();	
+						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER_LEFT).showConfirm();	
 						log("Login failed: Server communication error.");
 						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
-						Notifications.create().title("Login failed").text("Invalid username or password.").showConfirm();	
-
+						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER_LEFT).showConfirm();	
 						log("Login failed: Invalid username or password.");
 						ex.printStackTrace();
 					} 
@@ -836,8 +837,7 @@ public class RevController implements Initializable, ClientCallback {
 
 				@Override
 				public void handle(ActionEvent event) {
-
-					client.close();
+					
 					resetTriage();
 					
 				}
@@ -857,6 +857,7 @@ public class RevController implements Initializable, ClientCallback {
 					ConfirmRequest.setLayoutY(60);
 					CancelRequest.setLayoutY(60); 
 					CancelRequest.setLayoutX(90);
+
 					AnchorPane forgot = new AnchorPane();
 					forgot.setPrefSize(100,100);
 					forgot.getChildren().addAll(EmailRequest, ConfirmRequest, emailLabel, CancelRequest);
@@ -876,11 +877,9 @@ public class RevController implements Initializable, ClientCallback {
 						@Override
 						public void handle(ActionEvent event) {	
 							login_pop.hide();
-						}
-					});
-				}
-			});
-
+						}});
+				}});
+			
 			ap1.setMinWidth(100);
 			ap1.getChildren().add(l1);
 			ap1.getChildren().add(tf1);
@@ -1099,7 +1098,7 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 
 				// Add the emergency patient to the back end
-				client.getServer().addPatient(client.getClientID(), emergency_patient);
+				//client.getServer().addPatient(client.getClientID(), emergency_patient);
 
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -1126,7 +1125,6 @@ public class RevController implements Initializable, ClientCallback {
 
 			clearSearchFields();
 			clearTriageTextFields();
-
 			resetTriage();
 		});
 
@@ -1273,10 +1271,10 @@ public class RevController implements Initializable, ClientCallback {
 					tr_patient_urgency.setText(urgency);
 					tr_treatment_notes.setText(doctorsNotes);
 					tr_incident_details.setText(incidentDetails);
-
 				}
 			});
 	}
+
 
 	
 	/**

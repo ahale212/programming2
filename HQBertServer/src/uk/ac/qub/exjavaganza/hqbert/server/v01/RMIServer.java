@@ -141,6 +141,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 
 	}
+	
 
 	/**
 	 * Inform the client that the next patient should be called to a room
@@ -445,6 +446,44 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 	
 	
+	public long getAvTimeInQue(){
+		
+		return MetricsController.INSTANCE.getAvTimeInQue();
+	}
+	
+	public long getAvTreatmentTime(){
+		
+		return MetricsController.INSTANCE.getAvTreatmentTime();
+	}
+	
+	public long getAvVisitTime(){
+		
+		return MetricsController.INSTANCE.getAvVisitTime();
+	}
+	
+	public int[] getUrgencies(){
+		MetricsController.INSTANCE.setUrgency();
+		return MetricsController.INSTANCE.getUrgencies();
+	}
+	
+	public int getCurrentNumberInQueue(){
+
+		return Supervisor.INSTANCE.getHQueue().getPQ().size();
+	}
+	
+	//public long getNumberOfExtensions(){}
+	
+	public int NumberOfPatientsOverWaitTime(){
+		int count = 0;
+		for(long waitTime : MetricsController.INSTANCE.queTime){
+			if((waitTime/60/60)>=Supervisor.INSTANCE.MAX_WAIT_TIME){
+				count++;
+			}
+		}
+		return count;
+	}
+
+	
 	/**
 	 * Authenticates the clientID by checking it exists in the clients list.
 	 * If it does the ClientCallback object is returned, else null is returned if the
@@ -457,13 +496,13 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return clients.containsKey(clientID);
 	}
 
+
 	@Override
 	public void reAssignTriage(String clientID, Patient patient,
 			Urgency newUrgency) throws RemoteException, AuthenticationException {
 		// TODO Auto-generated method stub
 		
 	}
-	
 	
 
 }

@@ -27,6 +27,12 @@ public class OnCallTeam extends TreatmentFacility {
 	}
 	
 	@Override
+	public void logDischarge(){
+		String message = patient.getPerson().getFirstName() + " " + patient.getPerson().getLastName() + " has left the on-call team";
+		Supervisor.INSTANCE.log(message);
+	}
+	
+	@Override
 	public void showFacilityInConsole() {
 		
 		int patientWaitTime = (patient != null)? patient.getWaitTime() : 0;
