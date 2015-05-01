@@ -20,14 +20,14 @@ public class ManagerAlert {
 	 */
 	public static void emailCapacityAlert(Staff HospitalManager, boolean alertsActive) {
 
-		Thread tcapAlert = new Thread() {
-			public void run() {
-
-				// If alertsActive is false, we are testing - dont send message
+		// If alertsActive is false, we are testing - dont send message
 				// - just return that it was successful
 				if (alertsActive == false) {
 					return;
 				}
+				
+		Thread tcapAlert = new Thread() {
+			public void run() {
 
 				// Recipient's email ID needs to be mentioned.
 				String to = HospitalManager.getEmployeeEmail();
@@ -88,17 +88,17 @@ public class ManagerAlert {
 	 */
 	public static void emailWaitingTimeAlert(Staff HoaspitalManager, boolean alertsActive) {
 		
+		// If alertsActive is false, we are testing - dont send message - just
+		// return that it was successful
+		if (alertsActive == false) {
+			return;
+		}
+		
 		Thread twaitTime = new Thread(){
 			
 			@Override
 			public void run() {
 				
-				// If alertsActive is false, we are testing - dont send message - just
-		// return that it was successful
-		if (alertsActive == false) {
-			return;
-		}
-
 		// Recipient's email ID.
 		String to = HoaspitalManager.getEmployeeEmail();
 
@@ -159,15 +159,15 @@ public class ManagerAlert {
 	 */
 	public static void smsCapacityAlert(Staff HospitalManager, boolean alertsActive) {
 		
-		Thread tSMScap = new Thread() {
-			public void run() {
-				
-				// If alertsActive is false, we are testing - dont send message - just
+		// If alertsActive is false, we are testing - dont send message - just
 		// return that it was successful
 		if (alertsActive == false) {
 			return;
 		}
-
+		
+		Thread tSMScap = new Thread() {
+			public void run() {
+				
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
@@ -215,16 +215,16 @@ public class ManagerAlert {
 	 */
 	public static void smsWaitingTimeAlert(Staff HospitalManager, boolean alertsActive) {
 		
-		Thread tSMSwaitTime = new Thread (){
-			
-			@Override
-			public void run() {
-				
-				// If alertsActive is false, we are testing - dont send message - just
+		// If alertsActive is false, we are testing - dont send message - just
 		// return that it was successful
 		if (alertsActive == false) {
 			return;
 		}
+		
+		Thread tSMSwaitTime = new Thread (){
+			
+			@Override
+			public void run() {	
 
 		String username = "awhitten02";
 		String password = "71Great7";
