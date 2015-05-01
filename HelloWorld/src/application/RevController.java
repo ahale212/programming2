@@ -624,6 +624,15 @@ public class RevController implements Initializable, ClientCallback {
 			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
 		});
 		
+		sign.setOnAction(e -> {
+			String my_details = null;
+			
+			if (loggedInUser != null) {
+				my_details = loggedInUser.getLastName()+", "+loggedInUser.getLastName();
+			}
+			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
+		});
+		
 		// Action to be performed when the user clicks the save notes 
 		// button on the treatment room tab
 		tr_button_save.setOnAction( e -> {
@@ -782,6 +791,7 @@ public class RevController implements Initializable, ClientCallback {
 					try {
 						// Create the client
 						client = new RMIClient(RevController.this, _user, db_pass);
+
 						// Add a message to the log
 						log("Logged in as " + _user);
 
@@ -1109,7 +1119,7 @@ public class RevController implements Initializable, ClientCallback {
 			try {
 
 				// Add the emergency patient to the back end
-				//client.getServer().addPatient(client.getClientID(), emergency_patient);
+				client.getServer().addPatient(client.getClientID(), emergency_patient);
 
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -1222,7 +1232,7 @@ public class RevController implements Initializable, ClientCallback {
 					try {
 
 						// Request the update via the server and get a result as a boolean
-						client.getServer().extendTreatmentTime(client.getClientID(), getSelectedTreatmentRoom(), ExtensionReason.SITUATION_UNRESOLVED);
+						client.getServer().extendTreatmentTime(client.getClientID(), treatmentFacilities.indexOf(getSelectedTreatmentRoom()), ExtensionReason.SITUATION_UNRESOLVED);
 						Notifications.create().title("Extension Granted").text("Extended for 5 minutes").darkStyle().showConfirm();
 						extension_pop.hide();
 					} catch (Exception e1) {
@@ -1892,6 +1902,7 @@ public class RevController implements Initializable, ClientCallback {
 			}
 		}
 		return output_incident_report;
+
 		
 	}
 
@@ -1899,6 +1910,8 @@ public class RevController implements Initializable, ClientCallback {
 	public void notifyNextPatientToRoom(String message) throws RemoteException {
 				
 		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
+
 		
 	}
+
 }
