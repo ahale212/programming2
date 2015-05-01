@@ -52,6 +52,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -138,6 +139,8 @@ public class RevController implements Initializable, ClientCallback {
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
 			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode;
 
+	@FXML
+	Label current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
 
 	PopOver login_pop = new PopOver();
 	PopOver q_pop = new PopOver();
@@ -385,6 +388,9 @@ public class RevController implements Initializable, ClientCallback {
 	 * adds tags to slider controls
 	 */
 	private void labelSliders() {
+		
+		
+		
 
 		respiratory_rate.setLabelFormatter(new StringConverter<Double>() {
 			@Override
@@ -558,7 +564,6 @@ public class RevController implements Initializable, ClientCallback {
 
 		treatment_room_list.setItems(trno);
 		select_tr.setItems(trno);
-
 		breaths[0] = "Yes, without resuscitation";
 		breaths[1] = "Yes, after opening airway";
 		breathingList.addAll(breaths);
@@ -644,15 +649,14 @@ public class RevController implements Initializable, ClientCallback {
 						client.getServer().updateDoctorsNotes(client.getClientID(), 
 								room.getPatient().getPerson().getNHSNum(), tr_treatment_notes.getText());
 					} catch (AuthenticationException e1) {
-						Notifications.create().title("Save failed").text("You are not logged in.").showConfirm();	
+						Notifications.create().title("Save failed").text("You are not logged in.").showWarning();	
 						log("Save failed: You are not logged in.");
 					} catch (RemoteException e1) {
-						Notifications.create().title("Update failed").text("Server communication error.").showConfirm();	
+						Notifications.create().title("Update failed").text("Server communication error.").showWarning();	
 						log("Save failed: Server communication error.");
 					}
 				}
 			}
-
 		});
 		
 		close_system.setOnAction( e -> {
@@ -789,11 +793,11 @@ public class RevController implements Initializable, ClientCallback {
 						
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
-						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER_LEFT).showConfirm();	
+						Notifications.create().title("Login failed").text("Server communication error.").position(Pos.CENTER).showError();	
 						log("Login failed: Server communication error.");
 						ex.printStackTrace();
 					} catch (AuthenticationException ex) {
-						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER_LEFT).showConfirm();	
+						Notifications.create().title("Login failed").text("Invalid username or password.").position(Pos.CENTER).showError();	
 						log("Login failed: Invalid username or password.");
 						ex.printStackTrace();
 					} 
@@ -1226,7 +1230,7 @@ public class RevController implements Initializable, ClientCallback {
 						Notifications.create().title("Extension Granted").text("Extended for 5 minutes").darkStyle().showConfirm();
 						extension_pop.hide();
 					} catch (Exception e1) {
-						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showConfirm();
+						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showWarning();
 						extension_pop.hide();
 					}
 
@@ -1656,7 +1660,7 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	@Override
 	public void alertQueueFull() throws RemoteException {
-		Notifications.create().title("Queue full").text("").showConfirm();	
+		Notifications.create().title("Queue full").text("").showInformation();	
 		log("Queue full.");
 	}
 
@@ -1900,5 +1904,9 @@ public class RevController implements Initializable, ClientCallback {
 				
 		Notifications.create().title("Next Patient to Treatment Room").text(message).position(Pos.CENTER).showInformation();
 		
+	}
+	
+	public void pasStats() {
+		//current_total, client.getServer().current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
 	}
 }
