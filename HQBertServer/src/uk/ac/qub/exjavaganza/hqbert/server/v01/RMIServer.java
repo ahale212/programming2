@@ -118,7 +118,10 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'master' of https://github.com/ahale212/programming2.git
 	public synchronized void broadcastLog(String log) {
 
 		// Get the key set from the list of clients

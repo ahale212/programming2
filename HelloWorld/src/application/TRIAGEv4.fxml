@@ -9,7 +9,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.cell.*?> 
+<?import javafx.collections.*?> 
+<?import fxmltableview.*?> 
+<?import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RevController">
    <top>
@@ -57,16 +60,16 @@
                         <Label layoutX="933.0" layoutY="14.0" text="Server Status:" />
                         <ToggleButton fx:id="server_check" layoutX="933.0" layoutY="36.0" selected="true" style="-fx-base: blue" text="Not Connected" />
                         <Label layoutX="933.0" layoutY="72.0" text="Triage Nurse:" />
-                        <TextField layoutX="933.0" layoutY="96.0" promptText="Nurse Name..." />
+                        <TextField fx:id="triagePane_triageNurse" layoutX="933.0" layoutY="96.0" promptText="Nurse Name..." />
                         <Label layoutX="933.0" layoutY="130.0" text="Total in queue:" />
                         <TextField layoutX="933.0" layoutY="154.0" promptText="Queue..." />
                         <Label layoutX="25.0" layoutY="14.0" text="Search By:" />
                         <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="10.0" maxWidth="100" promptText="NHS Number" />
                         <TextField fx:id="search_First_Name" layoutX="194.0" layoutY="10.0" promptText="First Name" />
                         <TextField fx:id="search_Surname" layoutX="347.0" layoutY="10.0" promptText="Surname" />
-                        <TextField fx:id="search_DOB" disable="true" layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
-                        <TextField fx:id="search_Postcode" disable="true" layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
-                        <TextField fx:id="search_Telephone_No" disable="true" layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
+                        <TextField fx:id="search_DOB"  layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
+                        <TextField fx:id="search_Postcode"  layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
+                        <TextField fx:id="search_Telephone_No"  layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
                         <Label fx:id="NHS_No" layoutX="27.0" layoutY="68.0" text="NHS Number" />
                         <Label fx:id="Title" layoutX="27.0" layoutY="100.0" text="Title" />
                         <Label fx:id="first_name" layoutX="27.0" layoutY="132.0" text="First Name" />
@@ -167,13 +170,37 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                 <children>
                 <Label layoutX="20.0" layoutY="30.0" text="Triage Nurse:" />
-                <TextField fx:id="triage_nurse_on_duty" layoutX="20.0" layoutY="60.0" />
+                <TextField fx:id="triage_nurse_on_duty" layoutX="20.0" layoutY="60.0" text="Penelope Cruz" />
                 <Label layoutX="200.0" layoutY="30.0" text="Treatment Room Doctors:" />
                 <ListView fx:id="doctor_on_duty" layoutX="200.0" layoutY="60.0" prefHeight="250.0"  />
                 <Label layoutX="500.0" layoutY="30.0" text="On Call Staff:" />
-                <TableView layoutX="500.0" layoutY="60.0" prefHeight="250.0" />
+                <TableView fx:id="on_call_table" layoutX="500.0" layoutY="60.0" prefHeight="250.0" >
+                <columns>
+           <TableColumn text="Staff Role">
+        <cellValueFactory><PropertyValueFactory property="job" />
+        </cellValueFactory>
+     </TableColumn>
+     <TableColumn text="First Name">
+        <cellValueFactory><PropertyValueFactory property="firstName" />
+        </cellValueFactory>
+        </TableColumn>
+     <TableColumn text="Last Name">
+        <cellValueFactory><PropertyValueFactory property="lastName" />
+        </cellValueFactory>
+     </TableColumn>
+          </columns>
+          <items>
+    <FXCollections fx:factory="observableArrayList">
+        <Staff job="DOCTOR" firstName="Will" lastName="Smith"/>
+        <Staff job="DOCTOR" firstName="Tommy" lastName="Johnson"/>
+        <Staff job="NURSE" firstName="Serena" lastName="Williams"/>
+        <Staff job="NURSE" firstName="Indie" lastName="Jones"/>
+        <Staff job="NURSE" firstName="Scott" lastName="Brown"/>
+    </FXCollections>
+</items>
+     </TableView>
                 <Label layoutX="780.0" layoutY="30.0" text="Hospital Manager:" />
-                <TextField fx:id="admin" layoutX="780.0" layoutY="60.0" />
+                <TextField fx:id="manager" layoutX="780.0" layoutY="60.0" text="Jock Stein" />
                 </children></AnchorPane>
               </content>
             </Tab>

@@ -65,7 +65,7 @@ public class OnCallDataAccessor {
 	}// end of shut down method
 
 	// create a new list for staff
-	List<Staff> onCallList(String username, String password) throws SQLException {
+	public List<Staff> getOnCallList() throws SQLException {
 		// start of try to initiate query statement
 		try (Statement callOnCall = con.prepareStatement(callOnCallString);
 				// execute query

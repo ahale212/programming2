@@ -41,13 +41,13 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	/**
 	 * The URI/IP of the server
 	 */
-	private String serverAddress = "localhost";
+	private String serverAddress;
 	
 	/**
 	 * The port of the server
 	 */
-	private int serverPort = 1099;
-	
+	private int serverPort;
+
 	/**
 	 * The controller of the client application
 	 */
@@ -74,8 +74,11 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 * @throws AuthenticationException 
 	 */
-	protected RMIClient(RevController controller, String username, String password) throws RemoteException, NotBoundException, MalformedURLException, AuthenticationException {
+	protected RMIClient(RevController controller, String serverAddress, int port, String username, String password) throws RemoteException, NotBoundException, MalformedURLException, AuthenticationException {
 		super();
+		
+		this.serverAddress = serverAddress;
+		this.serverPort = port;
 		
 		this.controller = controller;
 		
@@ -199,8 +202,7 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 					lookUpServer();
 				} catch (MalformedURLException | RemoteException
 						| NotBoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
 				}
 			}
 		}
@@ -255,16 +257,18 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 			// Cancel the heartbeat timer
 			heartBeatTimer.cancel();
 		}
-		
-		serverAccessible = ConnectionState.NOT_CONNECTED;
-		controller.serverStatusChanged(serverAccessible);
+	
 
 		if (server != null) {
 			try {
 				// Unregister for updates
 				server.deregister(clientID);
+				serverAccessible = ConnectionState.NOT_CONNECTED;
+				controller.serverStatusChanged(serverAccessible);
 			} catch (RemoteException e) {
 				System.err.println("Failed to unregister from server updates.");
+				serverAccessible = ConnectionState.CONNECTION_ERROR;
+				controller.serverStatusChanged(serverAccessible);
 			}
 		}
 		
@@ -293,5 +297,26 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	public String getClientID() {
 		return clientID;
 	}
+	
+	/** Getter for server address */
+	public String getServerAddress() {
+		return serverAddress;
+	}
+
+	/** Setter for server address */
+	public void setServerAddress(String serverAddress) {
+		this.serverAddress = serverAddress;
+	}
+
+	/** Getter for server port */
+	public int getServerPort() {
+		return serverPort;
+	}
+
+	/** Setter for server port */
+	public void setServerPort(int serverPort) {
+		this.serverPort = serverPort;
+	}
+	
 	
 }
