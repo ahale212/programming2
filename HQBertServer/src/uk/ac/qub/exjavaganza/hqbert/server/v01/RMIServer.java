@@ -106,11 +106,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 				System.err
 						.println("RemoteException occurred while calling 'update' callback method. "
 								+ "Removing client from clients list.");
-				// Display the stack trace for the exception
-				e.printStackTrace();
 
 				client.incrementFailedConnectionAttempts();
 				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Add the failed send to the log
+					Supervisor.INSTANCE.logToFile("Client connection issue: " + client.getUsername() + " removed from queue.");
 					// Remove the client from the list.
 					deregister(key);
 				}
@@ -129,10 +129,10 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			try {
 				client.getCallback().log(log);
 			} catch (RemoteException e) {
-				e.printStackTrace();
-				
 				client.incrementFailedConnectionAttempts();
 				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Add the failed send to the log
+					Supervisor.INSTANCE.logToFile("Client connection issue: " + client.getUsername() + " removed from queue.");
 					// Remove the client from the list.
 					deregister(key);
 				}
@@ -146,28 +146,28 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	/**
 	 * Inform the client that the next patient should be called to a room
 	 */
-//	public void broadcastNextPatientCall(String message) {
-//
-//		// Get the key set from the list of clients
-//		Set<String> keys = clients.keySet();
-//
-//		// Loops through each of the clients in the clients list
-//		for (String key : keys) {
-//			ClientDetails client = clients.get(key);
-//			try {
-//				// Alert the client that the queue is full
-//				client.getCallback().notifyNextPatientToRoom(message);
-//			} catch (RemoteException e) {
-//				e.printStackTrace();
-//				
-//				client.incrementFailedConnectionAttempts();
-//				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
-//					// Remove the client from the list.
-//					deregister(key);
-//				}
-//			}
-//		}
-//	}
+	public void broadcastNextPatientCall(String message) {
+
+		// Get the key set from the list of clients
+		Set<String> keys = clients.keySet();
+
+		// Loops through each of the clients in the clients list
+		for (String key : keys) {
+			ClientDetails client = clients.get(key);
+			try {
+				// Alert the client that the queue is full
+				client.getCallback().notifyNextPatientToRoom(message);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				
+				client.incrementFailedConnectionAttempts();
+				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Remove the client from the list.
+					deregister(key);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Inform the clients that the queue is full
@@ -184,10 +184,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 				// Alert the client that the queue is full
 				client.getCallback().alertQueueFull();
 			} catch (RemoteException e) {
-				e.printStackTrace();
 				
 				client.incrementFailedConnectionAttempts();
 				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+					// Add the failed send to the log
+					Supervisor.INSTANCE.logToFile("Client connection issue: " + client.getUsername() + " removed from queue.");
 					// Remove the client from the list.
 					deregister(key);
 				}
@@ -225,8 +226,8 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			newClientID = generateClientID();
 		}
 		
-		// Add the passed in client to the HashMap of clients, along with their username
-		this.clients.put(newClientID, new ClientDetails(callbackObject));
+		// Add the passed in client and their username to the HashMap of clients, with their client ID as the key
+		this.clients.put(newClientID, new ClientDetails(callbackObject, username));
 		
 		return newClientID;
 
@@ -270,12 +271,9 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			// Return the matching people found in the database
 			return people;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Inform the user that an error occurred
+			throw new RemoteException("Database connection error.");
 		}
-
-
-		return null;
 	}
 
 	@Override
@@ -298,10 +296,9 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			return staff;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Inform the user that an error occurred
+			throw new RemoteException("Database connection error.");
 		}
-		return null;
 	}
 	
 	/**
@@ -323,10 +320,10 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			return staffMember;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Inform the user that an error occurred
+			throw new RemoteException("Database connection error.");
 		}
-		return null;
+
 	}
 
 	/**
@@ -449,6 +446,44 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	}
 	
 	
+	public long getAvTimeInQue(){
+		
+		return MetricsController.INSTANCE.getAvTimeInQue();
+	}
+	
+	public long getAvTreatmentTime(){
+		
+		return MetricsController.INSTANCE.getAvTreatmentTime();
+	}
+	
+	public long getAvVisitTime(){
+		
+		return MetricsController.INSTANCE.getAvVisitTime();
+	}
+	
+	public int[] getUrgencies(){
+		MetricsController.INSTANCE.setUrgency();
+		return MetricsController.INSTANCE.getUrgencies();
+	}
+	
+	public int getCurrentNumberInQueue(){
+
+		return Supervisor.INSTANCE.getHQueue().getPQ().size();
+	}
+	
+	//public long getNumberOfExtensions(){}
+	
+	public int NumberOfPatientsOverWaitTime(){
+		int count = 0;
+		for(long waitTime : MetricsController.INSTANCE.queTime){
+			if((waitTime/60/60)>=Supervisor.INSTANCE.MAX_WAIT_TIME){
+				count++;
+			}
+		}
+		return count;
+	}
+
+	
 	/**
 	 * Authenticates the clientID by checking it exists in the clients list.
 	 * If it does the ClientCallback object is returned, else null is returned if the
@@ -460,7 +495,14 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		// If the clients list contains the clientID as a key then the 
 		return clients.containsKey(clientID);
 	}
-	
+
+
+	@Override
+	public void reAssignTriage(String clientID, Patient patient,
+			Urgency newUrgency) throws RemoteException, AuthenticationException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
