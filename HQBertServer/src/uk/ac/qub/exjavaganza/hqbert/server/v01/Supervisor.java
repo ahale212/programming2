@@ -36,9 +36,9 @@ public enum Supervisor {
 	/**Upper limit of people allowed in the queue at one time before new admissions are sent away*/
 	public final int MAX_QUEUE_SIZE = 10;
 	/**The longest waiting time considered acceptable by the trust*/
-	public final int MAX_WAIT_TIME = 10;
+	public final int MAX_WAIT_TIME = 20;
 	/**The waiting time threshold at which a patient will be given queue priority regardless of triage category*/
-	public final int PRIORITY_WAIT_TIME = 5;
+	public final int PRIORITY_WAIT_TIME = 15;
 	/**If more than this number of patients are waiting more than the acceptable time, the manager is alerted*/
 	public final int MAX_OVERDUE_PATIENTS = 1;
 	
@@ -52,7 +52,7 @@ public enum Supervisor {
 	public final int ONCALL_ENGAGEMENT_TIME = 15;
 	
 	/**How many treatment rooms are currently available in the hospital*/
-	public int TREATMENT_ROOMS_COUNT = 2;
+	public int TREATMENT_ROOMS_COUNT = 3;
 	/**Number of doctors in the onCall team*/
 	public final int ONCALL_TEAM_DOCTORS = 2;
 	/**Number of nursees in an on call team*/
@@ -61,7 +61,7 @@ public enum Supervisor {
 	public final boolean ALERTS_ACTIVE = false;
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
-	public final float TIME_MULTI = 30;
+	public final float TIME_MULTI = 60;
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
 	
@@ -264,15 +264,15 @@ public enum Supervisor {
 			}
 		}
 		
-		if(testPatientNo == 9){
-			Patient sample;
-			for(int i = 0; i < hQueue.getPQ().size(); i++){
-				sample =  hQueue.getPQ().get(i);
-				if(sample.getPerson().getFirstName().equalsIgnoreCase("bobby7")){
-					reAssignTriage(sample, Urgency.EMERGENCY);
-				}
-			}
-		}
+//		if(testPatientNo == 9){
+//			Patient sample;
+//			for(int i = 0; i < hQueue.getPQ().size(); i++){
+//				sample =  hQueue.getPQ().get(i);
+//				if(sample.getPerson().getFirstName().equalsIgnoreCase("bobby7")){
+//					reAssignTriage(sample, Urgency.EMERGENCY);
+//				}
+//			}
+//		}
 		
 		if(testPatientNo == 3){
 		//	addTreatmentRooms(1);
@@ -920,6 +920,9 @@ public enum Supervisor {
 		return this.onCallTeam;
 	}
 
+	public ArrayList<Staff> getOnCallStaffList(){
+		return staffOnCall;
+	}
 	
 	/**
 	 * Find a person by nhsNumber and update their doctors notes.
