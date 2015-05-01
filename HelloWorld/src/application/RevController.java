@@ -212,6 +212,7 @@ public class RevController implements Initializable, ClientCallback {
 	private Preferences prefs;
 	private final String PORT_PREF_NAME = "PORT_PREF";
 	private final String ADDRESS_PREF_NAME = "ADDRESS_PREF";
+	private final String  LOCAL_HOST_PREF_NAME = "LOCAL_HOST_PREF";
 	
 	@Override
 	protected void finalize() throws Throwable {
@@ -731,6 +732,14 @@ public class RevController implements Initializable, ClientCallback {
 			set_port.setLayoutY(190.0);
 			save_port.setLayoutY(215.0);
 			
+			// Set up the server port label and textbox
+			Label local_host_name_label = new Label("Set the host name");
+			TextField set_local_host_name = new TextField();
+			Button save_local_host_name = new Button("Set");
+			local_host_name_label.setLayoutY(255.0);
+			set_local_host_name.setLayoutY(275.0);
+			save_local_host_name.setLayoutY(300.0);
+			
 			// On set address button pressed
 			save_server_address.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -779,7 +788,27 @@ public class RevController implements Initializable, ClientCallback {
 					}
 				}
 			});
-			
+			// On set localhost address button pressed
+			save_local_host_name.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					// The server address
+					String localHostName = set_local_host_name.getText();
+					// Whether or not
+					if (!localHostName.equals("")) {
+						// Store in preferences
+						prefs.put(LOCAL_HOST_PREF_NAME, localHostName);
+						Notifications.create()
+							.title("Server Address Updated")
+							.text("The localhost has been changed to " + localHostName + ". "
+									+ "\nLog in again to to connect using the new settings.")
+							.showConfirm();
+					} else {
+						Notifications.create().title("Invalid localhost address").text("Localhost address not changed.").showError();
+					}
+				}
+			});
 			
 		    
 
@@ -849,8 +878,9 @@ public class RevController implements Initializable, ClientCallback {
 
 			root.getChildren().addAll(plus_trs, set_no_trs, save_no_trs, port_label, 
 					set_port, server_address_label, set_server_address,
-					save_server_address, save_port);
-			Scene s = new Scene(root, 200, 250);
+					save_server_address, save_port, local_host_name_label, set_local_host_name,
+					save_local_host_name);
+			Scene s = new Scene(root, 200, 340);
 			settings_stage.setScene(s);
 			settings_stage.show();
 
@@ -892,8 +922,9 @@ public class RevController implements Initializable, ClientCallback {
 					try {
 						int port = prefs.getInt(PORT_PREF_NAME, 1099);
 						String address = prefs.get(ADDRESS_PREF_NAME, "localhost");
+						String localhost = prefs.get(LOCAL_HOST_PREF_NAME, "localhost");
 						// Create the client
-						client = new RMIClient(RevController.this, address, port, _user, db_pass);
+						client = new RMIClient(RevController.this, address, port, localhost, _user, db_pass);
 						// Add a message to the log
 						log("Logged in as " + _user);
 
@@ -1733,8 +1764,7 @@ public class RevController implements Initializable, ClientCallback {
 	}
 
 	@Override
-	public void udpate(LinkedList<Patient> queue,
-			ArrayList<TreatmentFacility> treatmentFacilities) {
+	public void udpate(List<Patient> queue, List<TreatmentFacility> treatmentFacilities, List<Staff> onCallStaff, List<Staff> onCallDoctors) {
 		// Store the passed in queue and treatment facilities
 		this.queueList = queue;
 		this.treatmentFacilities = treatmentFacilities;

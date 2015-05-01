@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,6 +17,7 @@ import javax.naming.AuthenticationException;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.ClientCallback;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.Patient;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer;
+import uk.ac.qub.exjavaganza.hqbert.server.v01.Staff;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.RemoteServer.ConnectionState;
 import uk.ac.qub.exjavaganza.hqbert.server.v01.TreatmentFacility;
 
@@ -63,6 +65,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 */
 	private String clientID;
 
+	/**
+	 * The host name of the local computer
+	 */
+	private String localHostname;
 
 	/**
 	 * Timer that calls the heartbeat messages to ensure the server is running
@@ -74,12 +80,12 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException	Exception thrown when an communication issue occurs during RMI
 	 * @throws AuthenticationException 
 	 */
-	protected RMIClient(RevController controller, String serverAddress, int port, String username, String password) throws RemoteException, NotBoundException, MalformedURLException, AuthenticationException {
+	protected RMIClient(RevController controller, String serverAddress, int port, String localhost, String username, String password) throws RemoteException, NotBoundException, MalformedURLException, AuthenticationException {
 		super();
 		
 		this.serverAddress = serverAddress;
 		this.serverPort = port;
-		
+		this.localHostname = localhost;
 		this.controller = controller;
 		
 		try {
@@ -124,7 +130,11 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 		serverAccessible = ConnectionState.CONNECTING;
 		controller.serverStatusChanged(serverAccessible);
 		
-		//System.setProperty("java.rmi.server.hostname","localhost");
+		// If a local host name has been provided
+		if (!localHostname.equals("")) {
+			// Set it as a system property
+			System.setProperty("java.rmi.server.hostname",localHostname);
+		}
 		
 		// Get a reference to the server stub using a RMI URL built comprising of the server address and port 
 		server = (RemoteServer)Naming.lookup("rmi://" + serverAddress + ":" + serverPort + "/HQBertServer");
@@ -220,10 +230,10 @@ public class RMIClient extends UnicastRemoteObject implements ClientCallback, Au
 	 * @throws RemoteException		Exception thrown when an communication issue occurs during RMI
 	 */
 	@Override
-	public void udpate(LinkedList<Patient> queue, ArrayList<TreatmentFacility> treatmentFacilities) throws RemoteException {
+	public void udpate(List<Patient> queue, List<TreatmentFacility> treatmentFacilities, List<Staff> onCallStaff, List<Staff> onCallDoctors) throws RemoteException {
 
 		// Pass the callback call onto the controller
-		controller.udpate(queue, treatmentFacilities);
+		controller.udpate(queue, treatmentFacilities, onCallStaff, onCallDoctors);
 	}
 	
 	/**

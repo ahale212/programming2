@@ -118,10 +118,10 @@ public enum Supervisor {
 	private Connection con;
 	/** The data accessor for the person table. Allows for searching of the
 	 Person table in the database.*/
-	private PersonDataAccessorDummy dataAccessor;
+	private PersonDataAccessor dataAccessor;
 	/**The data accessor for the staff table. Allows for searching of the 
 	staff table in the database*/
-	private StaffDataAccessorDummy staffAccessor;
+	private StaffDataAccessor staffAccessor;
 	/**The data accessor for the on call staff table. Allows for searching of the 
 	staff table in the database*/
 	private OnCallDataAccessor onCallAccessor;
@@ -163,7 +163,7 @@ public enum Supervisor {
 		
 		// set up connection to database
 		try {
-			setDataAccessor(new PersonDataAccessorDummy(url, "40058483", "VPK7789"));
+			setDataAccessor(new PersonDataAccessor(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -172,7 +172,7 @@ public enum Supervisor {
 
 		// set up connection to database
 		try {
-			setStaffAccessor(new StaffDataAccessorDummy(url, "40058483", "VPK7789"));
+			setStaffAccessor(new StaffDataAccessor(url, "40058483", "VPK7789"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -233,7 +233,7 @@ public enum Supervisor {
 		}
 	}
 	
-	/**Generates a list of dummy patients to quickly test the queue under heavy load*/
+	/**Generates a list of  patients to quickly test the queue under heavy load*/
 	public void makeBobbies(){
 		testPatientNo = 0;
 
@@ -252,7 +252,7 @@ public enum Supervisor {
 		extensions = new int[] { 0, 1, 2 };
 	}
 
-	/**Test method to run dummy patients through the queue*/
+	/**Test method to run  patients through the queue*/
 	public void runBobbyTest(){
 		// Testing
 		if (testPatientNo < testUrgencies.length) {
@@ -785,6 +785,29 @@ public enum Supervisor {
 		treatmentFacilities.add(onCallTeam);
 		return true;
 	}
+	
+	/**
+	 * Get active staff matching a passed in job
+	 * @para job 	The job to search for
+	 */
+	public List<Staff> getActiveStaff(Job job) {
+		List<Staff> staff = new ArrayList<Staff>();
+		
+		// Loop through each of the staff
+		try {
+			for(Staff staffMember : getStaff()) {
+
+				if (staffMember.getJob() == job) {
+						staff.add(staffMember);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return staff;
+	}
 
 
 	/**
@@ -863,7 +886,7 @@ public enum Supervisor {
 	 * 
 	 * @return
 	 */
-	public PersonDataAccessorDummy getDataAccessor() {
+	public PersonDataAccessor getDataAccessor() {
 		return dataAccessor;
 	}
 
@@ -872,7 +895,7 @@ public enum Supervisor {
 	 * 
 	 * @param dataAccessor
 	 */
-	public void setDataAccessor(PersonDataAccessorDummy dataAccessor) {
+	public void setDataAccessor(PersonDataAccessor dataAccessor) {
 		this.dataAccessor = dataAccessor;
 	}
 
@@ -900,7 +923,7 @@ public enum Supervisor {
 	 * 
 	 * @return
 	 */
-	public StaffDataAccessorDummy getStaffAccessor() {
+	public StaffDataAccessor getStaffAccessor() {
 		return staffAccessor;
 	}
 
@@ -918,7 +941,7 @@ public enum Supervisor {
 	 * 
 	 * @param staffAccessor
 	 */
-	public void setStaffAccessor(StaffDataAccessorDummy staffAccessor) {
+	public void setStaffAccessor(StaffDataAccessor staffAccessor) {
 		this.staffAccessor = staffAccessor;
 	}
 
