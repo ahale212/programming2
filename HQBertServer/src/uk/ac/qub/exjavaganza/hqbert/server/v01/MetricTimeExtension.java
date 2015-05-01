@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class MetricTimeExtension implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	LocalDateTime dateTime;
 	ExtensionReason reason;
 	

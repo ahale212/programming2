@@ -11,6 +11,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -57,6 +58,7 @@ public enum Supervisor {
 	public final int ONCALL_TEAM_DOCTORS = 2;
 	/**Number of nursees in an on call team*/
 	public final int ONCALL_TEAM_NURSES = 3;
+
 	
 	/**Debug flag : whether emails and sms messages should actually be sent
 	 * NOTE ;
@@ -64,7 +66,9 @@ public enum Supervisor {
 	public final boolean ALERTS_ACTIVE = false;
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
+
 	public final float TIME_MULTI = 6;
+
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
 	
@@ -537,9 +541,12 @@ public enum Supervisor {
 	public boolean admitPatient(Patient patient) {
 		try {
 			if (hQueue.insert(patient) == true) {
+				PatientMetrics metrics = new PatientMetrics(LocalDateTime.now(), patient.getUrgency(), patient.getPerson().getNHSNum(), patient.getPriority());
+				MetricsController.INSTANCE.AddMetric(metrics);
 				server.updateClients();
 				return true;
 			} else {
+				MetricsController.INSTANCE.addPatientsRejected();
 				if(patient.getUrgency() == Urgency.EMERGENCY){
 					//Alert the manager of the next hoapital
 				}
