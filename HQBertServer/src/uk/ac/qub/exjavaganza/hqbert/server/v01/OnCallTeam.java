@@ -1,8 +1,16 @@
 package uk.ac.qub.exjavaganza.hqbert.server.v01;
-
+/**
+ * The onCall team extends TreatmentFacility and behaves very similarly to one,
+ * taking/discharging/displacing patients etc.
+ * Can be extended if there is a real-world interface to do so
+ * 
+ * @author james_thompson
+ */
 public class OnCallTeam extends TreatmentFacility {
 	
-	
+	/**
+	 * default constructor, sets default time values
+	 */
 	public OnCallTeam() {
 		super();
 		this.baseOccupancyTime = Supervisor.INSTANCE.ONCALL_ENGAGEMENT_TIME;
@@ -34,7 +42,6 @@ public class OnCallTeam extends TreatmentFacility {
 	
 	@Override
 	public void showFacilityInConsole() {
-		
 		int patientWaitTime = (patient != null)? patient.getWaitTime() : 0;
 		String patientUrgency = (patient != null)? patient.getUrgency().toString() : "na";
 		String patientName = (patient!=null)? patient.getPerson().getFirstName() : "None";
