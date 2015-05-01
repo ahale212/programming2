@@ -67,15 +67,9 @@
                         <TextField fx:id="search_NHS_No" layoutX="90.0" layoutY="10.0" maxWidth="100" promptText="NHS Number" />
                         <TextField fx:id="search_First_Name" layoutX="194.0" layoutY="10.0" promptText="First Name" />
                         <TextField fx:id="search_Surname" layoutX="347.0" layoutY="10.0" promptText="Surname" />
-<<<<<<< HEAD
                         <TextField fx:id="search_DOB" layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
                         <TextField fx:id="search_Postcode" layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
                         <TextField fx:id="search_Telephone_No" layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
-=======
-                        <TextField fx:id="search_DOB"  layoutX="500.0" layoutY="10.0" maxWidth="100" promptText="Date of Birth" />
-                        <TextField fx:id="search_Postcode"  layoutX="604.0" layoutY="10.0" maxWidth="100" promptText="Postcode" />
-                        <TextField fx:id="search_Telephone_No"  layoutX="708.0" layoutY="10.0" maxWidth="100" promptText="Telephone" />
->>>>>>> branch 'master' of https://github.com/ahale212/programming2
                         <Label fx:id="NHS_No" layoutX="27.0" layoutY="68.0" text="NHS Number" />
                         <Label fx:id="Title" layoutX="27.0" layoutY="100.0" text="Title" />
                         <Label fx:id="first_name" layoutX="27.0" layoutY="132.0" text="First Name" />

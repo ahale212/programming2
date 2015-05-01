@@ -2319,11 +2319,4 @@ public class RevController implements Initializable, ClientCallback {
 
 	}
 
-	@Override
-	public void udpate(LinkedList<Patient> queue,
-			ArrayList<TreatmentFacility> treatmentFacilities)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
 }
