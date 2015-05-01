@@ -141,7 +141,34 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		}
 
 	}
+	
 
+	/**
+	 * Inform the client that the next patient should be called to a room
+	 */
+//	public void broadcastNextPatientCall(String message) {
+//
+//		// Get the key set from the list of clients
+//		Set<String> keys = clients.keySet();
+//
+//		// Loops through each of the clients in the clients list
+//		for (String key : keys) {
+//			ClientDetails client = clients.get(key);
+//			try {
+//				// Alert the client that the queue is full
+//				client.getCallback().notifyNextPatientToRoom(message);
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//				
+//				client.incrementFailedConnectionAttempts();
+//				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
+//					// Remove the client from the list.
+//					deregister(key);
+//				}
+//			}
+//		}
+//	}
+	
 	/**
 	 * Inform the clients that the queue is full
 	 */

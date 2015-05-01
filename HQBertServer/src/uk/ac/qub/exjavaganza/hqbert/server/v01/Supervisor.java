@@ -490,7 +490,9 @@ public enum Supervisor {
 			}else{
 				targetRoomName = "On-call team";
 			}
-			log(patient.getPerson().getFirstName()+" "+patient.getPerson().getLastName()+" to "+targetRoomName);
+			String message = patient.getPerson().getFirstName()+" "+patient.getPerson().getLastName()+" to "+targetRoomName;
+			log(message);
+			//server.broadcastNextPatientCall(message);
 		}
 		
 		return success;
