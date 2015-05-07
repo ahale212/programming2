@@ -138,7 +138,7 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group,
 			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details, tr_textfield_NHS_Num,
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
-			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
+			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse, current_queue_total;
 
 	@FXML // labels set to demonstrate statistics
 	private Label current_total, current_in_queue, av_visit_time, av_treatment_time, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, patients_rejected, max_wait_time_exceeded, daily_avg_semi_urgent, daily_avg_non_urgent;
@@ -390,6 +390,7 @@ public class RevController implements Initializable, ClientCallback {
 			countdown.setLayoutY(173.0);
 			break;
 		case 4:
+			extend.setDisable(false);
 			countdown.setHeight(120.0);
 			countdown.setLayoutY(203.0);
 			break;
@@ -1034,6 +1035,9 @@ public class RevController implements Initializable, ClientCallback {
 						client = new RMIClient(RevController.this, address, port, localhost, _user, db_pass);
 						// Add a message to the log
 						log("Logged in as " + _user);
+						triagePane_triageNurse.setText(_user);
+						triage_nurse_on_duty.setText(_user);
+						current_queue_total.setText(""+QList.size());
 
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
@@ -1086,6 +1090,8 @@ public class RevController implements Initializable, ClientCallback {
 							;
 
 						}
+						
+						
 
 						login_pop.hide();
 
@@ -1128,7 +1134,7 @@ public class RevController implements Initializable, ClientCallback {
 					ConfirmRequest.setOnAction(new EventHandler<ActionEvent>() {
 
 						@Override
-						public void handle(ActionEvent event) {							
+						public void handle(ActionEvent event) {	
 							emailNewPassword(EmailRequest);
 							userNameRequest.hide();
 							login_pop.hide();	
@@ -1428,9 +1434,9 @@ public class RevController implements Initializable, ClientCallback {
 				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+queueList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1457,9 +1463,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1487,9 +1493,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 			
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1517,9 +1523,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 			
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 		
 		// Check-box in secondary triage pane.
@@ -1583,6 +1589,8 @@ public class RevController implements Initializable, ClientCallback {
 						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showWarning();
 						extension_pop.hide();
 					}
+					
+					
 
 				}
 			});
@@ -1918,6 +1926,7 @@ public class RevController implements Initializable, ClientCallback {
 		medication.setValue(null);
 		conditions.setDisable(true);
 		conditions.setValue(null);
+		extend.setDisable(true);
 	}
 
 	/**
