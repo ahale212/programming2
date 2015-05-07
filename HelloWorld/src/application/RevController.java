@@ -46,6 +46,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -84,54 +85,57 @@ import javafx.util.StringConverter;
  */
 public class RevController implements Initializable, ClientCallback {
 
+	// local client instance 
 	private RMIClient client;
 
-	@FXML
+	@FXML // toolbar set in BorderPane left
 	private ToolBar toolbar_left;
 
-	@FXML
+	@FXML // menuItems in menubar
 	private MenuItem settings, close_system;
 
-	@FXML
+	@FXML // graphic eggtimer display for patient treatment time remaining
 	private Rectangle countdown;
 
 	@FXML
-	// comment
+	// comment textfields for logging activity and logging patient treatment note respectively
 	private TextArea outputTextArea, tr_treatment_notes;
 
-	@FXML
+	@FXML // toggle buttons to signify primary triage and if server is connected
 	private ToggleButton tb1, tb2, tb3, tb4, tb5, tb6, server_check;
 
-	@FXML
+	@FXML // various lists displayed in BorderPane centre representing queue and treatment rooms
 	private ListView queue, trooms, treatment_room_list, on_call_list, on_call,
 			doctor_on_duty;
 
-	@FXML
+	@FXML // various buttons to set on action events for event listening and handling
 	private Button login, re_assign, search_database, emergency, Q_view,
-			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign;
 
-	@FXML
+			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
+
+	@FXML // sliders deployed in secondary triage
 	private Slider respiratory_rate, pulse_rate;
 
-	@FXML
+	@FXML // comboboxes for allowing a limited selection from a particular list
 	private ComboBox conditions, medication, breathing_yes, allergy, tr_allergy;
 
-	@FXML
+	@FXML // comboboxes instantiated to type String
+
+	private PieChart chart;
+	 
+	@FXML // comboboxes instantiated to type String
 	private ComboBox<String> patient_finder, select_tr;
 
-	@FXML
+	@FXML // checkboxes deployed in secondary triage
 	private CheckBox walk, walk_no;
 
-	@FXML
+	@FXML // tabs in tabbedpane, BorderPane bottom
 	private Tab triage_tab, tr_tab, stats_tab;
-
-	@FXML
-	private AnchorPane triage_anchorpane;
 	
-	@FXML
-	private TableView<Staff> on_call_table;
+	@FXML // TableView of on call staff
+	private TableView<Staff> onCallUnitStaff;
 
-	@FXML
+	@FXML // various textFields for user input or displaying patient details
 	private TextField search_NHS_No, search_First_Name, search_Surname,
 			search_DOB, search_Postcode, search_Telephone_No,
 			textfield_NHS_Num, textfield_Postcode, textfield_Title,
@@ -141,9 +145,10 @@ public class RevController implements Initializable, ClientCallback {
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
 			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
 
-	@FXML
-	Label current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
+	@FXML // labels set to demonstrate statistics
+	private Label current_total, current_in_queue, av_visit_time, av_treatment_time, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, patients_rejected, max_wait_time_exceeded, daily_avg_semi_urgent, daily_avg_non_urgent;
 
+	// PopOver custom javafx controls to seamlessly bring the user to a new window
 	PopOver login_pop = new PopOver();
 	PopOver q_pop = new PopOver();
 	PopOver tr_pop = new PopOver();
@@ -152,39 +157,36 @@ public class RevController implements Initializable, ClientCallback {
 	Staff staff = new Staff();
 	Staff loggedInUser = null;
 
-	private final ObservableList<Staff> on_call_unit_staff = FXCollections
-			.observableArrayList();
-	private final ObservableList<Patient> emergency_room = FXCollections
-			.observableArrayList();
-	private final ObservableList<Patient> waiting_room = FXCollections
-			.observableArrayList();
-	private final ObservableList<String> QList = FXCollections
-			.observableArrayList();
-	private final ObservableList<String> trList = FXCollections
-			.observableArrayList();
+	List<Person> matchingPeople, matchingPeople1;
+	
+	/**
+	 * JavaFX Collections Framework provides ObservableList to show lists of data on screen
+	 */
+	private final ObservableList<Staff> on_call_unit_staff = FXCollections.observableArrayList();
+	private final ObservableList<Staff> on_call_unit_docs = FXCollections.observableArrayList();
+	private final ObservableList<Patient> emergency_room = FXCollections.observableArrayList();
+	private final ObservableList<Patient> waiting_room = FXCollections.observableArrayList();
+	private final ObservableList<String> QList = FXCollections.observableArrayList();
+	private final ObservableList<String> trList = FXCollections.observableArrayList();
 	private final ObservableList trno = FXCollections.observableArrayList();
 	private final ObservableList ocu = FXCollections.observableArrayList();
-	private final ObservableList<String> onCallList = FXCollections
-			.observableArrayList();
-	private final ObservableList breathingList = FXCollections
-			.observableArrayList();
-	private final ObservableList medi_condition = FXCollections
-			.observableArrayList();
+	private final ObservableList<String> onCallList = FXCollections.observableArrayList();
+	private final ObservableList breathingList = FXCollections.observableArrayList();
+	private final ObservableList medi_condition = FXCollections.observableArrayList();
 	private final ObservableList meds = FXCollections.observableArrayList();
-	private final ObservableList allergy_list = FXCollections
-			.observableArrayList();
-	private final ObservableList<String> search_patient_results = FXCollections
-			.observableArrayList();
-	List<Person> matchingPeople, matchingPeople1;
-
-	/**
-	 * Data Lists:
-	 */
+	private final ObservableList allergy_list = FXCollections.observableArrayList();
+	private final ObservableList<String> search_patient_results = FXCollections.observableArrayList();
 
 	/**
 	 * The list that holds the Patients in the queue
 	 */
 	List<Patient> queueList = new LinkedList<Patient>();
+	
+	/**
+	 * The list that holds the staff on duty
+	 */
+	List<Staff> onCallStaff = new LinkedList<Staff>();
+	List<Staff> onCallDoctors = new LinkedList<Staff>();
 
 	/**
 	 * The list of Treatment Rooms / On call team
@@ -212,13 +214,13 @@ public class RevController implements Initializable, ClientCallback {
 	
 	private String[] condition = { "Neurological", "Respiratory",
 			"Dermatological", "Endrocrinal", "Circulatory", "Auto-Immune",
-			"Viral" };
+			"Viral, none" };
 
 	private String[] medicine = { "Pain Killers", "Antibiotics", "Steroids",
-			"Beta-Blockers", "Anti-Depressants", "Anticoagulants" };
+			"Beta-Blockers", "Anti-Depressants", "Anticoagulants, none" };
 
 	private String[] allergic = { "None", "Nuts", "Penicillin", "Stings",
-			"Seafood", "Hayfever", "Animals", "Latex" };
+			"Seafood", "Hayfever", "Animals", "Latex, none" };
 
 	// Display Person used to show patient details in tabbed panes.
 	private Person displayedPerson;
@@ -238,7 +240,6 @@ public class RevController implements Initializable, ClientCallback {
 		if (client != null) {
 			client.close();
 		}
-
 		super.finalize();
 	}
 
@@ -254,14 +255,14 @@ public class RevController implements Initializable, ClientCallback {
 		runValidSearch();
 		updateQueue();
 		buttonFunction();
-		toolTime();
-		
+		toolTime();		
 		getPrefsFile();
 
 	}
 
 	/**
 	 * Sets layout colours and patterns
+	 * unimplemented method to allow for future customisation
 	 */
 	private void colours() {
 
@@ -273,7 +274,6 @@ public class RevController implements Initializable, ClientCallback {
 
 	}
 
-	
 	/**
 	 * load the prefs file and assign the instance var
 	 */
@@ -614,6 +614,30 @@ public class RevController implements Initializable, ClientCallback {
 		allergy_list.addAll(allergic);
 		allergy.setItems(allergy_list);
 		
+
+		onCallUnitStaff = new TableView<Staff>(); 
+		
+		TableColumn role = new TableColumn("Role");			
+		role.setCellValueFactory(new PropertyValueFactory<Object, String>("job"));
+		
+		TableColumn firstName_ocu = new TableColumn("Name");			
+		firstName_ocu.setCellValueFactory(new PropertyValueFactory<Object, String>("firstName"));
+		
+		TableColumn lastName_ocu = new TableColumn("Surname");			
+		lastName_ocu.setCellValueFactory(new PropertyValueFactory<Object, String>("lastName"));
+			
+		onCallUnitStaff.getColumns().addAll(role, firstName_ocu, lastName_ocu);
+		
+		for (Staff s : onCallStaff) {			
+			// Check if there is a patient in the facility
+			on_call_unit_staff.add(s);
+		}		
+		onCallUnitStaff.setItems(on_call_unit_staff);
+
+		for (Staff docs : onCallDoctors) {
+			on_call_unit_docs.add(docs);
+		}
+		doctor_on_duty.setItems(on_call_unit_docs);
 	}
 	
 	/**
@@ -656,9 +680,63 @@ public class RevController implements Initializable, ClientCallback {
 	 * handle events (e->)
 	 */
 	private void buttonFunction() {	
+		
+		// use search fields to search through queue
+		search_queue.setOnAction(e -> {
+			
+			for (Patient pat: queueList) {
+				if (pat.getPerson().getNHSNum().toLowerCase().contains(search_NHS_No.getText()) ||
+						pat.getPerson().getFirstName().toLowerCase().contains(search_First_Name.getText()) ||
+						pat.getPerson().getLastName().toLowerCase().contains(search_Surname.getText()) ||
+						pat.getPerson().getDOB().toLowerCase().contains(search_DOB.getText()) ||
+						pat.getPerson().getPostcode().toLowerCase().contains(search_Postcode.getText()) ||
+						pat.getPerson().getTelephone().toLowerCase().contains(search_Telephone_No.getText())) {
+					if (pat!=null) {
+						displayedPerson = pat.getPerson();
+						// display the matching person
+						displayTriagePerson(displayedPerson);
+						// Enable triage as there is a patient being displayed.
+						enableTriage();
+						
+					} else if (pat==null) { 
+						// else if there were multiple people show a list
+						populateMatchingPatientList();
+					} 
+					
+					clearSearchFields();
+				}
+			}
+			for (TreatmentFacility facility : treatmentFacilities) {
+
+				// Check if there is a patient in the facility
+				Patient pat = facility.getPatient();
+				
+				if (pat.getPerson().getNHSNum().toLowerCase().contains(search_NHS_No.getText()) ||
+						pat.getPerson().getFirstName().toLowerCase().contains(search_First_Name.getText()) ||
+						pat.getPerson().getLastName().toLowerCase().contains(search_Surname.getText()) ||
+						pat.getPerson().getDOB().toLowerCase().contains(search_DOB.getText()) ||
+						pat.getPerson().getPostcode().toLowerCase().contains(search_Postcode.getText()) ||
+						pat.getPerson().getTelephone().toLowerCase().contains(search_Telephone_No.getText())) {
+					if (pat!=null) {
+						displayedPerson = pat.getPerson();
+						// display the matching person
+						displayTriagePerson(displayedPerson);
+						// Enable triage as there is a patient being displayed.
+						enableTriage();
+						
+					} else if (pat==null) { 
+						// else if there were multiple people show a list
+						populateMatchingPatientList();
+					} 
+					
+					clearSearchFields();
+				}
+			}
+		});
+		
 		// Sign refers to the "signature" button in the Treatment Room pane.
-		// Sets the time stamp for recording new patient input or treatment
-		// notes. 
+				// Sets the time stamp for recording new patient input or treatment
+				// notes. 
 		sign.setOnAction(e -> {
 			String my_details = null;
 			
@@ -776,6 +854,7 @@ public class RevController implements Initializable, ClientCallback {
 					}
 				}
 			});
+			
 			// On set port button pressed
 			save_port.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -826,7 +905,6 @@ public class RevController implements Initializable, ClientCallback {
 				}
 			});
 			
-		    
 			save_no_trs.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -1341,7 +1419,7 @@ public class RevController implements Initializable, ClientCallback {
 			}
 			clearSearchFields();
 			clearTriageTextFields();
-			trno.clear();
+			
 			resetTriage();
 		});
 
@@ -1370,7 +1448,7 @@ public class RevController implements Initializable, ClientCallback {
 
 			clearSearchFields();
 			clearTriageTextFields();
-			trno.clear();
+			
 			resetTriage();
 		});
 
@@ -1400,7 +1478,7 @@ public class RevController implements Initializable, ClientCallback {
 			
 			clearSearchFields();
 			clearTriageTextFields();
-			trno.clear();
+			
 			resetTriage();
 		});
 
@@ -1430,7 +1508,7 @@ public class RevController implements Initializable, ClientCallback {
 			
 			clearSearchFields();
 			clearTriageTextFields();
-			trno.clear();
+			
 			resetTriage();
 		});
 		
@@ -1550,10 +1628,11 @@ public class RevController implements Initializable, ClientCallback {
 					tr_incident_details.setText(incidentDetails);
 				}
 			});
+		
+		//	TODO check that is sets values
+		BTstat.setOnAction(e->{pasStats();});
 	}
 
-
-	
 	/**
 	 * Display the details of a treatment room based on the selected room in select_tr
 	 */
@@ -1864,7 +1943,8 @@ public class RevController implements Initializable, ClientCallback {
 		// Store the passed in queue and treatment facilities
 		this.queueList = queue;
 		this.treatmentFacilities = treatmentFacilities;
-
+		this.onCallStaff = onCallStaff;
+		this.onCallDoctors = onCallDoctors;
 		// Call run later to run updates to the UI on the JavaFX thread
 		Platform.runLater(new Runnable() {
 
@@ -2213,36 +2293,85 @@ public class RevController implements Initializable, ClientCallback {
 	 * Stat tab on client side. 
 	 */
 	public void pasStats() {
-
+ 
 		try{
+		//set urgency data to array
 		int[] urgencies = client.getServer().getUrgencies();
-		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
-		current_emergencies.setText(""+urgencies[0]);
 		
+		//
+		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
+		daily_emergencies.setText(""+urgencies[0]);
 		daily_urgent.setText(""+urgencies[1]);
 		daily_semi_urgent.setText(""+urgencies[2]);
 		daily_non_urgent.setText(""+urgencies[3]);
 		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
 		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
+		current_total.setText(""+client.getServer().getPatientsRejected());
+		av_treatment_time.setText(""+ client.getServer().getAvTreatmentTime());
+		av_visit_time.setText(""+ client.getServer().getAvVisitTime());
+		patients_rejected.setText(""+ client.getServer().getPatientsRejected());
+		max_wait_time_exceeded.setText("" + client.getServer().NumberOfPatientsOverWaitTime());
 		
+		//data for pieChart as a % of the total
 		int count=0;
 		for(int totals:urgencies){
 			count+=totals;
 		}
-		
 		int Emergency = (100/count)*urgencies[0];
 		int Urgent = (100/count)*urgencies[1];
 		int Semi_Urgent = (100/count)*urgencies[2];
 		int Non_Urgent = (100/count)*urgencies[3];
 		
-		client.getServer().getAvTreatmentTime();
-		client.getServer().getAvVisitTime();
-		
-		client.getServer().getUrgencies();
-		client.getServer().NumberOfPatientsOverWaitTime();
+		//if the server is not available the catch sets the text fields to unavailable
 		} catch (Exception ex){
-			ex.printStackTrace();
+			
+			current_total.setText("unavailable");
+			current_in_queue.setText("unavailable");
+			av_visit_time.setText("unavailable");
+			av_treatment_time.setText("unavailable");
+			daily_emergencies.setText("unavailable");
+			daily_urgent.setText("unavailable");
+			daily_semi_urgent.setText("unavailable");
+			daily_non_urgent.setText("unavailable");
+			daily_tr_extended.setText("unavailable");
+			daily_avg_wait.setText("unavailable");
+			patients_rejected.setText("unavailable");
+			max_wait_time_exceeded.setText("unavailable");
+			daily_avg_semi_urgent.setText("unavailable");
+			daily_avg_non_urgent.setText("unavailable");
 		}
+	}
+	
+	
+	/**
+	 * controller for generating pie chart
+	 * @author Adrian
+	 *
+	 */
+	/*public class GraphScreenController implements Initializable {
+
+	    @FXML
+	    PieChart chart;
+
+	    int Emergency,Urgent,Semi_Urgent,Non_Urgent;
+	    
+	public GraphScreenController(int Emergency,int Urgent,int Semi_Urgent, int Non_Urgent){
+		this.Emergency=Emergency;
+		this.Urgent=Urgent;
+		this.Semi_Urgent=Semi_Urgent;
+		this.Non_Urgent=Non_Urgent;
+	}
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+	    // TODO
+	 ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+	            new PieChart.Data("Emergency", Emergency),
+	            new PieChart.Data("Urgent", Urgent),
+	            new PieChart.Data("Semi_Urgent", Semi_Urgent),
+	            new PieChart.Data("Non_Urgent", Non_Urgent));
+
+	 chart.setData(pieChartData);
 
 	}
+	*/
 }
