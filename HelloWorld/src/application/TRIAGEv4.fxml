@@ -186,7 +186,6 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
                 <children>
-                <Button fx:id="BTstat" layoutX="20.0" layoutY="30.0" text="Update Stats" />
                 
                 <Label layoutX="20.0" layoutY="120.0" text="In Queue" />
                 <Label fx:id="current_in_queue" layoutX="180.0" layoutY="120.0" text="x" />

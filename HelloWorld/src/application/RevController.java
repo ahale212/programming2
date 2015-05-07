@@ -110,7 +110,7 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML // various buttons to set on action events for event listening and handling
 	private Button login, re_assign, search_database, emergency, Q_view, 
-	TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
+	TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue;
 
 	@FXML // sliders deployed in secondary triage
 	private Slider respiratory_rate, pulse_rate;
@@ -1648,7 +1648,7 @@ public class RevController implements Initializable, ClientCallback {
 				}
 			});
 		
-		BTstat.setOnAction(e->{ pasStats(); });
+	
 	}
 
 	/**
@@ -1991,6 +1991,8 @@ public class RevController implements Initializable, ClientCallback {
 				// Update the treatment room list on the UI with the updated
 				// data
 				updateTreatmentRooms();
+				
+				pasStats();
 			}
 		});
 	}
@@ -2335,18 +2337,18 @@ public class RevController implements Initializable, ClientCallback {
 		int[] urgencies = client.getServer().getUrgencies();
 		
 		//
-		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
-		daily_emergencies.setText(""+urgencies[0]);
-		daily_urgent.setText(""+urgencies[1]);
-		daily_semi_urgent.setText(""+urgencies[2]);
-		daily_non_urgent.setText(""+urgencies[3]);
-		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
-		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
+		current_in_queue.setText(""+ Math.abs(client.getServer().getCurrentNumberInQueue()) );
+		daily_emergencies.setText(""+Math.abs(urgencies[0]));
+		daily_urgent.setText(""+ Math.abs(urgencies[1]));
+		daily_semi_urgent.setText(""+ Math.abs(urgencies[2]));
+		daily_non_urgent.setText(""+ Math.abs(urgencies[3]));
+		daily_tr_extended.setText(""+ Math.abs(client.getServer().getNumberOfExtensions()));
+		daily_avg_wait.setText(""+ Math.abs(client.getServer().getAvTimeInQue()));
 		//current_total.setText(""+client.getServer().getPatientsRejected());
-		av_treatment_time.setText(""+ client.getServer().getAvTreatmentTime());
-		av_visit_time.setText(""+ client.getServer().getAvVisitTime());
-		patients_rejected.setText(""+ client.getServer().getPatientsRejected());
-		max_wait_time_exceeded.setText("" + client.getServer().NumberOfPatientsOverWaitTime());
+		av_treatment_time.setText(""+  Math.abs(client.getServer().getAvTreatmentTime()));
+		av_visit_time.setText(""+  Math.abs(client.getServer().getAvVisitTime()));
+		patients_rejected.setText(""+  Math.abs(client.getServer().getPatientsRejected()));
+		max_wait_time_exceeded.setText("" +  Math.abs(client.getServer().NumberOfPatientsOverWaitTime()));
 		
 		//data for pieChart as a % of the total
 		int count=0;
