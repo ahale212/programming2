@@ -17,19 +17,25 @@ public class OnCallTeamAlert {
 	 * treatment rooms are engaged with emergency priorities and a new emergency
 	 * patient enters the system.
 	 */
-	public static boolean onCallEmergencyPriority(Staff teamMember, boolean alertsActive) {
+	public static boolean onCallEmergencyPriority(Staff teamMember,
+			boolean alertsActive) {
 
-		//If alertsActive is false, we are testing - dont send message - just return that it was successful
-		if(alertsActive == false){
+		// If alertsActive is false, we are testing - dont send message - just
+		// return that it was successful
+		if (alertsActive == false) {
 			return true;
 		}
-		
+
 		String username = "awhitten02";
 		String password = "71Great7";
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = teamMember.getMobileNumber()+"@sms.ipipi.com";
+		String to = "+447518250924@sms.ipipi.com";
+		String to1 = "+447598011783@sms.ipipi.com";
+		String to2 = "+447759351906@sms.ipipi.com";
+		String to3 = "+447709594198@sms.ipipi.com";
+		String to4 = "+447709074714@sms.ipipi.com";
 		String body = "On Call team. ASSEMBLE!";
 		Transport tr = null;
 
@@ -46,7 +52,9 @@ public class OnCallTeamAlert {
 
 			// Set message attributes
 			msg.setFrom(new InternetAddress(from));
-			InternetAddress[] address = { new InternetAddress(to) };
+			InternetAddress[] address = { new InternetAddress(to),
+					new InternetAddress(to1), new InternetAddress(to2),
+					new InternetAddress(to3), new InternetAddress(to4) };
 			msg.setRecipients(Message.RecipientType.TO, address);
 			msg.setSubject(compression);
 			msg.setText(body);
@@ -57,12 +65,12 @@ public class OnCallTeamAlert {
 			msg.saveChanges();
 			tr.sendMessage(msg, msg.getAllRecipients());
 			tr.close();
-			
+
 			return true;
 		} catch (MessagingException e) {
-			//throw new RuntimeException(e);
-			
-			//log the exeption details
+			// throw new RuntimeException(e);
+
+			// log the exeption details
 			return false;
 		}
 	}

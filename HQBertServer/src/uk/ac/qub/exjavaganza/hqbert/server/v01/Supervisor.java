@@ -67,7 +67,7 @@ public enum Supervisor {
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
 
-	public final float TIME_MULTI = 6;
+	public final float TIME_MULTI = 60;
 
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
@@ -349,15 +349,15 @@ public enum Supervisor {
 	}
 	
 	public void superFakeOnCallTeam(){
-		Staff drOctopus = new Staff("docOc", "8ArmsBaby");
+		Staff drOctopus = new Staff("123123", "Henry", "Smith", "docOc", "8ArmsBaby", "123@hello.com", "+447938812243");
 		drOctopus.setJob(Job.DOCTOR);
-		Staff drDoom = new Staff("drDoom", "hahaha");
+		Staff drDoom = new Staff("123123", "Tina", "Smith", "drDoom", "hahaha", "123@hello.com", "+447938812243");
 		drDoom.setJob(Job.DOCTOR);
-		Staff nurseBetty = new Staff("Betty","bettyPass");
+		Staff nurseBetty = new Staff("123123", "Simon", "Smith", "Betty","bettyPass", "123@hello.com", "+447938812243");
 		nurseBetty.setJob(Job.NURSE);
-		Staff nurseJohn = new Staff("John","johnPass");
+		Staff nurseJohn = new Staff("123123", "Sarah", "Smith", "John","johnPass", "123@hello.com", "+447938812243");
 		nurseJohn.setJob(Job.NURSE);
-		Staff nurseJane = new Staff("Jane","janePass");
+		Staff nurseJane = new Staff("123123", "Clare", "Smith", "Jane","janePass", "123@hello.com", "+447938812243");
 		nurseJane.setJob(Job.NURSE);
 		
 		staffOnCall.add(nurseJane);
@@ -377,6 +377,7 @@ public enum Supervisor {
 
 		Patient test = new Patient();
 		test.setPerson(testPerson);
+		test.setPatientName(testPerson);
 		test.setUrgency(testUrgencies[testPatientNo]);
 
 		admitPatient(test);
@@ -548,7 +549,18 @@ public enum Supervisor {
 			} else {
 				MetricsController.INSTANCE.addPatientsRejected();
 				if(patient.getUrgency() == Urgency.EMERGENCY){
-					//Alert the manager of the next hoapital
+					
+					Staff manager = null;
+					for(Staff member : availableStaff){
+						if(member.getJob() == Job.MANAGER){
+							manager = member;
+						}
+					}
+					if(manager != null){
+						ManagerAlert.emailCapacityAlert(manager, ALERTS_ACTIVE);
+						log("Alerting Hospital Manager : Too many overdue patients." );
+					}
+					
 				}
 				server.updateClients();
 				return false;
