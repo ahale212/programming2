@@ -46,6 +46,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -109,7 +110,7 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML // various buttons to set on action events for event listening and handling
 	private Button login, re_assign, search_database, emergency, Q_view,
-			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue;
+			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
 
 	@FXML // sliders deployed in secondary triage
 	private Slider respiratory_rate, pulse_rate;
@@ -140,7 +141,7 @@ public class RevController implements Initializable, ClientCallback {
 			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
 
 	@FXML // labels set to demonstrate statistics
-	private Label current_total, current_in_queue, current_emergencies, daily_total, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, daily_avg_emergencies, daily_avg_urgent, daily_avg_semi_urgent, daily_avg_non_urgent;
+	private Label current_total, current_in_queue, av_visit_time, av_treatment_time, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, patients_rejected, max_wait_time_exceeded, daily_avg_semi_urgent, daily_avg_non_urgent;
 
 	// PopOver custom javafx controls to seamlessly bring the user to a new window
 	PopOver login_pop = new PopOver();
@@ -150,6 +151,8 @@ public class RevController implements Initializable, ClientCallback {
 
 	Staff staff = new Staff();
 	Staff loggedInUser = null;
+	
+	private PieChart chart;
 
 	List<Person> matchingPeople, matchingPeople1;
 	
@@ -609,7 +612,7 @@ public class RevController implements Initializable, ClientCallback {
 		allergy.setItems(allergy_list);
 		
 
-		onCallUnitStaff = new TableView<Staff>(); 
+		//onCallUnitStaff = new TableView<Staff>(); 
 		
 		TableColumn role = new TableColumn("Role");			
 		role.setCellValueFactory(new PropertyValueFactory<Object, String>("job"));
@@ -620,12 +623,25 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn lastName_ocu = new TableColumn("Surname");			
 		lastName_ocu.setCellValueFactory(new PropertyValueFactory<Object, String>("lastName"));
 			
-		onCallUnitStaff.getColumns().addAll(role, firstName_ocu, lastName_ocu);
+		onCallUnitStaff.getColumns().addAll(role, firstName_ocu, lastName_ocu); 
 		
+		Staff step = new Staff();
+		step.setJob(Job.DOCTOR);
+		step.setFirstName("Alan");
+		step.setLastName("Whitten");
+		onCallStaff.add(step);
 		for (Staff s : onCallStaff) {			
 			// Check if there is a patient in the facility
 			on_call_unit_staff.add(s);
-		}		
+		}
+		
+		
+		/*Demo staff in on call table
+		Staff step = new Staff();
+		step.setJob(Job.DOCTOR);
+		step.setFirstName("Alan");
+		step.setLastName("Whitten");
+		on_call_unit_staff.add(step);*/
 		onCallUnitStaff.setItems(on_call_unit_staff);
 
 		for (Staff docs : onCallDoctors) {
@@ -1622,10 +1638,11 @@ public class RevController implements Initializable, ClientCallback {
 					tr_incident_details.setText(incidentDetails);
 				}
 			});
+		
+		//	TODO check that is sets values
+		BTstat.setOnAction(e->{ pasStats(); });
 	}
 
-
-	
 	/**
 	 * Display the details of a treatment room based on the selected room in select_tr
 	 */
@@ -2288,16 +2305,24 @@ public class RevController implements Initializable, ClientCallback {
 	public void pasStats() {
 
 		try{
+		//set urgency data to array
 		int[] urgencies = client.getServer().getUrgencies();
-		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
-		current_emergencies.setText(""+urgencies[0]);
 		
+		//
+		current_in_queue.setText(""+client.getServer().getCurrentNumberInQueue());
+		daily_emergencies.setText(""+urgencies[0]);
 		daily_urgent.setText(""+urgencies[1]);
 		daily_semi_urgent.setText(""+urgencies[2]);
 		daily_non_urgent.setText(""+urgencies[3]);
 		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
 		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
+		current_total.setText(""+client.getServer().getPatientsRejected());
+		av_treatment_time.setText(""+ client.getServer().getAvTreatmentTime());
+		av_visit_time.setText(""+ client.getServer().getAvVisitTime());
+		patients_rejected.setText(""+ client.getServer().getPatientsRejected());
+		max_wait_time_exceeded.setText("" + client.getServer().NumberOfPatientsOverWaitTime());
 		
+		//data for pieChart as a % of the total
 		int count=0;
 		for(int totals:urgencies){
 			count+=totals;
@@ -2308,15 +2333,56 @@ public class RevController implements Initializable, ClientCallback {
 		int Semi_Urgent = (100/count)*urgencies[2];
 		int Non_Urgent = (100/count)*urgencies[3];
 		
-		client.getServer().getAvTreatmentTime();
-		client.getServer().getAvVisitTime();
-		
-		client.getServer().getUrgencies();
-		client.getServer().NumberOfPatientsOverWaitTime();
+		//if the server is not available the catch sets the text fields to unavailable
 		} catch (Exception ex){
-			ex.printStackTrace();
+			
+			current_total.setText("unavailable");
+			current_in_queue.setText("unavailable");
+			av_visit_time.setText("unavailable");
+			av_treatment_time.setText("unavailable");
+			daily_emergencies.setText("unavailable");
+			daily_urgent.setText("unavailable");
+			daily_semi_urgent.setText("unavailable");
+			daily_non_urgent.setText("unavailable");
+			daily_tr_extended.setText("unavailable");
+			daily_avg_wait.setText("unavailable");
+			patients_rejected.setText("unavailable");
+			max_wait_time_exceeded.setText("unavailable");
+			daily_avg_semi_urgent.setText("unavailable");
+			daily_avg_non_urgent.setText("unavailable");
 		}
+	}
+	
+	
+	/**
+	 * controller for generating pie chart
+	 * @author Adrian
+	 *
+	 */
+	/*public class GraphScreenController implements Initializable {
+
+	    @FXML
+	    PieChart chart;
+
+	    int Emergency,Urgent,Semi_Urgent,Non_Urgent;
+	    
+	public GraphScreenController(int Emergency,int Urgent,int Semi_Urgent, int Non_Urgent){
+		this.Emergency=Emergency;
+		this.Urgent=Urgent;
+		this.Semi_Urgent=Semi_Urgent;
+		this.Non_Urgent=Non_Urgent;
+	}
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+	    // TODO
+	 ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+	            new PieChart.Data("Emergency", Emergency),
+	            new PieChart.Data("Urgent", Urgent),
+	            new PieChart.Data("Semi_Urgent", Semi_Urgent),
+	            new PieChart.Data("Non_Urgent", Non_Urgent));
+
+	 chart.setData(pieChartData);
 
 	}
-
+	*/
 }
