@@ -109,15 +109,15 @@ public class RevController implements Initializable, ClientCallback {
 			doctor_on_duty;
 
 	@FXML // various buttons to set on action events for event listening and handling
-	private Button login, re_assign, search_database, emergency, Q_view,
-			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
+	private Button login, re_assign, search_database, emergency, Q_view, 
+	TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
 
 	@FXML // sliders deployed in secondary triage
 	private Slider respiratory_rate, pulse_rate;
 
 	@FXML // comboboxes for allowing a limited selection from a particular list
 	private ComboBox conditions, medication, breathing_yes, allergy, tr_allergy;
-
+	 
 	@FXML // comboboxes instantiated to type String
 	private ComboBox<String> patient_finder, select_tr;
 
@@ -1639,7 +1639,6 @@ public class RevController implements Initializable, ClientCallback {
 				}
 			});
 		
-		//	TODO check that is sets values
 		BTstat.setOnAction(e->{ pasStats(); });
 	}
 
@@ -2303,7 +2302,7 @@ public class RevController implements Initializable, ClientCallback {
 	 * Stat tab on client side. 
 	 */
 	public void pasStats() {
-
+ 
 		try{
 		//set urgency data to array
 		int[] urgencies = client.getServer().getUrgencies();
@@ -2327,7 +2326,6 @@ public class RevController implements Initializable, ClientCallback {
 		for(int totals:urgencies){
 			count+=totals;
 		}
-		
 		int Emergency = (100/count)*urgencies[0];
 		int Urgent = (100/count)*urgencies[1];
 		int Semi_Urgent = (100/count)*urgencies[2];
