@@ -235,9 +235,9 @@ public enum MetricsController {
 			for (int i = 0; i<times.length; i++){
 				 LDT[i]=times[i];
 			}
-			queTime.add(LDT[1].toEpochSecond(ZoneOffset.UTC)-LDT[0].toEpochSecond(ZoneOffset.UTC));
-			treatmentTime.add(LDT[2].toEpochSecond(ZoneOffset.UTC)-LDT[1].toEpochSecond(ZoneOffset.UTC));
-			visitTime.add(LDT[2].toEpochSecond(ZoneOffset.UTC)-LDT[0].toEpochSecond(ZoneOffset.UTC));
+			queTime.add(LDT[0].toEpochSecond(ZoneOffset.UTC)-LDT[2].toEpochSecond(ZoneOffset.UTC));
+			treatmentTime.add(LDT[1].toEpochSecond(ZoneOffset.UTC)-LDT[0].toEpochSecond(ZoneOffset.UTC));
+			visitTime.add(LDT[1].toEpochSecond(ZoneOffset.UTC)-LDT[2].toEpochSecond(ZoneOffset.UTC));
 		}
 	}
 	
