@@ -112,7 +112,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 					// Add the failed send to the log
 					Supervisor.INSTANCE.logToFile("Client connection issue: " + client.getUsername() + " removed from queue.");
 					// Remove the client from the list.
-					deregister(key);
+					keyIterator.remove();
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 					// Add the failed send to the log
 					Supervisor.INSTANCE.logToFile("Client connection issue: " + client.getUsername() + " removed from queue.");
 					// Remove the client from the list.
-					deregister(key);
+					iterator.remove();
 				}
 			}
 
@@ -154,8 +154,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
 
+		Iterator iterator = keys.iterator();
+		
 		// Loops through each of the clients in the clients list
-		for (String key : keys) {
+		while (iterator.hasNext()) {
+			String key = (String)iterator.next();
 			ClientDetails client = clients.get(key);
 			try {
 				// Alert the client that the queue is full
@@ -166,7 +169,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 				client.incrementFailedConnectionAttempts();
 				if (client.getFailedConnectionAttempts() > MAX_FAILED_CONNECTION_ATTEMPTS) {
 					// Remove the client from the list.
-					deregister(key);
+					iterator.remove();
 				}
 			}
 		}
@@ -180,8 +183,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
 
+		Iterator iterator = keys.iterator();
+		
 		// Loops through each of the clients in the clients list
-		for (String key : keys) {
+		while (iterator.hasNext()) {
+			String key = (String)iterator.next();
 			ClientDetails client = clients.get(key);
 			try {
 				// Alert the client that the queue is full
@@ -193,7 +199,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 					// Add the failed send to the log
 					Supervisor.INSTANCE.logToFile("Client connection issue: " + client.getUsername() + " removed from queue.");
 					// Remove the client from the list.
-					deregister(key);
+					iterator.remove();
 				}
 			}
 		}
