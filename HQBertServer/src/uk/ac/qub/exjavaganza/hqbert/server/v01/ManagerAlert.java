@@ -95,9 +95,9 @@ public class ManagerAlert {
 				
 				// If alertsActive is false, we are testing - dont send message - just
 		// return that it was successful
-		if (alertsActive == false) {
-			return;
-		}
+//		if (alertsActive == false) {
+//			return;
+//		}
 
 		// Recipient's email ID.
 		String to = HoaspitalManager.getEmployeeEmail();
