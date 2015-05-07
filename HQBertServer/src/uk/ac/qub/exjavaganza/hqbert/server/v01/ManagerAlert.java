@@ -30,7 +30,7 @@ public class ManagerAlert {
 			public void run() {
 
 				// Recipient's email ID needs to be mentioned.
-				String to = HospitalManager.getEmployeeEmail();
+				String to = "hospitalmanager10@gmail.com";
 
 				// Sender's email ID needs to be mentioned
 				String from = "pashospital2@gmail.com";
@@ -101,7 +101,7 @@ public class ManagerAlert {
 				
 
 		// Recipient's email ID.
-		String to = HoaspitalManager.getEmployeeEmail();
+		String to = "hospitalmanager10@gmail.com";
 
 		// Sender's email ID.
 		String from = "pashospital2@gmail.com";
@@ -174,7 +174,7 @@ public class ManagerAlert {
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = HospitalManager.getMobileNumber() + "@sms.ipipi.com";
+		String to = "+447821063144@sms.ipipi.com";
 		String body = "All treatment rooms are full and the on call team is engaged";
 		Transport tr = null;
 
@@ -232,7 +232,7 @@ public class ManagerAlert {
 		String smtphost = "ipipi.com";
 		String compression = "None";
 		String from = "awhitten02@ipipi.com";
-		String to = HospitalManager.getMobileNumber() + "@sms.ipipi.com";
+		String to = "+447821063144@sms.ipipi.com";
 		String body = "Two patients have been waiting more than 30 minutes";
 		Transport tr = null;
 
