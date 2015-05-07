@@ -2324,7 +2324,7 @@ public class RevController implements Initializable, ClientCallback {
 		daily_non_urgent.setText(""+urgencies[3]);
 		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
 		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
-		//current_total.setText(""+client.getServer().getPatientsRejected());
+		current_total.setText(""+client.getServer().getPatientsRejected());
 		av_treatment_time.setText(""+ client.getServer().getAvTreatmentTime());
 		av_visit_time.setText(""+ client.getServer().getAvVisitTime());
 		patients_rejected.setText(""+ client.getServer().getPatientsRejected());
@@ -2343,7 +2343,7 @@ public class RevController implements Initializable, ClientCallback {
 		//if the server is not available the catch sets the text fields to unavailable
 		} catch (Exception ex){
 			
-			//current_total.setText("unavailable");
+			current_total.setText("unavailable");
 			current_in_queue.setText("unavailable");
 			av_visit_time.setText("unavailable");
 			av_treatment_time.setText("unavailable");
