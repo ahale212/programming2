@@ -117,7 +117,6 @@ public class RevController implements Initializable, ClientCallback {
 
 	@FXML // comboboxes for allowing a limited selection from a particular list
 	private ComboBox conditions, medication, breathing_yes, allergy, tr_allergy;
-
 	 
 	@FXML // comboboxes instantiated to type String
 	private ComboBox<String> patient_finder, select_tr;

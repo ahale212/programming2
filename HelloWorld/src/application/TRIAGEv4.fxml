@@ -218,8 +218,7 @@
                 <!-- 
                 <PieChart id="piechart" fx:id="chart" layoutX="700" layoutY="200" />
                  -->
-                </children>
-                </AnchorPane>
+                </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
