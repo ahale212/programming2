@@ -121,8 +121,8 @@ public class PersonDataAccessor {
 			int updatedRows = 0;
 			
 			// Execute update to store the new doctors' notes
-			updatedRows = findPatients.executeUpdate("UPDATE patients SET doctors_notes = " +  doctorsNotes
-													+ " WHERE NHS_number = '"
+			updatedRows = findPatients.executeUpdate("UPDATE patients SET doctors_notes = '" +  doctorsNotes
+													+ "' WHERE NHS_number = '"
 													+ nhsNumber + "'");
 			
 			// Return whether the query affected rows in the db
