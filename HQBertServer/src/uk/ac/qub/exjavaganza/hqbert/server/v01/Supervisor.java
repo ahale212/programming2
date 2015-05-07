@@ -67,7 +67,7 @@ public enum Supervisor {
 
 	/**Multiplier to allow time in the system to be sped up / slowed down for testing / demoing*/
 
-	public final float TIME_MULTI = 6;
+	public final float TIME_MULTI = 60;
 
 	/**saved preferences for editable values that should persist between launches*/
 	private Preferences prefs;
@@ -549,7 +549,18 @@ public enum Supervisor {
 			} else {
 				MetricsController.INSTANCE.addPatientsRejected();
 				if(patient.getUrgency() == Urgency.EMERGENCY){
-					//Alert the manager of the next hoapital
+					
+					Staff manager = null;
+					for(Staff member : availableStaff){
+						if(member.getJob() == Job.MANAGER){
+							manager = member;
+						}
+					}
+					if(manager != null){
+						ManagerAlert.emailCapacityAlert(manager, ALERTS_ACTIVE);
+						log("Alerting Hospital Manager : Too many overdue patients." );
+					}
+					
 				}
 				server.updateClients();
 				return false;
@@ -817,6 +828,8 @@ public enum Supervisor {
 	 */
 	public void extendRoom(int roomIndex, ExtensionReason reason) {
 		treatmentFacilities.get(roomIndex).extendTime();
+		// inform clients of the update
+		server.updateClients();
 	}
 
 	/**
@@ -965,24 +978,41 @@ public enum Supervisor {
 	 * @return
 	 */
 	public boolean updateDoctorsNotes(String nhsNumber, String doctorsNotes) {
+	
 		
 		// Loop through the various facilities to find the patient
 		for (TreatmentFacility facility : treatmentFacilities) {
+			if (facility == null || facility.patient ==null || facility.patient.getPerson() == null 
+					|| facility.patient.getPerson().getNHSNum() == null) {
+				continue;
+			}
+			
 			Person person = facility.patient.getPerson();
 			// If the NHS number matches, update the doctors notes.
 			if (person.getNHSNum().equals(nhsNumber)) {
 				person.setDoctorsNotes(doctorsNotes);
+				
+				try {
+					// Update the database with the updated doctors notes and store the success boolean it returns
+					boolean success = dataAccessor.updateDoctorsNotes(nhsNumber, doctorsNotes);
+					// if the change was made update the clients
+					if (success) {
+						server.updateClients();
+					}
+					 
+					// returns whether the update was successful to the front end to inform them that the update was successful
+					return success;
+				} catch (SQLException e) {
+					// return false to inform the front end that the update failed.
+					return false;
+				}
 			}
+			
 		}
 		
-		try {
-			// Update the database with the updated doctors notes and pass the success boolean it
-			// returns on to front end to inform them that the update was successful
-			return dataAccessor.updateDoctorsNotes(nhsNumber, doctorsNotes);
-		} catch (SQLException e) {
-			// return false to inform the front end that the update failed.
-			return false;
-		}
+		// If the method has not already returned,
+		// the update has failed.
+		return false;
 	}
 
 
@@ -1003,6 +1033,7 @@ public enum Supervisor {
 				return false;
 			}
 		}
+		
 		return true;
 	}
 

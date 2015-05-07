@@ -195,6 +195,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 			}
 		}
 	}
+	
 
 	/**
 	 * Remotely callable method that registers a client for callbacks from the
@@ -228,6 +229,10 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		
 		// Add the passed in client and their username to the HashMap of clients, with their client ID as the key
 		this.clients.put(newClientID, new ClientDetails(callbackObject, username));
+		
+		
+		// Update clients with current info
+		updateClients();
 		
 		return newClientID;
 
@@ -536,5 +541,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		return true;
 	}
 	
+	/**
+	 * Returns the number of treatment rooms
+	 */
+	public int getTreatmentRoomNumber() throws RemoteException {
+		return Supervisor.INSTANCE.getCurrentNumberOfTreatmentRooms();
+	}
 
 }

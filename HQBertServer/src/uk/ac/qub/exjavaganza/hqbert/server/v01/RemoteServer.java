@@ -128,6 +128,15 @@ public interface RemoteServer extends Remote {
 	public boolean setTreatmentRoomNumber(String clientID, int numberOfRooms) throws RemoteException, AuthenticationException;
 	
 	/**
+	 * Gets the number of treatment rooms
+	 * @return the number of treatment rooms
+	 * @throws RemoteException
+	 * @throws AuthenticationException
+	 */
+	public int getTreatmentRoomNumber() throws RemoteException;
+	
+	
+	/**
 	 * Method to get the ques average wait time
 	 * @return time in seconds
 	 */

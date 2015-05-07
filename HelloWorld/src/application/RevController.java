@@ -138,7 +138,7 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group,
 			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details, tr_textfield_NHS_Num,
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
-			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
+			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse, current_queue_total;
 
 	@FXML // labels set to demonstrate statistics
 	private Label current_total, current_in_queue, av_visit_time, av_treatment_time, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, patients_rejected, max_wait_time_exceeded, daily_avg_semi_urgent, daily_avg_non_urgent;
@@ -390,6 +390,7 @@ public class RevController implements Initializable, ClientCallback {
 			countdown.setLayoutY(173.0);
 			break;
 		case 4:
+			extend.setDisable(false);
 			countdown.setHeight(120.0);
 			countdown.setLayoutY(203.0);
 			break;
@@ -753,7 +754,11 @@ public class RevController implements Initializable, ClientCallback {
 			if (loggedInUser != null) {
 				my_details = loggedInUser.getLastName()+", "+loggedInUser.getLastName();
 			}
-			tr_treatment_notes.appendText(Calendar.getInstance().getTime().toString()+" - "+my_details);
+			String signString = Calendar.getInstance().getTime().toString();
+			if (my_details != null) {
+				signString+= " - " + my_details;
+			}
+			tr_treatment_notes.appendText(signString);
 		});
 		
 		// Action to be performed when the user clicks the save notes 
@@ -858,7 +863,7 @@ public class RevController implements Initializable, ClientCallback {
 							.title("Server Address Updated")
 							.text("The server address has been changed to " + address + ". "
 									+ "\nLog in again to to connect using the new settings.")
-							.showConfirm();
+							.showInformation();
 					} else {
 						Notifications.create().title("Invalid Address").text("Address not changed.").showError();
 					}
@@ -886,7 +891,7 @@ public class RevController implements Initializable, ClientCallback {
 						prefs.putInt(PORT_PREF_NAME, port);
 						Notifications.create()
 							.title("Server Port Updated").text("The server port has been changed to " + port + ". "
-									+ "\nLog in again to to connect using the new settings.").showConfirm();
+									+ "\nLog in again to to connect using the new settings.").showInformation();
 					} else {
 						Notifications.create().title("Invalid Port").text("Port not changed.").showError();
 					}
@@ -900,18 +905,15 @@ public class RevController implements Initializable, ClientCallback {
 				public void handle(ActionEvent event) {
 					// The server address
 					String localHostName = set_local_host_name.getText();
-					// Whether or not
-					if (!localHostName.equals("")) {
+
 						// Store in preferences
 						prefs.put(LOCAL_HOST_PREF_NAME, localHostName);
 						Notifications.create()
 							.title("Server Address Updated")
 							.text("The localhost has been changed to " + localHostName + ". "
 									+ "\nLog in again to to connect using the new settings.")
-							.showConfirm();
-					} else {
-						Notifications.create().title("Invalid localhost address").text("Localhost address not changed.").showError();
-					}
+							.showInformation();
+			
 				}
 			});
 			
@@ -1034,6 +1036,9 @@ public class RevController implements Initializable, ClientCallback {
 						client = new RMIClient(RevController.this, address, port, localhost, _user, db_pass);
 						// Add a message to the log
 						log("Logged in as " + _user);
+						triagePane_triageNurse.setText(_user);
+						triage_nurse_on_duty.setText(_user);
+						current_queue_total.setText(""+QList.size());
 
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
@@ -1086,6 +1091,8 @@ public class RevController implements Initializable, ClientCallback {
 							;
 
 						}
+						
+						
 
 						login_pop.hide();
 
@@ -1128,7 +1135,7 @@ public class RevController implements Initializable, ClientCallback {
 					ConfirmRequest.setOnAction(new EventHandler<ActionEvent>() {
 
 						@Override
-						public void handle(ActionEvent event) {							
+						public void handle(ActionEvent event) {	
 							emailNewPassword(EmailRequest);
 							userNameRequest.hide();
 							login_pop.hide();	
@@ -1235,7 +1242,7 @@ public class RevController implements Initializable, ClientCallback {
 							client.getServer().reAssignTriage(client.getClientID(), index, reassigned_urgency);
 							Notifications.create().title("Updated Successful").text("Priority of patient " + patient.getPatientName() + " has been changed to " + reassigned_urgency).showInformation();
 						} catch (AuthenticationException | RemoteException e) {
-							Notifications.create().title("Updated Unsuccessful").text("Priority of patient " + patient.getPatientName() + " has not been changed").showInformation();
+							Notifications.create().title("Updated Unsuccessful").text("Priority of patient " + patient.getPatientName() + " has not been changed").showWarning();
 						}
 						
 						outputTextArea.appendText(patient.getPatientName() +" is now !\n");
@@ -1420,17 +1427,17 @@ public class RevController implements Initializable, ClientCallback {
 				// Add the emergency patient to the back end
 				boolean added = client.getServer().addPatient(client.getClientID(), emergency_patient);
 				if (added) {
-					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showInformation();
 				} else {
-					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showError();
 				}
 			} catch (Exception e1) {
-				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showError();
 			}
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+queueList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1448,18 +1455,18 @@ public class RevController implements Initializable, ClientCallback {
 				// Add the urgent patient to the back end
 				boolean added = client.getServer().addPatient(client.getClientID(), urgent_patient);
 				if (added) {
-					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showInformation();
 				} else {
-					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showError();
 				}
 			} catch (Exception e1) {
-				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showError();
 			}
 
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1478,18 +1485,18 @@ public class RevController implements Initializable, ClientCallback {
 				// Add the semi-urgent patient to the back end
 				boolean added = client.getServer().addPatient(client.getClientID(), semi_urgent_patient);
 				if (added) {
-					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showInformation();
 				} else {
-					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showError();
 				}
 			} catch (Exception e1) {
-				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showError();
 			}
 			
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1508,18 +1515,18 @@ public class RevController implements Initializable, ClientCallback {
 				// Add the non-urgent patient to the back end
 				boolean added = client.getServer().addPatient(client.getClientID(), non_urgent_patient);
 				if (added) {
-					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showConfirm();
+					Notifications.create().title("Patient Added").text("Patient was successfully added to the queue.").showInformation();
 				} else {
-					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showConfirm();
+					Notifications.create().title("Patient Not Added").text("Patient could not be added to the queue.").showError();
 				}
 			} catch (Exception e1) {
-				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
+				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showError();
 			}
 			
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 		
 		// Check-box in secondary triage pane.
@@ -1583,6 +1590,8 @@ public class RevController implements Initializable, ClientCallback {
 						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showWarning();
 						extension_pop.hide();
 					}
+					
+					
 
 				}
 			});
@@ -1736,11 +1745,12 @@ public class RevController implements Initializable, ClientCallback {
 		tr_textfield_Blood_Group.setText(displayedPerson.getBloodGroup());
 		tr_textfield_Postcode.setText(displayedPerson.getPostcode());
 		tr_textfield_Telephone.setText(displayedPerson.getTelephone());
-		tr_treatment_notes.setText(displayedPerson.getDoctorsNotes());
-		
+		if (!tr_treatment_notes.isFocused()){
+			tr_treatment_notes.setText(displayedPerson.getDoctorsNotes());
+		}
 		// If the returned allergy is "null" set the allergy
 		// box to display "None".
-		if (displayedPerson.getAllergies().equalsIgnoreCase("null")) {
+		if (displayedPerson.getAllergies() == null || displayedPerson.getAllergies().equalsIgnoreCase("null")) {
 			allergy.setValue(allergic[0]);
 		} else {
 			// Else set the allergy box value to the returned alergy
@@ -1918,6 +1928,7 @@ public class RevController implements Initializable, ClientCallback {
 		medication.setValue(null);
 		conditions.setDisable(true);
 		conditions.setValue(null);
+		extend.setDisable(true);
 	}
 
 	/**
@@ -1949,6 +1960,14 @@ public class RevController implements Initializable, ClientCallback {
 	 */
 	@Override
 	public void udpate(List<Patient> queue, List<TreatmentFacility> treatmentFacilities, List<Staff> onCallStaff, List<Staff> onCallDoctors) {
+		try {
+			if (client != null) {
+				newRoomCount = client.getServer().getTreatmentRoomNumber();
+			}
+		} catch (RemoteException ex) {
+			
+		}
+		
 		// Store the passed in queue and treatment facilities
 		this.queueList = queue;
 		this.treatmentFacilities = treatmentFacilities;
@@ -1959,6 +1978,14 @@ public class RevController implements Initializable, ClientCallback {
 
 			@Override
 			public void run() {
+				
+				if (newRoomCount != roomCount) {
+					// set the default
+					setNewRoomCount(newRoomCount);
+					// start the method to change the treatment rooms
+					newArrayList();
+				}
+				
 				// Update the queue on the UI with the updated data
 				updateQueue();
 				// Update the treatment room list on the UI with the updated
