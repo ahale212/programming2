@@ -35,7 +35,7 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 	 * The number of times an attempt to communicate with the client before the client
 	 * is removed from the client list.
 	 */
-	private static final int MAX_FAILED_CONNECTION_ATTEMPTS = 3;
+	private static final int MAX_FAILED_CONNECTION_ATTEMPTS = 5;
 	
 	/**
 	 * A map of ClientCallback objects, with clientIDs used as keys.
@@ -123,8 +123,11 @@ public class RMIServer extends UnicastRemoteObject implements RemoteServer {
 		// Get the key set from the list of clients
 		Set<String> keys = clients.keySet();
 
+		Iterator iterator = keys.iterator();
+		
 		// Loops through each of the clients in the clients list
-		for (String key : keys) {
+		while (iterator.hasNext()) {
+			String key = (String)iterator.next();
 			ClientDetails client = clients.get(key);
 			try {
 				client.getCallback().log(log);

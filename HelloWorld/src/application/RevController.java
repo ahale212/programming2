@@ -1961,10 +1961,10 @@ public class RevController implements Initializable, ClientCallback {
 	@Override
 	public void udpate(List<Patient> queue, List<TreatmentFacility> treatmentFacilities, List<Staff> onCallStaff, List<Staff> onCallDoctors) {
 		try {
-			if (client != null) {
+			if (client != null && client.getServer() != null) {
 				newRoomCount = client.getServer().getTreatmentRoomNumber();
 			}
-		} catch (RemoteException ex) {
+		} catch (Exception ex) {
 			
 		}
 		
