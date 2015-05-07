@@ -109,9 +109,8 @@ public class RevController implements Initializable, ClientCallback {
 			doctor_on_duty;
 
 	@FXML // various buttons to set on action events for event listening and handling
-	private Button login, re_assign, search_database, emergency, Q_view,
-
-			TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
+	private Button login, re_assign, search_database, emergency, Q_view, 
+	TRooms_view, urg, semi_urg, non_urg, extend, tr_button_save, cancel_extension, sign, search_queue, BTstat;
 
 	@FXML // sliders deployed in secondary triage
 	private Slider respiratory_rate, pulse_rate;
@@ -119,9 +118,6 @@ public class RevController implements Initializable, ClientCallback {
 	@FXML // comboboxes for allowing a limited selection from a particular list
 	private ComboBox conditions, medication, breathing_yes, allergy, tr_allergy;
 
-	@FXML // comboboxes instantiated to type String
-
-	private PieChart chart;
 	 
 	@FXML // comboboxes instantiated to type String
 	private ComboBox<String> patient_finder, select_tr;
@@ -143,7 +139,7 @@ public class RevController implements Initializable, ClientCallback {
 			textfield_Address, textfield_Telephone, textfield_Blood_Group,
 			triage_nurse_on_duty, admin, tr_patient_urgency, tr_incident_details, tr_textfield_NHS_Num,
 			tr_textfield_Title, tr_textfield_First_Name, tr_textfield_Surname, tr_textfield_DOB,
-			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse;
+			tr_textfield_Address, tr_textfield_Telephone, tr_textfield_Blood_Group, tr_textfield_Postcode, triagePane_triageNurse, current_queue_total;
 
 	@FXML // labels set to demonstrate statistics
 	private Label current_total, current_in_queue, av_visit_time, av_treatment_time, daily_emergencies, daily_urgent, daily_semi_urgent, daily_non_urgent, daily_tr_extended, daily_avg_wait, patients_rejected, max_wait_time_exceeded, daily_avg_semi_urgent, daily_avg_non_urgent;
@@ -156,6 +152,8 @@ public class RevController implements Initializable, ClientCallback {
 
 	Staff staff = new Staff();
 	Staff loggedInUser = null;
+	
+	private PieChart chart;
 
 	List<Person> matchingPeople, matchingPeople1;
 	
@@ -393,6 +391,7 @@ public class RevController implements Initializable, ClientCallback {
 			countdown.setLayoutY(173.0);
 			break;
 		case 4:
+			extend.setDisable(false);
 			countdown.setHeight(120.0);
 			countdown.setLayoutY(203.0);
 			break;
@@ -615,7 +614,7 @@ public class RevController implements Initializable, ClientCallback {
 		allergy.setItems(allergy_list);
 		
 
-		onCallUnitStaff = new TableView<Staff>(); 
+		//onCallUnitStaff = new TableView<Staff>(); 
 		
 		TableColumn role = new TableColumn("Role");			
 		role.setCellValueFactory(new PropertyValueFactory<Object, String>("job"));
@@ -626,12 +625,25 @@ public class RevController implements Initializable, ClientCallback {
 		TableColumn lastName_ocu = new TableColumn("Surname");			
 		lastName_ocu.setCellValueFactory(new PropertyValueFactory<Object, String>("lastName"));
 			
-		onCallUnitStaff.getColumns().addAll(role, firstName_ocu, lastName_ocu);
+		onCallUnitStaff.getColumns().addAll(role, firstName_ocu, lastName_ocu); 
 		
+		Staff step = new Staff();
+		step.setJob(Job.DOCTOR);
+		step.setFirstName("Alan");
+		step.setLastName("Whitten");
+		onCallStaff.add(step);
 		for (Staff s : onCallStaff) {			
 			// Check if there is a patient in the facility
 			on_call_unit_staff.add(s);
-		}		
+		}
+		
+		
+		/*Demo staff in on call table
+		Staff step = new Staff();
+		step.setJob(Job.DOCTOR);
+		step.setFirstName("Alan");
+		step.setLastName("Whitten");
+		on_call_unit_staff.add(step);*/
 		onCallUnitStaff.setItems(on_call_unit_staff);
 
 		for (Staff docs : onCallDoctors) {
@@ -1024,6 +1036,9 @@ public class RevController implements Initializable, ClientCallback {
 						client = new RMIClient(RevController.this, address, port, localhost, _user, db_pass);
 						// Add a message to the log
 						log("Logged in as " + _user);
+						triagePane_triageNurse.setText(_user);
+						triage_nurse_on_duty.setText(_user);
+						current_queue_total.setText(""+QList.size());
 
 						logMeIn = true;
 					} catch (RemoteException | MalformedURLException | NotBoundException ex) {
@@ -1076,6 +1091,8 @@ public class RevController implements Initializable, ClientCallback {
 							;
 
 						}
+						
+						
 
 						login_pop.hide();
 
@@ -1118,7 +1135,7 @@ public class RevController implements Initializable, ClientCallback {
 					ConfirmRequest.setOnAction(new EventHandler<ActionEvent>() {
 
 						@Override
-						public void handle(ActionEvent event) {							
+						public void handle(ActionEvent event) {	
 							emailNewPassword(EmailRequest);
 							userNameRequest.hide();
 							login_pop.hide();	
@@ -1418,9 +1435,9 @@ public class RevController implements Initializable, ClientCallback {
 				Notifications.create().title("Communication error").text("Patient could not be added to the queue.").showConfirm();
 			}
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+queueList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1447,9 +1464,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1477,9 +1494,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 			
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 
 		// Refers to our "add" button.
@@ -1507,9 +1524,9 @@ public class RevController implements Initializable, ClientCallback {
 			}
 			
 			clearSearchFields();
-			clearTriageTextFields();
-			
+			clearTriageTextFields();			
 			resetTriage();
+			current_queue_total.setText(""+QList.size());
 		});
 		
 		// Check-box in secondary triage pane.
@@ -1573,6 +1590,8 @@ public class RevController implements Initializable, ClientCallback {
 						Notifications.create().title("Extension Failed").text("Server connection issue.").darkStyle().showWarning();
 						extension_pop.hide();
 					}
+					
+					
 
 				}
 			});
@@ -1629,8 +1648,7 @@ public class RevController implements Initializable, ClientCallback {
 				}
 			});
 		
-		//	TODO check that is sets values
-		BTstat.setOnAction(e->{pasStats();});
+		BTstat.setOnAction(e->{ pasStats(); });
 	}
 
 	/**
@@ -1909,6 +1927,7 @@ public class RevController implements Initializable, ClientCallback {
 		medication.setValue(null);
 		conditions.setDisable(true);
 		conditions.setValue(null);
+		extend.setDisable(true);
 	}
 
 	/**
@@ -2306,7 +2325,7 @@ public class RevController implements Initializable, ClientCallback {
 		daily_non_urgent.setText(""+urgencies[3]);
 		daily_tr_extended.setText(""+client.getServer().getNumberOfExtensions());
 		daily_avg_wait.setText(""+client.getServer().getAvTimeInQue());
-		current_total.setText(""+client.getServer().getPatientsRejected());
+		//current_total.setText(""+client.getServer().getPatientsRejected());
 		av_treatment_time.setText(""+ client.getServer().getAvTreatmentTime());
 		av_visit_time.setText(""+ client.getServer().getAvVisitTime());
 		patients_rejected.setText(""+ client.getServer().getPatientsRejected());
@@ -2325,7 +2344,7 @@ public class RevController implements Initializable, ClientCallback {
 		//if the server is not available the catch sets the text fields to unavailable
 		} catch (Exception ex){
 			
-			current_total.setText("unavailable");
+			//current_total.setText("unavailable");
 			current_in_queue.setText("unavailable");
 			av_visit_time.setText("unavailable");
 			av_treatment_time.setText("unavailable");
